@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "gen-lang-client-0944935873"
+  },
+  "targets": {
+    "gen-lang-client-0944935873": {
+      "hosting": {
+        "frontend-preview": ["autoads-preview"],
+        "frontend-prod": ["autoads-prod"],
+        "console-preview": ["autoads-console-preview"],
+        "console-prod": ["autoads-console-prod"]
+      }
+    }
+  }
+}

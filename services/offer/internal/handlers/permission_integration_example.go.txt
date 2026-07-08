@@ -1,0 +1,338 @@
+package handlers
+
+/*
+ * 权限检查集成示例
+ *
+ * 本文件展示如何将现有的 offers_evaluation_handlers.go 改造为使用动态权限配置
+ *
+ * 主要改动：
+ * 1. 移除硬编码的权限检查（如 subscription.Plan == "starter"）
+ * 2. 移除硬编码的Token消耗规则（如 tokensRequired = 3）
+ * 3. 添加评估并发数检查
+ * 4. 使用 PermissionChecker 动态读取配置
+ */
+
+import (
+	"context"
+	"database/sql"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/go-redis/redis/v8"
+	"github.com/xxrenzhe/autoads/pkg/errors"
+	"github.com/xxrenzhe/autoads/services/billing/internal/permissions"
+	"github.com/xxrenzhe/autoads/services/offer/internal/clients"
+	"github.com/xxrenzhe/autoads/services/offer/internal/domain"
+)
+
+// ============================================================================
+// 改造后的 handleEvaluateOffer - 使用动态权限配置
+// ============================================================================
+
+func (h *Handler) handleEvaluateOfferV2(w http.ResponseWriter, r *http.Request, offerID, userID string) {
+	ctx := r.Context()
+
+	// 1. Parse request body
+	var req struct {
+		EnableAI     bool `json:"enableAI"`
+		ForceRefresh bool `json:"forceRefresh"`
+	}
+	decoder := json.NewDecoder(r.Body)
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&req); err != nil {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid request body", nil)
+		return
+	}
+
+	// 2. Check idempotency key
+	idempotencyKey := r.Header.Get("Idempotency-Key")
+	if idempotencyKey == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "Idempotency-Key header required", nil)
+		return
+	}
+
+	// 3. Check if already processing (use cache or database)
+	cacheKey := fmt.Sprintf("eval:idempotency:%s", idempotencyKey)
+	if h.Cache != nil && h.Cache.Ready() {
+		if existing, found := h.Cache.Get(ctx, cacheKey); found {
+			log.Printf("Evaluation request idempotent hit for key=%s", idempotencyKey)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusAccepted)
+			w.Write([]byte(existing))
+			return
+		}
+	}
+
+	// 4. Verify offer exists and belongs to user
+	if h.DB == nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "database unavailable", nil)
+		return
+	}
+	var exists bool
+	err := h.DB.QueryRowContext(ctx, `SELECT EXISTS(SELECT 1 FROM "Offer" WHERE id=$1 AND "userId"=$2)`, offerID, userID).Scan(&exists)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "database error", map[string]string{"error": err.Error()})
+		return
+	}
+	if !exists {
+		errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "offer not found", nil)
+		return
+	}
+
+	// 5. Query user subscription
+	authHeader := r.Header.Get("Authorization")
+	billingClient := h.getBillingClient()
+
+	subscription, err := billingClient.GetSubscription(ctx, authHeader)
+	if err != nil {
+		log.Printf("Failed to get subscription: %v", err)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to check subscription", nil)
+		return
+	}
+
+	userTier := subscription.Plan // "starter", "pro", "elite"
+
+	// ============================================================
+	// 新增：初始化PermissionChecker
+	// ============================================================
+	permChecker := permissions.NewPermissionChecker(h.DB, h.RedisClient)
+
+	// ============================================================
+	// 改动1：动态检查基础评估权限（替代硬编码）
+	// ============================================================
+	// ❌ 旧代码：硬编码假设所有套餐都有基础评估权限
+	// ✅ 新代码：从配置读取
+	canUseBasic, err := permChecker.CheckFeaturePermission(ctx, userTier, "offer_evaluation_basic")
+	if err != nil {
+		log.Printf("Failed to check basic evaluation permission: %v", err)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to check permissions", nil)
+		return
+	}
+	if !canUseBasic {
+		errors.Write(w, r, http.StatusForbidden, "PLAN_RESTRICTION",
+			"Basic evaluation not available for your plan",
+			map[string]string{"currentPlan": userTier})
+		return
+	}
+
+	// ============================================================
+	// 改动2：动态检查AI评估权限（替代硬编码）
+	// ============================================================
+	// ❌ 旧代码：if req.EnableAI && subscription.Plan == "starter" { ... }
+	// ✅ 新代码：从配置读取
+	if req.EnableAI {
+		canUseAI, err := permChecker.CanUseAIEvaluation(ctx, userTier)
+		if err != nil {
+			log.Printf("Failed to check AI evaluation permission: %v", err)
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to check permissions", nil)
+			return
+		}
+		if !canUseAI {
+			errors.Write(w, r, http.StatusForbidden, "PLAN_RESTRICTION",
+				"AI evaluation not available for your plan",
+				map[string]interface{}{
+					"currentPlan": userTier,
+					"hint":        "Upgrade to Pro or Elite to use AI evaluation",
+				})
+			return
+		}
+	}
+
+	// ============================================================
+	// 改动3：动态计算Token消耗（替代硬编码）
+	// ============================================================
+	// ❌ 旧代码：
+	//   tokensRequired := 1
+	//   if req.EnableAI { tokensRequired = 3 }
+	//
+	// ✅ 新代码：从配置读取
+	operationKey := "offer_evaluation_basic"
+	if req.EnableAI {
+		operationKey = "offer_evaluation_ai"
+	}
+
+	tokensRequired, err := permChecker.GetTokenCost(ctx, userTier, operationKey)
+	if err != nil {
+		log.Printf("Failed to get token cost: %v", err)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to calculate token cost", nil)
+		return
+	}
+
+	log.Printf("Token cost for %s (%s plan): %d tokens", operationKey, userTier, tokensRequired)
+
+	// ============================================================
+	// 新增：评估并发数检查
+	// ============================================================
+	maxConcurrency, err := permChecker.GetEvaluationConcurrency(ctx, userTier)
+	if err != nil {
+		log.Printf("Failed to check concurrency limit: %v", err)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to check concurrency", nil)
+		return
+	}
+
+	// 查询用户当前正在进行的评估数量
+	var currentConcurrency int
+	err = h.DB.QueryRowContext(ctx, `
+		SELECT COUNT(*)
+		FROM offer_evaluations
+		WHERE offer_id IN (SELECT id FROM "Offer" WHERE "userId" = $1)
+		  AND status IN ('pending', 'running')
+	`, userID).Scan(&currentConcurrency)
+	if err != nil {
+		log.Printf("Failed to count concurrent evaluations: %v", err)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "database error", nil)
+		return
+	}
+
+	if currentConcurrency >= maxConcurrency {
+		errors.Write(w, r, http.StatusTooManyRequests, "CONCURRENCY_LIMIT",
+			"Evaluation concurrency limit reached",
+			map[string]interface{}{
+				"current": currentConcurrency,
+				"max":     maxConcurrency,
+				"tier":    userTier,
+				"hint":    "Please wait for ongoing evaluations to complete or upgrade your plan",
+			})
+		return
+	}
+
+	log.Printf("Concurrency check passed: %d/%d for user %s", currentConcurrency, maxConcurrency, userID)
+
+	// ============================================================
+	// 后续逻辑保持不变：Token余额检查、预扣、创建评估记录、发布事件
+	// ============================================================
+
+	// 8. Check token balance
+	balance, err := billingClient.GetTokenBalance(ctx, authHeader)
+	if err != nil {
+		log.Printf("Failed to get token balance: %v", err)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to check token balance", nil)
+		return
+	}
+
+	if balance.Available < tokensRequired {
+		errors.Write(w, r, http.StatusPaymentRequired, "INSUFFICIENT_TOKENS",
+			"Insufficient tokens for evaluation",
+			map[string]interface{}{
+				"required":  tokensRequired,
+				"available": balance.Available,
+			})
+		return
+	}
+
+	// 9. Reserve tokens
+	reservation, err := billingClient.ReserveTokens(ctx, authHeader, userID, &clients.ReserveTokensRequest{
+		Amount:  tokensRequired,
+		Service: "offer",
+		Action:  "evaluate",
+		Reason:  fmt.Sprintf("Offer evaluation: %s", offerID),
+	})
+	if err != nil {
+		log.Printf("Failed to reserve tokens: %v", err)
+		errors.Write(w, r, http.StatusPaymentRequired, "TOKEN_RESERVATION_FAILED", err.Error(), nil)
+		return
+	}
+
+	log.Printf("Reserved %d tokens for offer %s (reservation: %s)", tokensRequired, offerID, reservation.ReservationID)
+
+	// 10. Create evaluation record with status='pending'
+	evaluationID := fmt.Sprintf("eval_%d", time.Now().UnixNano())
+	evalType := "basic"
+	if req.EnableAI {
+		evalType = "ai_enhanced"
+	}
+
+	_, err = h.DB.ExecContext(ctx, `
+		INSERT INTO offer_evaluations (
+			id, offer_id, status, evaluation_type, tokens_consumed,
+			created_at, started_at
+		) VALUES ($1, $2, 'pending', $3, 0, NOW(), NOW())
+	`, evaluationID, offerID, evalType)
+
+	if err != nil {
+		log.Printf("Failed to create evaluation record: %v", err)
+		// Release tokens since evaluation creation failed
+		billingClient.ReleaseReservation(ctx, authHeader, reservation.ReservationID)
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to create evaluation", map[string]string{"error": err.Error()})
+		return
+	}
+
+	// 11. Publish Pub/Sub message to Siterank
+	if h.Publisher != nil {
+		event := &domain.EvaluationRequestedEvent{
+			EvaluationID:   evaluationID,
+			OfferID:        offerID,
+			UserID:         userID,
+			IncludeAI:      req.EnableAI,
+			ForceRefresh:   req.ForceRefresh,
+			TokensReserved: tokensRequired,
+			ReservationID:  reservation.ReservationID,
+			AuthToken:      authHeader,
+		}
+
+		if err := h.Publisher.Publish(ctx, event); err != nil {
+			log.Printf("Failed to publish evaluation event: %v", err)
+		} else {
+			log.Printf("Published evaluation.requested event for %s", evaluationID)
+		}
+	}
+
+	// 12. Prepare response
+	response := map[string]interface{}{
+		"evaluationId":   evaluationID,
+		"offerId":        offerID,
+		"status":         "pending",
+		"message":        "Evaluation started successfully",
+		"tokensReserved": tokensRequired,
+		"reservationId":  reservation.ReservationID,
+		"createdAt":      time.Now().UTC().Format(time.RFC3339),
+	}
+
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "failed to encode response", nil)
+		return
+	}
+
+	// 13. Cache the response (24 hour TTL for idempotency)
+	if h.Cache != nil && h.Cache.Ready() {
+		h.Cache.Set(ctx, cacheKey, string(responseJSON), 24*time.Hour)
+	}
+
+	// 14. Return response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
+	w.Write(responseJSON)
+
+	log.Printf("Evaluation %s created for offer %s (type=%s, enableAI=%v, tokensReserved=%d, concurrency=%d/%d)",
+		evaluationID, offerID, evalType, req.EnableAI, tokensRequired, currentConcurrency+1, maxConcurrency)
+}
+
+// ============================================================================
+// 辅助函数
+// ============================================================================
+
+func (h *Handler) getBillingClient() *clients.BillingClient {
+	billingBaseURL := os.Getenv("BILLING_SERVICE_URL")
+	if billingBaseURL == "" {
+		billingBaseURL = "http://billing:8080"
+	}
+	return clients.NewBillingClient(billingBaseURL)
+}
+
+// ============================================================================
+// Handler结构体需要添加的字段
+// ============================================================================
+
+/*
+type Handler struct {
+	DB           *sql.DB
+	RedisClient  *redis.Client  // ✅ 新增：用于PermissionChecker
+	Cache        *cache.Cache
+	Publisher    *pubsub.Publisher
+	// ...其他字段
+}
+*/

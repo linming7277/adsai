@@ -1,0 +1,538 @@
+# NOTE: Canonical OpenAPI specs live under specs/openapi/*.yaml
+#       This file is a local mirror for reference only and may be stale.
+openapi: 3.0.3
+info:
+  title: Offer Service
+  version: 0.1.0
+  license:
+    name: Elastic-Internal
+servers:
+  - url: /api/v1
+paths:
+  /offers:
+    get:
+      operationId: listOffers
+      summary: List offers for current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+    post:
+      operationId: createOffer
+      summary: Create a new offer (202)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferCreateRequest'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferCreatedEvent'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /offers/{id}:
+    get:
+      operationId: getOffer
+      summary: Get offer by id for current user
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Offer' }
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    put:
+      operationId: updateOffer
+      summary: Update offer basic fields
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Offer' }
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    delete:
+      operationId: deleteOffer
+      summary: Delete an offer by id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '204': { description: No Content }
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /offers/{id}/status:
+    put:
+      operationId: updateOfferStatus
+      summary: Manually update offer status and record history
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OfferStatusUpdate' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OfferStatusUpdated' }
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /offers/{id}/kpi:
+    get:
+      operationId: getOfferKpi
+      summary: Get 7-day KPI summary and daily points for an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OfferKpiResponse' }
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /offers/{id}/kpi/aggregate:
+    post:
+      operationId: aggregateOfferKpi
+      summary: Aggregate today's KPI for an offer and upsert into read model
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+        - in: query
+          name: date
+          required: false
+          schema: { type: string, format: date }
+          description: Day to aggregate (UTC). Default today.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, enum: [ok] }
+                  date: { type: string, format: date }
+                  source: { type: string, enum: [real, synthetic, adscenter, mixed] }
+                  summary:
+                    type: object
+                    properties:
+                      impressions: { type: integer, format: int64 }
+                      clicks: { type: integer, format: int64 }
+                      spend: { type: number, format: float }
+                      revenue: { type: number, format: float }
+                      rosc: { type: number, format: float }
+        '400': { description: Bad Request }
+        '401': { description: Unauthorized }
+        '404': { description: Not Found }
+
+  /offers/{id}/preferences:
+    get:
+      operationId: getOfferPreferences
+      summary: Get automation preferences for an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OfferPreferences' }
+        '401': { description: Unauthorized }
+        '404': { description: Not Found }
+    put:
+      operationId: updateOfferPreferences
+      summary: Update automation preferences for an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OfferPreferences' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, enum: [ok] }
+        '400': { description: Bad Request }
+        '401': { description: Unauthorized }
+        '404': { description: Not Found }
+
+  /offers/{id}/accounts:
+    get:
+      operationId: listOfferAccounts
+      summary: List linked Google Ads accounts for an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        accountId: { type: string }
+    post:
+      operationId: linkOfferAccount
+      summary: Link a Google Ads account to an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountId: { type: string }
+              required: [accountId]
+      responses:
+        '200': { description: OK }
+        '400': { description: Bad Request }
+        '401': { description: Unauthorized }
+
+  /offers/{id}/accounts/{accountId}:
+    delete:
+      operationId: unlinkOfferAccount
+      summary: Unlink a Google Ads account from an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+        - in: path
+          name: accountId
+          required: true
+          schema: { type: string }
+      responses:
+        '204': { description: No Content }
+        '401': { description: Unauthorized }
+        '404': { description: Not Found }
+
+  /offers/{id}/evaluate:
+    post:
+      operationId: evaluateOffer
+      summary: Trigger evaluation for an offer (SimilarWeb + optional AI)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enableAI:
+                  type: boolean
+                  description: Enable AI-powered analysis (costs 3 tokens vs 1 for basic)
+              required: []
+      responses:
+        '202':
+          description: Accepted - Evaluation started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  evaluationId: { type: string }
+                  status: { type: string }
+                  tokensConsumed: { type: integer }
+        '400': { description: Bad Request }
+        '401': { description: Unauthorized }
+        '404': { description: Not Found }
+        '409': { description: Conflict - Evaluation already in progress }
+
+  /offers/{id}/evaluations:
+    get:
+      operationId: listOfferEvaluations
+      summary: Get evaluation history for an offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OfferEvaluation'
+        '401': { description: Unauthorized }
+        '404': { description: Not Found }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Offer:
+      type: object
+      properties:
+        id: { type: string }
+        userId: { type: string }
+        name: { type: string }
+        originalUrl: { type: string }
+        status: { type: string, enum: [evaluating, optimizing, scaling, archived] }
+        siterankScore: { type: number, format: float, nullable: true }
+        createdAt: { type: string, format: date-time }
+      required: [id, userId, name, originalUrl, status, createdAt]
+    OfferCreateRequest:
+      type: object
+      properties:
+        name: { type: string }
+        originalUrl: { type: string }
+      required: [name, originalUrl]
+    OfferUpdateRequest:
+      type: object
+      properties:
+        name: { type: string }
+        originalUrl: { type: string }
+      additionalProperties: false
+    OfferStatusUpdate:
+      type: object
+      properties:
+        status: { type: string }
+      required: [status]
+    OfferStatusUpdated:
+      type: object
+      properties:
+        status: { type: string, enum: [ok] }
+        offerId: { type: string }
+        from: { type: string }
+        to: { type: string }
+      required: [status, offerId, from, to]
+    OfferKpiResponse:
+      type: object
+      properties:
+        summary:
+          type: object
+          properties:
+            impressions: { type: integer, format: int64 }
+            clicks: { type: integer, format: int64 }
+            spend: { type: number, format: float }
+            revenue: { type: number, format: float }
+            rosc: { type: number, format: float }
+          required: [impressions, clicks, spend, revenue, rosc]
+        days:
+          type: array
+          items:
+            type: object
+            properties:
+              date: { type: string, format: date }
+              impressions: { type: integer, format: int64 }
+              clicks: { type: integer, format: int64 }
+              spend: { type: number, format: float }
+              revenue: { type: number, format: float }
+            required: [date, impressions, clicks, spend, revenue]
+        updatedAt: { type: string, format: date-time }
+      required: [summary, days, updatedAt]
+    OfferCreatedEvent:
+      type: object
+      properties:
+        offerId: { type: string }
+        userId: { type: string }
+        name: { type: string }
+        originalUrl: { type: string }
+        status: { type: string }
+        createdAt: { type: string, format: date-time }
+      required: [offerId, userId, name, originalUrl, status, createdAt]
+    OfferEvaluation:
+      type: object
+      properties:
+        evaluationId: { type: string }
+        offerId: { type: string }
+        status: { type: string, enum: [pending, running, completed, failed] }
+        evaluationType: { type: string, enum: [basic, ai_enhanced] }
+        tokensConsumed: { type: integer }
+        similarWebScore: { type: number, nullable: true }
+        aiRecommendationScore: { type: number, nullable: true }
+        startedAt: { type: string, format: date-time }
+        completedAt: { type: string, format: date-time, nullable: true }
+      required: [evaluationId, offerId, status, evaluationType, tokensConsumed, startedAt]
+    OfferPreferences:
+      type: object
+      description: Per-offer automation preferences. Defaults may be provided by user profile; this endpoint stores overrides.
+      properties:
+        autoStatusEnabled:
+          type: boolean
+          description: If true, system may automatically update offer status based on rules; otherwise only suggest changes.
+        statusRules:
+          type: object
+          description: Optional thresholds overriding defaults.
+          properties:
+            zeroPerfDays:
+              type: integer
+              minimum: 1
+              maximum: 30
+              description: Days with zero impressions and zero clicks to suggest/trigger decline.
+            roscDeclineDays:
+              type: integer
+              minimum: 1
+              maximum: 30
+              description: Days of continuous ROSC decline to suggest/trigger decline.
+          additionalProperties: false
+      required: [autoStatusEnabled]
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details: {}
+            traceId: { type: string }
+          required: [code, message]

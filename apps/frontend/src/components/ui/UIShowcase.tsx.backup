@@ -1,0 +1,716 @@
+'use client';
+
+import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+import { PageLayout } from '~/core/ui/PageLayout';
+import { useSmartBreadcrumb } from '../navigation/BreadcrumbNavigation';
+
+// 动态导入组件以减少bundle大小
+const ModalSystem = dynamic(
+  () => import('../modals/ModalSystem').then(mod => ({ default: mod })),
+  { ssr: false }
+);
+
+const NotificationSystem = dynamic(
+  () => import('../notifications/NotificationSystem').then(mod => ({ default: mod })),
+  { ssr: false }
+);
+
+const LoadingStates = dynamic(
+  () => import('../loading/LoadingStates').then(mod => ({ default: mod })),
+  { ssr: false }
+);
+
+const BreadcrumbNavigation = dynamic(
+  () => import('../navigation/BreadcrumbNavigation').then(mod => ({ default: mod })),
+  { ssr: false }
+);
+
+const Tabs = dynamic(
+  () => import('~/core/ui/tabs').then(mod => ({ Tabs: mod.Tabs })),
+  { ssr: false }
+);
+
+// 动态导入UIShowcase组件
+const UIShowcaseMain = dynamic(
+  () => import('./UIShowcaseMain').then(mod => ({ default: mod.UIShowcaseMain })),
+  { ssr: false }
+);
+
+const UIShowcaseDemos = dynamic(
+  () => import('./UIShowcaseDemos').then(mod => ({ default: mod.UIShowcaseDemos })),
+  { ssr: false }
+);
+
+export default function UIShowcase() {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [currentPath, setCurrentPath] = useState('/ui/showcase');
+  const { breadcrumbs } = useSmartBreadcrumb(currentPath);
+
+  const demoBreadcrumbItems = [
+    { id: '1', label: '首页', href: '/', icon: <HomeIcon className="w-4 h-4" /> },
+    { id: '2', label: '产品管理', href: '/products', icon: <CubeIcon className="w-4 h-4" /> },
+    { id: '3', label: '电子产品', href: '/products/electronics', icon: <BoltIcon className="w-4 h-4" /> },
+    { id: '4', label: '手机详情', href: '/products/electronics/phone-123', isActive: true }
+  ];
+
+  const handleModalDemo = (type: string) => {
+    switch (type) {
+      case 'info':
+        openModal('info-modal', (
+          <Modal
+            isOpen={true}
+            onClose={() => closeModal('info-modal')}
+            type="info"
+            title="信息提示"
+            description="这是一个信息提示模态框示例。"
+          >
+            <p className="text-gray-700">模态框支持多种类型，包括信息、成功、警告、错误等。</p>
+          </Modal>
+        ));
+        break;
+
+      case 'confirm':
+        openModal('confirm-modal', (
+          <ConfirmModal
+            isOpen={true}
+            onClose={() => closeModal('confirm-modal')}
+            type="question"
+            title="确认操作"
+            message="您确定要执行此操作吗？此操作无法撤销。"
+            confirmText="确认"
+            cancelText="取消"
+            onConfirm={() => {
+              success('操作已成功执行！');
+              closeModal('confirm-modal');
+            }}
+          />
+        ));
+        break;
+
+      case 'image':
+        openModal('image-modal', (
+          <ImagePreviewModal
+            isOpen={true}
+            onClose={() => closeModal('image-modal')}
+            images={demoImages}
+            initialIndex={0}
+            allowDownload={true}
+          />
+        ));
+        break;
+
+      case 'drawer':
+        openModal('drawer-modal', (
+          <Drawer
+            isOpen={true}
+            onClose={() => closeModal('drawer-modal')}
+            position="right"
+            size="md"
+            title="侧边栏抽屉"
+          >
+            <div className="space-y-4">
+              <p className="text-gray-700">这是一个侧边栏抽屉示例。</p>
+              <div className="space-y-3">
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium">设置选项</h4>
+                  <p className="text-sm text-gray-600">在这里可以配置各种设置。</p>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium">用户信息</h4>
+                  <p className="text-sm text-gray-600">显示和管理用户信息。</p>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium">帮助文档</h4>
+                  <p className="text-sm text-gray-600">查看帮助文档和使用指南。</p>
+                </div>
+              </div>
+            </div>
+          </Drawer>
+        ));
+        break;
+    }
+  };
+
+  const handleNotificationDemo = (type: 'success' | 'error' | 'warning' | 'info') => {
+    switch (type) {
+      case 'success':
+        success('操作成功完成！', {
+          title: '成功',
+          duration: 3000
+        });
+        break;
+      case 'error':
+        error('操作失败，请重试。', {
+          title: '错误',
+          duration: 5000
+        });
+        break;
+      case 'warning':
+        warning('请注意，此操作可能有风险。', {
+          title: '警告',
+          duration: 4000
+        });
+        break;
+      case 'info':
+        info('这是一条信息通知。', {
+          title: '信息',
+          duration: 3000
+        });
+        break;
+    }
+  };
+
+  const handleProgressDemo = () => {
+    const progressId = createProgress('文件上传', {
+      message: '正在上传文件...'
+    });
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 20;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        completeProgress(progressId, 'success', '文件上传完成！');
+      } else {
+        updateProgress(progressId, progress, {
+          message: `上传进度: ${Math.round(progress)}%`
+        });
+      }
+    }, 500);
+  };
+
+  const tabs = [
+    {
+      id: 'modals',
+      label: '模态框系统',
+      icon: <WindowIcon className="w-4 h-4" />,
+      description: '多层级模态框、确认对话框、图片预览、侧边栏抽屉'
+    },
+    {
+      id: 'notifications',
+      label: '通知组件',
+      icon: <BellIcon className="w-4 h-4" />,
+      description: 'Toast通知、进度通知、批量通知管理'
+    },
+    {
+      id: 'loading',
+      label: '加载状态',
+      icon: <ArrowPathIcon className="w-4 h-4" />,
+      description: '骨架屏、进度条、加载动画、空状态'
+    },
+    {
+      id: 'breadcrumbs',
+      label: '面包屑导航',
+      icon: <HomeIcon className="w-4 h-4" />,
+      description: '动态面包屑、下拉导航、路径历史'
+    }
+  ];
+
+  return (
+    <PageLayout>
+      <div className="flex flex-col gap-8">
+        {/* 标题部分 */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            UI组件系统
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            完整的UI组件库，包括模态框系统、通知组件、加载状态和导航组件。
+            为您的应用提供专业、一致的用户界面体验。
+          </p>
+        </motion.div>
+
+        {/* 功能卡片 */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+            <div className="flex items-center gap-3 mb-4">
+              <WindowIcon className="w-8 h-8" />
+              <h3 className="text-xl font-semibold">模态框系统</h3>
+            </div>
+            <p className="opacity-90 mb-4">
+              多类型模态框、确认对话框、图片预览、侧边栏抽屉等完整的模态框解决方案。
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                多层级模态框管理
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                响应式设计
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                键盘导航支持
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+            <div className="flex items-center gap-3 mb-4">
+              <BellIcon className="w-8 h-8" />
+              <h3 className="text-xl font-semibold">通知组件</h3>
+            </div>
+            <p className="opacity-90 mb-4">
+              Toast通知、进度通知、批量通知管理，为用户提供及时的操作反馈。
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                多种通知类型
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                自动关闭和手动控制
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                通知中心管理
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+            <div className="flex items-center gap-3 mb-4">
+              <ArrowPathIcon className="w-8 h-8" />
+              <h3 className="text-xl font-semibold">加载状态</h3>
+            </div>
+            <p className="opacity-90 mb-4">
+              骨架屏、进度条、加载动画、空状态，提供流畅的加载体验。
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                多种骨架屏类型
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                进度条和圆形进度
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                空状态处理
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+            <div className="flex items-center gap-3 mb-4">
+              <HomeIcon className="w-8 h-8" />
+              <h3 className="text-xl font-semibold">面包屑导航</h3>
+            </div>
+            <p className="opacity-90 mb-4">
+              动态面包屑、下拉导航、路径历史，提供清晰的导航体验。
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                智能路径生成
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                历史导航支持
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+                搜索集成
+              </li>
+            </ul>
+          </div>
+        </motion.div>
+
+        {/* 交互式演示 */}
+        <motion.div
+          className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">交互式演示</h2>
+            <p className="text-gray-600">点击按钮体验各种UI组件的功能和交互效果</p>
+          </div>
+
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="p-6">
+            <TabsList className="grid w-full grid-cols-4 mb-6">
+              {tabs.map(tab => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="flex items-center gap-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                >
+                  {tab.icon}
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            <TabsContent value="modals" className="mt-0">
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-blue-900 mb-2">模态框系统</h3>
+                  <p className="text-blue-700 text-sm mb-4">
+                    完整的模态框解决方案，支持多种类型和自定义内容。包含焦点管理、键盘导航和响应式设计。
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <motion.button
+                    onClick={() => handleModalDemo('info')}
+                    className="p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <InformationCircleIcon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                    <h4 className="font-medium text-gray-900">信息模态框</h4>
+                    <p className="text-sm text-gray-600 mt-1">显示信息提示</p>
+                  </motion.button>
+
+                  <motion.button
+                    onClick={() => handleModalDemo('confirm')}
+                    className="p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <QuestionMarkCircleIcon className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                    <h4 className="font-medium text-gray-900">确认对话框</h4>
+                    <p className="text-sm text-gray-600 mt-1">用户确认操作</p>
+                  </motion.button>
+
+                  <motion.button
+                    onClick={() => handleModalDemo('image')}
+                    className="p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <PhotoIcon className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                    <h4 className="font-medium text-gray-900">图片预览</h4>
+                    <p className="text-sm text-gray-600 mt-1">图片画廊预览</p>
+                  </motion.button>
+
+                  <motion.button
+                    onClick={() => handleModalDemo('drawer')}
+                    className="p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <CogIcon className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+                    <h4 className="font-medium text-gray-900">侧边栏抽屉</h4>
+                    <p className="text-sm text-gray-600 mt-1">从侧边滑出</p>
+                  </motion.button>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="notifications" className="mt-0">
+              <div className="space-y-6">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-green-900 mb-2">通知组件系统</h3>
+                  <p className="text-green-700 text-sm mb-4">
+                    完整的通知管理解决方案，支持多种通知类型、进度通知和批量管理。
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">基础通知</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      <motion.button
+                        onClick={() => handleNotificationDemo('success')}
+                        className="p-3 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <CheckCircleIcon className="w-5 h-5 mx-auto mb-1" />
+                        <span className="text-sm">成功</span>
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => handleNotificationDemo('error')}
+                        className="p-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <ExclamationTriangleIcon className="w-5 h-5 mx-auto mb-1" />
+                        <span className="text-sm">错误</span>
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => handleNotificationDemo('warning')}
+                        className="p-3 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <ExclamationTriangleIcon className="w-5 h-5 mx-auto mb-1" />
+                        <span className="text-sm">警告</span>
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => handleNotificationDemo('info')}
+                        className="p-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <InformationCircleIcon className="w-5 h-5 mx-auto mb-1" />
+                        <span className="text-sm">信息</span>
+                      </motion.button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">进度通知</h4>
+                    <motion.button
+                      onClick={handleProgressDemo}
+                      className="w-full p-4 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <ArrowPathIcon className="w-6 h-6 mx-auto mb-2 animate-spin" />
+                      <span className="text-sm font-medium">开始进度演示</span>
+                    </motion.button>
+                    <p className="text-sm text-gray-600 mt-2">
+                      模拟文件上传进度，展示进度通知功能
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <h4 className="font-medium text-gray-900 mb-3">通知中心</h4>
+                  <NotificationCenter showToggle={true} />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="loading" className="mt-0">
+              <div className="space-y-6">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-purple-900 mb-2">加载状态组件</h3>
+                  <p className="text-purple-700 text-sm mb-4">
+                    完整的加载状态解决方案，包括骨架屏、进度条、加载动画和空状态处理。
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {/* 加载动画 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">加载动画</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <LoadingAnimation type="spinner" size="lg" />
+                        <p className="text-sm text-gray-600 mt-2">旋转加载</p>
+                      </div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <LoadingAnimation type="dots" size="lg" />
+                        <p className="text-sm text-gray-600 mt-2">点状加载</p>
+                      </div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <LoadingAnimation type="pulse" size="lg" />
+                        <p className="text-sm text-gray-600 mt-2">脉冲加载</p>
+                      </div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <LoadingAnimation type="wave" size="lg" />
+                        <p className="text-sm text-gray-600 mt-2">波浪加载</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 进度条 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">进度条</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <ProgressBar value={30} showLabel />
+                      </div>
+                      <div>
+                        <ProgressBar value={60} variant="success" showLabel />
+                      </div>
+                      <div>
+                        <ProgressBar value={80} variant="warning" showLabel striped animated />
+                      </div>
+                      <div className="flex items-center gap-6">
+                        <CircularProgress value={45} />
+                        <CircularProgress value={75} variant="success" />
+                        <CircularProgress value={90} variant="error" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 骨架屏 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">骨架屏</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <CardSkeleton showAvatar showAction lines={3} />
+                      <div className="space-y-3">
+                        <Skeleton width="60%" height={24} />
+                        <TableSkeleton rows={3} columns={3} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 空状态 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">空状态</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <EmptyState
+                        title="暂无数据"
+                        description="当前没有显示任何数据，请稍后再试。"
+                        action={{
+                          label: '刷新数据',
+                          onClick: () => console.log('刷新数据')
+                        }}
+                      />
+                      <EmptyState
+                        title="搜索无结果"
+                        description="没有找到匹配的结果，请尝试其他搜索词。"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="breadcrumbs" className="mt-0">
+              <div className="space-y-6">
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-orange-900 mb-2">面包屑导航系统</h3>
+                  <p className="text-orange-700 text-sm mb-4">
+                    智能面包屑生成、下拉导航、路径历史管理，为用户提供清晰的导航体验。
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {/* 基础面包屑 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">基础面包屑</h4>
+                    <BreadcrumbNavigation items={demoBreadcrumbItems} />
+                  </div>
+
+                  {/* 高级面包屑 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">高级面包屑（带搜索和历史）</h4>
+                    <AdvancedBreadcrumb
+                      items={demoBreadcrumbItems}
+                      showSearch={true}
+                      showHistory={true}
+                      searchPlaceholder="搜索页面..."
+                      onSearch={(query) => console.log('搜索:', query)}
+                    />
+                  </div>
+
+                  {/* 智能面包屑 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">智能面包屑（自动生成）</h4>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        value={currentPath}
+                        onChange={(e) => setCurrentPath(e.target.value)}
+                        placeholder="输入路径（如：/dashboard/analytics/reports）"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <BreadcrumbNavigation items={breadcrumbs} />
+                  </div>
+
+                  {/* 路径历史演示 */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">路径历史</h4>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-600 mb-3">
+                        路径历史功能会在用户浏览页面时自动记录访问路径，支持前进和后退操作。
+                      </p>
+                      <div className="flex gap-2">
+                        <button className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm">
+                          模拟前进
+                        </button>
+                        <button className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">
+                          模拟后退
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+
+        {/* 技术特性 */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">组件特性</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <SparklesIcon className="w-5 h-5 text-blue-600" />
+                <div>
+                  <div className="font-medium text-gray-900">完全类型安全</div>
+                  <div className="text-sm text-gray-600">TypeScript完整支持</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <ShieldCheckIcon className="w-5 h-5 text-green-600" />
+                <div>
+                  <div className="font-medium text-gray-900">可访问性优先</div>
+                  <div className="text-sm text-gray-600">WCAG 2.1 AA标准</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <BoltIcon className="w-5 h-5 text-purple-600" />
+                <div>
+                  <div className="font-medium text-gray-900">高性能动画</div>
+                  <div className="text-sm text-gray-600">Framer Motion优化</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">设计原则</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <EyeIcon className="w-5 h-5 text-blue-600" />
+                <div>
+                  <div className="font-medium text-gray-900">用户体验优先</div>
+                  <div className="text-sm text-gray-600">直观易用的交互</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <ArrowRightIcon className="w-5 h-5 text-green-600" />
+                <div>
+                  <div className="font-medium text-gray-900">一致性设计</div>
+                  <div className="text-sm text-gray-600">统一的视觉风格</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <CogIcon className="w-5 h-5 text-purple-600" />
+                <div>
+                  <div className="font-medium text-gray-900">高度可定制</div>
+                  <div className="text-sm text-gray-600">灵活的配置选项</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 模态框渲染器 */}
+        <ModalRenderer />
+      </div>
+    </PageLayout>
+  );
+}

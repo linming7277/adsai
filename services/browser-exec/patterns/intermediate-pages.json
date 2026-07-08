@@ -1,0 +1,292 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-10-02T04:10:24.004Z",
+  "description": "Browser-exec intermediate page detection patterns",
+  "domainPatterns": [
+    {
+      "id": "chromewebdata",
+      "domain": "chromewebdata",
+      "type": "verification",
+      "subtype": "challenge",
+      "confidence": 0.95,
+      "expectedWaitTime": 12000,
+      "notes": "Anti-bot verification page, auto-solves after 8-12 seconds",
+      "examples": [
+        "chromewebdata.com/verification"
+      ]
+    },
+    {
+      "id": "linkbux",
+      "domain": "linkbux.com",
+      "type": "intermediate",
+      "subtype": "countdown",
+      "confidence": 0.9,
+      "expectedWaitTime": 6000,
+      "notes": "5-second countdown redirect page",
+      "examples": [
+        "www.linkbux.com/redirect"
+      ]
+    },
+    {
+      "id": "dailybacks-return",
+      "domain": "dailybacks.com",
+      "type": "intermediate",
+      "subtype": "countdown",
+      "confidence": 0.9,
+      "expectedWaitTime": 15000,
+      "urlPattern": "/return.html",
+      "notes": "5-second countdown + additional wait for redirect (optimized from 6s to 15s based on testing)",
+      "examples": [
+        "dailybacks.com/return.html?id=error_suspended.html"
+      ]
+    },
+    {
+      "id": "pboost",
+      "domain": "pboost.me",
+      "type": "affiliate",
+      "subtype": "cloudflare-protected",
+      "confidence": 0.95,
+      "expectedWaitTime": 25000,
+      "notes": "Fast redirect affiliate network, often protected by Cloudflare (20s+ challenge)",
+      "commonNextDomains": [
+        "yitahome.com"
+      ],
+      "examples": [
+        "pboost.me/ZDO2Bdek"
+      ]
+    },
+    {
+      "id": "clickbank",
+      "domain": "clickbank.net",
+      "type": "affiliate",
+      "subtype": "fast-redirect",
+      "confidence": 0.95,
+      "expectedWaitTime": 2000,
+      "notes": "ClickBank affiliate network"
+    },
+    {
+      "id": "bonusarrive",
+      "domain": "bonusarrive.com",
+      "type": "affiliate",
+      "subtype": "fast-redirect",
+      "confidence": 0.95,
+      "expectedWaitTime": 3000,
+      "commonNextDomains": [
+        "fatcoupon.com",
+        "redirect.partner.fatcoupon.com"
+      ],
+      "notes": "Redirects to FatCoupon network"
+    },
+    {
+      "id": "fatcoupon",
+      "domain": "fatcoupon.com",
+      "type": "intermediate",
+      "subtype": "fast-redirect",
+      "confidence": 0.9,
+      "expectedWaitTime": 3000,
+      "notes": "May include Cloudflare challenge"
+    },
+    {
+      "id": "dognet",
+      "domain": "dognet.com",
+      "type": "affiliate",
+      "subtype": "fast-redirect",
+      "confidence": 0.95,
+      "expectedWaitTime": 2000,
+      "commonNextDomains": [
+        "tradedoubler.com"
+      ],
+      "notes": "Redirects to Tradedoubler"
+    },
+    {
+      "id": "tradedoubler",
+      "domain": "tradedoubler.com",
+      "type": "intermediate",
+      "subtype": "fast-redirect",
+      "confidence": 0.9,
+      "expectedWaitTime": 2000,
+      "notes": "Tradedoubler tracking redirect"
+    },
+    {
+      "id": "yeahpromos",
+      "domain": "yeahpromos.com",
+      "type": "affiliate",
+      "subtype": "fast-redirect",
+      "confidence": 0.95,
+      "expectedWaitTime": 2000,
+      "commonNextDomains": [
+        "dailybacks.com"
+      ],
+      "notes": "Redirects to DailyBacks"
+    },
+    {
+      "id": "trackingdesk",
+      "domain": "trackingdesk",
+      "type": "intermediate",
+      "subtype": "tracking",
+      "confidence": 0.9,
+      "expectedWaitTime": 2000,
+      "notes": "Tracking/analytics page"
+    },
+    {
+      "id": "voluum",
+      "domain": "voluum",
+      "type": "intermediate",
+      "subtype": "tracking",
+      "confidence": 0.9,
+      "expectedWaitTime": 2000,
+      "notes": "Voluum tracking platform"
+    },
+    {
+      "id": "binom",
+      "domain": "binom",
+      "type": "intermediate",
+      "subtype": "tracking",
+      "confidence": 0.9,
+      "expectedWaitTime": 2000,
+      "notes": "Binom tracker"
+    }
+  ],
+  "textPatterns": [
+    {
+      "id": "redirecting-text",
+      "keywords": [
+        "redirecting",
+        "please wait"
+      ],
+      "location": "title",
+      "type": "intermediate",
+      "confidence": 0.85,
+      "notes": "Common redirect page title text"
+    },
+    {
+      "id": "redirect-message",
+      "keywords": [
+        "you will be redirected"
+      ],
+      "location": "body",
+      "type": "intermediate",
+      "confidence": 0.8,
+      "notes": "Common redirect message in page body"
+    },
+    {
+      "id": "countdown-seconds",
+      "keywords": [
+        "redirect",
+        "second"
+      ],
+      "location": "body",
+      "type": "countdown",
+      "confidence": 0.9,
+      "extractCountdown": true,
+      "regex": "redirect(?:ing|ed)?\\s+in\\s+(\\d+)\\s*(?:second|sec|s)",
+      "notes": "Extracts countdown seconds from text like 'redirecting in 5 seconds' or 'redirected in 10 seconds'"
+    },
+    {
+      "id": "click-to-continue",
+      "keywords": [
+        "click here to continue",
+        "click to proceed"
+      ],
+      "location": "body",
+      "type": "intermediate",
+      "confidence": 0.85,
+      "notes": "Manual redirect page requiring user interaction"
+    },
+    {
+      "id": "affiliate-network-name",
+      "keywords": [
+        "affiliate network",
+        "cpalead",
+        "maxbounty",
+        "clickbank",
+        "commission junction"
+      ],
+      "location": "body",
+      "type": "intermediate",
+      "confidence": 0.8,
+      "notes": "Affiliate network branding text"
+    },
+    {
+      "id": "browser-check",
+      "keywords": [
+        "checking your browser",
+        "verify you are human"
+      ],
+      "location": "body",
+      "type": "verification",
+      "confidence": 0.9,
+      "notes": "Anti-bot verification page"
+    },
+    {
+      "id": "loading-processing",
+      "keywords": [
+        "loading",
+        "processing",
+        "verifying"
+      ],
+      "location": "body",
+      "type": "intermediate",
+      "confidence": 0.75,
+      "notes": "Generic loading/processing indicators (lower confidence)"
+    },
+    {
+      "id": "cloudflare-challenge",
+      "keywords": [
+        "cloudflare",
+        "ddos protection",
+        "checking if the site connection is secure"
+      ],
+      "location": "body",
+      "type": "verification",
+      "confidence": 0.95,
+      "notes": "Cloudflare challenge page"
+    }
+  ],
+  "domPatterns": [
+    {
+      "id": "countdown-element",
+      "selector": "[id*=\"count\"], [class*=\"countdown\"], [class*=\"redirect\"]",
+      "type": "countdown",
+      "confidence": 0.85,
+      "action": "wait",
+      "notes": "Countdown timer element"
+    },
+    {
+      "id": "auto-submit-form",
+      "selector": "form[data-auto-submit], form[id*=\"redirect\"]",
+      "type": "redirect-form",
+      "confidence": 0.8,
+      "action": "submit",
+      "notes": "Auto-submit form for redirect"
+    },
+    {
+      "id": "continue-button",
+      "selector": "button:contains('continue'), a:contains('click here')",
+      "type": "manual-redirect",
+      "confidence": 0.75,
+      "action": "click",
+      "notes": "Manual continue button or link"
+    },
+    {
+      "id": "meta-refresh",
+      "selector": "meta[http-equiv=\"refresh\"]",
+      "type": "auto-redirect",
+      "confidence": 0.95,
+      "action": "wait",
+      "notes": "Meta refresh tag"
+    }
+  ],
+  "expiredPageIndicators": [
+    "error_suspended",
+    "offer_expired",
+    "not_found",
+    "suspended",
+    "expired",
+    "unavailable",
+    "invalid_offer",
+    "offer_not_available",
+    "404",
+    "gone"
+  ]
+}

@@ -1,0 +1,3965 @@
+package handlers
+
+import (
+	"bytes"
+	"context"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"math"
+	"net/http"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/xxrenzhe/autoads/pkg/auth"
+	"github.com/xxrenzhe/autoads/pkg/errors"
+	ev "github.com/xxrenzhe/autoads/pkg/events"
+	httpx "github.com/xxrenzhe/autoads/pkg/http"
+	"github.com/xxrenzhe/autoads/pkg/middleware"
+)
+
+type User struct {
+	ID        string    `json:"id"`
+	Email     string    `json:"email"`
+	Name      string    `json:"name"`
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type PgxPool interface {
+	Query(context.Context, string, ...any) (pgx.Rows, error)
+	QueryRow(context.Context, string, ...any) pgx.Row
+	Exec(context.Context, string, ...any) (pgconn.CommandTag, error)
+	Ping(context.Context) error
+	Begin(context.Context) (pgx.Tx, error)
+}
+
+type Handler struct {
+	DB             PgxPool
+	ServiceClients *ServiceClients
+	Cache          CacheInterface
+	Telemetry      *TelemetryForwarder
+	// publisher events.Publisher
+}
+
+type CacheInterface interface {
+	Get(ctx context.Context, key string) (string, bool)
+	Set(ctx context.Context, key, val string, ttl time.Duration)
+	Del(ctx context.Context, key string)
+	Ready() bool
+}
+
+func NewHandler(db *pgxpool.Pool, cache CacheInterface, telemetry *TelemetryForwarder) *Handler {
+	return &Handler{
+		DB:             db,
+		ServiceClients: NewServiceClients(),
+		Cache:          cache,
+		Telemetry:      telemetry,
+	}
+}
+
+func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
+	// ========================================
+	// Management UI Redirects - 重定向到 Next.js 管理后台
+	// 使用 /manage 路径（避免 /admin 被 Cloudflare WAF 屏蔽）
+	// ========================================
+	manageBaseURL := os.Getenv("MANAGE_BASE_URL")
+	if manageBaseURL == "" {
+		manageBaseURL = "https://www.autoads.dev/manage"
+	}
+
+	// 重定向旧的静态HTML路径到Next.js管理后台
+	mux.HandleFunc("/console/", func(w http.ResponseWriter, r *http.Request) {
+		// /console/manage/index.html -> /manage
+		newPath := strings.TrimPrefix(r.URL.Path, "/console")
+		targetURL := manageBaseURL + newPath
+		http.Redirect(w, r, targetURL, http.StatusMovedPermanently)
+	})
+
+	// 根路径重定向到管理后台首页
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" || r.URL.Path == "/index.html" {
+			http.Redirect(w, r, manageBaseURL, http.StatusMovedPermanently)
+			return
+		}
+		// 其他路径返回404（API路径不受影响，因为它们已在下面明确注册）
+		http.NotFound(w, r)
+	})
+
+	// ========================================
+	// V2 精简版：24个核心端点
+	// 新增2个Token余额管理端点 (balances, topup)
+	// 删除了30个运营监控/Event Sourcing/DLQ相关端点
+	// ========================================
+
+	// 1. Health endpoints (4个端点 - unauthenticated)
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
+	mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
+		if err := h.DB.Ping(r.Context()); err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "NOT_READY", "dependencies not ready", map[string]string{"db": err.Error()})
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+	mux.HandleFunc("/api/health", h.healthAggregate)
+
+	// 2. Config snapshot (1个端点 - 供其他服务读取配置)
+	mux.HandleFunc("/ops/console/config/v1", h.opsConfigV1)
+
+	// 3. User Management (2个端点)
+	mux.Handle("/api/v1/console/users", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getUsers))))
+	mux.Handle("/api/v1/console/users/", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.usersTree))))
+
+	// 4. Token Management (8个端点)
+	mux.Handle("/api/v1/console/tokens/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getTokenStats))))
+	mux.Handle("/api/v1/console/tokens/balances", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getTokenBalances))))
+	mux.Handle("/api/v1/console/tokens/topup", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.topUpTokens))))
+	// Token消耗规则管理 (enhanced version with soft delete, filters)
+	mux.Handle("/api/v1/console/tokens/rules", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodGet:
+			h.getTokenRules(w, r)
+		case http.MethodPost:
+			h.createTokenRule(w, r)
+		default:
+			errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		}
+	}))))
+	mux.Handle("/api/v1/console/tokens/rules/", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.tokenRulesTree))))
+	// Token Analytics (新增 - Token消耗分析)
+	mux.Handle("/api/v1/console/tokens/trends", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getTokenConsumptionTrend))))
+	mux.Handle("/api/v1/console/tokens/top-consumers", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getTopTokenConsumers))))
+
+	// Recovery Codes Management (新增 - 管理员应急访问)
+	mux.Handle("/api/v1/console/recovery-codes/generate", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.generateRecoveryCodes))))
+	mux.Handle("/api/v1/console/recovery-codes", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.listRecoveryCodes))))
+	mux.Handle("/api/v1/console/recovery-codes/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getRecoveryCodeStats))))
+	mux.HandleFunc("/api/v1/auth/recovery-code", h.verifyRecoveryCodeHandler) // Public endpoint for emergency login
+
+	// Task Management (新增 - 全局任务监控)
+	mux.Handle("/api/v1/console/tasks/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getTaskStats))))
+	mux.Handle("/api/v1/console/tasks", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getTasks))))
+	mux.Handle("/api/v1/console/tasks/{id}/cancel", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.cancelTask))))
+	mux.Handle("/api/v1/console/tasks/{id}/retry", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.retryTask))))
+
+	// System Monitoring (新增 - 系统健康监控)
+	mux.Handle("/api/v1/console/monitoring", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getMonitoringOverview))))
+	mux.Handle("/api/v1/console/monitoring/stream", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.streamMonitoringOverview))))
+
+	// Insights Feed
+	mux.Handle("/api/v1/console/insights", middleware.AuthMiddleware(http.HandlerFunc(h.getInsights)))
+	mux.Handle("/api/v1/console/insights/stream", middleware.AuthMiddleware(http.HandlerFunc(h.streamInsights)))
+
+	// Organization Analytics (新增 - 组织使用分析)
+	mux.Handle("/api/v1/console/organizations/{id}/analytics", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getOrganizationAnalytics))))
+	mux.Handle("/api/v1/console/organizations/rankings", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getOrganizationRankings))))
+
+	// Ads Accounts Management (新增 - 全局广告账户管理)
+	mux.Handle("/api/v1/console/ads-accounts/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getAdsAccountStats))))
+	mux.Handle("/api/v1/console/ads-accounts", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getAdsAccounts))))
+
+	// 5. Dashboard Stats (1个端点)
+	mux.Handle("/api/v1/console/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getAdminStats))))
+
+	// 6. Config Management (4个端点 - 配置热更新 + 套餐管理)
+	mux.Handle("/api/v1/console/config", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.configList))))
+	mux.Handle("/api/v1/console/config/history", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.configHistory))))
+	mux.Handle("/api/v1/console/config/", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.configTree))))
+
+	// 7. API Keys Management (4个端点)
+	mux.Handle("/api/v1/console/apikeys", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.apiKeysListCreate))))
+	mux.Handle("/api/v1/console/apikeys/", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.apiKeysDetail))))
+	mux.HandleFunc("/api/v1/console/apikeys/validate", h.apiKeysValidate) // 内部服务调用
+
+	// 8. BFF Aggregation Endpoints (新增 - Phase 3-4 优化)
+	mux.Handle("/api/v1/console/dashboard/{userId}", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetUserDashboard))))
+	mux.Handle("/api/v1/console/onboarding/{userId}", middleware.AuthMiddleware(http.HandlerFunc(h.GetOnboardingChecklist)))
+	// Navigation Config (用户直连模式 - 无organizationId)
+	mux.Handle("/api/v1/console/navigation", middleware.AuthMiddleware(http.HandlerFunc(h.GetNavigationConfig)))
+	mux.HandleFunc("/public/marketing/summary", h.GetMarketingSummary)
+	mux.Handle("/api/v1/console/cache/marketing/invalidate", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.InvalidateMarketingCache))))
+	mux.HandleFunc("/public/localization/config", h.GetLocalizationConfig)
+	mux.HandleFunc("/public/monitoring/web-vitals", h.RecordWebVitals)
+	mux.Handle("/api/v1/console/metrics/success", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetSuccessMetrics))))
+	mux.Handle("/api/v1/console/feedback/nps", middleware.AuthMiddleware(http.HandlerFunc(h.RecordNpsFeedback)))
+	mux.Handle("/api/v1/console/health/services", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetServicesHealth))))
+
+	// 9. BFF Bulk Operations (新增 - Phase 3-4 优化)
+	mux.Handle("/api/v1/console/bulk/offers/archive", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.BulkArchiveOffers))))
+	mux.Handle("/api/v1/console/bulk/offers/status", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.BulkUpdateOfferStatus))))
+	mux.Handle("/api/v1/console/bulk/tokens/topup", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.BulkTopUpTokens))))
+
+	// 11. BFF Report Exports (新增 - Phase 3-4 优化)
+	mux.Handle("/api/v1/console/reports/token-usage", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.ExportTokenUsageReport))))
+	mux.Handle("/api/v1/console/reports/offer-metrics", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.ExportOfferMetricsReport))))
+
+	// 12. Audit Logs (Week 4 新增 - 管理操作审计)
+	mux.Handle("/api/v1/console/audit", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetAuditLogs))))
+	mux.Handle("/api/v1/console/audit/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetAuditStats))))
+	mux.Handle("/api/v1/console/audit/{logId}", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetAuditLogByID))))
+	mux.Handle("/api/v1/console/audit/users/{userId}/actions", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetAuditActionsByUser))))
+
+	// Enhanced Audit Logs (新增 - 变更前后对比、敏感操作告警)
+	mux.Handle("/api/v1/console/audit-logs/enhanced", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetEnhancedAuditLogs))))
+	mux.Handle("/api/v1/console/audit-logs/critical", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetCriticalActions))))
+	mux.Handle("/api/v1/console/audit/impersonation", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetImpersonationEvents))))
+
+	// Offer Management (新增 - 全局搜索、统计、批量操作)
+	mux.Handle("/api/v1/console/offers", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetAdminOffers))))
+	mux.Handle("/api/v1/console/offers/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetOfferStats))))
+	mux.Handle("/api/v1/console/offers/batch-archive", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.BatchArchiveOffers))))
+
+	// Subscription Management (新增 - 订阅状态管理、统计)
+	mux.Handle("/api/v1/console/subscriptions", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetAdminSubscriptions))))
+	mux.Handle("/api/v1/console/subscriptions/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetSubscriptionStats))))
+	mux.Handle("/api/v1/console/subscriptions/", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.subscriptionsTree))))
+
+	// Dashboard Stats (新增 - 实时业务大盘)
+	mux.Handle("/api/v1/console/dashboard/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetDashboardStats))))
+	mux.Handle("/api/v1/console/dashboard/today-activity", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.GetTodayActivity))))
+	// Dashboard Enhanced (新增 - 完整可视化)
+	mux.Handle("/api/v1/console/dashboard/trends", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getDashboardTrends))))
+	mux.Handle("/api/v1/console/dashboard/metrics", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getDashboardMetrics))))
+	mux.Handle("/api/v1/console/dashboard/activity", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getRecentActivity))))
+	mux.Handle("/api/v1/console/dashboard/alerts", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getSystemAlerts))))
+
+	// Financial Reports (新增 - 财务报表)
+	mux.Handle("/api/v1/console/financial/overview", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getFinancialOverview))))
+	mux.Handle("/api/v1/console/financial/monthly", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getMonthlyReports))))
+	mux.Handle("/api/v1/console/financial/trends", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getRevenueTrends))))
+
+	// Offer Quality Monitoring (新增 - Offer质量监控)
+	mux.Handle("/api/v1/console/offers/quality-metrics", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getOfferQualityMetrics))))
+	mux.Handle("/api/v1/console/offers/failure-reasons", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getFailureReasons))))
+	mux.Handle("/api/v1/console/offers/problem-offers", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getProblemOffers))))
+
+	// Feature Flags Management (配置管理 - 功能开关)
+	mux.Handle("/api/v1/console/feature-flags", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			h.listFeatureFlags(w, r)
+		} else if r.Method == http.MethodPost {
+			h.createFeatureFlag(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	}))))
+	mux.HandleFunc("/api/v1/console/feature-flags/", func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/history") {
+			h.getFeatureFlagHistory(w, r)
+		} else if r.Method == http.MethodPut {
+			h.updateFeatureFlag(w, r)
+		} else if r.Method == http.MethodDelete {
+			h.deleteFeatureFlag(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})
+
+	// Export Center (导出中心 - 统一管理数据导出)
+	mux.Handle("/api/v1/console/exports/history", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.listExportHistory))))
+	mux.Handle("/api/v1/console/exports/record", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.recordExportHistory))))
+	mux.Handle("/api/v1/console/exports/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getExportStats))))
+
+	// Notification Management (通知管理系统)
+	mux.Handle("/api/v1/console/notifications/templates", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.listNotificationTemplates))))
+	mux.Handle("/api/v1/console/notifications/templates/create", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.createNotificationTemplate))))
+	mux.Handle("/api/v1/console/notifications/templates/preview", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.previewTemplate))))
+	mux.Handle("/api/v1/console/notifications/broadcasts", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.listBroadcasts))))
+	mux.Handle("/api/v1/console/notifications/broadcasts/send", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.broadcastNotification))))
+	mux.Handle("/api/v1/console/notifications/broadcasts/stats", middleware.AuthMiddleware(middleware.AdminOnly(http.HandlerFunc(h.getBroadcastStats))))
+
+	// ========================================
+	// 已删除的端点（30个）：
+	// ❌ /api/v1/console/api-usage - API使用量统计
+	// ❌ /api/v1/console/slo - SLO聚合
+	// ❌ /api/v1/console/limits/policy - 限流策略
+	// ❌ /api/v1/console/events/* - Event Sourcing（5个端点）
+	// ❌ /api/v1/console/consistency/offers - 数据一致性检查
+	// ❌ /api/v1/console/adscenter/* - Adscenter运营（10个端点）
+	// ❌ /api/v1/console/roi/* - ROI分析（2个端点）
+	// ❌ /api/v1/console/notifications/* - 通知管理（4个端点）
+	// ❌ /api/v1/console/admin/policy* - Admin白名单（2个端点，现由 Supabase metadata 控制）
+	// ❌ /api/v1/console/offers/kpi/* - Offer DLQ（2个端点）
+	// ❌ /api/v1/console/alerts - 告警列表
+	// ❌ /api/v1/console/incidents - 事件聚合
+	// ✅ /api/v1/console/audit - 审计日志（Week 4 恢复）
+	// ❌ /console/* - 静态UI文件服务（已删除，Console变为纯API服务）
+	// ========================================
+}
+
+// opsConfigV1 returns a remote-config style snapshot by flatten keys in console_config into nested JSON.
+// GET /ops/console/config/v1 -> { version: ts, config: { token: { siterank: { costPerDomain: 1 } }, plans: { catalog: {...} }, ... } }
+func (h *Handler) opsConfigV1(w http.ResponseWriter, r *http.Request) {
+	// no auth; read-only
+	// ensure table exists (best-effort)
+	h.ensureConfigDDL(r.Context())
+	rows, err := h.DB.Query(r.Context(), `SELECT key, value::text FROM console_config`)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query config failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	conf := map[string]any{}
+	for rows.Next() {
+		var k, v string
+		if err := rows.Scan(&k, &v); err != nil {
+			continue
+		}
+		// try parse JSON value
+		var anyv any
+		if err := json.Unmarshal([]byte(v), &anyv); err != nil {
+			anyv = v
+		}
+		// nest by dots in key
+		parts := strings.Split(strings.TrimSpace(k), ".")
+		cur := conf
+		for i, p := range parts {
+			if i == len(parts)-1 {
+				cur[p] = anyv
+				break
+			}
+			if _, ok := cur[p]; !ok {
+				cur[p] = map[string]any{}
+			}
+			if next, ok := cur[p].(map[string]any); ok {
+				cur = next
+			} else {
+				// conflict: overwrite to new map
+				nm := map[string]any{}
+				cur[p] = nm
+				cur = nm
+			}
+		}
+	}
+	out := map[string]any{"version": time.Now().UTC().Format(time.RFC3339), "config": conf}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+// notificationSettingsHandler handles GET/PUT /api/v1/console/notifications/settings?scope=user|system
+func (h *Handler) notificationSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	scope := strings.ToLower(strings.TrimSpace(r.URL.Query().Get("scope")))
+	if scope == "" {
+		scope = "user"
+	}
+	if scope != "user" && scope != "system" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "scope must be user or system", nil)
+		return
+	}
+	uid := ""
+	if scope == "user" {
+		if v := r.Context().Value(middleware.UserIDKey); v != nil {
+			if s, ok := v.(string); ok {
+				uid = s
+			}
+		}
+		if uid == "" {
+			errors.Write(w, r, http.StatusUnauthorized, "UNAUTHORIZED", "missing user context", nil)
+			return
+		}
+	} else {
+		// system scope requires admin
+		u, _ := auth.ExtractUserID(r)
+		info, _ := auth.ExtractInfo(r)
+		if !isAdmin(u, info.Email) {
+			errors.Write(w, r, http.StatusForbidden, "FORBIDDEN", "Admin role required for system scope", nil)
+			return
+		}
+		// for system scope, keep user_id empty key
+	}
+	ensureNotificationSettingsTable(r.Context(), h.DB)
+	type settings struct {
+		Enabled           bool    `json:"enabled"`
+		MinConfidence     float64 `json:"minConfidence"`
+		ThrottlePerMinute int     `json:"throttlePerMinute"`
+		GroupWindowSec    int     `json:"groupWindowSec"`
+		Channels          struct {
+			InApp   bool `json:"inApp"`
+			Email   bool `json:"email"`
+			Webhook bool `json:"webhook"`
+		} `json:"channels"`
+	}
+	switch r.Method {
+	case http.MethodGet:
+		out := settings{Enabled: true, MinConfidence: 0.6, ThrottlePerMinute: 30, GroupWindowSec: 60}
+		out.Channels.InApp = true
+		var (
+			enabled *bool
+			minc    *float64
+			tpm     *int
+			gws     *int
+			chRaw   []byte
+		)
+		row := h.DB.QueryRow(r.Context(), `SELECT enabled, min_confidence, throttle_per_minute, group_window_sec, channels FROM "NotificationSettings" WHERE scope=$1 AND user_id=$2`, scope, uid)
+		if err := row.Scan(&enabled, &minc, &tpm, &gws, &chRaw); err == nil {
+			if enabled != nil {
+				out.Enabled = *enabled
+			}
+			if minc != nil && *minc >= 0 && *minc <= 1 {
+				out.MinConfidence = *minc
+			}
+			if tpm != nil && *tpm >= 0 {
+				out.ThrottlePerMinute = *tpm
+			}
+			if gws != nil && *gws >= 0 {
+				out.GroupWindowSec = *gws
+			}
+			if len(chRaw) > 0 {
+				var ch map[string]bool
+				if json.Unmarshal(chRaw, &ch) == nil {
+					out.Channels.InApp = ch["inApp"]
+					out.Channels.Email = ch["email"]
+					out.Channels.Webhook = ch["webhook"]
+				}
+			}
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(out)
+		return
+	case http.MethodPut:
+		var body settings
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+			return
+		}
+		if body.MinConfidence < 0 || body.MinConfidence > 1 {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "minConfidence must be in [0,1]", nil)
+			return
+		}
+		chMap := map[string]bool{"inApp": body.Channels.InApp, "email": body.Channels.Email, "webhook": body.Channels.Webhook}
+		chBytes, _ := json.Marshal(chMap)
+		_, err := h.DB.Exec(r.Context(), `
+            INSERT INTO "NotificationSettings"(scope, user_id, enabled, min_confidence, throttle_per_minute, group_window_sec, channels, updated_at)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,NOW())
+            ON CONFLICT (scope, user_id) DO UPDATE SET
+                enabled=EXCLUDED.enabled,
+                min_confidence=EXCLUDED.min_confidence,
+                throttle_per_minute=EXCLUDED.throttle_per_minute,
+                group_window_sec=EXCLUDED.group_window_sec,
+                channels=EXCLUDED.channels,
+                updated_at=NOW()
+        `, scope, uid, body.Enabled, body.MinConfidence, body.ThrottlePerMinute, body.GroupWindowSec, chBytes)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "upsert failed", map[string]string{"error": err.Error()})
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok"})
+		return
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+}
+
+func ensureNotificationSettingsTable(ctx context.Context, db PgxPool) {
+	_, _ = db.Exec(ctx, `
+        CREATE TABLE IF NOT EXISTS "NotificationSettings"(
+            scope TEXT NOT NULL,
+            user_id TEXT NOT NULL,
+            enabled BOOLEAN NOT NULL DEFAULT TRUE,
+            min_confidence DOUBLE PRECISION NOT NULL DEFAULT 0.6,
+            throttle_per_minute INTEGER NOT NULL DEFAULT 30,
+            group_window_sec INTEGER NOT NULL DEFAULT 60,
+            channels JSONB NOT NULL DEFAULT '{}'::jsonb,
+            updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+            PRIMARY KEY (scope, user_id)
+        )
+    `)
+}
+
+// ensureUserTable creates a minimal User table if it doesn't exist.
+func ensureUserTable(ctx context.Context, db PgxPool) {
+	_, _ = db.Exec(ctx, `
+        CREATE TABLE IF NOT EXISTS "User"(
+            id TEXT PRIMARY KEY,
+            email TEXT,
+            name TEXT,
+            role TEXT,
+            "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+    `)
+	// Harden for older preview schemas: add missing columns if not exist
+	_, _ = db.Exec(ctx, `ALTER TABLE "User" ADD COLUMN IF NOT EXISTS email TEXT`)
+	_, _ = db.Exec(ctx, `ALTER TABLE "User" ADD COLUMN IF NOT EXISTS name TEXT`)
+	_, _ = db.Exec(ctx, `ALTER TABLE "User" ADD COLUMN IF NOT EXISTS role TEXT`)
+	_, _ = db.Exec(ctx, `ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()`)
+}
+
+// ensureTokenTables creates minimal token accounting tables if they don't exist.
+func ensureTokenTables(ctx context.Context, db PgxPool) {
+	_, _ = db.Exec(ctx, `
+        CREATE TABLE IF NOT EXISTS "UserToken"(
+            "userId" TEXT PRIMARY KEY,
+            balance BIGINT NOT NULL DEFAULT 0,
+            "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+    `)
+	_, _ = db.Exec(ctx, `
+        CREATE TABLE IF NOT EXISTS "TokenTransaction"(
+            id BIGSERIAL PRIMARY KEY,
+            "userId" TEXT NOT NULL,
+            amount BIGINT NOT NULL,
+            reason TEXT,
+            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+    `)
+}
+
+// isAdmin replicates AdminOnly checks for inline scope control
+func isAdmin(uid, email string) bool {
+	email = strings.TrimSpace(strings.ToLower(email))
+	if email != "" {
+		if sa := strings.TrimSpace(strings.ToLower(os.Getenv("SUPER_ADMIN_EMAIL"))); sa != "" && sa == email {
+			return true
+		}
+		if list := os.Getenv("ADMIN_EMAILS"); list != "" {
+			for _, e := range strings.Split(list, ",") {
+				if strings.TrimSpace(strings.ToLower(e)) == email {
+					return true
+				}
+			}
+		}
+	}
+	uid = strings.TrimSpace(uid)
+	if uid != "" {
+		if list := os.Getenv("ADMIN_UIDS"); list != "" {
+			for _, u := range strings.Split(list, ",") {
+				if strings.TrimSpace(u) == uid {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func (h *Handler) getUsers(w http.ResponseWriter, r *http.Request) {
+	// ensure table exists for preview environment to avoid 500 on fresh DB
+	ensureUserTable(r.Context(), h.DB)
+	// In a real app, this handler would be protected by an admin-only middleware.
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+
+	q := r.URL.Query().Get("q")
+	role := strings.TrimSpace(r.URL.Query().Get("role"))
+	limit := 50
+	offset := 0
+	if v := r.URL.Query().Get("limit"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 200 {
+			limit = n
+		}
+	}
+	if v := r.URL.Query().Get("offset"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n >= 0 {
+			offset = n
+		}
+	}
+
+	var rows pgx.Rows
+	var err error
+	if q != "" && role != "" {
+		pattern := "%" + q + "%"
+		rows, err = h.DB.Query(r.Context(), `SELECT id, COALESCE(email,''), COALESCE(name,''), COALESCE(role,''), COALESCE("createdAt", NOW()) FROM "User" WHERE (email ILIKE $1 OR name ILIKE $1) AND role=$2 ORDER BY COALESCE("createdAt", NOW()) DESC LIMIT $3 OFFSET $4`, pattern, role, limit, offset)
+	} else if q != "" {
+		pattern := "%" + q + "%"
+		rows, err = h.DB.Query(r.Context(), `SELECT id, COALESCE(email,''), COALESCE(name,''), COALESCE(role,''), COALESCE("createdAt", NOW()) FROM "User" WHERE email ILIKE $1 OR name ILIKE $1 ORDER BY COALESCE("createdAt", NOW()) DESC LIMIT $2 OFFSET $3`, pattern, limit, offset)
+	} else if role != "" {
+		rows, err = h.DB.Query(r.Context(), `SELECT id, COALESCE(email,''), COALESCE(name,''), COALESCE(role,''), COALESCE("createdAt", NOW()) FROM "User" WHERE role=$1 ORDER BY COALESCE("createdAt", NOW()) DESC LIMIT $2 OFFSET $3`, role, limit, offset)
+	} else {
+		rows, err = h.DB.Query(r.Context(), `SELECT id, COALESCE(email,''), COALESCE(name,''), COALESCE(role,''), COALESCE("createdAt", NOW()) FROM "User" ORDER BY COALESCE("createdAt", NOW()) DESC LIMIT $1 OFFSET $2`, limit, offset)
+	}
+	if err != nil {
+		log.Printf("[console] users list query failed: %v", err)
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": []User{}, "limit": limit, "offset": offset, "query": q, "role": role, "warning": "users_query_failed"})
+		return
+	}
+	defer rows.Close()
+
+	var users []User
+	for rows.Next() {
+		var u User
+		if err := rows.Scan(&u.ID, &u.Email, &u.Name, &u.Role, &u.CreatedAt); err != nil {
+			log.Printf("[console] scan user row failed: %v", err)
+			continue
+		}
+		users = append(users, u)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": users, "limit": limit, "offset": offset, "query": q, "role": role})
+}
+
+// getUserDetail returns detail for a specific user by id.
+// GET /api/v1/console/users/{id}
+func (h *Handler) usersTree(w http.ResponseWriter, r *http.Request) {
+	ensureUserTable(r.Context(), h.DB)
+	const prefix = "/api/v1/console/users/"
+	if len(r.URL.Path) <= len(prefix) {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "user id required", nil)
+		return
+	}
+	rest := r.URL.Path[len(prefix):] // {id} or {id}/tokens or {id}/subscription
+	// split
+	uid := rest
+	sub := ""
+	for i := 0; i < len(rest); i++ {
+		if rest[i] == '/' {
+			uid = rest[:i]
+			if i+1 < len(rest) {
+				sub = rest[i+1:]
+			} else {
+				sub = ""
+			}
+			break
+		}
+	}
+	if uid == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "user id required", nil)
+		return
+	}
+	switch r.Method {
+	case http.MethodGet:
+		switch sub {
+		case "", "/":
+			var user struct {
+				ID, Email, Name, Role string
+				CreatedAt             time.Time
+			}
+			err := h.DB.QueryRow(r.Context(), `SELECT id, email, name, role, "createdAt" FROM "User" WHERE id=$1`, uid).
+				Scan(&user.ID, &user.Email, &user.Name, &user.Role, &user.CreatedAt)
+			if err != nil {
+				errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "user not found", nil)
+				return
+			}
+			_ = json.NewEncoder(w).Encode(user)
+			return
+		case "tokens":
+			// return balance + last N transactions (default 10)
+			limit := 10
+			if v := r.URL.Query().Get("limit"); v != "" {
+				if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 100 {
+					limit = n
+				}
+			}
+			// 兼容：确保 TokenTransaction 表存在（老库可能缺失）
+			_, _ = h.DB.Exec(r.Context(), `
+                CREATE TABLE IF NOT EXISTS "TokenTransaction" (
+                  id TEXT PRIMARY KEY,
+                  "userId" TEXT NOT NULL,
+                  type TEXT,
+                  amount INTEGER NOT NULL,
+                  "balanceBefore" BIGINT,
+                  "balanceAfter" BIGINT,
+                  source TEXT,
+                  description TEXT,
+                  metadata JSONB,
+                  "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                )`)
+			var balance int64
+			_ = h.DB.QueryRow(r.Context(), `SELECT balance FROM "UserToken" WHERE "userId"=$1`, uid).Scan(&balance)
+			rows, err := h.DB.Query(r.Context(), `
+                SELECT id, type, amount, "balanceBefore", "balanceAfter", source, description, "createdAt"
+                FROM "TokenTransaction"
+                WHERE "userId"=$1 ORDER BY "createdAt" DESC LIMIT $2`, uid, limit)
+			if err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", nil)
+				return
+			}
+			defer rows.Close()
+			type tx struct {
+				ID, Type                    string
+				Amount                      int
+				BalanceBefore, BalanceAfter int64
+				Source, Description         string
+				CreatedAt                   time.Time
+			}
+			list := make([]tx, 0, limit)
+			for rows.Next() {
+				var t tx
+				if err := rows.Scan(&t.ID, &t.Type, &t.Amount, &t.BalanceBefore, &t.BalanceAfter, &t.Source, &t.Description, &t.CreatedAt); err == nil {
+					list = append(list, t)
+				}
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"balance": balance, "items": list})
+			return
+		case "subscription":
+			var subRow struct {
+				ID, PlanName, Status string
+				TrialEndsAt          *time.Time
+				CurrentPeriodEnd     time.Time
+			}
+			err := h.DB.QueryRow(r.Context(), `SELECT id, "planName", status, "trialEndsAt", "currentPeriodEnd" FROM "Subscription" WHERE "userId"=$1`, uid).
+				Scan(&subRow.ID, &subRow.PlanName, &subRow.Status, &subRow.TrialEndsAt, &subRow.CurrentPeriodEnd)
+			if err != nil {
+				errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "subscription not found", nil)
+				return
+			}
+			_ = json.NewEncoder(w).Encode(subRow)
+			return
+		case "role":
+			if r.Method != http.MethodPut {
+				errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+				return
+			}
+			var body struct {
+				Role string `json:"role"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+				return
+			}
+			role := strings.ToUpper(strings.TrimSpace(body.Role))
+			if role != "ADMIN" && role != "USER" {
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "role must be ADMIN or USER", nil)
+				return
+			}
+			if _, err := h.DB.Exec(r.Context(), `UPDATE "User" SET role=$1 WHERE id=$2`, role, uid); err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "update failed", nil)
+				return
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "userId": uid, "role": role})
+			return
+		default:
+			errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "unsupported subresource", nil)
+			return
+		}
+	case http.MethodPut:
+		switch sub {
+		case "subscription":
+			// 最小版：允许管理员更新 Subscription 的 planName 与 status；当状态为 active 时顺延 30 天
+			var body struct {
+				PlanName string `json:"planName"`
+				Status   string `json:"status"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+				return
+			}
+			plan := strings.ToLower(strings.TrimSpace(body.PlanName))
+			if plan == "" {
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "planName required", nil)
+				return
+			}
+			switch plan {
+			case "free", "pro", "max":
+			default:
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "planName must be one of free|pro|max", nil)
+				return
+			}
+			status := strings.ToLower(strings.TrimSpace(body.Status))
+			if status == "" {
+				status = "active"
+			}
+			// 兼容：确保 Subscription 表存在（老库可能缺失）
+			_, _ = h.DB.Exec(r.Context(), `
+                CREATE TABLE IF NOT EXISTS "Subscription" (
+                  id TEXT NOT NULL PRIMARY KEY,
+                  "userId" TEXT NOT NULL UNIQUE,
+                  "planName" TEXT NOT NULL,
+                  status TEXT NOT NULL,
+                  "currentPeriodEnd" TIMESTAMPTZ NOT NULL
+                )`)
+			_, err := h.DB.Exec(r.Context(), `
+                INSERT INTO "Subscription"(id, "userId", "planName", status, "currentPeriodEnd")
+                VALUES ('sub_' || $1::text, $1, $2, $3, NOW() + interval '30 days')
+                ON CONFLICT ("userId") DO UPDATE SET "planName"=EXCLUDED."planName", status=EXCLUDED.status,
+                    "currentPeriodEnd" = CASE WHEN EXCLUDED.status='active' THEN NOW() + interval '30 days' ELSE "Subscription"."currentPeriodEnd" END`, uid, plan, status)
+			if err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "upsert failed", map[string]string{"error": err.Error()})
+				return
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "userId": uid, "planName": plan, "subStatus": status})
+			return
+		default:
+			errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "unsupported subresource", nil)
+			return
+		}
+	case http.MethodPost:
+		if sub == "tokens" {
+			var body struct {
+				Amount int `json:"amount"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+				return
+			}
+			if body.Amount <= 0 {
+				errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "amount must be >0", nil)
+				return
+			}
+			tx, err := h.DB.Begin(r.Context())
+			if err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "begin tx failed", nil)
+				return
+			}
+			defer tx.Rollback(r.Context())
+			_, _ = tx.Exec(r.Context(), `INSERT INTO "UserToken"("userId", balance, "updatedAt") VALUES ($1, 0, NOW()) ON CONFLICT ("userId") DO NOTHING`, uid)
+			if _, err := tx.Exec(r.Context(), `UPDATE "UserToken" SET balance = balance + $1, "updatedAt"=NOW() WHERE "userId"=$2`, body.Amount, uid); err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "update failed", map[string]string{"error": err.Error()})
+				return
+			}
+			if err := tx.Commit(r.Context()); err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "commit failed", map[string]string{"error": err.Error()})
+				return
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "userId": uid, "amount": body.Amount})
+			return
+		}
+		errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "unsupported action", nil)
+		return
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+}
+
+// userActions handles sub-paths under /api/v1/console/users/{id}/...
+// Supported:
+//   - POST /api/v1/console/users/{id}/tokens  body: { amount: number }
+func (h *Handler) userActions(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	// crude path parse
+	path := r.URL.Path // /api/v1/console/users/{id}/tokens
+	const prefix = "/api/v1/console/users/"
+	if len(path) <= len(prefix) {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "user id required", nil)
+		return
+	}
+	rest := path[len(prefix):]
+	// rest should be "{id}/tokens"
+	var userID string
+	if i := len(rest); i > 0 {
+		// find next slash
+		for j := 0; j < len(rest); j++ {
+			if rest[j] == '/' {
+				userID = rest[:j]
+				rest = rest[j+1:]
+				break
+			}
+		}
+		if userID == "" {
+			userID, rest = rest, ""
+		}
+	}
+	if userID == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "user id required", nil)
+		return
+	}
+	if rest != "tokens" {
+		errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "unsupported action", nil)
+		return
+	}
+	// parse body
+	var body struct {
+		Amount int `json:"amount"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+		return
+	}
+	if body.Amount <= 0 {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "amount must be >0", nil)
+		return
+	}
+	// upsert tokens (preview: also ensure a basic User row for visibility)
+	ensureUserTable(r.Context(), h.DB)
+	_, _ = h.DB.Exec(r.Context(), `INSERT INTO "User"(id, email, name, role) VALUES ($1, $2, $3, COALESCE((SELECT role FROM "User" WHERE id=$1),'USER')) ON CONFLICT (id) DO NOTHING`, userID, userID+"@autotest.local", "Preview User")
+	// upsert tokens
+	tx, err := h.DB.Begin(r.Context())
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "begin tx failed", nil)
+		return
+	}
+	defer tx.Rollback(r.Context())
+	// ensure row
+	_, _ = tx.Exec(r.Context(), `INSERT INTO "UserToken"("userId", balance, "updatedAt") VALUES ($1, 0, NOW()) ON CONFLICT ("userId") DO NOTHING`, userID)
+	// increment
+	if _, err := tx.Exec(r.Context(), `UPDATE "UserToken" SET balance = balance + $1, "updatedAt"=NOW() WHERE "userId"=$2`, body.Amount, userID); err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "update failed", map[string]string{"error": err.Error()})
+		return
+	}
+	if err := tx.Commit(r.Context()); err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "commit failed", map[string]string{"error": err.Error()})
+		return
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "userId": userID, "amount": body.Amount})
+}
+
+// getTokenStats returns aggregate stats for tokens across users.
+func (h *Handler) getTokenStats(w http.ResponseWriter, r *http.Request) {
+	// ensure minimal tables for preview testing
+	ensureTokenTables(r.Context(), h.DB)
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	var count int64
+	var sum int64
+	if err := h.DB.QueryRow(r.Context(), `SELECT COUNT(*), COALESCE(SUM(balance),0) FROM "UserToken"`).Scan(&count, &sum); err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"users": count, "totalTokens": sum})
+}
+
+// getAdminStats returns aggregated counters for admin dashboard.
+// GET /api/v1/console/stats
+func (h *Handler) getAdminStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	ctx := r.Context()
+	q := func(sql string, args ...any) (int64, error) {
+		var n int64
+		err := h.DB.QueryRow(ctx, sql, args...).Scan(&n)
+		return n, err
+	}
+	// Collect metrics; tolerate missing tables by returning -1 on error
+	counters := map[string]int64{}
+	try := func(key, sql string) {
+		if n, err := q(sql); err == nil {
+			counters[key] = n
+		} else {
+			counters[key] = -1
+		}
+	}
+	try("users", `SELECT COUNT(1) FROM "User"`)
+	try("offers", `SELECT COUNT(1) FROM "Offer"`)
+	try("subscriptionsActive", `SELECT COUNT(1) FROM "Subscription" WHERE status='active'`)
+	try("tokensTotal", `SELECT COALESCE(SUM(balance),0) FROM "UserToken"`)
+	try("notifications24h", `SELECT COUNT(1) FROM user_notifications WHERE created_at > NOW() - interval '24 hours'`)
+	// Optional tables (if exist)
+	try("siterankAnalyses", `SELECT COUNT(1) FROM "SiterankHistory"`)
+	try("batchopenTasks", `SELECT COUNT(1) FROM "BatchopenTask"`)
+	try("events", `SELECT COUNT(1) FROM event_store`)
+
+	out := map[string]any{
+		"counters":  counters,
+		"updatedAt": time.Now().UTC().Format(time.RFC3339),
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+// ========================================
+// Token消耗规则管理 (新增 - V2)
+// ========================================
+// Implementation moved to token_rules.go for better code organization
+
+// ========================================
+// Token余额管理 (新增 - V2)
+// ========================================
+
+// getTokenBalances returns a paginated list of user token balances
+// GET /api/v1/console/tokens/balances?page=1&pageSize=20&search=user@example.com
+func (h *Handler) getTokenBalances(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+
+	ensureTokenTables(r.Context(), h.DB)
+
+	// 解析查询参数
+	page := 1
+	if v := r.URL.Query().Get("page"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			page = n
+		}
+	}
+
+	pageSize := 20
+	if v := r.URL.Query().Get("pageSize"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 100 {
+			pageSize = n
+		}
+	}
+
+	search := strings.TrimSpace(r.URL.Query().Get("search"))
+	offset := (page - 1) * pageSize
+
+	// 查询用户余额
+	var rows pgx.Rows
+	var err error
+	var totalCount int
+
+	// 构建查询
+	if search != "" {
+		// 先查询总数
+		searchPattern := "%" + search + "%"
+		err = h.DB.QueryRow(r.Context(), `
+            SELECT COUNT(*)
+            FROM "UserToken" ut
+            LEFT JOIN "User" u ON u.id = ut."userId"
+            WHERE ut."userId" ILIKE $1 OR u.email ILIKE $1
+        `, searchPattern).Scan(&totalCount)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "QUERY_ERROR", "Failed to count balances", map[string]string{"error": err.Error()})
+			return
+		}
+
+		// 查询数据
+		rows, err = h.DB.Query(r.Context(), `
+            SELECT
+                ut."userId",
+                COALESCE(u.email, ''),
+                ut.balance,
+                0 as consumed,
+                ut."updatedAt"
+            FROM "UserToken" ut
+            LEFT JOIN "User" u ON u.id = ut."userId"
+            WHERE ut."userId" ILIKE $1 OR u.email ILIKE $1
+            ORDER BY ut.balance DESC
+            LIMIT $2 OFFSET $3
+        `, searchPattern, pageSize, offset)
+	} else {
+		// 先查询总数
+		err = h.DB.QueryRow(r.Context(), `SELECT COUNT(*) FROM "UserToken"`).Scan(&totalCount)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "QUERY_ERROR", "Failed to count balances", map[string]string{"error": err.Error()})
+			return
+		}
+
+		// 查询数据
+		rows, err = h.DB.Query(r.Context(), `
+            SELECT
+                ut."userId",
+                COALESCE(u.email, ''),
+                ut.balance,
+                0 as consumed,
+                ut."updatedAt"
+            FROM "UserToken" ut
+            LEFT JOIN "User" u ON u.id = ut."userId"
+            ORDER BY ut.balance DESC
+            LIMIT $1 OFFSET $2
+        `, pageSize, offset)
+	}
+
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_ERROR", "Failed to query balances", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+
+	type UserBalance struct {
+		UserID    string    `json:"userId"`
+		Email     string    `json:"email,omitempty"`
+		Balance   int64     `json:"balance"`
+		Consumed  int64     `json:"consumed,omitempty"`
+		UpdatedAt time.Time `json:"updatedAt"`
+	}
+
+	var balances []UserBalance
+	for rows.Next() {
+		var balance UserBalance
+		if err := rows.Scan(&balance.UserID, &balance.Email, &balance.Balance, &balance.Consumed, &balance.UpdatedAt); err != nil {
+			log.Printf("[console] scan balance row failed: %v", err)
+			continue
+		}
+		balances = append(balances, balance)
+	}
+
+	if balances == nil {
+		balances = []UserBalance{}
+	}
+
+	totalPages := (totalCount + pageSize - 1) / pageSize
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"balances":   balances,
+		"totalPages": totalPages,
+		"totalCount": totalCount,
+	})
+}
+
+// topUpTokens adds tokens to a user's balance
+// POST /api/v1/console/tokens/topup
+// Body: {"userId": "user123", "amount": 1000, "reason": "Admin top-up"}
+func (h *Handler) topUpTokens(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+
+	ensureTokenTables(r.Context(), h.DB)
+
+	type TopUpRequest struct {
+		UserID string `json:"userId"`
+		Amount int64  `json:"amount"`
+		Reason string `json:"reason"`
+	}
+
+	var req TopUpRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_JSON", "Invalid request body", nil)
+		return
+	}
+
+	// 验证参数
+	if req.UserID == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "userId is required", nil)
+		return
+	}
+	if req.Amount <= 0 {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "amount must be positive", nil)
+		return
+	}
+	if req.Reason == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "reason is required", nil)
+		return
+	}
+
+	// 获取操作人信息（从context中）
+	adminUserID, _ := auth.ExtractUserID(r)
+
+	// 开启事务
+	tx, err := h.DB.Begin(r.Context())
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "TRANSACTION_ERROR", "Failed to start transaction", nil)
+		return
+	}
+	defer tx.Rollback(r.Context())
+
+	// 更新余额（如果用户不存在则创建）
+	var newBalance int64
+	err = tx.QueryRow(r.Context(), `
+        INSERT INTO "UserToken" ("userId", balance, "updatedAt")
+        VALUES ($1, $2, NOW())
+        ON CONFLICT ("userId") DO UPDATE
+        SET balance = "UserToken".balance + $2,
+            "updatedAt" = NOW()
+        RETURNING balance
+    `, req.UserID, req.Amount).Scan(&newBalance)
+
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "UPDATE_ERROR", "Failed to update balance", map[string]string{"error": err.Error()})
+		return
+	}
+
+	// 记录交易日志
+	_, err = tx.Exec(r.Context(), `
+        INSERT INTO "TokenTransaction" ("userId", amount, reason, created_at)
+        VALUES ($1, $2, $3, NOW())
+    `, req.UserID, req.Amount, fmt.Sprintf("Admin top-up: %s (by %s)", req.Reason, adminUserID))
+
+	if err != nil {
+		log.Printf("[console] failed to record token transaction: %v", err)
+		// 不阻止充值，只记录日志
+	}
+
+	// 提交事务
+	if err := tx.Commit(r.Context()); err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "COMMIT_ERROR", "Failed to commit transaction", nil)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":    true,
+		"newBalance": newBalance,
+		"message":    fmt.Sprintf("Successfully added %d tokens", req.Amount),
+	})
+}
+
+// getAPIUsage parses Prometheus metrics of a service and returns http_requests_total breakdown.
+// GET /api/v1/console/api-usage?service=adscenter&base=<override_url>
+// Response: { service, items:[{method,path,status,count}], totals:{all:int, byMethod:{GET:...,POST:...}} }
+func (h *Handler) getAPIUsage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	svc := strings.TrimSpace(r.URL.Query().Get("service"))
+	if svc == "" {
+		svc = "adscenter"
+	}
+	base := strings.TrimSpace(r.URL.Query().Get("base"))
+	if base == "" {
+		// env mapping similar to getSLO
+		switch svc {
+		case "adscenter":
+			base = strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+		case "siterank":
+			base = strings.TrimRight(os.Getenv("SITERANK_URL"), "/")
+		case "batchopen":
+			base = strings.TrimRight(os.Getenv("BATCHOPEN_URL"), "/")
+		case "billing":
+			base = strings.TrimRight(os.Getenv("BILLING_URL"), "/")
+		case "offer":
+			base = strings.TrimRight(os.Getenv("OFFER_URL"), "/")
+		case "notifications":
+			base = strings.TrimRight(os.Getenv("NOTIFICATIONS_URL"), "/")
+		}
+	}
+	if base == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "service base url not configured", nil)
+		return
+	}
+	ctx, cancel := context.WithTimeout(r.Context(), 1500*time.Millisecond)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, base+"/metrics", nil)
+	resp, err := httpx.New(1500 * time.Millisecond).DoRaw(req)
+	cancel()
+	if err != nil || resp == nil || resp.StatusCode != 200 {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM_UNAVAILABLE", "fetch /metrics failed", map[string]string{"error": fmt.Sprintf("%v", err)})
+		return
+	}
+	b, _ := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	_ = resp.Body.Close()
+	// parse lines like: http_requests_total{service="adscenter",method="GET",path="/api/v1/...",status="OK"} 123
+	type item struct {
+		Method, Path, Status string
+		Count                int64
+	}
+	items := []item{}
+	byKey := map[string]*item{}
+	// split lines
+	lines := strings.Split(string(b), "\n")
+	for _, ln := range lines {
+		if !strings.HasPrefix(ln, "http_requests_total{") {
+			continue
+		}
+		// quick filter by service label
+		if !strings.Contains(ln, "service=\""+svc+"\"") {
+			continue
+		}
+		// extract labels
+		// method
+		method := extractLabel(ln, "method")
+		path := extractLabel(ln, "path")
+		status := extractLabel(ln, "status")
+		// count at the end
+		fields := strings.Fields(ln)
+		if len(fields) < 2 {
+			continue
+		}
+		cntStr := fields[len(fields)-1]
+		// handle trailing timestamps like "123 1696000000" if present
+		if strings.Contains(cntStr, ".") && len(fields) >= 3 {
+			cntStr = fields[len(fields)-2]
+		}
+		var count int64 = 0
+		if v, err := strconv.ParseFloat(cntStr, 64); err == nil {
+			count = int64(v)
+		}
+		k := method + "|" + path + "|" + status
+		if it, ok := byKey[k]; ok {
+			if count > it.Count {
+				it.Count = count
+			}
+		} else {
+			byKey[k] = &item{Method: method, Path: path, Status: status, Count: count}
+		}
+	}
+	for _, it := range byKey {
+		items = append(items, *it)
+	}
+	sort.Slice(items, func(i, j int) bool { return items[i].Count > items[j].Count })
+	totals := map[string]any{}
+	var all int64
+	byMethod := map[string]int64{}
+	for _, it := range items {
+		all += it.Count
+		byMethod[it.Method] += it.Count
+	}
+	totals["all"] = all
+	totals["byMethod"] = byMethod
+	out := map[string]any{"service": svc, "items": items, "totals": totals}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+// extractLabel finds label value like label="..." in a metrics line.
+func extractLabel(line, label string) string {
+	key := label + "=\""
+	i := strings.Index(line, key)
+	if i < 0 {
+		return ""
+	}
+	i += len(key)
+	j := strings.Index(line[i:], "\"")
+	if j < 0 {
+		return ""
+	}
+	return line[i : i+j]
+}
+
+// adscenterBusiness aggregates business metrics from Adscenter /metrics.
+// GET /api/v1/console/adscenter/business?base=<override>
+func (h *Handler) adscenterBusiness(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	base := strings.TrimSpace(r.URL.Query().Get("base"))
+	if base == "" {
+		base = strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	}
+	if base == "" {
+		errors.Write(w, r, http.StatusBadRequest, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+	defer cancel()
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, base+"/metrics", nil)
+	resp, err := httpx.New(2 * time.Second).DoRaw(req)
+	if err != nil || resp == nil || resp.StatusCode != 200 {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM_UNAVAILABLE", "fetch /metrics failed", map[string]string{"error": fmt.Sprintf("%v", err)})
+		return
+	}
+	b, _ := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	_ = resp.Body.Close()
+	lines := strings.Split(string(b), "\n")
+	// Aggregations
+	typeCount := map[string]int64{}
+	errType := map[string]int64{}
+	derivFilled := map[string]int64{}
+	derivSkipped := map[string]int64{}
+	// histogram sums
+	latSum := map[string]float64{}
+	latCnt := map[string]float64{}
+	for _, ln := range lines {
+		if strings.HasPrefix(ln, "#") || strings.TrimSpace(ln) == "" {
+			continue
+		}
+		// ac_execute_action_total{type="ADJUST_CPC"}
+		if strings.HasPrefix(ln, "ac_execute_action_total") {
+			t := extractLabel(ln, "type")
+			if t == "" {
+				continue
+			}
+			fields := strings.Fields(ln)
+			if len(fields) == 0 {
+				continue
+			}
+			vStr := fields[len(fields)-1]
+			if v, err := strconv.ParseFloat(vStr, 64); err == nil {
+				typeCount[t] = int64(v)
+			}
+		} else if strings.HasPrefix(ln, "ac_execute_action_errors_total") {
+			t := extractLabel(ln, "type")
+			if t == "" {
+				continue
+			}
+			fields := strings.Fields(ln)
+			if len(fields) == 0 {
+				continue
+			}
+			vStr := fields[len(fields)-1]
+			if v, err := strconv.ParseFloat(vStr, 64); err == nil {
+				errType[t] = int64(v)
+			}
+		} else if strings.HasPrefix(ln, "ac_derived_targets_total") {
+			t := extractLabel(ln, "type")
+			r := extractLabel(ln, "result")
+			if t == "" || r == "" {
+				continue
+			}
+			fields := strings.Fields(ln)
+			if len(fields) == 0 {
+				continue
+			}
+			vStr := fields[len(fields)-1]
+			if v, err := strconv.ParseFloat(vStr, 64); err == nil {
+				if r == "filled" {
+					derivFilled[t] = int64(v)
+				} else if r == "skipped" {
+					derivSkipped[t] = int64(v)
+				}
+			}
+		} else if strings.HasPrefix(ln, "ac_execute_action_latency_seconds_sum") {
+			t := extractLabel(ln, "type")
+			if t == "" {
+				continue
+			}
+			fields := strings.Fields(ln)
+			if len(fields) == 0 {
+				continue
+			}
+			if v, err := strconv.ParseFloat(fields[len(fields)-1], 64); err == nil {
+				latSum[t] = v
+			}
+		} else if strings.HasPrefix(ln, "ac_execute_action_latency_seconds_count") {
+			t := extractLabel(ln, "type")
+			if t == "" {
+				continue
+			}
+			fields := strings.Fields(ln)
+			if len(fields) == 0 {
+				continue
+			}
+			if v, err := strconv.ParseFloat(fields[len(fields)-1], 64); err == nil {
+				latCnt[t] = v
+			}
+		}
+	}
+	// Build output
+	type metric struct {
+		Total          int64   `json:"total"`
+		Errors         int64   `json:"errors"`
+		ErrorRate      float64 `json:"errorRate"`
+		AvgLatencyMs   float64 `json:"avgLatencyMs"`
+		DeriveFilled   int64   `json:"deriveFilled"`
+		DeriveSkipped  int64   `json:"deriveSkipped"`
+		DeriveSkipRate float64 `json:"deriveSkipRate"`
+	}
+	out := map[string]metric{}
+	// union of types
+	types := map[string]struct{}{}
+	for k := range typeCount {
+		types[k] = struct{}{}
+	}
+	for k := range errType {
+		types[k] = struct{}{}
+	}
+	for k := range derivFilled {
+		types[k] = struct{}{}
+	}
+	for k := range derivSkipped {
+		types[k] = struct{}{}
+	}
+	for k := range types {
+		tot := typeCount[k]
+		er := errType[k]
+		fill := derivFilled[k]
+		skip := derivSkipped[k]
+		rate := 0.0
+		if tot > 0 {
+			rate = float64(er) / float64(tot)
+		}
+		srate := 0.0
+		if (fill + skip) > 0 {
+			srate = float64(skip) / float64(fill+skip)
+		}
+		avg := 0.0
+		if latCnt[k] > 0 {
+			avg = (latSum[k] / latCnt[k]) * 1000.0
+		}
+		out[k] = metric{Total: tot, Errors: er, ErrorRate: rate, AvgLatencyMs: avg, DeriveFilled: fill, DeriveSkipped: skip, DeriveSkipRate: srate}
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"service": "adscenter", "types": out, "updatedAt": time.Now().UTC().Format(time.RFC3339)})
+}
+
+// roiAggregate aggregates ROI across offers from OfferDailyKPI within a time window.
+// GET /api/v1/console/roi/aggregate?days=30&minRosc=1.2&q=keyword&page=1&size=50
+func (h *Handler) roiAggregate(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	ctx := r.Context()
+	// Parse params
+	days := 30
+	if v := strings.TrimSpace(r.URL.Query().Get("days")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 365 {
+			days = n
+		}
+	}
+	minRosc := 0.0
+	if v := strings.TrimSpace(r.URL.Query().Get("minRosc")); v != "" {
+		if f, e := strconv.ParseFloat(v, 64); e == nil && f >= 0 {
+			minRosc = f
+		}
+	}
+	q := strings.TrimSpace(r.URL.Query().Get("q"))
+	accountID := strings.TrimSpace(r.URL.Query().Get("accountId"))
+	page, size := 1, 50
+	if v := strings.TrimSpace(r.URL.Query().Get("page")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 {
+			page = n
+		}
+	}
+	if v := strings.TrimSpace(r.URL.Query().Get("size")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 500 {
+			size = n
+		}
+	}
+	offset := (page - 1) * size
+
+	// Aggregate across OfferDailyKPI joined with Offer for name
+	// Note: Use date >= CURRENT_DATE - (days-1) to include today
+	// Filters: minRosc (applied after SUM), q (ILIKE on name)
+	// Compute summary in a separate query
+
+	// Summary
+	var sumImp, sumClk int64
+	var sumSpend, sumRev float64
+	err := h.DB.QueryRow(ctx, `
+        SELECT COALESCE(SUM(k.impressions),0), COALESCE(SUM(k.clicks),0), COALESCE(SUM(k.spend),0), COALESCE(SUM(k.revenue),0)
+        FROM "OfferDailyKPI" k
+        WHERE k.date >= CURRENT_DATE - ($1::int - 1)
+    `, days).Scan(&sumImp, &sumClk, &sumSpend, &sumRev)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "summary query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	summary := map[string]any{
+		"impressions": sumImp,
+		"clicks":      sumClk,
+		"spend":       round2(sumSpend),
+		"revenue":     round2(sumRev),
+		"rosc": func() float64 {
+			if sumSpend > 0 {
+				return round2(sumRev / sumSpend)
+			}
+			return 0
+		}(),
+	}
+
+	// Items with optional name filter, account filter and minRosc
+	// Build dynamic WHERE for name filter; apply minRosc in HAVING
+	nameFilter := "%"
+	if q != "" {
+		nameFilter = "%" + strings.ToLower(q) + "%"
+	}
+
+	// Query items
+	qItems := `
+        SELECT o.id, COALESCE(o.name,''),
+               COALESCE(SUM(k.impressions),0) AS imp,
+               COALESCE(SUM(k.clicks),0) AS clk,
+               COALESCE(SUM(k.spend),0) AS spend,
+               COALESCE(SUM(k.revenue),0) AS revenue
+        FROM "OfferDailyKPI" k
+        JOIN "Offer" o ON o.id = k.offer_id
+        WHERE k.date >= CURRENT_DATE - ($1::int - 1)
+          AND ( $2 = '%' OR LOWER(o.name) LIKE $2 )
+    `
+	args := []any{days, nameFilter}
+	if accountID != "" {
+		qItems += ` AND EXISTS (SELECT 1 FROM "OfferAccountMap" m WHERE m.offer_id = o.id AND m.account_id = $3)`
+		args = append(args, accountID)
+	}
+	// complete
+	// Note: adjust placeholders based on whether accountID used
+	havingIdx := 3
+	limitIdx := 4
+	offIdx := 5
+	if accountID != "" {
+		havingIdx = 4
+		limitIdx = 5
+		offIdx = 6
+	}
+	qItems += fmt.Sprintf(`
+        GROUP BY o.id, o.name
+        HAVING (CASE WHEN COALESCE(SUM(k.spend),0) > 0 THEN COALESCE(SUM(k.revenue),0)/COALESCE(SUM(k.spend),0) ELSE 0 END) >= $%d
+        ORDER BY (CASE WHEN COALESCE(SUM(k.spend),0) > 0 THEN COALESCE(SUM(k.revenue),0)/COALESCE(SUM(k.spend),0) ELSE 0 END) DESC, COALESCE(SUM(k.revenue),0) DESC
+        LIMIT $%d OFFSET $%d`, havingIdx, limitIdx, offIdx)
+	args = append(args, minRosc, size, offset)
+	rows, err := h.DB.Query(ctx, qItems, args...)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "items query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		OfferID, Name        string
+		Impressions, Clicks  int64
+		Spend, Revenue, ROSC float64
+	}
+	items := []item{}
+	for rows.Next() {
+		var it item
+		if err := rows.Scan(&it.OfferID, &it.Name, &it.Impressions, &it.Clicks, &it.Spend, &it.Revenue); err != nil {
+			continue
+		}
+		if it.Spend > 0 {
+			it.ROSC = round2(it.Revenue / it.Spend)
+		} else {
+			it.ROSC = 0
+		}
+		it.Spend = round2(it.Spend)
+		it.Revenue = round2(it.Revenue)
+		items = append(items, it)
+	}
+	// Top accounts aggregation (optional, best-effort)
+	topN := 20
+	if v := strings.TrimSpace(r.URL.Query().Get("top")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 100 {
+			topN = n
+		}
+	}
+	var topAccounts []map[string]any
+	func() {
+		qTop := `
+            SELECT m.account_id,
+                   COALESCE(SUM(k.spend),0) AS spend,
+                   COALESCE(SUM(k.revenue),0) AS revenue
+            FROM "OfferDailyKPI" k
+            JOIN "OfferAccountMap" m ON m.offer_id = k.offer_id
+            WHERE k.date >= CURRENT_DATE - ($1::int - 1)
+            GROUP BY m.account_id
+            ORDER BY COALESCE(SUM(k.revenue),0) DESC
+            LIMIT $2`
+		rr, er := h.DB.Query(ctx, qTop, days, topN)
+		if er != nil {
+			return
+		}
+		defer rr.Close()
+		for rr.Next() {
+			var acc string
+			var sp, rv float64
+			if er := rr.Scan(&acc, &sp, &rv); er != nil {
+				continue
+			}
+			ro := 0.0
+			if sp > 0 {
+				ro = rv / sp
+			}
+			topAccounts = append(topAccounts, map[string]any{"accountId": acc, "spend": round2(sp), "revenue": round2(rv), "rosc": round2(ro)})
+		}
+	}()
+
+	// Response
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"summary":     summary,
+		"items":       items,
+		"page":        page,
+		"size":        size,
+		"days":        days,
+		"topAccounts": topAccounts,
+	})
+}
+
+// roiAccounts aggregates ROI by account_id from OfferDailyKPI joined with OfferAccountMap.
+// GET /api/v1/console/roi/accounts?days=30&minRosc=0&q=123&page=1&size=50
+func (h *Handler) roiAccounts(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	ctx := r.Context()
+	days := 30
+	if v := strings.TrimSpace(r.URL.Query().Get("days")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 365 {
+			days = n
+		}
+	}
+	minRosc := 0.0
+	if v := strings.TrimSpace(r.URL.Query().Get("minRosc")); v != "" {
+		if f, e := strconv.ParseFloat(v, 64); e == nil && f >= 0 {
+			minRosc = f
+		}
+	}
+	q := strings.TrimSpace(r.URL.Query().Get("q")) // filter account_id contains
+	page, size := 1, 50
+	if v := strings.TrimSpace(r.URL.Query().Get("page")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 {
+			page = n
+		}
+	}
+	if v := strings.TrimSpace(r.URL.Query().Get("size")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 500 {
+			size = n
+		}
+	}
+	offset := (page - 1) * size
+
+	// Summary by accounts
+	var sumSpend, sumRev float64
+	err := h.DB.QueryRow(ctx, `
+        SELECT COALESCE(SUM(k.spend),0), COALESCE(SUM(k.revenue),0)
+        FROM "OfferDailyKPI" k JOIN "OfferAccountMap" m ON m.offer_id = k.offer_id
+        WHERE k.date >= CURRENT_DATE - ($1::int - 1)
+    `, days).Scan(&sumSpend, &sumRev)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "summary query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	summary := map[string]any{"spend": round2(sumSpend), "revenue": round2(sumRev), "rosc": func() float64 {
+		if sumSpend > 0 {
+			return round2(sumRev / sumSpend)
+		}
+		return 0
+	}()}
+
+	// Items per account
+	filter := "%"
+	if q != "" {
+		filter = "%" + strings.ToLower(q) + "%"
+	}
+	rows, err := h.DB.Query(ctx, `
+        SELECT m.account_id,
+               COALESCE(SUM(k.spend),0) AS spend,
+               COALESCE(SUM(k.revenue),0) AS revenue
+        FROM "OfferDailyKPI" k
+        JOIN "OfferAccountMap" m ON m.offer_id = k.offer_id
+        WHERE k.date >= CURRENT_DATE - ($1::int - 1)
+          AND ( $2 = '%' OR LOWER(m.account_id) LIKE $2 )
+        GROUP BY m.account_id
+        HAVING (CASE WHEN COALESCE(SUM(k.spend),0) > 0 THEN COALESCE(SUM(k.revenue),0)/COALESCE(SUM(k.spend),0) ELSE 0 END) >= $3
+        ORDER BY COALESCE(SUM(k.revenue),0) DESC
+        LIMIT $4 OFFSET $5
+    `, days, filter, minRosc, size, offset)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "items query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type rec struct {
+		AccountID            string
+		Spend, Revenue, ROSC float64
+	}
+	items := []rec{}
+	for rows.Next() {
+		var it rec
+		if err := rows.Scan(&it.AccountID, &it.Spend, &it.Revenue); err != nil {
+			continue
+		}
+		if it.Spend > 0 {
+			it.ROSC = round2(it.Revenue / it.Spend)
+		} else {
+			it.ROSC = 0
+		}
+		it.Spend = round2(it.Spend)
+		it.Revenue = round2(it.Revenue)
+		items = append(items, it)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"summary": summary, "items": items, "page": page, "size": size, "days": days})
+}
+
+// adscenterExecSummary aggregates Adscenter bulk execution outcomes from DB.
+// GET /api/v1/console/adscenter/executions/summary?days=7&daily=1
+// Returns: { operationsCompleted, execOk, execError, successRate, deadlettersPending, deadlettersFailed, daily: [{date, ok, error}] }
+func (h *Handler) adscenterExecSummary(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	days := 7
+	if v := strings.TrimSpace(r.URL.Query().Get("days")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 90 {
+			days = n
+		}
+	}
+	wantDaily := strings.TrimSpace(r.URL.Query().Get("daily")) == "1"
+	// operations completed
+	var opsCompleted int64
+	if err := h.DB.QueryRow(r.Context(), `SELECT COUNT(1) FROM "BulkActionOperation" WHERE status='completed' AND updated_at >= NOW() - ($1::text||' days')::interval`, days).Scan(&opsCompleted); err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query operations failed", map[string]string{"error": err.Error()})
+		return
+	}
+	// exec ok/error
+	var okCnt, errCnt int64
+	rows, err := h.DB.Query(r.Context(), `
+        SELECT (snapshot->>'status') AS st, COUNT(1)
+        FROM "BulkActionAudit"
+        WHERE kind='exec' AND created_at >= NOW() - ($1::text||' days')::interval
+        GROUP BY st`, days)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query exec failed", map[string]string{"error": err.Error()})
+		return
+	}
+	for rows.Next() {
+		var st string
+		var c int64
+		if err := rows.Scan(&st, &c); err == nil {
+			if strings.EqualFold(st, "ok") {
+				okCnt += c
+			} else if strings.EqualFold(st, "error") {
+				errCnt += c
+			}
+		}
+	}
+	rows.Close()
+	// deadletters
+	var dlPending, dlFailed int64
+	_ = h.DB.QueryRow(r.Context(), `SELECT COUNT(1) FROM "BulkActionDeadLetter" WHERE status='pending'`).Scan(&dlPending)
+	_ = h.DB.QueryRow(r.Context(), `SELECT COUNT(1) FROM "BulkActionDeadLetter" WHERE status='failed'`).Scan(&dlFailed)
+	// daily breakdown (optional)
+	daily := []map[string]any{}
+	if wantDaily {
+		r2, err := h.DB.Query(r.Context(), `
+            SELECT to_char(created_at::date,'YYYY-MM-DD') AS d, (snapshot->>'status') AS st, COUNT(1)
+            FROM "BulkActionAudit"
+            WHERE kind='exec' AND created_at >= NOW() - ($1::text||' days')::interval
+            GROUP BY d, st ORDER BY d ASC`, days)
+		if err == nil {
+			tmp := map[string]struct{ ok, er int64 }{}
+			for r2.Next() {
+				var d, st string
+				var c int64
+				if r2.Scan(&d, &st, &c) != nil {
+					continue
+				}
+				t := tmp[d]
+				if strings.EqualFold(st, "ok") {
+					t.ok += c
+				} else if strings.EqualFold(st, "error") {
+					t.er += c
+				}
+				tmp[d] = t
+			}
+			r2.Close()
+			// stable order
+			keys := make([]string, 0, len(tmp))
+			for k := range tmp {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+			for _, k := range keys {
+				v := tmp[k]
+				daily = append(daily, map[string]any{"date": k, "ok": v.ok, "error": v.er})
+			}
+		}
+	}
+	rate := 0.0
+	if okCnt+errCnt > 0 {
+		rate = float64(okCnt) / float64(okCnt+errCnt)
+	}
+	out := map[string]any{
+		"operationsCompleted": opsCompleted,
+		"execOk":              okCnt,
+		"execError":           errCnt,
+		"successRate":         rate,
+		"deadlettersPending":  dlPending,
+		"deadlettersFailed":   dlFailed,
+		"updatedAt":           time.Now().UTC().Format(time.RFC3339),
+	}
+	if wantDaily {
+		out["daily"] = daily
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+// getSLO fetches /metrics from configured services and computes rough P95 and error rate.
+// Env vars: *_URL (base) for siterank/billing/batchopen/adscenter/offer/notifications
+func (h *Handler) getSLO(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	// caching
+	if out, ok := getSLOCache(); ok && strings.TrimSpace(r.URL.Query().Get("force")) != "1" {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(out)
+		return
+	}
+	type serviceCfg struct{ name, url string }
+	cfgs := []serviceCfg{
+		{"siterank", strings.TrimRight(os.Getenv("SITERANK_URL"), "/")},
+		{"billing", strings.TrimRight(os.Getenv("BILLING_URL"), "/")},
+		{"batchopen", strings.TrimRight(os.Getenv("BATCHOPEN_URL"), "/")},
+		{"adscenter", strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")},
+		{"offer", strings.TrimRight(os.Getenv("OFFER_URL"), "/")},
+		{"notifications", strings.TrimRight(os.Getenv("NOTIFICATIONS_URL"), "/")},
+	}
+	type slo struct {
+		P95       float64            `json:"p95"`
+		Total     int64              `json:"total"`
+		ErrorRate float64            `json:"errorRate"`
+		Notes     map[string]float64 `json:"notes,omitempty"`
+	}
+	out := map[string]slo{}
+	for _, c := range cfgs {
+		if c.url == "" {
+			continue
+		}
+		ctx, cancel := context.WithTimeout(r.Context(), 1500*time.Millisecond)
+		req, _ := http.NewRequestWithContext(ctx, http.MethodGet, c.url+"/metrics", nil)
+		resp, err := httpx.New(1500 * time.Millisecond).DoRaw(req)
+		cancel()
+		if err != nil || resp == nil || resp.StatusCode != 200 {
+			continue
+		}
+		b, _ := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+		_ = resp.Body.Close()
+		p95, total, errRate, notes := computeFromMetrics(string(b), c.name)
+		out[c.name] = slo{P95: p95, Total: total, ErrorRate: errRate, Notes: notes}
+	}
+	res := map[string]any{"services": out, "updatedAt": time.Now().UTC().Format(time.RFC3339)}
+	setSLOCache(res)
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(res)
+}
+
+// --- SLO cache ---
+var sloCacheMu sync.RWMutex
+var sloCache map[string]any
+var sloCacheAt time.Time
+
+const sloCacheTTL = 60 * time.Second
+
+func getSLOCache() (map[string]any, bool) {
+	sloCacheMu.RLock()
+	defer sloCacheMu.RUnlock()
+	if sloCache != nil && time.Since(sloCacheAt) < sloCacheTTL {
+		// shallow copy to avoid mutation
+		out := map[string]any{}
+		for k, v := range sloCache {
+			out[k] = v
+		}
+		return out, true
+	}
+	return nil, false
+}
+func setSLOCache(m map[string]any) {
+	sloCacheMu.Lock()
+	defer sloCacheMu.Unlock()
+	sloCache = m
+	sloCacheAt = time.Now()
+}
+
+// limitsPolicy supports GET (read current policy JSON) and PUT (update policy by creating a new secret version).
+// Env: ADSCENTER_LIMITS_SECRET = projects/<pid>/secrets/<name>/versions/latest
+func (h *Handler) limitsPolicy(w http.ResponseWriter, r *http.Request) {
+	name := strings.TrimSpace(os.Getenv("ADSCENTER_LIMITS_SECRET"))
+	if name == "" {
+		errors.Write(w, r, http.StatusBadRequest, "SERVER_NOT_CONFIGURED", "ADSCENTER_LIMITS_SECRET not set", nil)
+		return
+	}
+	ctx := r.Context()
+	switch r.Method {
+	case http.MethodGet:
+		// read latest
+		cli, err := secretmanager.NewClient(ctx)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "SECRET_CLIENT", err.Error(), nil)
+			return
+		}
+		defer cli.Close()
+		res, err := cli.AccessSecretVersion(ctx, &secretmanagerpb.AccessSecretVersionRequest{Name: name})
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "SECRET_ACCESS", err.Error(), nil)
+			return
+		}
+		// try JSON parse; if失败则以 text 形式返回
+		var js map[string]any
+		b := res.Payload.GetData()
+		if json.Unmarshal(b, &js) == nil {
+			_ = json.NewEncoder(w).Encode(map[string]any{"policy": js, "name": name})
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"policyText": string(b), "name": name})
+	case http.MethodPut:
+		// body: { policy: <object> } 或 { policyText: <string> }
+		var body struct {
+			Policy     any    `json:"policy"`
+			PolicyText string `json:"policyText"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid json", nil)
+			return
+		}
+		var payload []byte
+		if body.Policy != nil {
+			if b, err := json.Marshal(body.Policy); err == nil {
+				payload = b
+			}
+		}
+		if len(payload) == 0 && strings.TrimSpace(body.PolicyText) != "" {
+			payload = []byte(body.PolicyText)
+		}
+		if len(payload) == 0 {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "missing policy", nil)
+			return
+		}
+		// parent from versioned name: drop '/versions/...'
+		parent := name
+		if i := strings.LastIndex(parent, "/versions/"); i > 0 {
+			parent = parent[:i]
+		}
+		cli, err := secretmanager.NewClient(ctx)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "SECRET_CLIENT", err.Error(), nil)
+			return
+		}
+		defer cli.Close()
+		res, err := cli.AddSecretVersion(ctx, &secretmanagerpb.AddSecretVersionRequest{Parent: parent, Payload: &secretmanagerpb.SecretPayload{Data: payload}})
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "SECRET_ADD_VERSION", err.Error(), nil)
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"version": res.GetName()})
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+	}
+}
+
+// getEvents returns recent events from event_store with optional filters.
+// GET /api/v1/console/events?eventName=&aggregateType=&aggregateId=&sinceHours=168&limit=100&offset=0
+func (h *Handler) getEvents(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	q := r.URL.Query()
+	eventName := strings.TrimSpace(q.Get("eventName"))
+	aggType := strings.TrimSpace(q.Get("aggregateType"))
+	aggId := strings.TrimSpace(q.Get("aggregateId"))
+	sinceHours := 168
+	if v := strings.TrimSpace(q.Get("sinceHours")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= (90*24) {
+			sinceHours = n
+		}
+	}
+	limit := 100
+	if v := strings.TrimSpace(q.Get("limit")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 500 {
+			limit = n
+		}
+	}
+	offset := 0
+	if v := strings.TrimSpace(q.Get("offset")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n >= 0 {
+			offset = n
+		}
+	}
+
+	where := []string{"occurred_at > NOW() - ($1 || ' hours')::interval"}
+	args := []any{sinceHours}
+	argi := 2
+	if eventName != "" {
+		where = append(where, "event_name = $"+strconv.Itoa(argi))
+		args = append(args, eventName)
+		argi++
+	}
+	if aggType != "" {
+		where = append(where, "aggregate_type = $"+strconv.Itoa(argi))
+		args = append(args, aggType)
+		argi++
+	}
+	if aggId != "" {
+		where = append(where, "aggregate_id = $"+strconv.Itoa(argi))
+		args = append(args, aggId)
+		argi++
+	}
+	sqlStr := "SELECT id, event_id, event_name, aggregate_type, aggregate_id, occurred_at, payload::text FROM event_store WHERE " + strings.Join(where, " AND ") + " ORDER BY occurred_at DESC LIMIT $" + strconv.Itoa(argi) + " OFFSET $" + strconv.Itoa(argi+1)
+	args = append(args, limit, offset)
+	rows, err := h.DB.Query(r.Context(), sqlStr, args...)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_FAILED", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		ID            int64  `json:"id"`
+		EventID       string `json:"eventId"`
+		EventName     string `json:"eventName"`
+		AggregateType string `json:"aggregateType"`
+		AggregateID   string `json:"aggregateId"`
+		OccurredAt    string `json:"occurredAt"`
+		Payload       string `json:"payload"`
+	}
+	out := []item{}
+	for rows.Next() {
+		var it item
+		var t time.Time
+		if err := rows.Scan(&it.ID, &it.EventID, &it.EventName, &it.AggregateType, &it.AggregateID, &t, &it.Payload); err == nil {
+			it.OccurredAt = t.UTC().Format(time.RFC3339)
+			out = append(out, it)
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": out})
+}
+
+// getEventByID returns a single event by numeric id.
+// GET /api/v1/console/events/{id}
+func (h *Handler) getEventByID(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	path := strings.TrimPrefix(r.URL.Path, "/api/v1/console/events/")
+	id := strings.TrimSpace(path)
+	if id == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	row := h.DB.QueryRow(r.Context(), `SELECT id, event_id, event_name, aggregate_type, aggregate_id, occurred_at, payload::text, metadata::text FROM event_store WHERE id=$1`, id)
+	var it struct {
+		ID            int64  `json:"id"`
+		EventID       string `json:"eventId"`
+		EventName     string `json:"eventName"`
+		AggregateType string `json:"aggregateType"`
+		AggregateID   string `json:"aggregateId"`
+		OccurredAt    string `json:"occurredAt"`
+		Payload       string `json:"payload"`
+		Metadata      string `json:"metadata"`
+	}
+	var t time.Time
+	if err := row.Scan(&it.ID, &it.EventID, &it.EventName, &it.AggregateType, &it.AggregateID, &t, &it.Payload, &it.Metadata); err != nil {
+		errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "event not found", nil)
+		return
+	}
+	it.OccurredAt = t.UTC().Format(time.RFC3339)
+	_ = json.NewEncoder(w).Encode(it)
+}
+
+// replayPlan previews events to replay from event_store based on filters.
+// GET /api/v1/console/events/replay/plan?eventName=&sinceHours=24&limit=100
+func (h *Handler) replayPlan(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	q := r.URL.Query()
+	eventName := strings.TrimSpace(q.Get("eventName"))
+	sinceHours := 24
+	if v := strings.TrimSpace(q.Get("sinceHours")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= (90*24) {
+			sinceHours = n
+		}
+	}
+	limit := 100
+	if v := strings.TrimSpace(q.Get("limit")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 1000 {
+			limit = n
+		}
+	}
+	where := []string{"occurred_at > NOW() - ($1 || ' hours')::interval"}
+	args := []any{sinceHours}
+	argi := 2
+	if eventName != "" {
+		where = append(where, "event_name=$"+strconv.Itoa(argi))
+		args = append(args, eventName)
+		argi++
+	}
+	sqlStr := "SELECT id, event_id, event_name, aggregate_type, aggregate_id, occurred_at FROM event_store WHERE " + strings.Join(where, " AND ") + " ORDER BY occurred_at ASC LIMIT $" + strconv.Itoa(argi)
+	args = append(args, limit)
+	rows, err := h.DB.Query(r.Context(), sqlStr, args...)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_FAILED", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		ID            int64  `json:"id"`
+		EventID       string `json:"eventId"`
+		EventName     string `json:"eventName"`
+		AggregateType string `json:"aggregateType"`
+		AggregateID   string `json:"aggregateId"`
+		OccurredAt    string `json:"occurredAt"`
+	}
+	out := []item{}
+	for rows.Next() {
+		var it item
+		var t time.Time
+		if err := rows.Scan(&it.ID, &it.EventID, &it.EventName, &it.AggregateType, &it.AggregateID, &t); err == nil {
+			it.OccurredAt = t.UTC().Format(time.RFC3339)
+			out = append(out, it)
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": out, "count": len(out)})
+}
+
+// replayExecute republishes events to the current Pub/Sub topic.
+// POST /api/v1/console/events/replay { ids?: [int], sinceHours?: 24, limit?: 100 }
+func (h *Handler) replayExecute(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	var body struct {
+		IDs        []int64 `json:"ids"`
+		SinceHours *int    `json:"sinceHours"`
+		Limit      *int    `json:"limit"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid json", nil)
+		return
+	}
+	ctx := r.Context()
+	// Build selection
+	var rows pgx.Rows
+	var err error
+	if len(body.IDs) > 0 {
+		// replay specific ids
+		// build IN clause
+		place := make([]string, 0, len(body.IDs))
+		args := make([]any, 0, len(body.IDs))
+		for i, id := range body.IDs {
+			place = append(place, "$"+strconv.Itoa(i+1))
+			args = append(args, id)
+		}
+		sqlStr := "SELECT id, event_name, aggregate_id, payload::text FROM event_store WHERE id IN (" + strings.Join(place, ",") + ") ORDER BY id ASC"
+		rows, err = h.DB.Query(ctx, sqlStr, args...)
+	} else {
+		since := 24
+		if body.SinceHours != nil {
+			since = *body.SinceHours
+		}
+		limit := 100
+		if body.Limit != nil {
+			limit = *body.Limit
+		}
+		rows, err = h.DB.Query(ctx, `SELECT id, event_name, aggregate_id, payload::text FROM event_store WHERE occurred_at > NOW() - ($1 || ' hours')::interval ORDER BY occurred_at ASC LIMIT $2`, since, limit)
+	}
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_FAILED", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	// Publisher (pkg/events)
+	pub, perr := ev.NewPublisher(ctx)
+	if perr != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "PUBLISHER_INIT", perr.Error(), nil)
+		return
+	}
+	defer pub.Close()
+	type item struct {
+		ID          int64
+		Name, AggID string
+		Payload     string
+	}
+	list := []item{}
+	for rows.Next() {
+		var it item
+		if err := rows.Scan(&it.ID, &it.Name, &it.AggID, &it.Payload); err == nil {
+			list = append(list, it)
+		}
+	}
+	published := 0
+	failed := 0
+	for _, it := range list {
+		var data any
+		if strings.TrimSpace(it.Payload) != "" {
+			json.Unmarshal([]byte(it.Payload), &data)
+		}
+		if err := pub.Publish(ctx, it.Name, data, ev.WithSource("replay"), ev.WithSubject(it.AggID)); err != nil {
+			failed++
+		} else {
+			published++
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"requested": len(list), "published": published, "failed": failed})
+}
+
+// offerConsistency checks read-model Offer vs events OfferCreated, optional repair.
+// GET /api/v1/console/consistency/offers?repair=false&limit=100
+func (h *Handler) offerConsistency(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	q := r.URL.Query()
+	limit := 200
+	if v := strings.TrimSpace(q.Get("limit")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 1000 {
+			limit = n
+		}
+	}
+	repair := strings.EqualFold(strings.TrimSpace(q.Get("repair")), "true") || r.Method == http.MethodPost
+	// Find OfferCreated events missing in Offer table
+	rows, err := h.DB.Query(r.Context(), `
+        SELECT e.aggregate_id, e.payload::text
+        FROM event_store e
+        LEFT JOIN "Offer" o ON o.id = e.aggregate_id
+        WHERE e.event_name='OfferCreated' AND o.id IS NULL
+        ORDER BY e.occurred_at ASC
+        LIMIT $1`, limit)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_FAILED", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type miss struct {
+		OfferID string `json:"offerId"`
+		Payload string `json:"payload"`
+	}
+	missing := []miss{}
+	for rows.Next() {
+		var id, p string
+		if err := rows.Scan(&id, &p); err == nil {
+			missing = append(missing, miss{OfferID: id, Payload: p})
+		}
+	}
+	repaired := 0
+	if repair && len(missing) > 0 {
+		tx, _ := h.DB.Begin(r.Context())
+		for _, m := range missing {
+			// try parse payload
+			var obj map[string]any
+			_ = json.Unmarshal([]byte(m.Payload), &obj)
+			name, _ := obj["name"].(string)
+			url, _ := obj["originalUrl"].(string)
+			uid, _ := obj["userId"].(string)
+			status, _ := obj["status"].(string)
+			if strings.TrimSpace(status) == "" {
+				status = "evaluating"
+			}
+			if strings.TrimSpace(uid) == "" {
+				continue
+			}
+			_, err := tx.Exec(r.Context(), `
+                INSERT INTO "Offer"(id, "userId", name, "originalUrl", status, created_at, updated_at)
+                VALUES ($1,$2,COALESCE(NULLIF($3,''),'Offer'),COALESCE(NULLIF($4,''),'https://example.com'),'evaluating',NOW(),NOW())
+                ON CONFLICT (id) DO NOTHING
+            `, m.OfferID, uid, name, url)
+			if err == nil {
+				repaired++
+			}
+		}
+		_ = tx.Commit(r.Context())
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"missing": missing, "repaired": repaired})
+}
+
+// --- Adscenter admin proxies ---
+
+func (h *Handler) acSnapshots(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	id := strings.TrimSpace(r.URL.Query().Get("id"))
+	if id == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	owner := h.lookupBulkOwner(r.Context(), id)
+	base := strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	cli := httpx.New(3 * time.Second)
+	hdr := map[string]string{"X-User-Id": owner}
+	var out map[string]any
+	if err := cli.DoJSON(r.Context(), http.MethodGet, base+"/api/v1/adscenter/bulk-actions/"+id+"/snapshots", nil, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+func (h *Handler) acSnapshotAggregate(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	id := strings.TrimSpace(r.URL.Query().Get("id"))
+	if id == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	owner := h.lookupBulkOwner(r.Context(), id)
+	base := strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	cli := httpx.New(3 * time.Second)
+	hdr := map[string]string{"X-User-Id": owner}
+	var out map[string]any
+	if err := cli.DoJSON(r.Context(), http.MethodGet, base+"/api/v1/adscenter/bulk-actions/"+id+"/snapshot-aggregate", nil, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+func (h *Handler) acDeadLetters(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	id := strings.TrimSpace(r.URL.Query().Get("id"))
+	if id == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	owner := h.lookupBulkOwner(r.Context(), id)
+	base := strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	q := r.URL.RawQuery
+	cli := httpx.New(4 * time.Second)
+	hdr := map[string]string{"X-User-Id": owner}
+	var out map[string]any
+	url := base + "/api/v1/adscenter/bulk-actions/" + id + "/deadletters"
+	if q != "" {
+		url += "?" + q
+	}
+	if err := cli.DoJSON(r.Context(), http.MethodGet, url, nil, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+func (h *Handler) acDeadLetterRetry(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	var body struct {
+		ID   string `json:"id"`
+		DLID string `json:"dlid"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil || strings.TrimSpace(body.ID) == "" || strings.TrimSpace(body.DLID) == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id/dlid required", nil)
+		return
+	}
+	owner := h.lookupBulkOwner(r.Context(), body.ID)
+	base := strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	cli := httpx.New(6 * time.Second)
+	hdr := map[string]string{"X-User-Id": owner}
+	var out map[string]any
+	url := base + "/api/v1/adscenter/bulk-actions/" + body.ID + "/deadletters/" + body.DLID + "/retry"
+	if err := cli.DoJSON(r.Context(), http.MethodPost, url, nil, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+func (h *Handler) acDeadLetterRetryBatch(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	var body struct {
+		ID         string `json:"id"`
+		ActionType string `json:"actionType"`
+		Limit      int    `json:"limit"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil || strings.TrimSpace(body.ID) == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	owner := h.lookupBulkOwner(r.Context(), body.ID)
+	base := strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	cli := httpx.New(15 * time.Second)
+	hdr := map[string]string{"X-User-Id": owner}
+	// construct query
+	url := base + "/api/v1/adscenter/bulk-actions/" + body.ID + "/deadletters/retry-batch"
+	vals := []string{}
+	if strings.TrimSpace(body.ActionType) != "" {
+		vals = append(vals, "actionType="+body.ActionType)
+	}
+	if body.Limit > 0 {
+		vals = append(vals, "limit="+strconv.Itoa(body.Limit))
+	}
+	if len(vals) > 0 {
+		url += "?" + strings.Join(vals, "&")
+	}
+	var out map[string]any
+	if err := cli.DoJSON(r.Context(), http.MethodPost, url, nil, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+// adsSyncMetrics: GET /api/v1/console/adscenter/sync/metrics?userId=&limit=
+// Returns recent AdsAccountMetrics rows for specified user (or recent users if empty)
+func (h *Handler) adsSyncMetrics(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	userID := strings.TrimSpace(r.URL.Query().Get("userId"))
+	limit := 50
+	if v := strings.TrimSpace(r.URL.Query().Get("limit")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 200 {
+			limit = n
+		}
+	}
+	// Ensure table; tolerate absence
+	_, _ = h.DB.Exec(r.Context(), `CREATE TABLE IF NOT EXISTS "AdsAccountMetrics"(user_id TEXT NOT NULL, customer_id TEXT NOT NULL, campaigns INT NOT NULL DEFAULT 0, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), PRIMARY KEY(user_id, customer_id))`)
+	type item struct {
+		UserID, CustomerID string
+		Campaigns          int
+		UpdatedAt          string
+	}
+	items := []item{}
+	if userID != "" {
+		rows, err := h.DB.Query(r.Context(), `SELECT user_id, customer_id, campaigns, updated_at FROM "AdsAccountMetrics" WHERE user_id=$1 ORDER BY updated_at DESC LIMIT $2`, userID, limit)
+		if err == nil {
+			defer rows.Close()
+			for rows.Next() {
+				var it item
+				var t time.Time
+				if rows.Scan(&it.UserID, &it.CustomerID, &it.Campaigns, &t) == nil {
+					it.UpdatedAt = t.UTC().Format(time.RFC3339)
+					items = append(items, it)
+				}
+			}
+		}
+	} else {
+		rows, err := h.DB.Query(r.Context(), `SELECT user_id, customer_id, campaigns, updated_at FROM "AdsAccountMetrics" ORDER BY updated_at DESC LIMIT $1`, limit)
+		if err == nil {
+			defer rows.Close()
+			for rows.Next() {
+				var it item
+				var t time.Time
+				if rows.Scan(&it.UserID, &it.CustomerID, &it.Campaigns, &t) == nil {
+					it.UpdatedAt = t.UTC().Format(time.RFC3339)
+					items = append(items, it)
+				}
+			}
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+}
+
+// adsSyncRun: POST /api/v1/console/adscenter/sync/run { limit?, users? }
+// Proxies to Adscenter /api/v1/adscenter/sync/tick in system mode
+func (h *Handler) adsSyncRun(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	var body struct {
+		Limit int `json:"limit"`
+		Users int `json:"users"`
+	}
+	_ = json.NewDecoder(r.Body).Decode(&body)
+	if body.Limit <= 0 {
+		body.Limit = 5
+	}
+	if body.Users <= 0 {
+		body.Users = 3
+	}
+	base := strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "ADSCENTER_URL not set", nil)
+		return
+	}
+	cli := httpx.New(6 * time.Second)
+	hdr := map[string]string{"X-User-Id": "scheduler", "Accept": "application/json"}
+	url := fmt.Sprintf("%s/api/v1/adscenter/sync/tick?limit=%d&mode=system&users=%d", base, body.Limit, body.Users)
+	var out map[string]any
+	if err := cli.DoJSON(r.Context(), http.MethodPost, url, map[string]any{}, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+// --- Offer KPI DLQ admin ---
+
+// List Offer KPI deadletters (direct DB read)
+// GET /api/v1/console/offers/kpi/deadletters?limit=50
+func (h *Handler) offerKpiDeadLetters(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	lim := 50
+	if v := strings.TrimSpace(r.URL.Query().Get("limit")); v != "" {
+		if n, e := strconv.Atoi(v); e == nil && n > 0 && n <= 500 {
+			lim = n
+		}
+	}
+	rows, err := h.DB.Query(r.Context(), `SELECT id,user_id,offer_id,date,reason,payload::text,retry_count,last_error,status,created_at,updated_at FROM "OfferKpiDeadLetter" WHERE status<>'resolved' ORDER BY created_at DESC LIMIT $1`, lim)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		ID         int64  `json:"id"`
+		UserID     string `json:"userId"`
+		OfferID    string `json:"offerId"`
+		Date       string `json:"date"`
+		Reason     string `json:"reason"`
+		Payload    string `json:"payload"`
+		RetryCount int    `json:"retryCount"`
+		LastError  string `json:"lastError"`
+		Status     string `json:"status"`
+		CreatedAt  string `json:"createdAt"`
+		UpdatedAt  string `json:"updatedAt"`
+	}
+	var items []item
+	for rows.Next() {
+		var it item
+		var d, ca, ua time.Time
+		if err := rows.Scan(&it.ID, &it.UserID, &it.OfferID, &d, &it.Reason, &it.Payload, &it.RetryCount, &it.LastError, &it.Status, &ca, &ua); err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "scan failed", nil)
+			return
+		}
+		it.Date = d.Format("2006-01-02")
+		it.CreatedAt = ca.Format(time.RFC3339)
+		it.UpdatedAt = ua.Format(time.RFC3339)
+		items = append(items, it)
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+}
+
+// Retry Offer KPI DLQ (proxy to offer service internal)
+// POST /api/v1/console/offers/kpi/retry { id? , max? }
+func (h *Handler) offerKpiRetry(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	var body struct {
+		ID  string `json:"id"`
+		Max int    `json:"max"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+		return
+	}
+	base := strings.TrimRight(os.Getenv("OFFER_URL"), "/")
+	if base == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "OFFER_URL not set", nil)
+		return
+	}
+	token := strings.TrimSpace(os.Getenv("INTERNAL_SERVICE_TOKEN"))
+	if token == "" {
+		errors.Write(w, r, http.StatusInternalServerError, "SERVER_NOT_CONFIGURED", "INTERNAL_SERVICE_TOKEN not set", nil)
+		return
+	}
+	cli := httpx.New(6 * time.Second)
+	hdr := map[string]string{"X-Service-Token": token}
+	// build URL
+	url := base + "/api/v1/offers/internal/kpi/retry"
+	vals := []string{}
+	if strings.TrimSpace(body.ID) != "" {
+		vals = append(vals, "id="+body.ID)
+	}
+	if body.Max > 0 {
+		vals = append(vals, "max="+strconv.Itoa(body.Max))
+	}
+	if len(vals) > 0 {
+		url += "?" + strings.Join(vals, "&")
+	}
+	var out map[string]any
+	if err := cli.DoJSON(r.Context(), http.MethodPost, url, nil, hdr, 1, &out); err != nil {
+		errors.Write(w, r, http.StatusBadGateway, "UPSTREAM", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(out)
+}
+
+func (h *Handler) lookupBulkOwner(ctx context.Context, opId string) string {
+	var uid string
+	_ = h.DB.QueryRow(ctx, `SELECT user_id FROM "BulkActionOperation" WHERE id=$1`, opId).Scan(&uid)
+	return strings.TrimSpace(uid)
+}
+
+// healthAggregate queries configured services' readiness endpoints and returns a unified health result.
+// Env: *_URL (base) for siterank/billing/batchopen/adscenter/offer/notifications/console; uses /readyz then /health fallback.
+// Response: { overall: ok|degraded|down, services: { name: { status, code, latency_ms, error? } }, updatedAt }
+func (h *Handler) healthAggregate(w http.ResponseWriter, r *http.Request) {
+	type svc struct{ name, url string }
+	cfgs := []svc{
+		{"siterank", strings.TrimRight(os.Getenv("SITERANK_URL"), "/")},
+		{"billing", strings.TrimRight(os.Getenv("BILLING_URL"), "/")},
+		{"batchopen", strings.TrimRight(os.Getenv("BATCHOPEN_URL"), "/")},
+		{"adscenter", strings.TrimRight(os.Getenv("ADSCENTER_URL"), "/")},
+		{"offer", strings.TrimRight(os.Getenv("OFFER_URL"), "/")},
+		{"notifications", strings.TrimRight(os.Getenv("NOTIFICATIONS_URL"), "/")},
+		{"console", strings.TrimRight(os.Getenv("CONSOLE_URL"), "/")},
+	}
+	type item struct {
+		Status  string `json:"status"`
+		Code    int    `json:"code"`
+		Latency int64  `json:"latency_ms"`
+		Error   string `json:"error,omitempty"`
+	}
+	out := map[string]item{}
+	overall := "ok"
+	for _, c := range cfgs {
+		if c.url == "" {
+			continue
+		}
+		start := time.Now()
+		ctx, cancel := context.WithTimeout(r.Context(), 1200*time.Millisecond)
+		// prefer /readyz then fallback /health
+		endpoints := []string{"/readyz", "/health"}
+		var resp *http.Response
+		var err error
+		for _, ep := range endpoints {
+			req, _ := http.NewRequestWithContext(ctx, http.MethodGet, c.url+ep, nil)
+			resp, err = httpx.New(1200 * time.Millisecond).DoRaw(req)
+			if err == nil && resp != nil {
+				break
+			}
+		}
+		cancel()
+		lat := time.Since(start).Milliseconds()
+		it := item{Latency: lat}
+		if err != nil || resp == nil {
+			it.Status = "down"
+			it.Code = 0
+			if err != nil {
+				it.Error = err.Error()
+			}
+			overall = "down"
+		} else {
+			it.Code = resp.StatusCode
+			_ = resp.Body.Close()
+			if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+				it.Status = "up"
+			} else if resp.StatusCode >= 500 {
+				it.Status = "down"
+				overall = "down"
+			} else {
+				it.Status = "degraded"
+				if overall == "ok" {
+					overall = "degraded"
+				}
+			}
+		}
+		out[c.name] = it
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"overall": overall, "services": out, "updatedAt": time.Now().UTC().Format(time.RFC3339)})
+}
+
+// exportEventsCSV streams CSV for events with same filters as getEvents.
+func (h *Handler) exportEventsCSV(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	q := r.URL.Query()
+	eventName := strings.TrimSpace(q.Get("eventName"))
+	aggType := strings.TrimSpace(q.Get("aggregateType"))
+	aggId := strings.TrimSpace(q.Get("aggregateId"))
+	sinceHours := 168
+	if v := strings.TrimSpace(q.Get("sinceHours")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= (90*24) {
+			sinceHours = n
+		}
+	}
+	limit := 1000
+	if v := strings.TrimSpace(q.Get("limit")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 5000 {
+			limit = n
+		}
+	}
+	offset := 0
+	if v := strings.TrimSpace(q.Get("offset")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n >= 0 {
+			offset = n
+		}
+	}
+
+	where := []string{"occurred_at > NOW() - ($1 || ' hours')::interval"}
+	args := []any{sinceHours}
+	argi := 2
+	if eventName != "" {
+		where = append(where, "event_name = $"+strconv.Itoa(argi))
+		args = append(args, eventName)
+		argi++
+	}
+	if aggType != "" {
+		where = append(where, "aggregate_type = $"+strconv.Itoa(argi))
+		args = append(args, aggType)
+		argi++
+	}
+	if aggId != "" {
+		where = append(where, "aggregate_id = $"+strconv.Itoa(argi))
+		args = append(args, aggId)
+		argi++
+	}
+	sqlStr := "SELECT id, event_id, event_name, aggregate_type, aggregate_id, occurred_at FROM event_store WHERE " + strings.Join(where, " AND ") + " ORDER BY occurred_at DESC LIMIT $" + strconv.Itoa(argi) + " OFFSET $" + strconv.Itoa(argi+1)
+	args = append(args, limit, offset)
+	rows, err := h.DB.Query(r.Context(), sqlStr, args...)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_FAILED", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	w.Header().Set("Content-Type", "text/csv; charset=utf-8")
+	w.Header().Set("Content-Disposition", "attachment; filename=events.csv")
+	// write header
+	_, _ = w.Write([]byte("id,eventId,eventName,aggregateType,aggregateId,occurredAt\n"))
+	for rows.Next() {
+		var id int64
+		var eid, en, at, aid string
+		var t time.Time
+		if err := rows.Scan(&id, &eid, &en, &at, &aid, &t); err == nil {
+			line := fmt.Sprintf("%d,%s,%s,%s,%s,%s\n", id, safeCSV(eid), safeCSV(en), safeCSV(at), safeCSV(aid), t.UTC().Format(time.RFC3339))
+			_, _ = w.Write([]byte(line))
+		}
+	}
+}
+
+// --- Notification Rules (admin) ---
+
+// rulesHandler handles /api/v1/console/notifications/rules (GET list, POST create)
+func (h *Handler) rulesHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		// filters: service, metric, scope, enabled
+		q := r.URL.Query()
+		service := strings.TrimSpace(q.Get("service"))
+		metric := strings.TrimSpace(q.Get("metric"))
+		scope := strings.TrimSpace(q.Get("scope"))
+		enabled := strings.TrimSpace(q.Get("enabled"))
+		wh := []string{}
+		args := []any{}
+		if service != "" {
+			wh = append(wh, fmt.Sprintf("service=$%d", len(args)+1))
+			args = append(args, service)
+		}
+		if metric != "" {
+			wh = append(wh, fmt.Sprintf("metric=$%d", len(args)+1))
+			args = append(args, metric)
+		}
+		if scope != "" {
+			wh = append(wh, fmt.Sprintf("scope=$%d", len(args)+1))
+			args = append(args, scope)
+		}
+		if enabled != "" {
+			wh = append(wh, fmt.Sprintf("enabled=$%d", len(args)+1))
+			args = append(args, enabled == "true")
+		}
+		sql := "SELECT id,scope,COALESCE(user_id,''),service,metric,comparator,threshold,window_sec,enabled,COALESCE(params,'{}')::text,created_at,updated_at FROM notification_rules"
+		if len(wh) > 0 {
+			sql += " WHERE " + strings.Join(wh, " AND ")
+		}
+		sql += " ORDER BY created_at DESC LIMIT 500"
+		rows, err := h.DB.Query(r.Context(), sql, args...)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+			return
+		}
+		defer rows.Close()
+		type item struct {
+			ID                                         int64 `json:"id"`
+			Scope, UserID, Service, Metric, Comparator string
+			Threshold                                  float64
+			WindowSec                                  int
+			Enabled                                    bool
+			Params                                     string
+			CreatedAt, UpdatedAt                       time.Time
+		}
+		var items []item
+		for rows.Next() {
+			var it item
+			if err := rows.Scan(&it.ID, &it.Scope, &it.UserID, &it.Service, &it.Metric, &it.Comparator, &it.Threshold, &it.WindowSec, &it.Enabled, &it.Params, &it.CreatedAt, &it.UpdatedAt); err != nil {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "scan failed", nil)
+				return
+			}
+			items = append(items, it)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+		return
+	case http.MethodPost:
+		var body struct {
+			Scope, UserID, Service, Metric, Comparator string
+			Threshold                                  float64
+			WindowSec                                  int
+			Enabled                                    *bool
+			Params                                     map[string]any
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+			return
+		}
+		if strings.TrimSpace(body.Service) == "" || strings.TrimSpace(body.Metric) == "" {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "service/metric required", nil)
+			return
+		}
+		if body.Comparator == "" {
+			body.Comparator = "gt"
+		}
+		if body.WindowSec <= 0 {
+			body.WindowSec = 300
+		}
+		en := true
+		if body.Enabled != nil {
+			en = *body.Enabled
+		}
+		pb, _ := json.Marshal(body.Params)
+		var id int64
+		// First try inserting with common columns
+		err := h.DB.QueryRow(r.Context(), `
+            INSERT INTO notification_rules(scope, user_id, service, metric, comparator, threshold, window_sec, enabled, params, created_at, updated_at)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,NOW(),NOW()) RETURNING id
+        `, strings.TrimSpace(body.Scope), strings.TrimSpace(body.UserID), strings.TrimSpace(body.Service), strings.TrimSpace(body.Metric), strings.TrimSpace(body.Comparator), body.Threshold, body.WindowSec, en, string(pb)).Scan(&id)
+		if err != nil {
+			// Preview fallback: some schemas require non-null event_type. Detect and include default value.
+			var exists bool
+			_ = h.DB.QueryRow(r.Context(), `SELECT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='notification_rules' AND column_name='event_type')`).Scan(&exists)
+			if exists {
+				err2 := h.DB.QueryRow(r.Context(), `
+                    INSERT INTO notification_rules(scope, user_id, service, metric, comparator, threshold, window_sec, enabled, params, event_type, created_at, updated_at)
+                    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,NOW(),NOW()) RETURNING id
+                `, strings.TrimSpace(body.Scope), strings.TrimSpace(body.UserID), strings.TrimSpace(body.Service), strings.TrimSpace(body.Metric), strings.TrimSpace(body.Comparator), body.Threshold, body.WindowSec, en, string(pb), "SLO").Scan(&id)
+				if err2 != nil {
+					errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "insert failed", map[string]string{"error": err2.Error()})
+					return
+				}
+			} else {
+				errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "insert failed", map[string]string{"error": err.Error()})
+				return
+			}
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "id": id})
+		return
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+}
+
+// rulesTree handles /api/v1/console/notifications/rules/{id} (GET, PUT, DELETE)
+func (h *Handler) rulesTree(w http.ResponseWriter, r *http.Request) {
+	path := strings.TrimPrefix(r.URL.Path, "/api/v1/console/notifications/rules/")
+	id := strings.TrimSpace(path)
+	if id == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	switch r.Method {
+	case http.MethodGet:
+		var rec struct {
+			ID                                         int64
+			Scope, UserID, Service, Metric, Comparator string
+			Threshold                                  float64
+			WindowSec                                  int
+			Enabled                                    bool
+			Params                                     string
+			CreatedAt, UpdatedAt                       time.Time
+		}
+		err := h.DB.QueryRow(r.Context(), `SELECT id,scope,COALESCE(user_id,''),service,metric,comparator,threshold,window_sec,enabled,COALESCE(params,'{}')::text,created_at,updated_at FROM notification_rules WHERE id=$1`, id).
+			Scan(&rec.ID, &rec.Scope, &rec.UserID, &rec.Service, &rec.Metric, &rec.Comparator, &rec.Threshold, &rec.WindowSec, &rec.Enabled, &rec.Params, &rec.CreatedAt, &rec.UpdatedAt)
+		if err != nil {
+			errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "rule not found", nil)
+			return
+		}
+		_ = json.NewEncoder(w).Encode(rec)
+		return
+	case http.MethodPut:
+		var body struct {
+			Scope, UserID, Service, Metric, Comparator string
+			Threshold                                  *float64
+			WindowSec                                  *int
+			Enabled                                    *bool
+			Params                                     map[string]any
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+			return
+		}
+		// Build dynamic update
+		sets := []string{"updated_at=NOW()"}
+		args := []any{}
+		if strings.TrimSpace(body.Scope) != "" {
+			sets = append(sets, fmt.Sprintf("scope=$%d", len(args)+1))
+			args = append(args, strings.TrimSpace(body.Scope))
+		}
+		if body.UserID != "" {
+			sets = append(sets, fmt.Sprintf("user_id=$%d", len(args)+1))
+			args = append(args, strings.TrimSpace(body.UserID))
+		}
+		if strings.TrimSpace(body.Service) != "" {
+			sets = append(sets, fmt.Sprintf("service=$%d", len(args)+1))
+			args = append(args, strings.TrimSpace(body.Service))
+		}
+		if strings.TrimSpace(body.Metric) != "" {
+			sets = append(sets, fmt.Sprintf("metric=$%d", len(args)+1))
+			args = append(args, strings.TrimSpace(body.Metric))
+		}
+		if strings.TrimSpace(body.Comparator) != "" {
+			sets = append(sets, fmt.Sprintf("comparator=$%d", len(args)+1))
+			args = append(args, strings.TrimSpace(body.Comparator))
+		}
+		if body.Threshold != nil {
+			sets = append(sets, fmt.Sprintf("threshold=$%d", len(args)+1))
+			args = append(args, *body.Threshold)
+		}
+		if body.WindowSec != nil {
+			sets = append(sets, fmt.Sprintf("window_sec=$%d", len(args)+1))
+			args = append(args, *body.WindowSec)
+		}
+		if body.Enabled != nil {
+			sets = append(sets, fmt.Sprintf("enabled=$%d", len(args)+1))
+			args = append(args, *body.Enabled)
+		}
+		if body.Params != nil {
+			pb, _ := json.Marshal(body.Params)
+			sets = append(sets, fmt.Sprintf("params=$%d::jsonb", len(args)+1))
+			args = append(args, string(pb))
+		}
+		args = append(args, id)
+		sql := fmt.Sprintf("UPDATE notification_rules SET %s WHERE id=$%d", strings.Join(sets, ","), len(args))
+		ct, err := h.DB.Exec(r.Context(), sql, args...)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "update failed", map[string]string{"error": err.Error()})
+			return
+		}
+		if ct.RowsAffected() == 0 {
+			errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "rule not found", nil)
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "id": id})
+		return
+	case http.MethodDelete:
+		ct, err := h.DB.Exec(r.Context(), `DELETE FROM notification_rules WHERE id=$1`, id)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "delete failed", map[string]string{"error": err.Error()})
+			return
+		}
+		if ct.RowsAffected() == 0 {
+			errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "rule not found", nil)
+			return
+		}
+		w.WriteHeader(http.StatusNoContent)
+		return
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+}
+
+// rulesEvaluate evaluates enabled rules against current snapshot and emits alerts into user_notifications.
+// POST /api/v1/console/notifications/rules/evaluate?force=1
+func (h *Handler) rulesEvaluate(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	// fetch snapshot (cached unless force=1)
+	var snap map[string]any
+	var ok bool
+	if strings.TrimSpace(r.URL.Query().Get("force")) == "1" {
+		// recompute by calling getSLO backend logic via local HTTP (reuse code path)
+		// to keep it simple, clear cache then call getSLO via function style isn't straightforward; re-run computation inline like getSLO
+		// fallback: call HTTP GET /api/v1/console/slo?force=1
+		req, _ := http.NewRequestWithContext(r.Context(), http.MethodGet, "/api/v1/console/slo?force=1", nil)
+		rr := httptestResponse()
+		h.getSLO(rr, req)
+		if rr.status == 200 {
+			_ = json.Unmarshal(rr.buf.Bytes(), &snap)
+		}
+	} else {
+		snap, ok = getSLOCache()
+		if !ok {
+			req, _ := http.NewRequestWithContext(r.Context(), http.MethodGet, "/api/v1/console/slo?force=1", nil)
+			rr := httptestResponse()
+			h.getSLO(rr, req)
+			if rr.status == 200 {
+				_ = json.Unmarshal(rr.buf.Bytes(), &snap)
+			}
+		}
+	}
+	if snap == nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "SLO snapshot unavailable", nil)
+		return
+	}
+	services, _ := snap["services"].(map[string]any)
+	// load rules
+	rows, err := h.DB.Query(r.Context(), `SELECT id, scope, COALESCE(user_id,''), service, metric, comparator, threshold, window_sec, enabled FROM notification_rules WHERE enabled=true LIMIT 1000`)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query rules failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type rule struct {
+		id                                int64
+		scope, user, service, metric, cmp string
+		th                                float64
+		win                               int
+	}
+	var rules []rule
+	for rows.Next() {
+		var x rule
+		if err := rows.Scan(&x.id, &x.scope, &x.user, &x.service, &x.metric, &x.cmp, &x.th, &x.win, new(bool)); err == nil {
+			rules = append(rules, x)
+		}
+	}
+	triggered := 0
+	for _, rl := range rules {
+		val := 0.0
+		switch strings.ToLower(rl.metric) {
+		case "p95_latency_ms":
+			if s, ok := services[rl.service].(map[string]any); ok {
+				if v, ok := s["p95"].(float64); ok {
+					val = v
+				}
+			}
+		case "error_rate":
+			if s, ok := services[rl.service].(map[string]any); ok {
+				if v, ok := s["errorRate"].(float64); ok {
+					val = v
+				}
+			}
+		case "dlq_size":
+			if rl.service == "offer" { // minimal: Offer KPI DLQ
+				_ = h.DB.QueryRow(r.Context(), `SELECT COUNT(1) FROM "OfferKpiDeadLetter" WHERE status<>'resolved'`).Scan(&val)
+			}
+		default:
+			continue
+		}
+		if evalCmp(val, rl.cmp, rl.th) {
+			if h.emitAlertOnce(r.Context(), rl.service, rl.metric, rl.cmp, rl.th, val) {
+				triggered++
+			}
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "triggered": triggered})
+}
+
+func evalCmp(val float64, cmp string, th float64) bool {
+	switch strings.ToLower(strings.TrimSpace(cmp)) {
+	case "gt":
+		return val > th
+	case "ge":
+		return val >= th
+	case "lt":
+		return val < th
+	case "le":
+		return val <= th
+	case "eq":
+		return val == th
+	case "ne":
+		return val != th
+	default:
+		return false
+	}
+}
+
+// emitAlertOnce writes an ALERT into user_notifications with simple suppression within last 10 minutes.
+func (h *Handler) emitAlertOnce(ctx context.Context, svc, metric, cmp string, th, value float64) bool {
+	ttl := 10 // minutes
+	var exists int
+	_ = h.DB.QueryRow(ctx, `SELECT COUNT(1) FROM user_notifications WHERE created_at > NOW() - ($1::int) * interval '1 minutes' AND type='ALERT' AND title ILIKE $2`, ttl, "%"+svc+"."+metric+"%").Scan(&exists)
+	if exists > 0 {
+		return false
+	}
+	title := fmt.Sprintf("SLO 告警：%s.%s %s %.2f，当前值 %.2f", svc, metric, cmp, th, value)
+	msg := map[string]any{"severity": "warn", "category": "slo", "service": svc, "metric": metric, "comparator": cmp, "threshold": th, "value": value}
+	b, _ := json.Marshal(msg)
+	// use 'admin' as user scope for console alerts aggregation
+	_, err := h.DB.Exec(ctx, `INSERT INTO user_notifications(user_id,type,title,message,created_at) VALUES ($1,'ALERT',$2,$3,NOW())`, "admin", title, string(b))
+	return err == nil
+}
+
+// minimal ResponseRecorder for internal call reuse
+type rrw struct {
+	buf    bytes.Buffer
+	header http.Header
+	status int
+}
+
+func httptestResponse() *rrw               { return &rrw{header: http.Header{}, status: 200} }
+func (r *rrw) Header() http.Header         { return r.header }
+func (r *rrw) Write(b []byte) (int, error) { return r.buf.Write(b) }
+func (r *rrw) WriteHeader(code int)        { r.status = code }
+
+func safeCSV(s string) string {
+	if strings.ContainsAny(s, ",\n\r\"") {
+		s = strings.ReplaceAll(s, "\"", "\"\"")
+		return "\"" + s + "\""
+	}
+	return s
+}
+
+// getAlerts returns recent warn/error notifications across users (admin-only).
+// GET /api/v1/console/alerts?level=warn|error&sinceHours=168&limit=200
+func (h *Handler) getAlerts(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	q := r.URL.Query()
+	level := strings.ToLower(strings.TrimSpace(q.Get("level")))
+	sinceHours := 168
+	if v := strings.TrimSpace(q.Get("sinceHours")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= (90*24) {
+			sinceHours = n
+		}
+	}
+	limit := 200
+	if v := strings.TrimSpace(q.Get("limit")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 1000 {
+			limit = n
+		}
+	}
+	// Build SQL with inlined integer to avoid driver type inference issues in preview
+	base := fmt.Sprintf(`SELECT id, user_id, type, title, message, created_at FROM user_notifications WHERE created_at > NOW() - (%d) * interval '1 hours'`, sinceHours)
+	if level == "error" {
+		base += ` AND message ILIKE '%"severity":"error"%'`
+	}
+	if level == "warn" || level == "warning" {
+		base += ` AND message ILIKE '%"severity":"warn"%'`
+	}
+	base += fmt.Sprintf(` ORDER BY id DESC LIMIT %d`, limit)
+	rows, err := h.DB.Query(r.Context(), base)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		ID        string    `json:"id"`
+		UserID    string    `json:"userId"`
+		Type      string    `json:"type"`
+		Title     string    `json:"title"`
+		Severity  string    `json:"severity"`
+		Category  string    `json:"category"`
+		Summary   string    `json:"summary"`
+		CreatedAt time.Time `json:"createdAt"`
+	}
+	out := make([]item, 0, limit)
+	for rows.Next() {
+		var id int64
+		var userID, typ, title, message string
+		var createdAt time.Time
+		if err := rows.Scan(&id, &userID, &typ, &title, &message, &createdAt); err != nil {
+			continue
+		}
+		sev, cat, sum := parseNotifMessage(message)
+		out = append(out, item{ID: strconv.FormatInt(id, 10), UserID: userID, Type: typ, Title: title, Severity: sev, Category: cat, Summary: sum, CreatedAt: createdAt})
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": out})
+}
+
+// getIncidents aggregates warn/error counts by day and type over last N days.
+// GET /api/v1/console/incidents?days=7
+func (h *Handler) getIncidents(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	days := 7
+	if v := strings.TrimSpace(r.URL.Query().Get("days")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 90 {
+			days = n
+		}
+	}
+	sql := fmt.Sprintf(`SELECT id, type, title, message, created_at FROM user_notifications WHERE created_at > NOW() - (%d) * interval '1 days' ORDER BY created_at ASC`, days)
+	rows, err := h.DB.Query(r.Context(), sql)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type bucket struct {
+		Date  string `json:"date"`
+		Error int    `json:"error"`
+		Warn  int    `json:"warn"`
+	}
+	agg := map[string]*bucket{}
+	for rows.Next() {
+		var id int64
+		var typ, title, message string
+		var createdAt time.Time
+		if err := rows.Scan(&id, &typ, &title, &message, &createdAt); err != nil {
+			continue
+		}
+		date := createdAt.UTC().Format("2006-01-02")
+		if _, ok := agg[date]; !ok {
+			agg[date] = &bucket{Date: date}
+		}
+		sev, _, _ := parseNotifMessage(message)
+		if sev == "error" {
+			agg[date].Error++
+		} else if sev == "warn" {
+			agg[date].Warn++
+		}
+	}
+	out := make([]bucket, 0, len(agg))
+	for _, b := range agg {
+		out = append(out, *b)
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].Date < out[j].Date })
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"days": out})
+}
+
+func parseNotifMessage(msg string) (severity, category, summary string) {
+	severity = "info"
+	category = "general"
+	summary = ""
+	if strings.TrimSpace(msg) == "" {
+		return
+	}
+	var m map[string]any
+	if err := json.Unmarshal([]byte(msg), &m); err == nil {
+		if v, ok := m["severity"].(string); ok {
+			severity = strings.ToLower(v)
+		}
+		if v, ok := m["category"].(string); ok {
+			category = strings.ToLower(v)
+		}
+		if v, ok := m["summary"].(string); ok {
+			summary = v
+		}
+		if summary == "" {
+			if data, ok := m["data"].(map[string]any); ok {
+				if v, ok := data["finalUrl"].(string); ok {
+					summary = v
+				}
+			}
+		}
+	} else {
+		if strings.Contains(msg, "\"severity\":\"error\"") {
+			severity = "error"
+		} else if strings.Contains(msg, "\"severity\":\"warn\"") {
+			severity = "warn"
+		}
+	}
+	return
+}
+
+func round2(v float64) float64 { return math.Round(v*100) / 100 }
+
+// --- Config APIs ---
+// Table: console_config(key TEXT PRIMARY KEY, value JSONB NOT NULL, updated_at TIMESTAMPTZ DEFAULT NOW())
+func (h *Handler) ensureConfigDDL(ctx context.Context) {
+	_, _ = h.DB.Exec(ctx, `CREATE TABLE IF NOT EXISTS console_config (key TEXT PRIMARY KEY, value JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`)
+}
+func (h *Handler) ensureConfigHistoryDDL(ctx context.Context) {
+	_, _ = h.DB.Exec(ctx, `CREATE TABLE IF NOT EXISTS console_config_history (id BIGSERIAL PRIMARY KEY, key TEXT NOT NULL, value JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL, user_id TEXT)`)
+}
+
+// configTree handles /api/v1/console/config/{key}
+//
+//	GET -> { value, updatedAt } 404 if not exist
+//	PUT body: { value: any } -> upsert
+func (h *Handler) configTree(w http.ResponseWriter, r *http.Request) {
+	const prefix = "/api/v1/console/config/"
+	if len(r.URL.Path) <= len(prefix) {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "config key required", nil)
+		return
+	}
+	key := strings.Trim(r.URL.Path[len(prefix):], "/")
+	if key == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "config key required", nil)
+		return
+	}
+	h.ensureConfigDDL(r.Context())
+	switch r.Method {
+	case http.MethodGet:
+		var val string
+		var updated time.Time
+		err := h.DB.QueryRow(r.Context(), `SELECT value::text, updated_at FROM console_config WHERE key=$1`, key).Scan(&val, &updated)
+		if err != nil {
+			errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "config not found", nil)
+			return
+		}
+		var anyv any
+		_ = json.Unmarshal([]byte(val), &anyv)
+		_ = json.NewEncoder(w).Encode(map[string]any{"value": anyv, "updatedAt": updated})
+		return
+	case http.MethodPut:
+		var body struct {
+			Value any `json:"value"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+			return
+		}
+		b, _ := json.Marshal(body.Value)
+		// ensure history table
+		h.ensureConfigDDL(r.Context())
+		h.ensureConfigHistoryDDL(r.Context())
+		// read old for history
+		var old string
+		_ = h.DB.QueryRow(r.Context(), `SELECT value::text FROM console_config WHERE key=$1`, key).Scan(&old)
+		_, err := h.DB.Exec(r.Context(), `INSERT INTO console_config(key,value,updated_at) VALUES ($1,$2::jsonb,NOW()) ON CONFLICT (key) DO UPDATE SET value=EXCLUDED.value, updated_at=NOW()`, key, string(b))
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "upsert failed", map[string]string{"error": err.Error()})
+			return
+		}
+		// write history (store previous if exists else current)
+		uid, _ := auth.ExtractUserID(r)
+		if old != "" {
+			_, _ = h.DB.Exec(r.Context(), `INSERT INTO console_config_history(key, value, updated_at, user_id) VALUES ($1,$2::jsonb,NOW(),$3)`, key, old, uid)
+		} else {
+			_, _ = h.DB.Exec(r.Context(), `INSERT INTO console_config_history(key, value, updated_at, user_id) VALUES ($1,$2::jsonb,NOW(),$3)`, key, string(b), uid)
+		}
+		// admin audit
+		h.ensureAuditDDL(r.Context())
+		_ = h.recordAdminAudit(r.Context(), uid, "config.update", key, map[string]any{"length": len(b)})
+		_ = json.NewEncoder(w).Encode(map[string]any{"status": "ok", "key": key})
+		return
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+}
+
+// configList lists all keys in console_config
+func (h *Handler) configList(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	h.ensureConfigDDL(r.Context())
+	rows, err := h.DB.Query(r.Context(), `SELECT key, updated_at FROM console_config ORDER BY key ASC`)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		Key       string    `json:"key"`
+		UpdatedAt time.Time `json:"updatedAt"`
+	}
+	var items []item
+	for rows.Next() {
+		var k string
+		var t time.Time
+		if rows.Scan(&k, &t) == nil {
+			items = append(items, item{Key: k, UpdatedAt: t})
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+}
+
+// GET /api/v1/console/config/history?key=...
+// configHistory returns config change history with pagination support
+// GET /api/v1/console/config/history?key=rate_limit&page=1&pageSize=50
+func (h *Handler) configHistory(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+
+	h.ensureConfigHistoryDDL(r.Context())
+
+	// 解析查询参数
+	key := strings.TrimSpace(r.URL.Query().Get("key"))
+
+	page := 1
+	if v := r.URL.Query().Get("page"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			page = n
+		}
+	}
+
+	pageSize := 50
+	if v := r.URL.Query().Get("pageSize"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 200 {
+			pageSize = n
+		}
+	}
+
+	offset := (page - 1) * pageSize
+
+	// 查询历史记录
+	var rows pgx.Rows
+	var err error
+	var totalCount int
+
+	if key != "" {
+		// 先查询总数
+		err = h.DB.QueryRow(r.Context(), `
+            SELECT COUNT(*) FROM console_config_history WHERE key=$1
+        `, key).Scan(&totalCount)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "QUERY_ERROR", "Failed to count history", map[string]string{"error": err.Error()})
+			return
+		}
+
+		// 查询数据
+		rows, err = h.DB.Query(r.Context(), `
+            SELECT id, key, value::text, updated_at, COALESCE(user_id,'')
+            FROM console_config_history
+            WHERE key=$1
+            ORDER BY id DESC
+            LIMIT $2 OFFSET $3
+        `, key, pageSize, offset)
+	} else {
+		// 先查询总数
+		err = h.DB.QueryRow(r.Context(), `SELECT COUNT(*) FROM console_config_history`).Scan(&totalCount)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "QUERY_ERROR", "Failed to count history", map[string]string{"error": err.Error()})
+			return
+		}
+
+		// 查询所有历史记录
+		rows, err = h.DB.Query(r.Context(), `
+            SELECT id, key, value::text, updated_at, COALESCE(user_id,'')
+            FROM console_config_history
+            ORDER BY id DESC
+            LIMIT $1 OFFSET $2
+        `, pageSize, offset)
+	}
+
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_ERROR", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+
+	type ConfigHistoryItem struct {
+		ID        int64     `json:"id"`
+		Key       string    `json:"key"`
+		Value     string    `json:"value"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		UserID    string    `json:"userId"`
+	}
+
+	var items []ConfigHistoryItem
+	for rows.Next() {
+		var it ConfigHistoryItem
+		if err := rows.Scan(&it.ID, &it.Key, &it.Value, &it.UpdatedAt, &it.UserID); err == nil {
+			items = append(items, it)
+		}
+	}
+
+	if items == nil {
+		items = []ConfigHistoryItem{}
+	}
+
+	totalPages := (totalCount + pageSize - 1) / pageSize
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"history":    items,
+		"totalPages": totalPages,
+		"totalCount": totalCount,
+	})
+}
+
+// --- Admin audit ---
+func (h *Handler) ensureAuditDDL(ctx context.Context) {
+	_, _ = h.DB.Exec(ctx, `CREATE TABLE IF NOT EXISTS admin_audit (id BIGSERIAL PRIMARY KEY, user_id TEXT NOT NULL, action TEXT NOT NULL, target TEXT NOT NULL, payload JSONB NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`)
+}
+func (h *Handler) recordAdminAudit(ctx context.Context, userID, action, target string, payload map[string]any) error {
+	b, _ := json.Marshal(payload)
+	_, err := h.DB.Exec(ctx, `INSERT INTO admin_audit(user_id, action, target, payload) VALUES ($1,$2,$3,$4::jsonb)`, userID, action, target, string(b))
+	return err
+}
+
+// GET /api/v1/console/security/audits?limit=100
+func (h *Handler) adminAuditList(w http.ResponseWriter, r *http.Request) {
+	h.ensureAuditDDL(r.Context())
+	lim := 100
+	if v := strings.TrimSpace(r.URL.Query().Get("limit")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 && n <= 1000 {
+			lim = n
+		}
+	}
+	rows, err := h.DB.Query(r.Context(), `SELECT user_id, action, target, payload::text, created_at FROM admin_audit ORDER BY id DESC LIMIT $1`, lim)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	type item struct {
+		UserID, Action, Target, Payload string
+		CreatedAt                       time.Time
+	}
+	var items []item
+	for rows.Next() {
+		var it item
+		if rows.Scan(&it.UserID, &it.Action, &it.Target, &it.Payload, &it.CreatedAt) == nil {
+			items = append(items, it)
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+}
+
+// --- API Keys (admin) ---
+// DDL: api_keys(id TEXT PRIMARY KEY, name TEXT, token_hash TEXT, scopes TEXT[], rpm INT, created_at, revoked_at)
+func (h *Handler) ensureAPIKeysDDL(ctx context.Context) {
+	_, _ = h.DB.Exec(ctx, `CREATE TABLE IF NOT EXISTS api_keys (id TEXT PRIMARY KEY, name TEXT NOT NULL, token_hash TEXT NOT NULL, scopes TEXT[] NOT NULL DEFAULT '{}', rpm INT NOT NULL DEFAULT 0, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), revoked_at TIMESTAMPTZ)`)
+}
+func randToken(n int) string    { b := make([]byte, n); _, _ = rand.Read(b); return hex.EncodeToString(b) }
+func sha256Hex(s string) string { sum := sha256.Sum256([]byte(s)); return hex.EncodeToString(sum[:]) }
+
+// GET /api/v1/console/apikeys -> list; POST -> create
+func (h *Handler) apiKeysListCreate(w http.ResponseWriter, r *http.Request) {
+	h.ensureAPIKeysDDL(r.Context())
+	switch r.Method {
+	case http.MethodGet:
+		rows, err := h.DB.Query(r.Context(), `SELECT id, name, scopes, rpm, created_at, revoked_at FROM api_keys ORDER BY created_at DESC`)
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "query failed", map[string]string{"error": err.Error()})
+			return
+		}
+		defer rows.Close()
+		type item struct {
+			ID, Name  string     `json:"id","name"`
+			Scopes    []string   `json:"scopes"`
+			RPM       int        `json:"rpm"`
+			CreatedAt time.Time  `json:"createdAt"`
+			RevokedAt *time.Time `json:"revokedAt"`
+		}
+		var items []item
+		for rows.Next() {
+			var it item
+			var scopes []string
+			var ra *time.Time
+			if rows.Scan(&it.ID, &it.Name, &scopes, &it.RPM, &it.CreatedAt, &ra) == nil {
+				it.Scopes = scopes
+				it.RevokedAt = ra
+				items = append(items, it)
+			}
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+		return
+	case http.MethodPost:
+		var body struct {
+			Name   string   `json:"name"`
+			Scopes []string `json:"scopes"`
+			RPM    int      `json:"rpm"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid body", nil)
+			return
+		}
+		name := strings.TrimSpace(body.Name)
+		if name == "" {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "name required", nil)
+			return
+		}
+		if body.Scopes == nil {
+			body.Scopes = []string{}
+		}
+		token := randToken(24)
+		th := sha256Hex(token)
+		id := randToken(8)
+		if _, err := h.DB.Exec(r.Context(), `INSERT INTO api_keys(id, name, token_hash, scopes, rpm) VALUES ($1,$2,$3,$4,$5)`, id, name, th, body.Scopes, body.RPM); err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "insert failed", map[string]string{"error": err.Error()})
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"id": id, "name": name, "token": token})
+		return
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+}
+
+// POST /api/v1/console/apikeys/{id}/revoke
+func (h *Handler) apiKeysDetail(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+		return
+	}
+	const prefix = "/api/v1/console/apikeys/"
+	if len(r.URL.Path) <= len(prefix) {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "id required", nil)
+		return
+	}
+	rest := r.URL.Path[len(prefix):]
+	id := rest
+	action := ""
+	if i := strings.Index(rest, "/"); i >= 0 {
+		id = rest[:i]
+		action = rest[i+1:]
+	}
+	if id == "" || action != "revoke" {
+		errors.Write(w, r, http.StatusNotFound, "NOT_FOUND", "unsupported action", nil)
+		return
+	}
+	h.ensureAPIKeysDDL(r.Context())
+	if _, err := h.DB.Exec(r.Context(), `UPDATE api_keys SET revoked_at=NOW() WHERE id=$1 AND revoked_at IS NULL`, id); err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "INTERNAL", "revoke failed", map[string]string{"error": err.Error()})
+		return
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"status": "revoked", "id": id})
+}
+
+// POST /api/v1/console/apikeys/validate (internal)
+// Headers: X-Service-Token == INTERNAL_SERVICE_TOKEN, X-API-Key (or token in body)
+// Optional: scope query to check inclusion
+func (h *Handler) apiKeysValidate(w http.ResponseWriter, r *http.Request) {
+	tok := strings.TrimSpace(r.Header.Get("X-Service-Token"))
+	if tok == "" || tok != strings.TrimSpace(os.Getenv("INTERNAL_SERVICE_TOKEN")) {
+		errors.Write(w, r, http.StatusForbidden, "FORBIDDEN", "invalid service token", nil)
+		return
+	}
+	// Read token from header or body
+	apiKey := strings.TrimSpace(r.Header.Get("X-API-Key"))
+	if apiKey == "" {
+		var body struct {
+			Token string `json:"token"`
+		}
+		_ = json.NewDecoder(r.Body).Decode(&body)
+		apiKey = strings.TrimSpace(body.Token)
+	}
+	if apiKey == "" {
+		errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "token required", nil)
+		return
+	}
+	scopeCheck := strings.TrimSpace(r.URL.Query().Get("scope"))
+	h.ensureAPIKeysDDL(r.Context())
+	th := sha256Hex(apiKey)
+	var id, name string
+	var rpm int
+	var scopes []string
+	var revoked *time.Time
+	err := h.DB.QueryRow(r.Context(), `SELECT id, name, scopes, rpm, revoked_at FROM api_keys WHERE token_hash=$1`, th).Scan(&id, &name, &scopes, &rpm, &revoked)
+	if err != nil || id == "" || revoked != nil {
+		_ = json.NewEncoder(w).Encode(map[string]any{"ok": false})
+		return
+	}
+	ok := true
+	if scopeCheck != "" {
+		ok = false
+		for _, s := range scopes {
+			if s == scopeCheck {
+				ok = true
+				break
+			}
+		}
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"ok": ok, "id": id, "name": name, "scopes": scopes, "rpm": rpm})
+}
+
+// computeFromMetrics parses Prometheus exposition to extract http_request_duration_seconds buckets and errors.
+func computeFromMetrics(text, service string) (p95 float64, total int64, errorRate float64, notes map[string]float64) {
+	// http_request_duration_seconds_bucket{service="X",le="Y",...} value
+	// http_requests_total{service="X",status="OK"|...} count
+	type bucket struct {
+		le    float64
+		count int64
+	}
+	buckets := []bucket{}
+	var totalReq, errorReq int64
+	lines := strings.Split(text, "\n")
+	for _, ln := range lines {
+		if strings.HasPrefix(ln, "http_request_duration_seconds_bucket") {
+			if !strings.Contains(ln, "service=\""+service+"\"") {
+				continue
+			}
+			// extract le
+			le := extractLabelFloat(ln, "le")
+			val := extractValueInt(ln)
+			if le > 0 && val >= 0 {
+				buckets = append(buckets, bucket{le: le, count: val})
+			}
+		} else if strings.HasPrefix(ln, "http_requests_total") {
+			if !strings.Contains(ln, "service=\""+service+"\"") {
+				continue
+			}
+			val := extractValueInt(ln)
+			totalReq += val
+			// consider non-OK as error
+			if !strings.Contains(ln, "status=\"OK\"") {
+				errorReq += val
+			}
+		} else if service == "siterank" && strings.HasPrefix(ln, "siterank_sw_fetch_ms_bucket") {
+			// include Some domain-specific P95 approximations in notes
+		}
+	}
+	// compute p95 by cumulative buckets
+	p95 = 0
+	total = totalReq
+	errorRate = 0
+	if totalReq > 0 {
+		errorRate = float64(errorReq) / float64(totalReq)
+	}
+	if len(buckets) > 0 {
+		sort.Slice(buckets, func(i, j int) bool { return buckets[i].le < buckets[j].le })
+		// convert seconds to ms for UI readability
+		target := int64(float64(totalReq) * 0.95)
+		var cur int64
+		for _, b := range buckets {
+			cur = b.count
+			if cur >= target {
+				p95 = b.le * 1000
+				break
+			}
+		}
+	}
+	// optional domain notes: siterank histograms
+	notes = map[string]float64{}
+	if service == "siterank" {
+		// compute p95 for custom ms histograms (bucket values in plain count format)
+		notes["resolve_nav_p95_ms"] = parseHistP95(text, "siterank_resolve_nav_ms_bucket")
+		notes["sw_fetch_p95_ms"] = parseHistP95(text, "siterank_sw_fetch_ms_bucket")
+		notes["ai_score_p95_ms"] = parseHistP95(text, "siterank_ai_score_ms_bucket")
+	}
+	return
+}
+
+func extractLabelFloat(ln, key string) float64 {
+	// key="val"
+	i := strings.Index(ln, key+"=\"")
+	if i < 0 {
+		return 0
+	}
+	j := strings.Index(ln[i+len(key)+2:], "\"")
+	if j < 0 {
+		return 0
+	}
+	v := ln[i+len(key)+2 : i+len(key)+2+j]
+	f, _ := strconv.ParseFloat(v, 64)
+	return f
+}
+func extractValueInt(ln string) int64 {
+	// value is last token
+	parts := strings.Fields(ln)
+	if len(parts) == 0 {
+		return 0
+	}
+	v := parts[len(parts)-1]
+	f, _ := strconv.ParseFloat(v, 64)
+	if f < 0 {
+		return 0
+	}
+	return int64(f)
+}
+func parseHistP95(text, metric string) float64 {
+	type bucket struct {
+		le    float64
+		count int64
+	}
+	buckets := []bucket{}
+	var total int64
+	for _, ln := range strings.Split(text, "\n") {
+		if !strings.HasPrefix(ln, metric) {
+			continue
+		}
+		le := extractLabelFloat(ln, "le")
+		val := extractValueInt(ln)
+		if le > 0 {
+			buckets = append(buckets, bucket{le: le, count: val})
+			total = val
+		}
+	}
+	if len(buckets) == 0 || total == 0 {
+		return 0
+	}
+	sort.Slice(buckets, func(i, j int) bool { return buckets[i].le < buckets[j].le })
+	target := int64(float64(total) * 0.95)
+	for _, b := range buckets {
+		if b.count >= target {
+			return b.le
+		}
+	}
+	return buckets[len(buckets)-1].le
+}
+
+// adminPolicy returns ADMIN allow rules from Secret Manager JSON.
+// Env: ADMIN_POLICY_SECRET = projects/<pid>/secrets/<name>/versions/latest
+// JSON format: { "emails": ["a@b.com"], "uids": ["uid1"] }
+func (h *Handler) adminPolicy(w http.ResponseWriter, r *http.Request) {
+	name := strings.TrimSpace(os.Getenv("ADMIN_POLICY_SECRET"))
+	if name == "" {
+		errors.Write(w, r, http.StatusBadRequest, "SERVER_NOT_CONFIGURED", "ADMIN_POLICY_SECRET not set", nil)
+		return
+	}
+	ctx := r.Context()
+	cli, err := secretmanager.NewClient(ctx)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "SECRET_CLIENT", err.Error(), nil)
+		return
+	}
+	defer cli.Close()
+	switch r.Method {
+	case http.MethodGet:
+		res, err := cli.AccessSecretVersion(ctx, &secretmanagerpb.AccessSecretVersionRequest{Name: name})
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "SECRET_ACCESS", err.Error(), nil)
+			return
+		}
+		var js map[string]any
+		b := res.Payload.GetData()
+		if json.Unmarshal(b, &js) == nil {
+			_ = json.NewEncoder(w).Encode(map[string]any{"policy": js, "name": name})
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"policyText": string(b), "name": name})
+	case http.MethodPut, http.MethodPost:
+		var body struct {
+			Emails []string `json:"emails"`
+			UIDs   []string `json:"uids"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			errors.Write(w, r, http.StatusBadRequest, "INVALID_ARGUMENT", "invalid json", nil)
+			return
+		}
+		// Build JSON and write new version
+		policy := map[string]any{}
+		if len(body.Emails) > 0 {
+			policy["emails"] = body.Emails
+		}
+		if len(body.UIDs) > 0 {
+			policy["uids"] = body.UIDs
+		}
+		b, _ := json.Marshal(policy)
+		// Parent secret name without /versions/*
+		parent := name
+		if i := strings.LastIndex(parent, "/versions/"); i > 0 {
+			parent = parent[:i]
+		}
+		res, err := cli.AddSecretVersion(ctx, &secretmanagerpb.AddSecretVersionRequest{Parent: parent, Payload: &secretmanagerpb.SecretPayload{Data: b}})
+		if err != nil {
+			errors.Write(w, r, http.StatusInternalServerError, "SECRET_ADD_VERSION", err.Error(), nil)
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"version": res.GetName(), "policy": policy})
+	default:
+		errors.Write(w, r, http.StatusMethodNotAllowed, "METHOD_NOT_ALLOWED", "Method not allowed", nil)
+	}
+}
+
+// adminPolicySyncFromDB builds the policy from current ADMIN users in DB and writes a new secret version.
+func (h *Handler) adminPolicySyncFromDB(w http.ResponseWriter, r *http.Request) {
+	name := strings.TrimSpace(os.Getenv("ADMIN_POLICY_SECRET"))
+	if name == "" {
+		errors.Write(w, r, http.StatusBadRequest, "SERVER_NOT_CONFIGURED", "ADMIN_POLICY_SECRET not set", nil)
+		return
+	}
+	ctx := r.Context()
+	rows, err := h.DB.Query(ctx, `SELECT id, COALESCE(email,'') FROM "User" WHERE upper(role)='ADMIN'`)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "QUERY_FAILED", "query admins failed", map[string]string{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+	emails := make([]string, 0)
+	uids := make([]string, 0)
+	for rows.Next() {
+		var id, email string
+		if err := rows.Scan(&id, &email); err == nil {
+			if strings.TrimSpace(email) != "" {
+				emails = append(emails, strings.TrimSpace(email))
+			}
+			if strings.TrimSpace(id) != "" {
+				uids = append(uids, strings.TrimSpace(id))
+			}
+		}
+	}
+	policy := map[string]any{"emails": emails, "uids": uids}
+	b, _ := json.Marshal(policy)
+	// write new secret version
+	parent := name
+	if i := strings.LastIndex(parent, "/versions/"); i > 0 {
+		parent = parent[:i]
+	}
+	cli, err := secretmanager.NewClient(ctx)
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "SECRET_CLIENT", err.Error(), nil)
+		return
+	}
+	defer cli.Close()
+	res, err := cli.AddSecretVersion(ctx, &secretmanagerpb.AddSecretVersionRequest{Parent: parent, Payload: &secretmanagerpb.SecretPayload{Data: b}})
+	if err != nil {
+		errors.Write(w, r, http.StatusInternalServerError, "SECRET_ADD_VERSION", err.Error(), nil)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(map[string]any{"version": res.GetName(), "policy": policy})
+}

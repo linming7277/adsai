@@ -1,0 +1,12 @@
+FROM node:20-slim
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+RUN npm install --only=production pg
+
+# Copy migration files
+COPY run-migration.js ./
+COPY ../../schemas/sql/018_url_visit_results.sql ./migration.sql
+
+CMD ["node", "run-migration.js"]

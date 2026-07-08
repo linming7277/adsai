@@ -1,0 +1,2243 @@
+{
+  "timestamp": "2025-10-13T10:34:12.382Z",
+  "summary": {
+    "total": 278,
+    "high": 1,
+    "medium": 91,
+    "low": 186,
+    "byType": {
+      "missing-data-testid": 62,
+      "no-container-padding": 53,
+      "inconsistent-wrapper": 38,
+      "inconsistent-button": 123,
+      "missing-layout": 1,
+      "non-standard-text-size": 1
+    }
+  },
+  "issues": [
+    {
+      "file": "apps/frontend/src/app/(site)/about/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/about/page.tsx",
+      "line": 15,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/[slug]/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/[slug]/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/page.tsx",
+      "line": 4,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/page.tsx",
+      "line": 50,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/page.tsx",
+      "line": 53,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/blog/page.tsx",
+      "line": 42,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/careers/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/careers/page.tsx",
+      "line": 38,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/case-studies/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/case-studies/page.tsx",
+      "line": 56,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/changelog/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/changelog/page.tsx",
+      "line": 48,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/contact/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/contact/page.tsx",
+      "line": 54,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/contact/page.tsx",
+      "line": 122,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/docs/[...slug]/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/docs/[...slug]/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/docs/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/docs/page.tsx",
+      "line": 16,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/faq/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/faq/page.tsx",
+      "line": 65,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/faq/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/features/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/features/page.tsx",
+      "line": 51,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 5,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 70,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 72,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 75,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 145,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 147,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 150,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/pricing/page.tsx",
+      "line": 62,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/privacy/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/privacy/page.tsx",
+      "line": 41,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/resources/page.tsx",
+      "line": 4,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/resources/page.tsx",
+      "line": 97,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/resources/page.tsx",
+      "line": 100,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/resources/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/resources/page.tsx",
+      "line": 45,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/roadmap/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/roadmap/page.tsx",
+      "line": 44,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/security/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/security/page.tsx",
+      "line": 41,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 5,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 80,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 113,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 120,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 12,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 175,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 200,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/style-guide/page.tsx",
+      "line": 213,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/support/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/support/page.tsx",
+      "line": 44,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/terms/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/(site)/terms/page.tsx",
+      "line": 41,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/callback/error/page.tsx",
+      "line": 4,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/callback/error/page.tsx",
+      "line": 44,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/callback/error/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/callback/error/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/confirm/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/confirm/page.tsx",
+      "line": 89,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/confirm/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/password-reset/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/password-reset/page.tsx",
+      "line": 24,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/password-reset/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/sign-in/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/sign-in/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/sign-up/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/sign-up/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/verify/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/auth/verify/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/ads-center/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/ads-center/page.tsx",
+      "line": 273,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 11,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 509,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 511,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 522,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 530,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 591,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 597,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 630,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 636,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 638,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 644,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 646,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 652,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 725,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 736,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 738,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 749,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 751,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 758,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 860,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 867,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 873,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 880,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 845,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/offers/page.tsx",
+      "line": 898,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 17,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 126,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 134,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 142,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 150,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 158,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 179,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 186,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 257,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/page.tsx",
+      "line": 222,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/tasks/page.tsx",
+      "line": 10,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/tasks/page.tsx",
+      "line": 132,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/tasks/page.tsx",
+      "line": 138,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/tasks/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/dashboard/tasks/page.tsx",
+      "line": 239,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/ads-accounts/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/ads-accounts/page.tsx",
+      "line": 15,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/ads-accounts/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/audit/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/audit/page.tsx",
+      "line": 56,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/audit/page.tsx",
+      "line": 192,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/audit/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/exports/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/exports/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/feature-flags/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/feature-flags/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/financial/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/financial/page.tsx",
+      "line": 14,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/financial/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/monitoring/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/monitoring/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/notifications/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/notifications/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/offers/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/offers/page.tsx",
+      "line": 20,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/offers/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/page.tsx",
+      "line": 16,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/performance/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/performance/page.tsx",
+      "line": 31,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/performance/page.tsx",
+      "line": 142,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/performance/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/security/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/security/page.tsx",
+      "line": 19,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/security/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/subscriptions/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/subscriptions/page.tsx",
+      "line": 19,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/subscriptions/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/tasks/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/tasks/page.tsx",
+      "line": 15,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/tasks/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/tokens/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/tokens/page.tsx",
+      "line": 21,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/tokens/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/user-support/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/user-support/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/[uid]/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/[uid]/page.tsx",
+      "line": 56,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/[uid]/page.tsx",
+      "line": 251,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/[uid]/page.tsx",
+      "line": 270,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/ban/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/ban/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/delete/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/delete/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/impersonate/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/impersonate/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/reactivate/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/@modal/[uid]/reactivate/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/page.tsx",
+      "line": 28,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/manage/users/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/password-reset/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/password-reset/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/authentication/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/authentication/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/email/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/email/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/password/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/password/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 8,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 310,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 317,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 318,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 325,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 590,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 604,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 188,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 356,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 448,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 473,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 564,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 581,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/profile/security/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/subscription/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/subscription/page.tsx",
+      "line": 17,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/subscription/return/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/subscription/return/page.tsx",
+      "line": 1,
+      "type": "missing-layout",
+      "severity": "high",
+      "description": "认证页面缺少layout，可能缺少Header/Navbar",
+      "suggestion": "创建layout.tsx使用AuthenticatedPageLayout或将页面移到合适的路由组"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/subscription/return/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/tokens/page.tsx",
+      "line": 7,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/tokens/page.tsx",
+      "line": 88,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/tokens/page.tsx",
+      "line": 97,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/tokens/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/tokens/page.tsx",
+      "line": 59,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/settings/tokens/page.tsx",
+      "line": 1,
+      "type": "inconsistent-wrapper",
+      "severity": "medium",
+      "description": "页面内容缺少容器限制（container或max-w-*），在大屏幕上可能显示过宽",
+      "suggestion": "添加 container mx-auto max-w-7xl 等类限制内容宽度"
+    },
+    {
+      "file": "apps/frontend/src/app/setup-error/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/app/setup-error/page.tsx",
+      "line": 40,
+      "type": "no-container-padding",
+      "severity": "medium",
+      "description": "页面内容可能没有适当的padding，内容会贴边显示",
+      "suggestion": "添加 container mx-auto px-4 py-8 等类确保内容与边缘有适当间距"
+    },
+    {
+      "file": "apps/frontend/src/app/userinfo/page.tsx",
+      "line": 1,
+      "type": "missing-data-testid",
+      "severity": "low",
+      "description": "页面缺少data-testid属性，可能影响E2E测试",
+      "suggestion": "为关键元素添加data-testid属性"
+    },
+    {
+      "file": "apps/frontend/src/components/ConfirmDialog.tsx",
+      "line": 12,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/ConfirmDialog.tsx",
+      "line": 57,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/ConfirmDialog.tsx",
+      "line": 63,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/ConfirmDialog.tsx",
+      "line": 64,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/ConfirmDialog.tsx",
+      "line": 71,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/DarkModeToggle.tsx",
+      "line": 32,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/DarkModeToggle.tsx",
+      "line": 88,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/DarkModeToggle.tsx",
+      "line": 104,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/GlobalHotkeys.tsx",
+      "line": 7,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/GlobalHotkeys.tsx",
+      "line": 178,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/GlobalHotkeys.tsx",
+      "line": 186,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/InputDialog.tsx",
+      "line": 12,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/InputDialog.tsx",
+      "line": 165,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/InputDialog.tsx",
+      "line": 171,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/InputDialog.tsx",
+      "line": 172,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/InputDialog.tsx",
+      "line": 174,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/FinalCTASection.tsx",
+      "line": 10,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/FinalCTASection.tsx",
+      "line": 34,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/FinalCTASection.tsx",
+      "line": 43,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/FinalCTASection.tsx",
+      "line": 45,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/FinalCTASection.tsx",
+      "line": 54,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/HeroSection.tsx",
+      "line": 10,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/HeroSection.tsx",
+      "line": 100,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/HeroSection.tsx",
+      "line": 107,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/HeroSection.tsx",
+      "line": 109,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/landing/HeroSection.tsx",
+      "line": 117,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/LanguageIconSwitcher.tsx",
+      "line": 13,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/LanguageIconSwitcher.tsx",
+      "line": 62,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/LanguageIconSwitcher.tsx",
+      "line": 69,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 25,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 202,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 210,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 219,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 231,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 285,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 292,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 294,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/layout/Navbar.tsx",
+      "line": 300,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/newsletter/ConvertkitSignupForm.tsx",
+      "line": 3,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/newsletter/ConvertkitSignupForm.tsx",
+      "line": 27,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/newsletter/EmailOctopusSignupForm.tsx",
+      "line": 3,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/newsletter/EmailOctopusSignupForm.tsx",
+      "line": 68,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/newsletter/EmailOctopusSignupForm.tsx",
+      "line": 70,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 8,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 14,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 51,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 83,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 101,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 171,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 173,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 179,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 180,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 263,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 278,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 285,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 299,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/PricingTable.tsx",
+      "line": 305,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/Toaster.tsx",
+      "line": 30,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/Toaster.tsx",
+      "line": 31,
+      "type": "inconsistent-button",
+      "severity": "low",
+      "description": "Button组件未指定variant属性",
+      "suggestion": "明确指定variant (default, primary, outline, ghost, destructive)"
+    },
+    {
+      "file": "apps/frontend/src/components/ui/kbd.tsx",
+      "line": 13,
+      "type": "non-standard-text-size",
+      "severity": "low",
+      "description": "使用自定义文字大小: text-[10px]",
+      "suggestion": "使用标准的Tailwind text-*类"
+    }
+  ]
+}

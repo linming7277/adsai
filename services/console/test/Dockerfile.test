@@ -1,0 +1,36 @@
+# Dockerfile for Console Service Cloud SQL Integration Tests
+# This image runs integration tests in Cloud Run Job environment with VPC Connector access
+
+FROM golang:1.25-alpine AS builder
+
+WORKDIR /workspace
+ENV GO111MODULE=on
+# Disable go.work to prevent missing modules error in container
+ENV GOWORK=off
+
+# Copy minimal workspace
+COPY go.work go.work.sum ./
+COPY pkg ./pkg
+COPY services/console ./services/console
+
+# Build test binary with Cloud SQL tag
+WORKDIR /workspace/services/console
+RUN go mod tidy && \
+    CGO_ENABLED=0 GOOS=linux go test -c -tags=cloudsql -o /console-integration-tests ./test/
+
+# Final stage - minimal runtime image
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+
+# Copy test binary
+COPY --from=builder /console-integration-tests .
+
+# Set environment variables (will be overridden by Cloud Run Job)
+ENV CLOUDSQL_DB_PASSWORD=""
+ENV RUN_CLOUD_SQL_TESTS="true"
+
+# Run tests
+CMD ["./console-integration-tests", "-test.v", "-test.count=1"]

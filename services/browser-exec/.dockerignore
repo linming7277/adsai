@@ -1,0 +1,30 @@
+# VCS and IDE
+.git
+.gitignore
+.DS_Store
+.vscode
+.idea
+
+# Test data and archives
+patterns/test-data/
+lib/archive/
+lib/tests/
+*.test.js
+*.spec.js
+
+# Logs and temp files
+logs/
+*.log
+*.tmp
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github/
+cloudbuild.yaml
+
+# Local env
+.env
+.env.*

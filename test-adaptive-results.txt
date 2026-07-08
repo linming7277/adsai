@@ -1,0 +1,95 @@
+====================================================================================================
+广告联盟 Offer URL 最终访问测试（并发）
+====================================================================================================
+测试环境: browser-exec-preview
+测试时间: 2025-10-02T03:06:30.531Z
+测试数量: 4 个 Offer
+
+🚀 开始并发测试...
+
+
+====================================================================================================
+测试结果汇总
+====================================================================================================
+
+【1/4】 pboost.me
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  原始URL: https://pboost.me/ZDO2Bdek
+  成功状态: ❌ 失败
+  页面类型: ❓ 未知类型
+
+  错误类型: network
+  错误信息: page.goto: net::ERR_TIMED_OUT at https://pboost.me/ZDO2Bdek
+Call log:
+  - navigating to "https://pboost.me/ZDO2Bdek", waiting until "domcontentloaded"
+
+  耗时: 8980ms
+
+【2/4】 dognet.com
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  原始URL: https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F
+  成功状态: ❌ 失败
+  页面类型: ❓ 未知类型
+
+  错误类型: network
+  错误信息: page.goto: net::ERR_TIMED_OUT at https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F
+Call log:
+  - navigating to "https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F", waiting until "domcontentloaded"
+
+  耗时: 9105ms
+
+【3/4】 yeahpromos.com
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  原始URL: https://yeahpromos.com/index/index/openurl?track=659f2181de1cb30f&url=
+  成功状态: ❌ 失败
+  页面类型: ❓ 未知类型
+
+  错误类型: network
+  错误信息: page.goto: net::ERR_TIMED_OUT at https://yeahpromos.com/index/index/openurl?track=659f2181de1cb30f&url=
+Call log:
+  - navigating to "https://yeahpromos.com/index/index/openurl?track=659f2181de1cb30f&url=", waiting until "domcontentloaded"
+
+  耗时: 9031ms
+
+【4/4】 bonusarrive.com
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  原始URL: https://www.bonusarrive.com/link?c=2375&ad=313850&url=&src=starlink
+  成功状态: ❌ 失败
+  页面类型: ❓ 未知类型
+
+  错误类型: network
+  错误信息: page.goto: net::ERR_TIMED_OUT at https://www.bonusarrive.com/link?c=2375&ad=313850&url=&src=starlink
+Call log:
+  - navigating to "https://www.bonusarrive.com/link?c=2375&ad=313850&url=&src=starlink", waiting until "domcontentloaded"
+
+  耗时: 9031ms
+
+====================================================================================================
+统计分析
+====================================================================================================
+
+访问成功率: 0/4 (0.0%)
+
+页面类型分布:
+  ✅ 最终落地页: 0 (0.0%)
+  ❌ 失效页: 0 (0.0%)
+  ⚠️  被拦截: 0 (0.0%)
+  ⏸️  中间页: 0 (0.0%)
+
+性能指标（平均）:
+  总耗时: 9037ms
+
+====================================================================================================
+
+按页面类型分组:
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+❓ 未知类型 (4):
+  - pboost.me: https://pboost.me/ZDO2Bdek (8980ms)
+  - dognet.com: https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F (9105ms)
+  - yeahpromos.com: https://yeahpromos.com/index/index/openurl?track=659f2181de1cb30f&url= (9031ms)
+  - bonusarrive.com: https://www.bonusarrive.com/link?c=2375&ad=313850&url=&src=starlink (9031ms)
+
+====================================================================================================
+测试完成
+====================================================================================================

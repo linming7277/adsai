@@ -1,0 +1,22 @@
+# Only upload what's needed for console frontend build
+.git/
+node_modules/
+.next/
+dist/
+build/
+coverage/
+*.log
+**/*.log
+**/.DS_Store
+
+# Exclude storybook/tests if any
+stories/
+__tests__/
+tests/
+playwright-report/
+test-results/
+
+# Do not upload other workspace content from parent
+../**
+!./**
+

@@ -1,0 +1,186 @@
+{
+  "total": 12,
+  "passed": 3,
+  "failed": 9,
+  "skipped": 0,
+  "startTime": "2025-10-14T02:31:29.375Z",
+  "endTime": "2025-10-14T02:36:32.875Z",
+  "suites": [
+    {
+      "category": "认证与登录",
+      "tests": [
+        {
+          "name": "程序化登录",
+          "file": "test-programmatic-login.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 13391,
+          "passed": 4,
+          "failed": 0,
+          "stdout": "━━━━━\n   ✓ API响应成功\n   ✓ User ID: 5de38ad6-bbd7-4189-b353-4347a9d66cfb\n   ✓ Email: test-playwright@autoads.dev\n   ✓ action_link存在\n   → https://jzzvizacfyipzdyiqfzb.supabase.co/auth/v1/verify?token=2489ea745818ac11c6...\n\nTest 2: Playwright集成测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n   ✓ setupAuthForTest执行成功\n\nTest 3: Dashboard访问验证\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n   → 当前URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 成功访问Dashboard\n   ✓ 页面内容长度: 38350 bytes\n\nTest 4: Session持久性测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n   → 刷新后URL: https://www.urlchecker.dev/en/dashboard\n   ✓ Session刷新后仍然有效\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 4\n❌ 失败: 0\n📈 通过率: 100%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n",
+          "stderr": ""
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "category": "核心功能",
+      "tests": [
+        {
+          "name": "Dashboard概览",
+          "file": "test-dashboard-overview.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 22200,
+          "passed": 6,
+          "failed": 0,
+          "stdout": "📊 Dashboard概览测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问Dashboard首页\n   ✓ 成功访问Dashboard\n\nTest 2: 验证统计卡片区域\n   ✓ 找到统计卡片: stat-card-total-offers\n   ✓ 找到统计卡片: stat-card-pending-offers\n   ✓ 找到统计卡片: stat-card-ready-offers\n   ✓ 找到统计卡片: stat-card-tokens\n   ✓ 统计卡片显示正常 (4/4)\n\nTest 3: 验证快速操作区域\n   ✓ 快速操作显示正常 (5/5)\n\nTest 4: 统计卡片可点击导航\n   ✓ 卡片点击导航正常\n\nTest 5: 快速操作按钮可点击\n   ✓ 快速操作按钮工作正常\n\nTest 6: 欢迎信息显示\n   ✓ 欢迎信息显示正常\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 Dashboard概览测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 6\n❌ 失败: 0\n",
+          "stderr": ""
+        },
+        {
+          "name": "订阅管理",
+          "file": "test-subscription-management.mjs",
+          "critical": true,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 72760,
+          "passed": 4,
+          "failed": 4,
+          "stdout": "💳 订阅管理测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问订阅管理页面\n\nTest 2: 当前套餐显示\n\nTest 3: 套餐列表显示\n\nTest 4: 升级套餐按钮\n\nTest 5: 套餐功能对比\n   ✓ 套餐功能对比显示 (2/4)\n\nTest 6: 价格信息显示\n   ⚠️  价格信息未显示\n\nTest 7: 查看套餐详情\n   ℹ️  Elite套餐卡片不可见，跳过\n\nTest 8: 管理订阅选项\n   ℹ️  未订阅付费套餐，无管理按钮\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 订阅管理测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 4\n❌ 失败: 4\n",
+          "stderr": "   ❌ 失败: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://www.urlchecker.dev/settings/subscription\", waiting until \"networkidle\"\u001b[22m\n\n   ❌ 失败: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=/Free|Basic|Elite/i').first()\u001b[22m\n\n   ❌ 失败: 只找到0/3个套餐\n   ❌ 失败: 升级套餐按钮不可见\n"
+        },
+        {
+          "name": "Token管理",
+          "file": "test-token-management.mjs",
+          "critical": true,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 16841,
+          "passed": 7,
+          "failed": 2,
+          "stdout": "🪙 Token管理测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问Token管理页面\n   ✓ 成功访问Token管理\n\nTest 2: Token余额统计卡片\n\nTest 3: 充值按钮\n\nTest 4: 使用明细区域\n   ℹ️  使用明细区域未显示\n\nTest 5: 交易记录表格\n   ℹ️  交易记录表格未显示（可能无交易）\n\nTest 6: 交易记录筛选\n   ✓ 交易记录筛选选项存在\n\nTest 7: Token使用说明\n   ℹ️  Token使用说明未显示\n\nTest 8: 刷新按钮\n   ℹ️  刷新按钮不可见\n\nTest 9: 空状态提示\n   ℹ️  已有交易记录或未显示空状态\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 Token管理测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 7\n❌ 失败: 2\n",
+          "stderr": "   ❌ 失败: 只找到0/4个统计卡片\n   ❌ 失败: 充值按钮不可见\n"
+        }
+      ],
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0
+    },
+    {
+      "category": "广告中心",
+      "tests": [
+        {
+          "name": "广告中心操作",
+          "file": "test-ads-center-operations.mjs",
+          "critical": true,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 14514,
+          "passed": 4,
+          "failed": 3,
+          "stdout": "🎯 广告中心操作测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问广告中心页面\n   ✓ 成功访问广告中心\n\nTest 2: 验证顶部统计区域\n\nTest 3: 广告账户列表显示\n\nTest 4: 绑定广告账户按钮\n\nTest 5: 广告数据图表显示\n   ⚠️  未检测到图表元素(可能需要广告数据)\n\nTest 6: 日期筛选器功能\n   ⚠️  未找到日期筛选器\n\nTest 7: 账户状态筛选\n   ✓ 状态筛选器显示正常\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 广告中心操作测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 4\n❌ 失败: 3\n",
+          "stderr": "   ❌ 失败: 只找到0/4个统计卡片\n   ❌ 失败: 未找到账户列表或空状态提示\n   ❌ 失败: 绑定广告账户按钮不可见\n"
+        },
+        {
+          "name": "任务管理",
+          "file": "test-task-management.mjs",
+          "critical": true,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 14931,
+          "passed": 4,
+          "failed": 3,
+          "stdout": "📋 任务管理测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问任务列表页面\n   ✓ 成功访问任务列表\n\nTest 2: 任务状态筛选器\n\nTest 3: 任务列表显示\n\nTest 4: 新建任务按钮\n\nTest 5: 任务类型筛选\n   ✓ 任务类型筛选器显示正常\n\nTest 6: 任务搜索功能\n   ⚠️  未找到搜索框\n\nTest 7: 任务详情查看\n   ⚠️  无任务可点击\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 任务管理测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 4\n❌ 失败: 3\n",
+          "stderr": "   ❌ 失败: 只找到0/4个状态Tab\n   ❌ 失败: 未找到任务列表或空状态提示\n   ❌ 失败: 新建任务按钮不可见\n"
+        },
+        {
+          "name": "批量操作",
+          "file": "test-bulk-operations.mjs",
+          "critical": false,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 17025,
+          "passed": 4,
+          "failed": 3,
+          "stdout": "🔄 批量操作测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问Offers页面\n   ✓ 成功访问Offers页面\n\nTest 2: 验证全选功能\n\nTest 3: 批量操作按钮出现\n\nTest 4: 批量删除确认\n   ⚠️  批量删除按钮不可见\n\nTest 5: 批量状态修改\n   ⚠️  无可选项目\n\nTest 6: 批量导出功能\n   ⚠️  批量导出按钮不可见\n\nTest 7: 取消全选功能\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 批量操作测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 4\n❌ 失败: 3\n",
+          "stderr": "   ❌ 失败: 全选checkbox不可见\n   ❌ 失败: 未找到任何批量操作按钮\n   ❌ 失败: 全选checkbox不可见\n"
+        },
+        {
+          "name": "Offer筛选",
+          "file": "test-offer-filtering.mjs",
+          "critical": false,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 17908,
+          "passed": 7,
+          "failed": 2,
+          "stdout": "🔍 Offer筛选和搜索测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问Offers页面\n   ✓ 成功访问Offers页面\n\nTest 2: 搜索框功能\n\nTest 3: 状态筛选器\n\nTest 4: 点击状态筛选\n   ⚠️  待评估筛选按钮不可见\n\nTest 5: 国家/地区筛选\n   ⚠️  国家筛选器不可见\n\nTest 6: 分类筛选\n   ⚠️  分类筛选器不可见\n\nTest 7: 排序功能\n   ⚠️  排序下拉框不可见\n\nTest 8: 清除筛选按钮\n   ⚠️  清除筛选按钮不可见\n\nTest 9: 筛选结果更新\n   ✓ 筛选前: 0 项, 筛选后: 0 项\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 Offer筛选和搜索测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 7\n❌ 失败: 2\n",
+          "stderr": "   ❌ 失败: 搜索框不可见\n   ❌ 失败: 只找到0/4个状态筛选器\n"
+        },
+        {
+          "name": "创建Offer",
+          "file": "test-create-offer.mjs",
+          "critical": false,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 42559,
+          "passed": 3,
+          "failed": 5,
+          "stdout": "📝 创建Offer流程测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问创建Offer页面\n   ✓ 成功访问创建页面\n\nTest 2: 创建表单字段显示\n\nTest 3: 填写Offer名称\n\nTest 4: 填写URL链接\n\nTest 5: 选择国家/地区\n   ⚠️  国家选择器不可见\n\nTest 6: 提交按钮可用性\n\nTest 7: 表单验证功能\n\nTest 8: 取消创建功能\n   ⚠️  取消按钮不可见\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 创建Offer流程测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 3\n❌ 失败: 5\n",
+          "stderr": "   ❌ 失败: 只找到0/4个必要字段\n   ❌ 失败: 名称输入框不可见\n   ❌ 失败: URL输入框不可见\n   ❌ 失败: 提交按钮不可见\n   ❌ 失败: locator.clear: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name*=\"name\"], input[id*=\"name\"]').first()\u001b[22m\n\n"
+        },
+        {
+          "name": "AI评估",
+          "file": "test-ai-evaluation.mjs",
+          "critical": false,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 47408,
+          "passed": 6,
+          "failed": 2,
+          "stdout": "🤖 AI评估流程测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问待评估列表\n   ⚠️  待评估Tab不可见,使用默认列表\n   ✓ 成功访问待评估列表\n\nTest 2: AI评估按钮显示\n\nTest 3: 触发AI评估\n\nTest 4: 评估进度显示\n   ⚠️  未检测到进度指示器(可能评估已完成)\n\nTest 5: 等待评估完成\n   ⚠️  评估超时或未检测到完成状态\n\nTest 6: 评估结果显示\n   ✓ 评估结果显示 (0/4个字段)\n\nTest 7: 批量AI评估功能\n   ⚠️  全选checkbox不可见\n\nTest 8: Token消耗提示\n   ⚠️  未检测到Token消耗提示\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 AI评估流程测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 6\n❌ 失败: 2\n",
+          "stderr": "   ❌ 失败: AI评估按钮不可见\n   ❌ 失败: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"AI评估\"), button:has-text(\"AI Evaluation\")').first()\u001b[22m\n\n"
+        },
+        {
+          "name": "绑定广告账户",
+          "file": "test-bind-ads-account.mjs",
+          "critical": false,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 16665,
+          "passed": 7,
+          "failed": 3,
+          "stdout": "🔗 绑定广告账户流程测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n   ✓ 测试Session已创建\n   ✓ User ID: 37fd3629-a06a-47c8-b33a-31944afaa14c\n   ✓ Email: test-user@autoads.dev\n   → 访问认证链接...\n   → 等待认证确认和自动重定向...\n   ✓ 认证重定向完成\n   → 最终URL: https://www.urlchecker.dev/en/dashboard\n   ✓ 登录验证成功\n\n\nTest 1: 访问广告中心\n   ✓ 成功访问广告中心\n\nTest 2: 点击绑定按钮\n\nTest 3: 绑定对话框显示\n\nTest 4: 广告平台选择\n\nTest 5: 选择Google Ads\n   ⚠️  Google Ads选项不可见\n\nTest 6: OAuth授权流程\n   ⚠️  授权按钮不可见\n\nTest 7: 账户信息表单\n   ⚠️  未找到手动输入选项(可能仅支持OAuth)\n\nTest 8: 绑定确认功能\n   ⚠️  确认按钮不可见\n\nTest 9: 已绑定账户显示\n   ⚠️  未检测到账户列表或空状态\n\nTest 10: 解绑账户功能\n   ⚠️  解绑按钮不可见(可能无已绑定账户)\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 绑定广告账户流程测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 7\n❌ 失败: 3\n",
+          "stderr": "   ❌ 失败: 绑定广告账户按钮不可见\n   ❌ 失败: 未出现绑定对话框或跳转到绑定页面\n   ❌ 失败: 未找到任何广告平台选项\n"
+        }
+      ],
+      "passed": 0,
+      "failed": 7,
+      "skipped": 0
+    },
+    {
+      "category": "性能与用户体验",
+      "tests": [
+        {
+          "name": "Web Vitals性能指标",
+          "file": "test-web-vitals.mjs",
+          "critical": false,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 7296,
+          "passed": 4,
+          "failed": 0,
+          "stdout": "🚀 开始Web Vitals性能测试\n📍 测试环境: https://www.urlchecker.dev\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n✅ LCP: 1544ms\n   阈值: 2500ms\n   性能: 62% (优秀)\n\n✅ FCP: 1544ms\n   阈值: 1800ms\n   性能: 86% (优秀)\n\n✅ CLS: 0.00004571024576822917\n   阈值: 0.1\n   性能: 0% (优秀)\n\n✅ TTFB: 348ms\n   阈值: 800ms\n   性能: 44% (优秀)\n\n📊 额外性能指标:\n   DOM Interactive: 1532ms\n   DOM Complete: 2407ms\n   Load Complete: 2407ms\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 性能测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 4\n❌ 失败: 0\n📈 通过率: 100%\n\n🏆 综合性能评级: 🏆 A (优秀)\n   性能卓越，符合所有Google标准\n",
+          "stderr": ""
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  ]
+}

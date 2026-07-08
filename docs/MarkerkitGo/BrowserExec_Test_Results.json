@@ -1,0 +1,165 @@
+{
+  "scenario1": {
+    "success": true,
+    "statusCode": 200,
+    "duration": 54436,
+    "domain": "chromewebdata",
+    "brandName": "Chromewebdata",
+    "finalUrl": "null/",
+    "available": false,
+    "proxyUsed": true,
+    "error": null
+  },
+  "scenario2": [
+    {
+      "index": 1,
+      "success": true,
+      "duration": 14581,
+      "proxyServer": "149.56.29.116",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 2,
+      "success": true,
+      "duration": 9584,
+      "proxyServer": "148.113.190.175",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 3,
+      "success": true,
+      "duration": 9771,
+      "proxyServer": "15.235.55.171",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 4,
+      "success": true,
+      "duration": 7938,
+      "proxyServer": "149.56.28.209",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 5,
+      "success": true,
+      "duration": 7234,
+      "proxyServer": "149.56.28.209",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 6,
+      "success": true,
+      "duration": 51505,
+      "proxyServer": "15.235.115.6",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 7,
+      "success": true,
+      "duration": 31676,
+      "proxyServer": "15.235.118.143",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 8,
+      "success": false,
+      "duration": 28338,
+      "error": {
+        "type": "all_attempts_failed",
+        "message": "All 3 attempts failed. Last error: page.goto: net::ERR_TIMED_OUT at https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F\nCall log:\n  - navigating to \"https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F\", waiting until \"domcontentloaded\"\n",
+        "attempts": [
+          {
+            "attempt": 1,
+            "success": false,
+            "proxy": "139.162.53.199",
+            "error": "network",
+            "duration": 8572
+          },
+          {
+            "attempt": 2,
+            "success": false,
+            "proxy": "139.162.53.84",
+            "error": "network",
+            "duration": 8498
+          },
+          {
+            "attempt": 3,
+            "success": false,
+            "proxy": "139.162.53.199",
+            "error": "network",
+            "duration": 8131
+          }
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "success": true,
+      "duration": 21222,
+      "proxyServer": "149.56.28.209",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    },
+    {
+      "index": 10,
+      "success": true,
+      "duration": 11705,
+      "proxyServer": "149.56.28.209",
+      "domain": "chromewebdata",
+      "available": false,
+      "antiDetectionPassed": true,
+      "error": null
+    }
+  ],
+  "scenario3": {
+    "success": true,
+    "duration": 9679,
+    "finalUrl": "null/",
+    "finalUrlSuffix": "",
+    "redirectChain": [
+      {
+        "url": "https://go.dognet.com/?chid=6ab3CPGU&url=https%3A%2F%2Fwww.dyson.hr%2F",
+        "timestamp": "2025-10-01T13:34:55.890Z"
+      },
+      {
+        "url": "https://clk.tradedoubler.com/click?p=358320&a=3255845&epi=689dd3e5d697f&epi2=FMGUwN3Ap5Vl18VEuAJJgrjY1a2CEDd2&url=https%3A%2F%2Fwww.dyson.hr%2F",
+        "timestamp": "2025-10-01T13:34:55.890Z"
+      }
+    ],
+    "redirectCount": 1,
+    "error": null
+  },
+  "scenario4": {
+    "success": true,
+    "duration": 10739,
+    "available": false,
+    "statusCode": 200,
+    "domain": "chromewebdata",
+    "isIntermediatePage": true,
+    "failureReason": "stuck_at_intermediate_page",
+    "error": null
+  }
+}

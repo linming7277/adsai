@@ -1,0 +1,19 @@
+timeout: "3600s"
+options:
+  logging: GCS_ONLY
+logsBucket: gs://autoads-build-logs-asia-northeast1/logs
+substitutions:
+  _IMAGE: "asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/browser-exec:preview-latest"
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Build
+    args:
+      - build
+      - '-f'
+      - 'Dockerfile'
+      - '-t'
+      - '${_IMAGE}'
+      - '.'
+images:
+  - '${_IMAGE}'
+

@@ -1,0 +1,186 @@
+{
+  "total": 12,
+  "passed": 10,
+  "failed": 2,
+  "skipped": 0,
+  "startTime": "2025-10-14T14:51:58.435Z",
+  "endTime": "2025-10-14T14:52:54.512Z",
+  "suites": [
+    {
+      "category": "认证与登录",
+      "tests": [
+        {
+          "name": "程序化登录",
+          "file": "test-programmatic-login.mjs",
+          "critical": true,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 1027,
+          "passed": 0,
+          "failed": 1,
+          "stdout": "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🧪 程序化登录功能测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 测试环境: https://www.urlchecker.dev\n📍 API地址: https://www.urlchecker.dev\n\nTest 1: API可用性检查\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 1\n📈 通过率: 0%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n",
+          "stderr": "   ❌ API测试失败: API返回错误: 403\n\n❌ 测试过程中发生错误: API返回错误: 403\n"
+        }
+      ],
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    {
+      "category": "核心功能",
+      "tests": [
+        {
+          "name": "Dashboard概览",
+          "file": "test-dashboard-overview.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 6471,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "📊 Dashboard概览测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 Dashboard概览测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "订阅管理",
+          "file": "test-subscription-management.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4648,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "💳 订阅管理测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 订阅管理测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "Token管理",
+          "file": "test-token-management.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4547,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "🪙 Token管理测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 Token管理测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "category": "广告中心",
+      "tests": [
+        {
+          "name": "广告中心操作",
+          "file": "test-ads-center-operations.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4380,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "🎯 广告中心操作测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 广告中心操作测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "任务管理",
+          "file": "test-task-management.mjs",
+          "critical": true,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4501,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "📋 任务管理测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 任务管理测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "批量操作",
+          "file": "test-bulk-operations.mjs",
+          "critical": false,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4317,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "🔄 批量操作测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 批量操作测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "Offer筛选",
+          "file": "test-offer-filtering.mjs",
+          "critical": false,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4508,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "🔍 Offer筛选和搜索测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 Offer筛选和搜索测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "创建Offer",
+          "file": "test-create-offer.mjs",
+          "critical": false,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4672,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "📝 创建Offer流程测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 创建Offer流程测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "AI评估",
+          "file": "test-ai-evaluation.mjs",
+          "critical": false,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4494,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "🤖 AI评估流程测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 AI评估流程测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        },
+        {
+          "name": "绑定广告账户",
+          "file": "test-bind-ads-account.mjs",
+          "critical": false,
+          "status": "passed",
+          "exitCode": 0,
+          "duration": 4609,
+          "passed": 0,
+          "failed": 0,
+          "stdout": "🔗 绑定广告账户流程测试\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n🔐 程序化登录: user\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 绑定广告账户流程测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 0\n❌ 失败: 0\n",
+          "stderr": "\n❌ 程序化登录失败: 创建测试Session失败: 403 Forbidden\n\n⚠️  请确保:\n   1. 后端测试API已实现: POST /api/test/create-session\n   2. 后端服务正在运行: https://www.urlchecker.dev\n   3. Supabase认证回调正常工作\n\n\n❌ 测试执行失败: 创建测试Session失败: 403 Forbidden\n"
+        }
+      ],
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "category": "性能与用户体验",
+      "tests": [
+        {
+          "name": "Web Vitals性能指标",
+          "file": "test-web-vitals.mjs",
+          "critical": false,
+          "status": "failed",
+          "exitCode": 1,
+          "duration": 7899,
+          "passed": 2,
+          "failed": 2,
+          "stdout": "🚀 开始Web Vitals性能测试\n📍 测试环境: https://www.urlchecker.dev\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n✅ LCP: 1868ms\n   阈值: 2500ms\n   性能: 75% (优秀)\n\n❌ FCP: 1868ms\n   阈值: 1800ms\n   性能: 104% (需优化)\n   ⚠️  建议优化以达到Google推荐标准\n\n✅ CLS: 0.00004571024576822917\n   阈值: 0.1\n   性能: 0% (优秀)\n\n❌ TTFB: 1117ms\n   阈值: 800ms\n   性能: 140% (需优化)\n   ⚠️  建议优化以达到Google推荐标准\n\n📊 额外性能指标:\n   DOM Interactive: 1851ms\n   DOM Complete: 2942ms\n   Load Complete: 2942ms\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 性能测试汇总\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ 通过: 2\n❌ 失败: 2\n📈 通过率: 50%\n\n🏆 综合性能评级: ❌ D (较差)\n   性能较差，需要立即优化\n",
+          "stderr": ""
+        }
+      ],
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    }
+  ]
+}

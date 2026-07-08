@@ -1,0 +1,49 @@
+substitutions:
+  _TAG: preview-local
+  _ENV: preview
+  _REGION: asia-northeast1
+  _SERVICE: console-frontend-preview
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - Dockerfile
+      - -t
+      - gcr.io/$PROJECT_ID/console-frontend:${_TAG}
+      - -t
+      - gcr.io/$PROJECT_ID/console-frontend:${_ENV}-latest
+      - .
+
+  # Push images before deploy to avoid image-not-found during rollout
+  - name: gcr.io/cloud-builders/docker
+    args: ["push", "gcr.io/$PROJECT_ID/console-frontend:${_TAG}"]
+  - name: gcr.io/cloud-builders/docker
+    args: ["push", "gcr.io/$PROJECT_ID/console-frontend:${_ENV}-latest"]
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=gcr.io/$PROJECT_ID/console-frontend:${_TAG}
+      - --region=${_REGION}
+      - --platform=managed
+      - --allow-unauthenticated
+
+  # Ensure public invoker (ignore if already present)
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -lc
+      - |
+        gcloud beta run services add-iam-policy-binding ${_SERVICE} \
+          --region=${_REGION} \
+          --member=allUsers \
+          --role=roles/run.invoker || true
+
+images:
+  - gcr.io/$PROJECT_ID/console-frontend:${_TAG}
+  - gcr.io/$PROJECT_ID/console-frontend:${_ENV}-latest
