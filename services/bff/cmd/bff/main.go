@@ -9,13 +9,13 @@ import (
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/redis/go-redis/v9"
-	"github.com/xxrenzhe/autoads/pkg/logger"
-	pkgmiddleware "github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
-	"github.com/xxrenzhe/autoads/pkg/telemetry"
-	"github.com/xxrenzhe/autoads/services/bff/internal/config"
-	"github.com/xxrenzhe/autoads/services/bff/internal/handlers"
-	"github.com/xxrenzhe/autoads/services/bff/internal/middleware"
+	"github.com/linming7277/adsai/pkg/logger"
+	pkgmiddleware "github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/serviceclient"
+	"github.com/linming7277/adsai/pkg/telemetry"
+	"github.com/linming7277/adsai/services/bff/internal/config"
+	"github.com/linming7277/adsai/services/bff/internal/handlers"
+	"github.com/linming7277/adsai/services/bff/internal/middleware"
 )
 
 var zlog = logger.Get()

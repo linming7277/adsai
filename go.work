@@ -38,6 +38,3 @@ use (
 	./services/user
 	./services/useractivity
 )
-
-// Full backend deployment trigger: Wed Oct 15 14:40:51 CST 2025
-// Codex-dev service account test: Wed Oct 15 14:50:55 CST 2025

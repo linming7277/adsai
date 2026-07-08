@@ -1,6 +1,6 @@
-# AutoAds 基础设施配置脚本
+# AdsAI 基础设施配置脚本
 
-本目录包含 AutoAds 项目的基础设施配置脚本，用于自动化 GCP 环境的部署和配置。
+本目录包含 AdsAI 项目的基础设施配置脚本，用于自动化 GCP 环境的部署和配置。
 
 ## 📋 脚本清单
 
@@ -61,7 +61,7 @@
 
 2. **设置项目**
    ```bash
-   gcloud config set project gen-lang-client-0944935873
+   gcloud config set project your-gcp-project-id
    ```
 
 3. **必需工具**
@@ -95,7 +95,7 @@
   - 重试策略: 10s~600s
 
 ### 4. Redis (INFRA-004)
-- **实例**：`autoads-redis`
+- **实例**：`adsai-redis`
 - **配置**：
   - 层级: BASIC
   - 内存: 1GB
@@ -112,14 +112,14 @@
 
 ### 6. API Gateway (INFRA-006)
 - **网关**：
-  - Preview: `autoads-gw-preview`
-  - Production: `autoads-gw`
+  - Preview: `adsai-gw-preview`
+  - Production: `adsai-gw`
 - **配置生成**：使用 `scripts/gateway/merge-openapi.sh` 合并所有服务的 OpenAPI 规范
-- **后端认证**：使用 codex-dev 服务账号
+- **后端认证**：使用 service-account 服务账号
 
 ### 7. Cloud Build (INFRA-007)
-- **Artifact Registry**：`autoads-services`（Docker 镜像仓库）
-- **日志存储**：`gs://autoads-build-logs-asia-northeast1`
+- **Artifact Registry**：`adsai-services`（Docker 镜像仓库）
+- **日志存储**：`gs://adsai-build-logs-asia-northeast1`
 - **构建配置**：
   - Frontend: `deployments/cloudbuild/build-frontend-docker.yaml`
   - Offer: `deployments/cloudbuild/build-offer-docker.yaml`
@@ -132,37 +132,37 @@
 
 ```bash
 # Secret Manager
-gcloud secrets list --project=gen-lang-client-0944935873
+gcloud secrets list --project=your-gcp-project-id
 
 # Redis
-gcloud redis instances list --region=asia-northeast1 --project=gen-lang-client-0944935873
+gcloud redis instances list --region=asia-northeast1 --project=your-gcp-project-id
 
 # Pub/Sub
-gcloud pubsub topics list --project=gen-lang-client-0944935873
-gcloud pubsub subscriptions list --project=gen-lang-client-0944935873
+gcloud pubsub topics list --project=your-gcp-project-id
+gcloud pubsub subscriptions list --project=your-gcp-project-id
 
 # Cloud Scheduler
-gcloud scheduler jobs list --location=asia-northeast1 --project=gen-lang-client-0944935873
+gcloud scheduler jobs list --location=asia-northeast1 --project=your-gcp-project-id
 
 # API Gateway
-gcloud api-gateway gateways list --project=gen-lang-client-0944935873
+gcloud api-gateway gateways list --project=your-gcp-project-id
 
 # Artifact Registry
-gcloud artifacts repositories list --location=asia-northeast1 --project=gen-lang-client-0944935873
+gcloud artifacts repositories list --location=asia-northeast1 --project=your-gcp-project-id
 
 # Cloud Build
-gcloud builds list --project=gen-lang-client-0944935873 --limit=10
+gcloud builds list --project=your-gcp-project-id --limit=10
 ```
 
 ## 🌍 环境说明
 
 ### Preview 环境
-- **域名**：https://www.urlchecker.dev
+- **域名**：https://preview.example.com
 - **服务后缀**：`-preview`（如 `frontend-preview`、`offer-preview`）
 - **镜像标签**：`preview-{commit_sha}`, `preview-latest`
 
 ### Production 环境
-- **域名**：https://www.autoads.dev
+- **域名**：https://www.example.com
 - **服务后缀**：无（如 `frontend`、`offer`）
 - **镜像标签**：`prod-{commit_sha}`, `prod-latest`
 
@@ -195,10 +195,10 @@ gcloud builds list --project=gen-lang-client-0944935873 --limit=10
 ### Secret Manager 配置失败
 ```bash
 # 检查 API 是否启用
-gcloud services list --enabled --project=gen-lang-client-0944935873 | grep secretmanager
+gcloud services list --enabled --project=your-gcp-project-id | grep secretmanager
 
 # 检查服务账号权限
-gcloud projects get-iam-policy gen-lang-client-0944935873 \
+gcloud projects get-iam-policy your-gcp-project-id \
   --flatten="bindings[].members" \
   --filter="bindings.members:serviceAccount:*"
 ```
@@ -208,7 +208,7 @@ gcloud projects get-iam-policy gen-lang-client-0944935873 \
 # 检查 VPC Connector
 gcloud compute networks vpc-access connectors describe cr-conn-default-ane1 \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 测试 Redis 连接（从 Cloud Shell）
 redis-cli -h 10.25.251.131 -p 6379 PING
@@ -218,12 +218,12 @@ redis-cli -h 10.25.251.131 -p 6379 PING
 ```bash
 # 检查订阅积压
 gcloud pubsub subscriptions describe siterank-evaluate-sub \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 手动拉取消息
 gcloud pubsub subscriptions pull siterank-evaluate-sub \
   --limit=10 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ## 📞 支持

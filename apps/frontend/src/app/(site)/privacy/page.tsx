@@ -13,7 +13,7 @@ type PrivacySection = {
 };
 
 export const metadata = {
-  title: 'Privacy Policy - AutoAds',
+  title: 'Privacy Policy - AdsAI',
 };
 
 export default async function PrivacyPage() {

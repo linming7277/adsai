@@ -331,7 +331,7 @@ const useGlobalStoreBase = create<GlobalState>()(
         getState: () => get(),
       })),
       {
-        name: 'autoads-global-state',
+        name: 'adsai-global-state',
         partialize: (state) => ({
           // 只持久化部分状态
           theme: state.theme,

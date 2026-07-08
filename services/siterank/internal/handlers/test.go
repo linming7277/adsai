@@ -7,8 +7,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/xxrenzhe/autoads/pkg/logger"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/evaluation"
+	"github.com/linming7277/adsai/pkg/logger"
+	"github.com/linming7277/adsai/services/siterank/internal/evaluation"
 )
 
 var testLog = logger.Get()

@@ -1,4 +1,4 @@
-# AutoAds 设计令牌总览（2025-10）
+# AdsAI 设计令牌总览（2025-10）
 
 本节记录 `apps/frontend/src/styles/design-tokens.css` 中维护的核心 Design Token，便于 Storybook、Figma 与代码的三方对齐。Token 覆盖颜色、排版、间距、圆角、阴影等维度。
 

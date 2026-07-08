@@ -11,7 +11,7 @@ import (
 //
 // Example:
 //
-//	DATABASE_URL=postgresql://user:pass@host:5432/autoads_db
+//	DATABASE_URL=postgresql://user:pass@host:5432/adsai_db
 //	DB_NAME=offer_db
 //	Result: postgresql://user:pass@host:5432/offer_db
 func RewriteIfNeeded(originalURL string) string {

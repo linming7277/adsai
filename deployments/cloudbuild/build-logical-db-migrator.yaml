@@ -8,7 +8,7 @@ steps:
     args:
       - --dockerfile=scripts/db/Dockerfile.logical-db-migrator
       - --context=dir:///workspace
-      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/logical-db-migrator:latest
+      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/logical-db-migrator:latest
       - --cache=true
 
   # 创建Cloud Run Job (使用||true避免重复创建失败)
@@ -18,16 +18,16 @@ steps:
       - -c
       - |
         gcloud run jobs create logical-db-migrator \
-          --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/logical-db-migrator:latest \
+          --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/logical-db-migrator:latest \
           --region=asia-northeast1 \
           --vpc-connector=cr-conn-default-ane1 \
-          --service-account=codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com \
+          --service-account=service-account@your-gcp-project-id.iam.gserviceaccount.com \
           --max-retries=0 \
           --task-timeout=30m \
           --memory=1Gi \
           --cpu=2 \
           || gcloud run jobs update logical-db-migrator \
-             --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/logical-db-migrator:latest \
+             --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/logical-db-migrator:latest \
              --region=asia-northeast1
 
 timeout: 900s

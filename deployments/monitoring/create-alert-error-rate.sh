@@ -10,7 +10,7 @@ set -euo pipefail
 #   THRESHOLD (default: 0.01)  i.e., 1%
 #   DURATION (default: 300s)   MQL condition duration
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 SERVICE="${SERVICE:-}"
 THRESHOLD="${THRESHOLD:-0.01}"
 DURATION="${DURATION:-300s}"

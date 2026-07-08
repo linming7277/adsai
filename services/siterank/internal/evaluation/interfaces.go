@@ -3,10 +3,10 @@ package evaluation
 import (
 	"context"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/aievaluator"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/brandextract"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/browserexec"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+	"github.com/linming7277/adsai/services/siterank/internal/aievaluator"
+	"github.com/linming7277/adsai/services/siterank/internal/brandextract"
+	"github.com/linming7277/adsai/services/siterank/internal/browserexec"
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 // BrowserExecClient defines the interface for browser-exec operations

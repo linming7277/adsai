@@ -162,7 +162,7 @@ gcloud run jobs create db-reset-preview \
   --region=asia-northeast1 \
   --image=asia-northeast1-docker.pkg.dev/.../db-migrator:latest \
   --set-secrets="DATABASE_URL=DATABASE_URL:latest" \
-  --set-cloudsql-instances=gen-lang-client-0944935873:asia-northeast1:autoads \
+  --set-cloudsql-instances=your-gcp-project-id:asia-northeast1:adsai \
   --command="/reset.sh"
 
 gcloud run jobs execute db-reset-preview --region=asia-northeast1 --wait

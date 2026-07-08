@@ -13,19 +13,19 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/redis/go-redis/v9"
 
-		"github.com/xxrenzhe/autoads/pkg/dburl"
-	"github.com/xxrenzhe/autoads/pkg/logger"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/db"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
-	"github.com/xxrenzhe/autoads/pkg/telemetry"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/aievaluator"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/browserexec"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/evaluation"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/events"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/handlers"
-	_ "github.com/xxrenzhe/autoads/services/siterank/internal/metrics" // 注册Prometheus metrics
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+		"github.com/linming7277/adsai/pkg/dburl"
+	"github.com/linming7277/adsai/pkg/logger"
+	"github.com/linming7277/adsai/services/siterank/internal/db"
+	"github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/serviceclient"
+	"github.com/linming7277/adsai/pkg/telemetry"
+	"github.com/linming7277/adsai/services/siterank/internal/aievaluator"
+	"github.com/linming7277/adsai/services/siterank/internal/browserexec"
+	"github.com/linming7277/adsai/services/siterank/internal/evaluation"
+	"github.com/linming7277/adsai/services/siterank/internal/events"
+	"github.com/linming7277/adsai/services/siterank/internal/handlers"
+	_ "github.com/linming7277/adsai/services/siterank/internal/metrics" // 注册Prometheus metrics
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 var (

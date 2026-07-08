@@ -10,7 +10,7 @@ import fs from 'fs/promises';
 
 class RealSupabaseSession {
   constructor() {
-    this.baseUrl = 'https://www.urlchecker.dev';
+    this.baseUrl = 'https://preview.example.com';
     this.token = null;
     this.user = null;
   }
@@ -130,7 +130,7 @@ class RealSupabaseSession {
           console.log('✅ Found email input field');
 
           // 填写测试邮箱
-          await emailInput.fill('demo-test@urlchecker.dev');
+          await emailInput.fill('demo-test@preview.example.com');
           await page.waitForTimeout(1000);
 
           if (await passwordInput.isVisible({ timeout: 2000 })) {
@@ -162,7 +162,7 @@ class RealSupabaseSession {
         const emailInput = page.locator('input[type="email"], input[name="email"]').first();
         if (await emailInput.isVisible({ timeout: 3000 })) {
           console.log('✅ Found email input after clicking sign-in');
-          await emailInput.fill('demo-test@urlchecker.dev');
+          await emailInput.fill('demo-test@preview.example.com');
           await page.waitForTimeout(1000);
 
           const passwordInput = page.locator('input[type="password"], input[name="password"]').first();

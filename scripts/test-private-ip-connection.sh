@@ -21,7 +21,7 @@ fi
 
 # Test 3: PostgreSQL connection
 echo "3. Testing PostgreSQL connection..."
-PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h 10.6.0.2 -U postgres -d autoads_db -c "SELECT version();"
+PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h 10.6.0.2 -U postgres -d adsai_db -c "SELECT version();"
 
 if [ $? -eq 0 ]; then
     echo "✅ PostgreSQL connection successful"
@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
     # Test 4: Migration status
     echo "4. Checking migration status..."
     cd services/billing
-    migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@10.6.0.2:5432/autoads_db" version
+    migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@10.6.0.2:5432/adsai_db" version
 else
     echo "❌ PostgreSQL connection failed"
 fi

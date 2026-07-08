@@ -169,7 +169,7 @@ scripts/db/apply-migration.sh --service your_service --env preview --all --dry-r
 #### 3. 权限问题
 ```bash
 # 检查secret权限
-gcloud secrets get-iam-policy DB_CONNECTION_MODE --project=gen-lang-client-0944935873
+gcloud secrets get-iam-policy DB_CONNECTION_MODE --project=your-gcp-project-id
 
 # 添加权限
 gcloud secrets add-iam-policy-binding DB_CONNECTION_MODE \

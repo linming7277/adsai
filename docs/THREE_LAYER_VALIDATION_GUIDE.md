@@ -2,7 +2,7 @@
 
 ## 概述
 
-三层用户数据架构验证中间件是AutoAds项目中确保数据一致性的关键组件，用于验证用户在三个数据层中的完整性和一致性：
+三层用户数据架构验证中间件是AdsAI项目中确保数据一致性的关键组件，用于验证用户在三个数据层中的完整性和一致性：
 
 - **Layer 1**: Supabase auth.users (认证层)
 - **Layer 2**: Cloud SQL user.users (业务用户层)
@@ -68,8 +68,8 @@
 package main
 
 import (
-    "github.com/xxrenzhe/autoads/pkg/middleware"
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/middleware"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 func main() {
@@ -300,4 +300,4 @@ THREE_LAYER_HEAL_TIMEOUT=10
 
 ## 许可证
 
-本组件遵循AutoAds项目许可证。
+本组件遵循AdsAI项目许可证。

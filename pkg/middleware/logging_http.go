@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/logger"
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
+	"github.com/linming7277/adsai/pkg/logger"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
 )
 
 // LoggingMiddleware writes structured JSON logs for each HTTP request.

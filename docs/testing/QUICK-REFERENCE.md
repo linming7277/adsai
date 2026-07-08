@@ -10,7 +10,7 @@
 
 ```bash
 # 设置 GCP 项目
-export GCP_PROJECT="gen-lang-client-0944935873"
+export GCP_PROJECT="your-gcp-project-id"
 
 # 获取 Supabase 密码
 export SUPABASE_PASSWORD=$(gcloud secrets versions access latest \
@@ -88,7 +88,7 @@ go test -tags=integration -v ./services/siterank/integration_preview_test.go
 # 检查服务状态
 gcloud run services describe billing-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ### 数据库连接失败

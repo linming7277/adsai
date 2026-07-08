@@ -36,9 +36,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('pricing.title'),
     description: t('pricing.description'),
     keywords: t('pricing.keywords'),
-    authors: [{ name: 'AutoAds Team' }],
-    creator: 'AutoAds',
-    publisher: 'AutoAds',
+    authors: [{ name: 'AdsAI Team' }],
+    creator: 'AdsAI',
+    publisher: 'AdsAI',
     openGraph: {
       type: 'website',
       locale: i18n.language,
@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: `${baseUrl}/og-image.jpg`,
           width: 1200,
           height: 630,
-          alt: 'AutoAds Pricing Plans - Choose Your Plan',
+          alt: 'AdsAI Pricing Plans - Choose Your Plan',
         },
       ],
     },
@@ -96,7 +96,7 @@ export default async function PricingPage() {
 
   // Create Software Application structured data for pricing
   const softwareStructuredData = buildSoftwareApplicationStructuredData({
-    name: 'AutoAds',
+    name: 'AdsAI',
     description: 'AI-powered landing page evaluation platform for affiliate marketers',
     offers: [
       {

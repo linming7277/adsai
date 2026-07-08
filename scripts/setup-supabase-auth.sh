@@ -44,8 +44,8 @@ for service in "${SERVICES[@]}"; do
         
         # 确保引用最新的pkg/auth
         if [ -f "go.mod" ]; then
-            go get github.com/xxrenzhe/autoads/pkg/auth@latest || true
-            go get github.com/xxrenzhe/autoads/pkg/middleware@latest || true
+            go get github.com/linming7277/adsai/pkg/auth@latest || true
+            go get github.com/linming7277/adsai/pkg/middleware@latest || true
             go mod tidy
             echo "      ✅ $service 已更新"
         else
@@ -103,6 +103,6 @@ echo "   2. 查看集成指南: docs/MarkerkitGo/SupabaseBackendIntegration.md"
 echo "   3. 更新服务代码以使用Supabase认证"
 echo ""
 echo "💡 示例代码:"
-echo "   import \"github.com/xxrenzhe/autoads/pkg/auth\""
+echo "   import \"github.com/linming7277/adsai/pkg/auth\""
 echo "   userID, err := auth.ExtractSupabaseUserID(ctx, r)"
 echo ""

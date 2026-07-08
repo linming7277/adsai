@@ -1172,9 +1172,9 @@ Month 2-3 (长期优化):
    - `SITERANK_BUSINESS_REQUIREMENTS_REVIEW.md`
 
 2. **评估规范文档**
-   - `.kiro/specs/autoads-system-evaluation/requirements.md`
-   - `.kiro/specs/autoads-system-evaluation/design.md`
-   - `.kiro/specs/autoads-system-evaluation/tasks.md`
+   - `.kiro/specs/adsai-system-evaluation/requirements.md`
+   - `.kiro/specs/adsai-system-evaluation/design.md`
+   - `.kiro/specs/adsai-system-evaluation/tasks.md`
 
 3. **代码文件**
    - `services/siterank/internal/evaluation/service.go`
@@ -1292,9 +1292,9 @@ Offer评估功能（包含AI评估能力）的实现质量**优秀**，综合评
 
 ### 参考文档
 - `SITERANK_BUSINESS_REQUIREMENTS_REVIEW.md`
-- `.kiro/specs/autoads-system-evaluation/requirements.md`
-- `.kiro/specs/autoads-system-evaluation/design.md`
-- `.kiro/specs/autoads-system-evaluation/tasks.md`
+- `.kiro/specs/adsai-system-evaluation/requirements.md`
+- `.kiro/specs/adsai-system-evaluation/design.md`
+- `.kiro/specs/adsai-system-evaluation/tasks.md`
 
 ---
 

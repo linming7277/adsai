@@ -4,10 +4,10 @@
 substitutions:
   _SERVICE_NAME: gateway-middleware-prod
   _REGION: asia-northeast1
-  _IMAGE_REGISTRY: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services
+  _IMAGE_REGISTRY: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services
   _IMAGE_NAME: gateway-middleware
   _IMAGE_TAG: prod-${SHORT_SHA}
-  _VPC_CONNECTOR: autoads-prod-vpc-connector
+  _VPC_CONNECTOR: adsai-prod-vpc-connector
 
 steps:
   # Step 1: Build the Docker image using Kaniko
@@ -42,7 +42,7 @@ steps:
       - --vpc-connector=${_VPC_CONNECTOR}
       - --vpc-egress=private-ranges-only
       - --set-env-vars=ENV=production,CONFIG_PATH=/app/config/routes.yaml,GIN_MODE=release,REDIS_ADDRESS=10.0.1.3:6379,BILLING_SERVICE_URL=https://billing-prod-1234567890.asia-northeast1.run.app
-      - --set-secrets=/secrets/app-secrets/serviceAccountKey=autoads-prod-service-key:latest
+      - --set-secrets=/secrets/app-secrets/serviceAccountKey=adsai-prod-service-key:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY

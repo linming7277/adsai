@@ -3,11 +3,11 @@ set -euo pipefail
 
 # Submit a large bulk plan to Adscenter and trigger execute-tick for smoke.
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
 #   USER_ID=u_preview_demo MAX=40 \
 #   deployments/scripts/submit-large-plan.sh
 
-PROJECT_ID=${PROJECT_ID:-gen-lang-client-0944935873}
+PROJECT_ID=${PROJECT_ID:-your-gcp-project-id}
 REGION=${REGION:-asia-northeast1}
 USER_ID=${USER_ID:-u_preview_demo}
 MAX=${MAX:-40}

@@ -1,5 +1,5 @@
-# AutoAds SaaS Preview Environment Configuration
-# Domain: urlchecker.dev
+# AdsAI SaaS Preview Environment Configuration
+# Domain: preview.example.com
 
 server:
   port: 8888
@@ -15,7 +15,7 @@ database:
   port: 30354
   username: "root"
   password: "${DATABASE_PASSWORD}"
-  database: "autoads_preview"
+  database: "adsai_preview"
   charset: "utf8mb4"
   parse_time: true
   loc: "Local"
@@ -38,15 +38,15 @@ auth:
   jwt_expire: 168h # 7 days
   google_client_id: "${GOOGLE_CLIENT_ID}"
   google_client_secret: "${GOOGLE_CLIENT_SECRET}"
-  auth_url: "https://www.urlchecker.dev"
-  callback_url: "https://www.urlchecker.dev/api/auth/callback"
+  auth_url: "https://preview.example.com"
+  callback_url: "https://preview.example.com/api/auth/callback"
 
 # Domain configuration
 domain:
-  primary: "urlchecker.dev"
-  www: "www.urlchecker.dev"
-  api_base: "https://www.urlchecker.dev/api"
-  frontend_base: "https://www.urlchecker.dev"
+  primary: "preview.example.com"
+  www: "preview.example.com"
+  api_base: "https://preview.example.com/api"
+  frontend_base: "https://preview.example.com"
 
 # External services
 external_services:
@@ -83,8 +83,8 @@ security:
   cors:
     enabled: true
     allowed_origins:
-      - "https://urlchecker.dev"
-      - "https://www.urlchecker.dev"
+      - "https://preview.example.com"
+      - "https://preview.example.com"
     allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allowed_headers: ["*"]
     allow_credentials: true

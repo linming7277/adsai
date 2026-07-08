@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	pkgauth "github.com/xxrenzhe/autoads/pkg/auth"
+	pkgauth "github.com/linming7277/adsai/pkg/auth"
 	"net/http"
 )
 

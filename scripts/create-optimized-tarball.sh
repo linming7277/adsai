@@ -1,10 +1,10 @@
 #!/bin/bash
-# AutoAds 优化Tarball创建脚本
+# AdsAI 优化Tarball创建脚本
 # 根据Monorepo构建最佳实践实现
 
 set -euo pipefail
 
-PROJECT_ID="${1:-autoads-dev}"
+PROJECT_ID="${1:-adsai-dev}"
 SERVICE_NAME="${2:-billing}"
 
 log() {
@@ -23,7 +23,7 @@ success() {
 # 显示使用说明
 if [[ "${1:-}" == "--help" ]]; then
     cat << 'EOF'
-AutoAds 优化Tarball创建工具
+AdsAI 优化Tarball创建工具
 
 用法:
   $0 create-optimized-tarball.sh [--backend SERVICE_NAME] [--frontend SERVICE_NAME] [options]
@@ -99,7 +99,7 @@ if [[ ! -d "$SERVICE_DIR" ]]; then
 fi
 
 # 创建临时目录
-TEMP_DIR="/tmp/autoads-$(date +%s)"
+TEMP_DIR="/tmp/adsai-$(date +%s)"
 mkdir -p "$TEMP_DIR"
 cd "$TEMP_DIR"
 

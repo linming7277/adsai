@@ -9,7 +9,7 @@
 ### 1. 环境变量配置
 - [x] DATABASE_URL: 已配置为Unix Socket格式
   ```
-  postgresql://postgres:$GL(~x]T2Q[M@uX4@/autoads_db?host=/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads&sslmode=disable
+  postgresql://postgres:$GL(~x]T2Q[M@uX4@/adsai_db?host=/cloudsql/your-gcp-project-id:asia-northeast1:adsai&sslmode=disable
   ```
 - [x] DB_CONNECTION_MODE: 已设置为"cloudsql"
 - [x] SUPABASE_DB_PASSWORD: 已配置
@@ -20,8 +20,8 @@
 - [x] 000003_create_simplified_schema.up.sql (已存在)
 
 ### 3. 基础设施
-- [x] Cloud SQL实例: autoads (asia-northeast1)
-- [x] 服务账号: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+- [x] Cloud SQL实例: adsai (asia-northeast1)
+- [x] 服务账号: service-account@your-gcp-project-id.iam.gserviceaccount.com
 - [x] GitHub工作流: database-migration.yml (已配置)
 
 ## 📋 需要迁移的服务清单
@@ -74,7 +74,7 @@ find services/*/migrations -name "*.sql" -type f
 
 ```yaml
 annotations:
-  run.googleapis.com/cloudsql-instances: "gen-lang-client-0944935873:asia-northeast1:autoads"
+  run.googleapis.com/cloudsql-instances: "your-gcp-project-id:asia-northeast1:adsai"
   run.googleapis.com/startup-cpu-boost: "true"
 
 env:

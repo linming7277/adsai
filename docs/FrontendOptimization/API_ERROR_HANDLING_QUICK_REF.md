@@ -10,7 +10,7 @@
 ### 后端 - 错误处理
 
 ```go
-import "github.com/xxrenzhe/autoads/pkg/apierrors"
+import "github.com/linming7277/adsai/pkg/apierrors"
 
 // 资源未找到
 err := apierrors.NotFound("Offer", offerID)
@@ -36,7 +36,7 @@ err.WriteJSON(w, r)
 ### 后端 - 分页
 
 ```go
-import "github.com/xxrenzhe/autoads/pkg/pagination"
+import "github.com/linming7277/adsai/pkg/pagination"
 
 // 1. 解析参数
 limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
@@ -55,7 +55,7 @@ json.NewEncoder(w).Encode(response)
 ### 后端 - Offer评估失败
 
 ```go
-import "github.com/xxrenzhe/autoads/services/offer/internal/evaluation"
+import "github.com/linming7277/adsai/services/offer/internal/evaluation"
 
 err := evaluateOffer(url)
 if err != nil {
@@ -219,4 +219,4 @@ return (
 ---
 
 **最后更新**: 2025-01-12
-**维护者**: AutoAds Team
+**维护者**: AdsAI Team

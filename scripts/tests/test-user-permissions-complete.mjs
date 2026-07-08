@@ -16,7 +16,7 @@ import { chromium } from 'playwright';
 import { setupAuthForTest, cleanupAuthForTest } from './helpers/auth.mjs';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 // 套餐配置
 const SUBSCRIPTION_CONFIG = {
@@ -113,25 +113,25 @@ const SUBSCRIPTION_CONFIG = {
 // 测试用户配置
 const TEST_USERS = {
   starter: {
-    email: 'test-starter@autoads.dev',
+    email: 'test-starter@adsai.dev',
     subscription: 'starter',
     role: 'user',
     expectedPermissions: SUBSCRIPTION_CONFIG.starter
   },
   professional: {
-    email: 'test-professional@autoads.dev',
+    email: 'test-professional@adsai.dev',
     subscription: 'professional',
     role: 'user',
     expectedPermissions: SUBSCRIPTION_CONFIG.professional
   },
   elite: {
-    email: 'test-elite@autoads.dev',
+    email: 'test-elite@adsai.dev',
     subscription: 'elite',
     role: 'user',
     expectedPermissions: SUBSCRIPTION_CONFIG.elite
   },
   admin: {
-    email: 'test-admin@autoads.dev',
+    email: 'test-admin@adsai.dev',
     subscription: 'elite',
     role: 'admin',
     expectedPermissions: {

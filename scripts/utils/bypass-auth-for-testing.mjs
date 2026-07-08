@@ -11,7 +11,7 @@ import fs from 'fs/promises';
 
 class AuthBypassHandler {
   constructor() {
-    this.baseUrl = 'https://www.urlchecker.dev';
+    this.baseUrl = 'https://preview.example.com';
     this.apiBaseUrl = 'https://gateway-middleware-preview-yt54xvsg5q-an.a.run.app';
   }
 
@@ -39,7 +39,7 @@ class AuthBypassHandler {
       const loginForm = await page.locator('form').first();
       if (await loginForm.isVisible()) {
         await loginForm.fill({
-          email: 'test@urlchecker.dev',
+          email: 'test@preview.example.com',
           password: 'TestPassword123!'
         });
 
@@ -173,7 +173,7 @@ protectedRoutes.HandleFunc("/v1/demo/status/test", func(w http.ResponseWriter, r
 
 -- 2. 创建测试用户
 INSERT INTO users (id, email, created_at)
-VALUES ('test-user-12345', 'test@urlchecker.dev', NOW())
+VALUES ('test-user-12345', 'test@preview.example.com', NOW())
 ON CONFLICT (id) DO NOTHING;
 
 -- 3. 检查现有Demo数据

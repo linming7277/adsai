@@ -4,8 +4,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import getSupabaseBrowserClient from '../supabase/browser-client';
 
-// 符合AutoAds架构的简化认证类型
-interface AutoAdsAuthContext {
+// 符合AdsAI架构的简化认证类型
+interface AdsAIAuthContext {
   user: User | null;
   session: Session | null;
   loading: boolean;
@@ -17,14 +17,14 @@ interface AutoAdsAuthContext {
   refresh: () => Promise<void>;
 }
 
-const AuthContext = createContext<AutoAdsAuthContext | undefined>(undefined);
+const AuthContext = createContext<AdsAIAuthContext | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 /**
- * AutoAds 简化认证提供者
+ * AdsAI 简化认证提供者
  *
  * 设计原则：
  * 1. 严格遵循 Supabase Auth (Google OAuth only)
@@ -37,7 +37,7 @@ interface AuthProviderProps {
  * - Layer 2: Cloud SQL user.users (业务用户数据)
  * - Layer 3: Cloud SQL billing.accounts (计费数据)
  */
-export function AutoAdsAuthProvider({ children }: AuthProviderProps) {
+export function AdsAIAuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ export function AutoAdsAuthProvider({ children }: AuthProviderProps) {
     // 初始化认证状态
     async function initializeAuth() {
       try {
-        console.log('🔐 初始化AutoAds认证系统...');
+        console.log('🔐 初始化AdsAI认证系统...');
 
         const { data: { session } } = await supabase.auth.getSession();
 
@@ -136,7 +136,7 @@ export function AutoAdsAuthProvider({ children }: AuthProviderProps) {
   const isAdmin = user?.app_metadata?.role === 'SuperAdmin';
   const userId = user?.id ?? null;
 
-  const value: AutoAdsAuthContext = {
+  const value: AdsAIAuthContext = {
     user,
     session,
     loading,
@@ -155,12 +155,12 @@ export function AutoAdsAuthProvider({ children }: AuthProviderProps) {
 }
 
 /**
- * 使用AutoAds认证上下文的Hook
+ * 使用AdsAI认证上下文的Hook
  */
-export function useAutoAdsAuth() {
+export function useAdsAIAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAutoAdsAuth must be used within AutoAdsAuthProvider');
+    throw new Error('useAdsAIAuth must be used within AdsAIAuthProvider');
   }
   return context;
 }
@@ -169,7 +169,7 @@ export function useAutoAdsAuth() {
  * 简化的认证状态检查Hook
  */
 export function useAuthStatus() {
-  const { user, loading, isAdmin } = useAutoAdsAuth();
+  const { user, loading, isAdmin } = useAdsAIAuth();
 
   return {
     isAuthenticated: !!user,
@@ -217,7 +217,7 @@ export function useGoogleSignIn() {
  * 获取用户显示名称
  */
 export function useUserDisplayName() {
-  const { user } = useAutoAdsAuth();
+  const { user } = useAdsAIAuth();
 
   if (!user) {
     return null;

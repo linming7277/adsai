@@ -1,12 +1,12 @@
-# AutoAds 路由SEO迁移指南
+# AdsAI 路由SEO迁移指南
 
 ## 📋 概述
 
-本指南详细说明AutoAds平台路由变更时的SEO最佳实践，确保搜索引擎排名和用户体验不受影响。
+本指南详细说明AdsAI平台路由变更时的SEO最佳实践，确保搜索引擎排名和用户体验不受影响。
 
 ## 🚀 新产品SEO策略
 
-由于AutoAds是新产品而非迁移现有网站，SEO重点应放在：
+由于AdsAI是新产品而非迁移现有网站，SEO重点应放在：
 
 ### 1. 基础SEO建立
 - 实施完整的技术SEO基础
@@ -22,7 +22,7 @@
 
 ### Cookie-Based语言检测
 
-AutoAds使用基于Cookie的语言检测，而非URL前缀：
+AdsAI使用基于Cookie的语言检测，而非URL前缀：
 
 ```typescript
 // 语言检测实现 (i18n.server.ts)
@@ -68,9 +68,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('page.title'),
     description: t('page.description'),
     keywords: t('page.keywords'),
-    authors: [{ name: 'AutoAds Team' }],
-    creator: 'AutoAds',
-    publisher: 'AutoAds',
+    authors: [{ name: 'AdsAI Team' }],
+    creator: 'AdsAI',
+    publisher: 'AdsAI',
     openGraph: {
       type: 'website',
       locale: i18n.language,
@@ -109,18 +109,18 @@ export async function generateMetadata(): Promise<Metadata> {
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://autoads.dev#organization",
-  "name": "AutoAds",
-  "url": "https://autoads.dev",
+  "@id": "https://example.com#organization",
+  "name": "AdsAI",
+  "url": "https://example.com",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://autoads.dev/logo.png",
+    "url": "https://example.com/logo.png",
     "width": 512,
     "height": 512
   },
   "contactPoint": {
     "@type": "ContactPoint",
-    "email": "support@autoads.dev",
+    "email": "support@adsai.dev",
     "contactType": "customer support",
     "availableLanguage": ["en", "zh-CN"]
   },
@@ -142,18 +142,18 @@ export async function generateMetadata(): Promise<Metadata> {
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "@id": "https://autoads.dev#service",
+  "@id": "https://example.com#service",
   "name": "AI Landing Page Evaluation",
   "description": "AI-powered analysis of landing pages for accurate profitability prediction",
   "provider": {
     "@type": "Organization",
-    "@id": "https://autoads.dev#organization"
+    "@id": "https://example.com#organization"
   },
   "serviceType": "Marketing Analysis Service",
   "areaServed": "Worldwide",
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "AutoAds Services",
+    "name": "AdsAI Services",
     "itemListElement": [
       {
         "@type": "Offer",
@@ -178,13 +178,13 @@ export async function generateMetadata(): Promise<Metadata> {
       "@type": "ListItem",
       "position": 1,
       "name": "首页",
-      "item": "https://autoads.dev"
+      "item": "https://example.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "功能特性",
-      "item": "https://autoads.dev/features"
+      "item": "https://example.com/features"
     }
   ]
 }
@@ -259,7 +259,7 @@ export default function robots(): MetadataRoute.Robots {
 
 #### 首页内容层次
 ```html
-<h1>AutoAds - AI落地页评估平台</h1>
+<h1>AdsAI - AI落地页评估平台</h1>
 <h2>核心功能</h2>
 <h3>12维度AI分析</h3>
 <h3>真实点击模拟</h3>
@@ -329,16 +329,16 @@ export default function robots(): MetadataRoute.Robots {
 ```json
 {
   "zh-CN": {
-    "company": "AutoAds",
+    "company": "AdsAI",
     "address": "中国上海市",
     "phone": "+86-xxx-xxxx-xxxx",
-    "email": "support@autoads.dev"
+    "email": "support@adsai.dev"
   },
   "en": {
-    "company": "AutoAds",
+    "company": "AdsAI",
     "address": "Global",
     "phone": "+1-xxx-xxx-xxxx",
-    "email": "support@autoads.dev"
+    "email": "support@adsai.dev"
   }
 }
 ```
@@ -380,7 +380,7 @@ import Image from 'next/image';
 
 <Image
   src="/hero-image.jpg"
-  alt="AutoAds Dashboard"
+  alt="AdsAI Dashboard"
   width={1200}
   height={800}
   priority
@@ -465,9 +465,9 @@ const LazyComponent = dynamic(() => import('./LazyComponent'), {
 - 测试语言切换功能
 
 ### 联系方式
-- **技术支持**: support@autoads.dev
-- **SEO咨询**: seo@autoads.dev
-- **文档更新**: docs@autoads.dev
+- **技术支持**: support@adsai.dev
+- **SEO咨询**: seo@adsai.dev
+- **文档更新**: docs@adsai.dev
 
 ---
 

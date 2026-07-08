@@ -8,7 +8,7 @@ interface PageParams {
 
 export const generateMetadata = ({ params }: PageParams) => {
   return {
-    title: `${params.slug.join('/')} | AutoAds 文档（建设中）`,
+    title: `${params.slug.join('/')} | AdsAI 文档（建设中）`,
   };
 };
 

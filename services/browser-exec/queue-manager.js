@@ -10,7 +10,7 @@
 import { PubSub } from '@google-cloud/pubsub'
 
 const pubsub = new PubSub({
-  projectId: process.env.GCP_PROJECT_ID || 'gen-lang-client-0944935873'
+  projectId: process.env.GCP_PROJECT_ID || 'your-gcp-project-id'
 })
 
 const TOPIC_NAME = 'browser-visit-requests'

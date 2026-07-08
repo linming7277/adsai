@@ -7,7 +7,7 @@ import FadeIn from '~/components/FadeIn';
 import { MarketingPageLayout } from '~/core/ui/PageLayout';
 
 export const metadata = {
-  title: 'Documentation - AutoAds',
+  title: 'Documentation - AdsAI',
 };
 
 async function DocsPage() {

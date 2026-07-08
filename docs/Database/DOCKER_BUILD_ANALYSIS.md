@@ -243,7 +243,7 @@ RUN apk add --no-cache \
 ### 成功的镜像推送
 
 ```
-The push refers to repository [asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator]
+The push refers to repository [asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator]
 abc123def456: Pushed
 def456ghi789: Pushed
 ghi789jkl012: Pushed
@@ -258,7 +258,7 @@ latest: digest: sha256:... size: 1234
 ### 立即执行
 
 1. ✅ 监控GitHub Actions执行
-   - 访问: https://github.com/xxrenzhe/autoads/actions
+   - 访问: https://github.com/linming7277/adsai/actions
    - 查看: "Database Migration (Cloud Run Job)"
    - 确认: 构建步骤成功
 

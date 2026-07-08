@@ -13,11 +13,11 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/go-chi/chi/v5"
-	apperr "github.com/xxrenzhe/autoads/pkg/errors"
-	ev "github.com/xxrenzhe/autoads/pkg/events"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/pkg/telemetry"
-	"github.com/xxrenzhe/autoads/services/projector/internal/storage"
+	apperr "github.com/linming7277/adsai/pkg/errors"
+	ev "github.com/linming7277/adsai/pkg/events"
+	"github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/telemetry"
+	"github.com/linming7277/adsai/services/projector/internal/storage"
 )
 
 type Projector struct {

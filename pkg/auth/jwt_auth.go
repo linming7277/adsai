@@ -77,7 +77,7 @@ func (j *JWTManager) GenerateAccessToken(userID, email, name, role string, permi
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    j.config.Issuer,
 			Subject:   userID,
-			Audience:  []string{"autoads-api"},
+			Audience:  []string{"adsai-api"},
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.config.AccessTokenTTL) * time.Minute)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
@@ -98,7 +98,7 @@ func (j *JWTManager) GenerateRefreshToken(userID, sessionID string) (string, err
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    j.config.Issuer,
 			Subject:   userID,
-			Audience:  []string{"autoads-api"},
+			Audience:  []string{"adsai-api"},
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.config.RefreshTokenTTL) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
@@ -118,7 +118,7 @@ func (j *JWTManager) GeneratePasswordResetToken(userID string) (string, error) {
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    j.config.Issuer,
 			Subject:   userID,
-			Audience:  []string{"autoads-api"},
+			Audience:  []string{"adsai-api"},
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.config.ResetTokenTTL) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
@@ -140,7 +140,7 @@ func (j *JWTManager) GenerateServiceToken(serviceID string, permissions []string
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    j.config.Issuer,
 			Subject:   serviceID,
-			Audience:  []string{"autoads-api"},
+			Audience:  []string{"adsai-api"},
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(ttl)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
@@ -197,7 +197,7 @@ func (j *JWTManager) ValidateToken(tokenString string) (*TokenClaims, error) {
 	}
 
 	// Validate audience
-	if !containsString(claims.Audience, "autoads-api") {
+	if !containsString(claims.Audience, "adsai-api") {
 		return nil, fmt.Errorf("invalid token audience")
 	}
 

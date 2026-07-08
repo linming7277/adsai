@@ -18,7 +18,7 @@ type MetricsBreaker struct {
 // NewMetricsBreaker creates a circuit breaker with Prometheus metrics
 func NewMetricsBreaker(cfg Config, namespace, subsystem string) *MetricsBreaker {
 	if namespace == "" {
-		namespace = "autoads"
+		namespace = "adsai"
 	}
 
 	// Create state gauge (0=closed, 1=half-open, 2=open)

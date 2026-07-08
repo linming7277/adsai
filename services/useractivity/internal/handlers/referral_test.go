@@ -14,7 +14,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/middleware"
 
 	_ "github.com/lib/pq"
 )
@@ -91,7 +91,7 @@ func TestTrialSubscription_Struct(t *testing.T) {
 func TestReferralInfo_Struct(t *testing.T) {
 	info := ReferralInfo{
 		ReferralCode:      "ABC12345",
-		ReferralLink:      "https://autoads.com/signup?ref=ABC12345",
+		ReferralLink:      "https://example.com/signup?ref=ABC12345",
 		TotalInvites:      10,
 		SuccessfulInvites: 7,
 		TotalRewards:      140,

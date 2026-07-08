@@ -1,4 +1,4 @@
-# AutoAds Business Metrics Alert Rules
+# AdsAI Business Metrics Alert Rules
 # 这是传统 Prometheus Alertmanager 格式的参考文件
 # 实际使用 Grafana Cloud Alerting (通过 UI 配置)
 # 参考: monitoring/grafana/alerts/README.md
@@ -11,9 +11,9 @@ groups:
       - alert: HighTokenRefundRate
         expr: |
           (
-            sum(rate(autoads_billing_tokens_refunded_total[5m]))
+            sum(rate(adsai_billing_tokens_refunded_total[5m]))
             /
-            sum(rate(autoads_billing_tokens_consumed_total[5m]))
+            sum(rate(adsai_billing_tokens_consumed_total[5m]))
           ) > 0.10
         for: 5m
         labels:
@@ -23,14 +23,14 @@ groups:
         annotations:
           summary: "Token 退款率过高"
           description: "过去 5 分钟 Token 退款率为 {{ $value | humanizePercentage }}，超过阈值 10%。请检查系统质量问题。"
-          runbook_url: "https://github.com/xxrenzhe/autoads/wiki/Runbooks#high-token-refund-rate"
+          runbook_url: "https://github.com/linming7277/adsai/wiki/Runbooks#high-token-refund-rate"
 
       # Token 消耗速率异常飙升
       - alert: TokenConsumptionSpike
         expr: |
-          sum(rate(autoads_billing_tokens_consumed_total[5m]))
+          sum(rate(adsai_billing_tokens_consumed_total[5m]))
           >
-          1.5 * sum(rate(autoads_billing_tokens_consumed_total[1h] offset 1h))
+          1.5 * sum(rate(adsai_billing_tokens_consumed_total[1h] offset 1h))
         for: 10m
         labels:
           severity: warning
@@ -43,9 +43,9 @@ groups:
       # Token 余额不足用户数过多
       - alert: HighInsufficientBalanceRate
         expr: |
-          sum(rate(autoads_billing_tokens_refunded_total{reason="insufficient_balance"}[5m]))
+          sum(rate(adsai_billing_tokens_refunded_total{reason="insufficient_balance"}[5m]))
           /
-          sum(rate(autoads_billing_tokens_consumed_total[5m]))
+          sum(rate(adsai_billing_tokens_consumed_total[5m]))
           > 0.05
         for: 15m
         labels:
@@ -63,9 +63,9 @@ groups:
       - alert: HighOfferFailureRate
         expr: |
           (
-            sum(rate(autoads_offer_offers_failed_total[5m]))
+            sum(rate(adsai_offer_offers_failed_total[5m]))
             /
-            sum(rate(autoads_offer_offers_created_total[5m]))
+            sum(rate(adsai_offer_offers_created_total[5m]))
           ) > 0.10
         for: 5m
         labels:
@@ -75,15 +75,15 @@ groups:
         annotations:
           summary: "Offer 失败率过高"
           description: "过去 5 分钟 Offer 失败率为 {{ $value | humanizePercentage }}，超过阈值 10%。请立即检查系统健康状况。"
-          runbook_url: "https://github.com/xxrenzhe/autoads/wiki/Runbooks#high-offer-failure-rate"
+          runbook_url: "https://github.com/linming7277/adsai/wiki/Runbooks#high-offer-failure-rate"
 
       # Offer 成功率低
       - alert: LowOfferSuccessRate
         expr: |
           (
-            sum(rate(autoads_offer_offers_completed_total[5m]))
+            sum(rate(adsai_offer_offers_completed_total[5m]))
             /
-            sum(rate(autoads_offer_offers_created_total[5m]))
+            sum(rate(adsai_offer_offers_created_total[5m]))
           ) < 0.50
         for: 10m
         labels:
@@ -97,7 +97,7 @@ groups:
       # Offer 创建速率异常低
       - alert: LowOfferCreationRate
         expr: |
-          sum(rate(autoads_offer_offers_created_total[5m])) < 0.01
+          sum(rate(adsai_offer_offers_created_total[5m])) < 0.01
         for: 15m
         labels:
           severity: info
@@ -113,7 +113,7 @@ groups:
       # 广告创建速率异常低
       - alert: LowAdCreationRate
         expr: |
-          sum(rate(autoads_adscenter_ads_created_total[5m])) < 0.01
+          sum(rate(adsai_adscenter_ads_created_total[5m])) < 0.01
         for: 15m
         labels:
           severity: info
@@ -126,7 +126,7 @@ groups:
       # 单用户广告创建速率过高（可能是异常行为）
       - alert: SuspiciousAdCreationActivity
         expr: |
-          sum(rate(autoads_adscenter_ads_created_total[5m])) by (user_id) > 10
+          sum(rate(adsai_adscenter_ads_created_total[5m])) by (user_id) > 10
         for: 5m
         labels:
           severity: warning
@@ -143,9 +143,9 @@ groups:
       - alert: HighHTTPErrorRate
         expr: |
           (
-            sum(rate(autoads_billing_http_errors_total[5m]))
+            sum(rate(adsai_billing_http_errors_total[5m]))
             /
-            sum(rate(autoads_billing_http_requests_total[5m]))
+            sum(rate(adsai_billing_http_requests_total[5m]))
           ) > 0.05
         for: 5m
         labels:
@@ -160,7 +160,7 @@ groups:
       - alert: HighP99Latency
         expr: |
           histogram_quantile(0.99,
-            sum(rate(autoads_billing_http_request_duration_seconds_bucket[5m])) by (le, method, path)
+            sum(rate(adsai_billing_http_request_duration_seconds_bucket[5m])) by (le, method, path)
           ) > 2.0
         for: 5m
         labels:
@@ -175,7 +175,7 @@ groups:
       - alert: HighP50Latency
         expr: |
           histogram_quantile(0.50,
-            sum(rate(autoads_billing_http_request_duration_seconds_bucket[5m])) by (le, method, path)
+            sum(rate(adsai_billing_http_request_duration_seconds_bucket[5m])) by (le, method, path)
           ) > 0.5
         for: 10m
         labels:
@@ -199,7 +199,7 @@ groups:
         annotations:
           summary: "断路器已打开"
           description: "服务 {{ $labels.service }} 的断路器已打开，依赖服务可能不可用。"
-          runbook_url: "https://github.com/xxrenzhe/autoads/wiki/Runbooks#circuit-breaker-open"
+          runbook_url: "https://github.com/linming7277/adsai/wiki/Runbooks#circuit-breaker-open"
 
       # 断路器失败率高
       - alert: HighCircuitBreakerFailureRate

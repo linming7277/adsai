@@ -8,7 +8,7 @@
 
 ### Email 通知 (默认已启用)
 
-1. 登录 Grafana Cloud: `https://autoads.grafana.net`
+1. 登录 Grafana Cloud: `https://adsai.grafana.net`
 2. 点击 **⚙️ → Alerting → Contact points**
 3. 默认已有 **grafana-default-email** (使用注册邮箱)
 4. - [ ] 验证邮箱地址正确
@@ -17,12 +17,12 @@
 
 1. 创建 Slack Webhook:
    - [ ] 访问: https://api.slack.com/messaging/webhooks
-   - [ ] 选择频道: `#autoads-alerts`
+   - [ ] 选择频道: `#adsai-alerts`
    - [ ] 复制 Webhook URL: _________________________
 
 2. 在 Grafana 添加 Slack:
    - [ ] **Contact points** → **New contact point**
-   - [ ] Name: `AutoAds Slack`
+   - [ ] Name: `AdsAI Slack`
    - [ ] Type: `Slack`
    - [ ] Webhook URL: (粘贴上面的 URL)
    - [ ] 点击 **Test** → 应收到测试消息
@@ -41,18 +41,18 @@
    **Rule name**: `High Token Refund Rate`
 
    **Section 1: Set query and alert condition**
-   - [ ] Data source: `AutoAds Billing`
+   - [ ] Data source: `AdsAI Billing`
    - [ ] 在 Query A 输入框粘贴:
      ```promql
-     sum(rate(autoads_billing_tokens_refunded_total[5m]))
+     sum(rate(adsai_billing_tokens_refunded_total[5m]))
      /
-     sum(rate(autoads_billing_tokens_consumed_total[5m]))
+     sum(rate(adsai_billing_tokens_consumed_total[5m]))
      ```
    - [ ] 点击 **Run queries** 验证查询正常
    - [ ] Expression: `WHEN last() OF A IS ABOVE 0.10`
 
    **Section 2: Alert evaluation**
-   - [ ] Folder: `AutoAds Alerts` (首次需创建)
+   - [ ] Folder: `AdsAI Alerts` (首次需创建)
    - [ ] Evaluation group: `token-alerts` (或使用默认)
    - [ ] Evaluate every: `1m`
    - [ ] For: `5m`
@@ -86,15 +86,15 @@
 
 **Query A**:
 ```promql
-sum(rate(autoads_offer_offers_failed_total[5m]))
+sum(rate(adsai_offer_offers_failed_total[5m]))
 /
-sum(rate(autoads_offer_offers_created_total[5m]))
+sum(rate(adsai_offer_offers_created_total[5m]))
 ```
 
 **Expression**: `WHEN last() OF A IS ABOVE 0.10`
 
 **Evaluation**:
-- Folder: `AutoAds Alerts`
+- Folder: `AdsAI Alerts`
 - Evaluate every: `1m`
 - For: `5m`
 
@@ -146,7 +146,7 @@ sum(rate(autoads_offer_offers_created_total[5m]))
 4. - [ ] Visualization: `Stat`
 5. - [ ] Title: `Active Alerts`
 6. - [ ] 点击 **Apply**
-7. - [ ] 保存 Dashboard: `AutoAds Alerts Overview`
+7. - [ ] 保存 Dashboard: `AdsAI Alerts Overview`
 
 ---
 

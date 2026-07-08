@@ -15,14 +15,14 @@
  * node scripts/tests/test-frontend-complete.mjs
  *
  * 环境变量：
- * - PREVIEW_BASE: 测试环境（默认: https://www.urlchecker.dev）
+ * - PREVIEW_BASE: 测试环境（默认: https://preview.example.com）
  * - HEADLESS: 是否无头模式（默认: true）
  * - TEST_EMAIL: Google 测试账号（默认: manhwarecap99@gmail.com）
  */
 
 import { chromium } from 'playwright';
 
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const HEADLESS = process.env.HEADLESS !== 'false';
 const TEST_EMAIL = process.env.TEST_EMAIL || 'manhwarecap99@gmail.com';
 
@@ -85,12 +85,12 @@ async function runAllTests() {
     await test('Test 2: 品牌一致性检查', async () => {
       await page.goto(`${BASE_URL}/en`, { waitUntil: 'networkidle' });
 
-      // 检查页面中是否有 AutoAds
-      const hasAutoAds = await page.locator('text=AutoAds').first().isVisible({ timeout: 5000 });
-      if (!hasAutoAds) {
-        throw new Error('页面中未找到 AutoAds 品牌名');
+      // 检查页面中是否有 AdsAI
+      const hasAdsAI = await page.locator('text=AdsAI').first().isVisible({ timeout: 5000 });
+      if (!hasAdsAI) {
+        throw new Error('页面中未找到 AdsAI 品牌名');
       }
-      console.log('   ✓ 品牌名 "AutoAds" 存在');
+      console.log('   ✓ 品牌名 "AdsAI" 存在');
 
       // 检查是否有 Makerkit 残留
       const makerkitCount = await page.locator('text=/makerkit/i').count();

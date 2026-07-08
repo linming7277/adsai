@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
-  title: AutoAds User Service API
+  title: AdsAI User Service API
   description: 统一用户服务API，提供用户档案、权限、Token和订阅管理
   version: 1.0.0
   contact:
-    name: AutoAds Team
+    name: AdsAI Team
 servers:
   - url: https://user-preview-yt54xvsg5q-an.a.run.app
     description: Preview Environment

@@ -3,11 +3,11 @@ set -euo pipefail
 
 # Bootstrap environment isolation for a given STACK (dev|preview|prod)
 # - Names services as {service}-{stack}
-# - Apply Cloud Run labels autoads-stack=<stack>
+# - Apply Cloud Run labels adsai-stack=<stack>
 # - Render API Gateway config with discovered service URLs
 #
 # Usage:
-#   STACK=preview PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+#   STACK=preview PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
 #     ./deployments/scripts/bootstrap-stack.sh
 
 STACK=${STACK:?STACK required: dev|preview|prod}
@@ -26,7 +26,7 @@ echo "[1/4] Ensuring required Google APIs are enabled (idempotent)"
 echo "[2/4] Naming convention: {service}-{stack} (dry-run output only)"
 "${ROOT_DIR}/deployments/scripts/name-services-by-stack.sh" || true
 
-echo "[3/4] Applying Cloud Run labels autoads-stack=${STACK}"
+echo "[3/4] Applying Cloud Run labels adsai-stack=${STACK}"
 "${ROOT_DIR}/deployments/scripts/label-services.sh" || true
 
 echo "[4/4] Rendering API Gateway config for ${STACK}"

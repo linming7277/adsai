@@ -4,7 +4,7 @@
  * 调试API响应 - 使用程序化登录获取Token并测试API
  */
 
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 async function debugAPIResponses() {
   console.log('\n🔍 调试API响应工具');
@@ -17,7 +17,7 @@ async function debugAPIResponses() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: 'test-user@autoads.dev',
+        email: 'test-user@adsai.dev',
         role: 'user',
       }),
     });

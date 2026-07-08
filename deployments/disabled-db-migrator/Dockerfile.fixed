@@ -1,5 +1,5 @@
 # 固定版本的 Database Migrator - 包含清理逻辑
-FROM asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator@sha256:2e2174e2796fde54429a8e928b1ad36fb95909dbacdd512a774d3c9b44ebe1ae
+FROM asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator@sha256:2e2174e2796fde54429a8e928b1ad36fb95909dbacdd512a774d3c9b44ebe1ae
 
 # 复制带清理功能的迁移脚本
 COPY deployments/db-migrator/migrate-with-clean.sh /migrate-with-clean.sh

@@ -4,7 +4,7 @@ set -euo pipefail
 # Bootstrap a baseline set of Cloud Run alerting policies (P95 latency + 5xx error rate) per service.
 # Requires: gcloud auth + Monitoring API enabled. Idempotency is best-effort (creating duplicate policies with same displayName is avoided by Console).
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 
 declare -A LAT
 LAT[siterank]="10"

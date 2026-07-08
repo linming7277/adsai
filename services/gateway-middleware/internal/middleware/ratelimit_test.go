@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/config"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/config"
 )
 
 // MockRateLimitCache implements RateLimitCache interface for testing

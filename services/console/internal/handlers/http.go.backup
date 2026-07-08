@@ -24,11 +24,11 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/xxrenzhe/autoads/pkg/auth"
-	"github.com/xxrenzhe/autoads/pkg/errors"
-	ev "github.com/xxrenzhe/autoads/pkg/events"
-	httpx "github.com/xxrenzhe/autoads/pkg/http"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/auth"
+	"github.com/linming7277/adsai/pkg/errors"
+	ev "github.com/linming7277/adsai/pkg/events"
+	httpx "github.com/linming7277/adsai/pkg/http"
+	"github.com/linming7277/adsai/pkg/middleware"
 )
 
 type User struct {
@@ -78,7 +78,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	// ========================================
 	manageBaseURL := os.Getenv("MANAGE_BASE_URL")
 	if manageBaseURL == "" {
-		manageBaseURL = "https://www.autoads.dev/manage"
+		manageBaseURL = "https://www.example.com/manage"
 	}
 
 	// 重定向旧的静态HTML路径到Next.js管理后台

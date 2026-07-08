@@ -5,9 +5,9 @@ set -euo pipefail
 # Requirements: gcloud, permissions for Cloud SQL Admin + Secret Manager.
 
 PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-}}"
-INSTANCE="${CLOUDSQL_INSTANCE:-${CLOUDSQL_INSTANCE_NAME:-autoads}}"
-DB_NAME="${DB_NAME:-autoads_db}"
-DB_USER="${DB_USER:-autoads_app}"
+INSTANCE="${CLOUDSQL_INSTANCE:-${CLOUDSQL_INSTANCE_NAME:-adsai}}"
+DB_NAME="${DB_NAME:-adsai_db}"
+DB_USER="${DB_USER:-adsai_app}"
 DB_PASSWORD="${DB_PASSWORD:-}"
 DATABASE_URL_SECRET_NAME="${DATABASE_URL_SECRET_NAME:-}"
 

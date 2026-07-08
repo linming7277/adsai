@@ -2,7 +2,7 @@ import 'antd/dist/reset.css'
 import React from 'react'
 import { ConfigProvider, App as AntApp, theme } from 'antd'
 
-export const metadata = { title: 'AutoAds Console', description: 'Admin Console' }
+export const metadata = { title: 'AdsAI Console', description: 'Admin Console' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

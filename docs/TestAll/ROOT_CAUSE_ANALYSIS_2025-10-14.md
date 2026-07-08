@@ -30,7 +30,7 @@
 
 | 服务 | 状态 | URL | 备注 |
 |------|------|-----|------|
-| frontend-preview | ✅ True (200) | https://www.urlchecker.dev | 正常 |
+| frontend-preview | ✅ True (200) | https://preview.example.com | 正常 |
 | console-preview | ✅ True | https://console-preview-* | 正常 |
 | billing-preview | ✅ True | https://billing-preview-* | 正常 |
 | offer-preview | ✅ True | https://offer-preview-* | 正常 |
@@ -40,7 +40,7 @@
 ### 2. API Gateway检查 ✅
 
 ```bash
-$ curl https://www.urlchecker.dev/api/health
+$ curl https://preview.example.com/api/health
 HTTP 200 OK (4.9s)
 ```
 
@@ -49,7 +49,7 @@ Gateway正常工作,所有后端服务路由配置正确。
 ### 3. 测试API检查 ✅
 
 ```bash
-$ curl https://www.urlchecker.dev/api/test/create-session
+$ curl https://preview.example.com/api/test/create-session
 {
   "enabled": true,
   "message": "Test session creation API is active"
@@ -73,7 +73,7 @@ access_token: "b615d837dc2c821be33b5e3826ee707ca17eed" (56字符)
 **验证结果**:
 ```bash
 $ curl -H "Authorization: Bearer {hashed_token}" \
-  https://www.urlchecker.dev/api/v1/billing/subscriptions/me
+  https://preview.example.com/api/v1/billing/subscriptions/me
 
 HTTP 401: Jwt is not in the form of Header.Payload.Signature
 ```
@@ -89,7 +89,7 @@ HTTP 401: Jwt is not in the form of Header.Payload.Signature
 
 ```bash
 $ curl -H "Authorization: Bearer {token}" \
-  https://www.urlchecker.dev/api/v1/console/tasks
+  https://preview.example.com/api/v1/console/tasks
 
 HTTP 404: The current request is not defined by this API
 ```
@@ -108,7 +108,7 @@ HTTP 404: The current request is not defined by this API
 
 **技术细节**:
 ```
-page.goto("https://www.urlchecker.dev/settings/subscription", {
+page.goto("https://preview.example.com/settings/subscription", {
   waitUntil: "networkidle",  // ← 这里超时
   timeout: 30000
 })
@@ -160,7 +160,7 @@ export async function setupAuthForTest(page, role = 'user') {
   // Step 1: 获取action_link
   const response = await fetch(`${BASE_URL}/api/test/create-session`, {
     method: 'POST',
-    body: JSON.stringify({ email: `test-${role}@autoads.dev`, role }),
+    body: JSON.stringify({ email: `test-${role}@adsai.dev`, role }),
   });
   const { action_link } = await response.json();
 
@@ -234,19 +234,19 @@ $ bash scripts/openapi/merge-openapi.sh
 
 3. **验证Gateway配置**:
 ```bash
-$ cat deployments/api-gateway/autoads-gw-openapi.yaml | grep -A 5 "/api/v1/console/tasks"
+$ cat deployments/api-gateway/adsai-gw-openapi.yaml | grep -A 5 "/api/v1/console/tasks"
 ```
 
 4. **重新部署Gateway**:
 ```bash
-$ gcloud api-gateway api-configs create autoads-gw-config-$(date +%s) \
-    --api=autoads-gw \
-    --openapi-spec=deployments/api-gateway/autoads-gw-openapi.yaml \
-    --project=gen-lang-client-0944935873
+$ gcloud api-gateway api-configs create adsai-gw-config-$(date +%s) \
+    --api=adsai-gw \
+    --openapi-spec=deployments/api-gateway/adsai-gw-openapi.yaml \
+    --project=your-gcp-project-id
 
-$ gcloud api-gateway gateways update autoads-gw \
-    --api=autoads-gw \
-    --api-config=autoads-gw-config-{timestamp} \
+$ gcloud api-gateway gateways update adsai-gw \
+    --api=adsai-gw \
+    --api-config=adsai-gw-config-{timestamp} \
     --location=asia-northeast1
 ```
 

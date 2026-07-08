@@ -20,7 +20,7 @@ import { chromium } from 'playwright';
 import { setupAuthForTest, cleanupAuthForTest } from './helpers/auth.mjs';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const HEADLESS = process.env.HEADLESS !== 'false';
 const TIMEOUT = 180000; // 3分钟
 
@@ -36,21 +36,21 @@ const AI_SCORE_GRADES = {
 // 测试用户配置
 const TEST_USERS = {
   starter: {
-    email: process.env.TEST_USER_STARTER || 'test-starter@autoads.dev',
+    email: process.env.TEST_USER_STARTER || 'test-starter@adsai.dev',
     password: process.env.TEST_PASSWORD || 'Test1234!',
     plan: 'starter',
     canUseAI: false,
     tokenCost: { basic: 1, ai: null } // Starter无法使用AI
   },
   professional: {
-    email: process.env.TEST_USER_PRO || 'test-pro@autoads.dev',
+    email: process.env.TEST_USER_PRO || 'test-pro@adsai.dev',
     password: process.env.TEST_PASSWORD || 'Test1234!',
     plan: 'professional',
     canUseAI: true,
     tokenCost: { basic: 1, ai: 3 }
   },
   elite: {
-    email: process.env.TEST_USER_ELITE || 'test-elite@autoads.dev',
+    email: process.env.TEST_USER_ELITE || 'test-elite@adsai.dev',
     password: process.env.TEST_PASSWORD || 'Test1234!',
     plan: 'elite',
     canUseAI: true,

@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/brandextract"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/browserexec"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+	"github.com/linming7277/adsai/services/siterank/internal/brandextract"
+	"github.com/linming7277/adsai/services/siterank/internal/browserexec"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 // ExecuteBasicEvaluation performs basic evaluation (1 token)

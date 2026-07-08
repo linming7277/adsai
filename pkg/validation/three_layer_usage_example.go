@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // UsageExample 使用示例和测试工具

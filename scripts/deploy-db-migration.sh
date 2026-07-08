@@ -4,9 +4,9 @@
 
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
-DB_INSTANCE="autoads"
-DB_NAME="autoads_db"
+PROJECT_ID="your-gcp-project-id"
+DB_INSTANCE="adsai"
+DB_NAME="adsai_db"
 DB_USER="postgres"
 REGION="asia-northeast1"
 

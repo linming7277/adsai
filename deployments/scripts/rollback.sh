@@ -4,11 +4,11 @@ set -euo pipefail
 # 通用回滚脚本（占位版）
 # 说明：在 ClawCloud 或自管环境，请将此脚本集成到你的部署流水线中。
 # 目标：
-#  - 回滚到上一版本镜像 tag（例如 ghcr.io/xxrenzhe/autoads:prod-previous）
+#  - 回滚到上一版本镜像 tag（例如 ghcr.io/linming7277/adsai:prod-previous）
 #  - 保持单镜像、对外仅暴露 3000 端口，Go 通过 /go 反代
 
-IMAGE_TAG=${1:-"ghcr.io/xxrenzhe/autoads:prod-previous"}
-CONTAINER_NAME=${CONTAINER_NAME:-"autoads-app"}
+IMAGE_TAG=${1:-"ghcr.io/linming7277/adsai:prod-previous"}
+CONTAINER_NAME=${CONTAINER_NAME:-"adsai-app"}
 PORT=${PORT:-3000}
 
 echo "[Rollback] Target image: ${IMAGE_TAG}"

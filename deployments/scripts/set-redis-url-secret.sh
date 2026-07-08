@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 REDIS_URL="redis://<private-ip>:6379/0" ./deployments/scripts/set-redis-url-secret.sh
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 REDIS_URL="redis://<private-ip>:6379/0" ./deployments/scripts/set-redis-url-secret.sh
 
 PROJECT_ID=${PROJECT_ID:-}
 REGION=${REGION:-asia-northeast1}

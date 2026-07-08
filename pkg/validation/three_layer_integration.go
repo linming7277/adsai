@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
 )
 
 // ThreeLayerIntegration 三层验证集成工具

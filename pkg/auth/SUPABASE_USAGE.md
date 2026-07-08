@@ -35,7 +35,7 @@ import (
     "fmt"
     "net/http"
     
-    "github.com/xxrenzhe/autoads/pkg/auth"
+    "github.com/linming7277/adsai/pkg/auth"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -103,7 +103,7 @@ package main
 import (
     "net/http"
     
-    "github.com/xxrenzhe/autoads/pkg/middleware"
+    "github.com/linming7277/adsai/pkg/middleware"
 )
 
 func main() {
@@ -150,7 +150,7 @@ package main
 
 import (
     "github.com/gin-gonic/gin"
-    "github.com/xxrenzhe/autoads/pkg/auth"
+    "github.com/linming7277/adsai/pkg/auth"
 )
 
 // SupabaseAuthMiddleware 是Gin的Supabase认证中间件
@@ -203,7 +203,7 @@ package main
 
 import (
     "github.com/labstack/echo/v4"
-    "github.com/xxrenzhe/autoads/pkg/auth"
+    "github.com/linming7277/adsai/pkg/auth"
 )
 
 // SupabaseAuthMiddleware 是Echo的Supabase认证中间件
@@ -256,7 +256,7 @@ import (
     "context"
     "testing"
     
-    "github.com/xxrenzhe/autoads/pkg/auth"
+    "github.com/linming7277/adsai/pkg/auth"
 )
 
 func TestSupabaseVerifier(t *testing.T) {

@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # 输出 Cloud Run 扩缩容建议命令（不直接执行），根据 capacity-baseline 文档的预发建议。
-# 用法：PROJECT=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview bash deployments/scripts/cloudrun-scaling-recommendations.sh
+# 用法：PROJECT=your-gcp-project-id REGION=asia-northeast1 STACK=preview bash deployments/scripts/cloudrun-scaling-recommendations.sh
 
-PROJECT=${PROJECT:-gen-lang-client-0944935873}
+PROJECT=${PROJECT:-your-gcp-project-id}
 REGION=${REGION:-asia-northeast1}
 STACK=${STACK:-preview}
 

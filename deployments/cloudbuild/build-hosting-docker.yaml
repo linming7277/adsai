@@ -1,7 +1,7 @@
 timeout: "3600s"
 options:
   logging: GCS_ONLY
-logsBucket: gs://autoads-build-logs-asia-northeast1/logs
+logsBucket: gs://adsai-build-logs-asia-northeast1/logs
 substitutions:
   _IMAGE: "asia-northeast1-docker.pkg.dev/PROJECT/REPO/frontend:dev"
 steps:

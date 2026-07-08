@@ -749,7 +749,7 @@ async function checkIfNewUser(client: any, userId: string) {
 function WelcomeBanner() {
   return (
     <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 mb-6">
-      <h2 className="text-2xl font-bold mb-2">🎉 欢迎加入 AutoAds！</h2>
+      <h2 className="text-2xl font-bold mb-2">🎉 欢迎加入 AdsAI！</h2>
       <p className="text-gray-700">
         您的账户已成功创建。开始探索我们的功能吧！
       </p>
@@ -1380,17 +1380,17 @@ git commit -m "feat: implement one-click Google login with auto user setup"
 git push origin main
 
 # 5. 等待GitHub Actions完成部署
-# 查看: https://github.com/xxrenzhe/autoads/actions
+# 查看: https://github.com/linming7277/adsai/actions
 
 # 6. 验证部署
-curl -I https://www.urlchecker.dev
+curl -I https://preview.example.com
 ```
 
 #### 3. 功能测试（预发环境）
 
 ```bash
 # 测试清单
-- [ ] 访问 https://www.urlchecker.dev/auth/sign-in
+- [ ] 访问 https://preview.example.com/auth/sign-in
 - [ ] 点击"Google登录"按钮
 - [ ] 完成Google授权
 - [ ] 验证自动重定向到dashboard（无onboarding步骤）
@@ -1590,7 +1590,7 @@ test.describe('Google One-Click Login', () => {
     await expect(page.locator('text=Test User')).toBeVisible();
     
     // 7. 验证欢迎横幅显示（新用户）
-    await expect(page.locator('text=欢迎加入 AutoAds')).toBeVisible();
+    await expect(page.locator('text=欢迎加入 AdsAI')).toBeVisible();
   });
   
   test('should handle trigger failure gracefully', async ({ page }) => {
@@ -1638,7 +1638,7 @@ test.describe('Google One-Click Login', () => {
     await page.waitForURL(/\/dashboard\/.+/, { timeout: 10000 });
     
     // 4. 验证不显示欢迎横幅
-    await expect(page.locator('text=欢迎加入 AutoAds')).not.toBeVisible();
+    await expect(page.locator('text=欢迎加入 AdsAI')).not.toBeVisible();
     
     // 5. 清理
     await deleteTestUser(testUser.id);
@@ -1937,18 +1937,18 @@ annotations:
 ```mdx
 ---
 title: 注册账户
-description: 如何使用Google账户快速注册AutoAds
+description: 如何使用Google账户快速注册AdsAI
 ---
 
 # 注册账户
 
-AutoAds支持使用Google账户一键注册，整个过程只需几秒钟。
+AdsAI支持使用Google账户一键注册，整个过程只需几秒钟。
 
 ## 注册步骤
 
 1. **访问注册页面**
    
-   打开 [https://www.autoads.dev/auth/sign-up](https://www.autoads.dev/auth/sign-up)
+   打开 [https://www.example.com/auth/sign-up](https://www.example.com/auth/sign-up)
 
 2. **点击"使用Google一键注册"按钮**
    
@@ -1958,7 +1958,7 @@ AutoAds支持使用Google账户一键注册，整个过程只需几秒钟。
    
    在弹出的Google授权页面中，选择您要使用的Google账户。
 
-4. **授权AutoAds访问**
+4. **授权AdsAI访问**
    
    Google会请求以下权限：
    - 查看您的基本个人资料信息
@@ -1993,7 +1993,7 @@ AutoAds支持使用Google账户一键注册，整个过程只需几秒钟。
 
 4. **查看快速入门指南**
    
-   阅读 [快速入门](/docs/getting-started/quickstart) 了解如何使用AutoAds的核心功能。
+   阅读 [快速入门](/docs/getting-started/quickstart) 了解如何使用AdsAI的核心功能。
 
 ## 常见问题
 
@@ -2006,7 +2006,7 @@ AutoAds支持使用Google账户一键注册，整个过程只需几秒钟。
 
 ### 我可以使用其他方式注册吗？
 
-目前AutoAds仅支持Google账户注册。我们计划在未来添加：
+目前AdsAI仅支持Google账户注册。我们计划在未来添加：
 - 邮箱+密码注册
 - 其他OAuth提供商（GitHub、Microsoft等）
 

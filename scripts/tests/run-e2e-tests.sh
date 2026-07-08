@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# AutoAds 前端E2E测试批量执行脚本
+# AdsAI 前端E2E测试批量执行脚本
 # 用途: 一键运行所有Playwright E2E测试
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-BASE_URL="${PREVIEW_BASE:-https://www.urlchecker.dev}"
+# 测试环境: preview.example.com (预发) | www.example.com (生产)
+BASE_URL="${PREVIEW_BASE:-https://preview.example.com}"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🧪 AutoAds 前端E2E测试执行器"
+echo "🧪 AdsAI 前端E2E测试执行器"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📍 测试环境: $BASE_URL"
 echo ""
@@ -62,7 +62,7 @@ run_phase_2() {
   # 检查程序化登录API是否可用
   if ! curl -s -f -X POST "$BASE_URL/api/test/create-session" \
        -H "Content-Type: application/json" \
-       -d '{"email":"test-user@autoads.dev","role":"user"}' > /dev/null 2>&1; then
+       -d '{"email":"test-user@adsai.dev","role":"user"}' > /dev/null 2>&1; then
     echo "❌ 程序化登录API不可用,跳过Phase 2测试"
     echo "   请先实现后端API: POST /api/test/create-session"
     return 1

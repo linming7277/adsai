@@ -65,19 +65,6 @@
       "notes": "ClickBank affiliate network"
     },
     {
-      "id": "bonusarrive",
-      "domain": "bonusarrive.com",
-      "type": "affiliate",
-      "subtype": "fast-redirect",
-      "confidence": 0.95,
-      "expectedWaitTime": 3000,
-      "commonNextDomains": [
-        "fatcoupon.com",
-        "redirect.partner.fatcoupon.com"
-      ],
-      "notes": "Redirects to FatCoupon network"
-    },
-    {
       "id": "fatcoupon",
       "domain": "fatcoupon.com",
       "type": "intermediate",
@@ -106,18 +93,6 @@
       "confidence": 0.9,
       "expectedWaitTime": 2000,
       "notes": "Tradedoubler tracking redirect"
-    },
-    {
-      "id": "yeahpromos",
-      "domain": "yeahpromos.com",
-      "type": "affiliate",
-      "subtype": "fast-redirect",
-      "confidence": 0.95,
-      "expectedWaitTime": 2000,
-      "commonNextDomains": [
-        "dailybacks.com"
-      ],
-      "notes": "Redirects to DailyBacks"
     },
     {
       "id": "trackingdesk",

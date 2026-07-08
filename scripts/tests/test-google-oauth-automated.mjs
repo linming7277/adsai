@@ -5,7 +5,7 @@
 
 import { chromium } from 'playwright';
 
-const PREVIEW_BASE = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const PREVIEW_BASE = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const GOOGLE_EMAIL = process.env.GOOGLE_EMAIL || 'manhwarecap99@gmail.com';
 const GOOGLE_PASSWORD = process.env.GOOGLE_PASSWORD;
 

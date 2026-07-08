@@ -9,7 +9,7 @@ const fs = require('fs');
 const { JWT } = require('google-auth-library');
 
 const SERVICE_ACCOUNT_PATH = './secrets/gcp_codex_dev.json';
-const PROJECT_ID = 'gen-lang-client-0944935873';
+const PROJECT_ID = 'your-gcp-project-id';
 const OAUTH_CLIENT_ID = '644672509127-sj0oe3shl7nltvn1agiuf1rv2vqgfsuj.apps.googleusercontent.com';
 
 async function checkOAuthConfig() {
@@ -52,7 +52,7 @@ async function checkOAuthConfig() {
       console.log('');
       
       // 6. 验证必需的URI
-      const requiredUri = 'https://gen-lang-client-0944935873.firebaseapp.com/__/auth/handler';
+      const requiredUri = 'https://your-gcp-project-id.firebaseapp.com/__/auth/handler';
       const hasRequiredUri = redirectUris.includes(requiredUri);
       
       console.log('6️⃣  验证必需的重定向URI...');

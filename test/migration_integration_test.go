@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/pkg/dbadmin"
-	"github.com/xxrenzhe/autoads/services/useractivity/internal/config"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/pkg/dbadmin"
+	"github.com/linming7277/adsai/services/useractivity/internal/config"
 )
 
 // TestMigrationIntegration 测试完整的迁移集成流程
@@ -329,7 +329,7 @@ func getTestDatabaseURL() string {
 	}
 
 	// 使用默认的测试数据库配置
-	return "postgresql://postgres:password@localhost:5432/autoads_test"
+	return "postgresql://postgres:password@localhost:5432/adsai_test"
 }
 
 // TestMigrationFileParsing 测试迁移文件解析

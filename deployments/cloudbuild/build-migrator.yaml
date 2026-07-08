@@ -40,4 +40,4 @@ substitutions:
   _ENV: preview      # preview or prod
   _COMMIT_SHA: local
   _REGION: asia-northeast1
-  _REPO: autoads-services
+  _REPO: adsai-services

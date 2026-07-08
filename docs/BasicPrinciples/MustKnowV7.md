@@ -1,11 +1,11 @@
-# AutoAds 架构设计
+# AdsAI 架构设计
 
 **文档版本**: v7.2
-**适用范围**: AutoAds项目架构参考和开发指南
+**适用范围**: AdsAI项目架构参考和开发指南
 
 ## 混合架构概述
 
-AutoAds 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go 微服务后端，实现功能丰富且性能卓越的 SaaS 应用。
+AdsAI 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go 微服务后端，实现功能丰富且性能卓越的 SaaS 应用。
 
 **核心设计理念**：
 - **前端优先**：使用 Makerkit (Next.js + Supabase) 快速构建前端功能
@@ -20,7 +20,7 @@ AutoAds 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go
    - GCP访问：使用secrets/gcp_codex_dev.json密钥文件
    - Supabase访问：使用secrets/supabase-credentials.json密钥文件（配置方法见secrets/SUPABASE_ACCESS_GUIDE.md）
 3. **优先访问 Secret Manager，获得所有环境变量清单**，根据需要自动补充新的环境变量到 Secret Manager 和 Cloud Run 服务配置中
-4. **每当业务新增环境变量时**，请你负责：先更新 configs/environment/variables.json，再在 Secret Manager 创建对应条目并运行 python scripts/env/audit_secrets.py --project gen-lang-client-0944935873 --warn-extra，最后使用 scripts/env/update-run-service.sh 或等效命令更新相关 Cloud Run 服务的--update-secrets
+4. **每当业务新增环境变量时**，请你负责：先更新 configs/environment/variables.json，再在 Secret Manager 创建对应条目并运行 python scripts/env/audit_secrets.py --project your-gcp-project-id --warn-extra，最后使用 scripts/env/update-run-service.sh 或等效命令更新相关 Cloud Run 服务的--update-secrets
 5. **如果有不清楚的地方，直接问我，不要假设**
 6. **完成阶段性的功能迭代后，及时进行功能测试**，确保功能正常，且符合预期
 7. **完成阶段性的功能迭代后，及时编译对应服务镜像**，确保构建成功
@@ -29,7 +29,7 @@ AutoAds 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go
 10. 发布相关的配置请放置在deployments目录下
 11. **secrets目录和其下的所有文件都不能上传Github**，也不能打包进入镜像
 12. **执行过程中生成的文档请放置在 docs/SupabaseGo/ 目录下**
-13. **请自行完成各种GCP和Supabase操作**，使用服务账号codex-dev完成构建和部署，若缺少权限，请说明并申请
+13. **请自行完成各种GCP和Supabase操作**，使用服务账号service-account完成构建和部署，若缺少权限，请说明并申请
 14. **遵循KISS原则**，在确保实现业务需求的情况下，简化代码实现，提高可维护性
 15. **代码文件大小强制约束**：
    - 任何单文件超过300行立即重构（重构后略超300行可以接受）
@@ -54,8 +54,8 @@ AutoAds 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go
 ## 项目重要信息
 
 ### 1. GCP和Supabase基础配置
-- **GCP服务账号**：codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
-- **GCP Project ID**：gen-lang-client-0944935873
+- **GCP服务账号**：service-account@your-gcp-project-id.iam.gserviceaccount.com
+- **GCP Project ID**：your-gcp-project-id
 - **部署区域**：asia-northeast1
 
 ### 2. Supabase项目
@@ -70,8 +70,8 @@ AutoAds 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go
   - 查询响应时间90%+提升
 
 ### 3. Cloud SQL数据库
-- **实例**: autoads (PostgreSQL 17)
-- **数据库**: autoads_db (统一数据库，包含8个业务域schema)
+- **实例**: adsai (PostgreSQL 17)
+- **数据库**: adsai_db (统一数据库，包含8个业务域schema)
 - **架构**: 微服务Schema自治 (1:1映射)
 - **环境配置**:
   - **开发环境**: 无独立数据库，直接连接预发环境数据库
@@ -115,7 +115,7 @@ AutoAds 采用创新的混合架构策略，结合 Next.js/Supabase 前端与 Go
 1. **获取当前公网IP并授权**
 ```bash
 CURRENT_IP=$(curl -s ifconfig.me)
-gcloud sql instances patch autoads --authorized-networks="$CURRENT_IP/32" --project=gen-lang-client-0944935873
+gcloud sql instances patch adsai --authorized-networks="$CURRENT_IP/32" --project=your-gcp-project-id
 ```
 
 2. **连接数据库**
@@ -124,13 +124,13 @@ gcloud sql instances patch autoads --authorized-networks="$CURRENT_IP/32" --proj
 ./scripts/db/connect-local-db.sh
 
 # 或直接使用psql
-psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=require"
+psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/adsai_db?sslmode=require"
 ```
 
 3. **执行迁移**
 ```bash
 # 直接执行迁移文件
-psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=require" -f services/user/migrations/000001_create_user_domain_schema.up.sql
+psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/adsai_db?sslmode=require" -f services/user/migrations/000001_create_user_domain_schema.up.sql
 ```
 
 4. **清理迁移状态（如需要）**
@@ -161,7 +161,7 @@ psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=requi
 ```bash
 # 安全操作流程示例
 ./scripts/db/setup-local-db-access.sh  # 1. 安全配置访问权限
-psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=require" \
+psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/adsai_db?sslmode=require" \
     -c "SELECT version();"  # 2. 测试连接
 # 3. 执行必要操作
 # 4. 及时清理不再需要的权限（可选）
@@ -176,11 +176,11 @@ psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=requi
 - **性能提升**: 查询响应时间90%+提升
 
 ### 5. 服务部署
-- **预发环境**: https://www.urlchecker.dev
+- **预发环境**: https://preview.example.com
   - Frontend服务：frontend-preview
   - Offer服务：offer-preview
   - 数据库：与生产环境共用 Cloud SQL 实例
-- **生产环境**: https://www.autoads.dev
+- **生产环境**: https://www.example.com
   - Frontend服务：frontend
   - Offer服务：offer
   - 数据库：主 Cloud SQL 实例（与预发共用）
@@ -189,14 +189,14 @@ psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=requi
 - **main分支**: 触发preview环境Cloud Build镜像构建和Cloud Run部署
 - **production分支**: 触发production环境Cloud Build镜像构建和Cloud Run部署
 - **tag标记**: 当production分支打tag时，触发production环境部署
-- **强制使用**: 服务账号codex-dev进行构建和部署
+- **强制使用**: 服务账号service-account进行构建和部署
 - **API+Worker架构**: CPU密集型服务拆分为API实例和Worker实例，通过Pub/Sub解耦
 - **环境差异化**: Preview环境允许激进策略，Production环境使用严格的golang-migrate SQL迁移机制
 
 ## 前端架构
 
 ### 架构模式：用户直连 (User-centric)
-AutoAds 前端采用**用户直连模式**，每个用户拥有独立的数据命名空间，无需组织层概念。
+AdsAI 前端采用**用户直连模式**，每个用户拥有独立的数据命名空间，无需组织层概念。
 
 ### 核心特点
 - **简化路由**: 移除组织 UUID，URL 平均减少 47%
@@ -266,8 +266,8 @@ Layer 3: Cloud SQL billing.accounts (计费层)
   - 符合三层用户架构设计
 
 ### Cloud SQL PostgreSQL (统一业务数据存储)
-- **实例信息**: autoads (PostgreSQL 17)
-- **数据库**: autoads_db (统一业务数据库)
+- **实例信息**: adsai (PostgreSQL 17)
+- **数据库**: adsai_db (统一业务数据库)
 - **区域**: asia-northeast1
 - **连接方式**: Cloud SQL Proxy + Unix Socket
 - **架构**: 微服务Schema自治 (1:1映射)
@@ -387,7 +387,7 @@ psql "postgresql://postgres:$PASSWORD@db.jzzvizacfyipzdyiqfzb.supabase.co:5432/p
 
 ### 🔧 日常数据库操作工具
 
-AutoAds提供完整的数据库操作工具集，支持快速DML/DDL操作、变更管理和安全保护。
+AdsAI提供完整的数据库操作工具集，支持快速DML/DDL操作、变更管理和安全保护。
 
 #### 核心工具概览
 | 工具 | 功能 | 适用场景 |
@@ -449,7 +449,7 @@ AutoAds提供完整的数据库操作工具集，支持快速DML/DDL操作、变
 **手动触发迁移**：
 ```bash
 # 访问GitHub Actions页面
-# https://github.com/xxrenzhe/autoads/actions/workflows/database-migration-cloudrun.yml
+# https://github.com/linming7277/adsai/actions/workflows/database-migration-cloudrun.yml
 # 点击 "Run workflow" → 选择环境 → 执行
 ```
 
@@ -594,7 +594,7 @@ scripts/db/
 - **框架**: Next.js 14 (App Router) + Makerkit UI
 - **认证**: Supabase Auth (Google OAuth)
 - **部署**: Cloud Run (frontend/frontend-preview)
-- **域名**: www.autoads.dev (生产) / www.urlchecker.dev (预发)
+- **域名**: www.example.com (生产) / preview.example.com (预发)
 - **构建模式**: Standalone Output (优化部署体积)
 - **路由规范**: 扁平化路由（/offers, /tasks, /adscenter）
 
@@ -621,7 +621,7 @@ scripts/db/
 
 ### 最终状态
 
-AutoAds在v4.0中完成了用户认证流程的关键优化，确保用户注册和登录的可靠性：
+AdsAI在v4.0中完成了用户认证流程的关键优化，确保用户注册和登录的可靠性：
 
 ### ✅ 核心特性
 

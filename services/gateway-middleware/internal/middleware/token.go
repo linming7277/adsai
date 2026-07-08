@@ -8,10 +8,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/cache"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/clients"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/config"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/metrics"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/cache"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/clients"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/config"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/metrics"
 )
 
 // TokenCache defines the cache interface for token reservation operations

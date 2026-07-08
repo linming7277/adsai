@@ -4,7 +4,7 @@ set -euo pipefail
 # 端到端闭环性能测试脚本
 # 覆盖：Offer创建 -> Siterank分析 -> Adscenter 诊断/计划/校验/提交 -> 通知快照
 # 使用：
-#   GATEWAY=https://www.urlchecker.dev AUTH="Bearer <id_token>" N=20 COUNTRY=US \
+#   GATEWAY=https://preview.example.com AUTH="Bearer <id_token>" N=20 COUNTRY=US \
 #   ./scripts/ops/e2e-end2end-perf.sh
 
 for b in curl jq python3; do

@@ -12,7 +12,7 @@ fi
 
 # Start Cloud SQL Auth Proxy in background
 echo "🚀 Starting Cloud SQL Auth Proxy..."
-./cloud_sql_proxy gen-lang-client-0944935873:asia-northeast1:autoads \
+./cloud_sql_proxy your-gcp-project-id:asia-northeast1:adsai \
     --port 5432 \
     --private-ip \
     --credentials-file secrets/gcp_codex_dev.json &
@@ -29,13 +29,13 @@ if nc -z localhost 5432; then
 
     # Test database connection
     echo "🔍 Testing database connection..."
-    if PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h localhost -U postgres -d autoads_db -c "SELECT version();"; then
+    if PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h localhost -U postgres -d adsai_db -c "SELECT version();"; then
         echo "✅ Database connection successful via Cloud SQL Auth Proxy"
 
         # Check migration status
         echo "📊 Checking migration status..."
         cd services/billing
-        migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5432/autoads_db" version
+        migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5432/adsai_db" version
     else
         echo "❌ Database connection failed"
     fi

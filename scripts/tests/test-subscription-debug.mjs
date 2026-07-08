@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-const api = 'https://www.urlchecker.dev';
+const api = 'https://preview.example.com';
 
 async function test() {
   console.log('🚀 Starting subscription page test...\n');

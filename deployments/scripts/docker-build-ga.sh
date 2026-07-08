@@ -15,7 +15,7 @@ echo -e "${GREEN}🚀 Starting Docker build with GA support...${NC}"
 
 # Build arguments
 NODE_VERSION=${NODE_VERSION:-"22"}
-IMAGE_TAG=${IMAGE_TAG:-"ghcr.io/xxrenzhe/url-batch-checker:ga-$(date +%Y%m%d-%H%M%S)"}
+IMAGE_TAG=${IMAGE_TAG:-"ghcr.io/linming7277/adsai:ga-$(date +%Y%m%d-%H%M%S)"}
 NEXT_PUBLIC_GA_ID=${NEXT_PUBLIC_GA_ID:-""}
 
 if [ -z "$NEXT_PUBLIC_GA_ID" ]; then
@@ -56,16 +56,16 @@ fi
 
 # Tag the image for production
 echo -e "${YELLOW}🏷️  Tagging image for production...${NC}"
-docker tag "$IMAGE_TAG" ghcr.io/xxrenzhe/url-batch-checker:ga-latest
+docker tag "$IMAGE_TAG" ghcr.io/linming7277/adsai:ga-latest
 
 echo -e "${GREEN}🎉 Build process completed successfully!${NC}"
 echo ""
 echo "Available tags:"
 echo "  - $IMAGE_TAG"
-echo "  - ghcr.io/xxrenzhe/url-batch-checker:ga-latest"
+echo "  - ghcr.io/linming7277/adsai:ga-latest"
 echo ""
 echo "To run the container:"
-echo "  docker run -p 3000:3000 ghcr.io/xxrenzhe/url-batch-checker:ga-latest"
+echo "  docker run -p 3000:3000 ghcr.io/linming7277/adsai:ga-latest"
 echo ""
 echo "To test GA:"
 echo "  Open http://localhost:3000/ga-test"

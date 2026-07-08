@@ -1,4 +1,4 @@
-# AutoAds 全面UI审查和优化计划
+# AdsAI 全面UI审查和优化计划
 
 > **目标**: 将所有60个页面提升到顶级AI SaaS产品的UI/UX标准
 > **参考标准**: Vercel, Linear, Raycast, Notion, Stripe
@@ -361,7 +361,7 @@ git push
 **当前代码 (假设):**
 ```typescript
 <div className="container mx-auto py-20">
-  <h1 className="text-4xl font-bold">AutoAds</h1>
+  <h1 className="text-4xl font-bold">AdsAI</h1>
   <p className="text-lg text-gray-600">AI-powered advertising</p>
   <button>Get Started</button>
 </div>
@@ -590,7 +590,7 @@ git push
 
 **使用工具:**
 - 📖 参考《页面优化应用指南.md》
-- 🎨 查看《AutoAds-UI美化方案.md》
+- 🎨 查看《AdsAI-UI美化方案.md》
 - 📊 使用《UI美化实施总结.md》
 
 ---

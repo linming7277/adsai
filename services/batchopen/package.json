@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.go",
   "scripts": {
-    "build": "cd /home/user/autoads/services/batchopen && go mod init autoads/batchopen && go build ."
+    "build": "cd /home/user/adsai/services/batchopen && go mod init adsai/batchopen && go build ."
   },
   "keywords": [],
   "author": "",

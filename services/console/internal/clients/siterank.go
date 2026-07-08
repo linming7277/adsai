@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	httpclient "github.com/xxrenzhe/autoads/pkg/http"
+	httpclient "github.com/linming7277/adsai/pkg/http"
 )
 
 // SiterankClient is a client for the Siterank service

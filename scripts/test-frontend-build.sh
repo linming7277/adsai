@@ -23,7 +23,7 @@ BUILD_ARGS=(
 echo "📦 Building Docker image..."
 docker build \
   -f apps/frontend/Dockerfile \
-  -t autoads-frontend:test \
+  -t adsai-frontend:test \
   "${BUILD_ARGS[@]}" \
   . || {
     echo "❌ Docker build failed!"
@@ -34,15 +34,15 @@ echo ""
 echo "✅ Docker build succeeded!"
 echo ""
 echo "📊 Image size:"
-docker images autoads-frontend:test --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+docker images adsai-frontend:test --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
 
 echo ""
 echo "🔍 Image layers:"
-docker history autoads-frontend:test --human --format "table {{.CreatedBy}}\t{{.Size}}" | head -15
+docker history adsai-frontend:test --human --format "table {{.CreatedBy}}\t{{.Size}}" | head -15
 
 echo ""
 echo "🧪 Testing container startup..."
-CONTAINER_ID=$(docker run -d -p 8080:8080 autoads-frontend:test)
+CONTAINER_ID=$(docker run -d -p 8080:8080 adsai-frontend:test)
 
 echo "Container ID: $CONTAINER_ID"
 echo "Waiting for container to start..."
@@ -80,7 +80,7 @@ echo ""
 echo "🎉 All tests passed!"
 echo ""
 echo "To run the container manually:"
-echo "  docker run -p 8080:8080 autoads-frontend:test"
+echo "  docker run -p 8080:8080 adsai-frontend:test"
 echo ""
 echo "To clean up the test image:"
-echo "  docker rmi autoads-frontend:test"
+echo "  docker rmi adsai-frontend:test"

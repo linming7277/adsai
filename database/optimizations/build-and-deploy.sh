@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-IMAGE_NAME="asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/db-index-migrator:latest"
+IMAGE_NAME="asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/db-index-migrator:latest"
 JOB_NAME="apply-performance-indexes"
 
 echo "========================================="
@@ -27,7 +27,7 @@ gcloud run jobs create "$JOB_NAME" \
   --set-secrets=DATABASE_URL=DATABASE_URL:latest \
   --vpc-connector=cr-conn-default-ane1 \
   --vpc-egress=private-ranges-only \
-  --service-account=codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com \
+  --service-account=service-account@your-gcp-project-id.iam.gserviceaccount.com \
   --max-retries=0 \
   --task-timeout=10m \
   || \

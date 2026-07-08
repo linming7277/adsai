@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	apperr "github.com/xxrenzhe/autoads/pkg/errors"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
+	apperr "github.com/linming7277/adsai/pkg/errors"
+	"github.com/linming7277/adsai/pkg/middleware"
 	"net/http"
 	"strings"
 )

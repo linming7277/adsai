@@ -153,7 +153,7 @@ enum MembershipRole {
 }
 ```
 
-**删除原因**: AutoAds 已改为 User-centric 架构，无需组织成员角色
+**删除原因**: AdsAI 已改为 User-centric 架构，无需组织成员角色
 
 ---
 

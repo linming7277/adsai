@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库迁移: Console Schema
+-- AdsAI 数据库迁移: Console Schema
 -- Layer 3: 业务域层 - 管理控制台
 -- 迁移ID: 001
 -- 版本: v2.0 (优化版)
@@ -368,12 +368,12 @@ ON CONFLICT (key) DO NOTHING;
 
 -- 插入默认系统元数据
 INSERT INTO console.system_metadata (key, value, category, description, is_public, updated_by) VALUES
-('system_version', '"2.0.0"', 'system', 'AutoAds系统版本', true, NULL),
+('system_version', '"2.0.0"', 'system', 'AdsAI系统版本', true, NULL),
 ('maintenance_mode', 'false', 'system', '系统维护模式状态', true, NULL),
 ('default_timezone', '"UTC"', 'configuration', '系统默认时区', true, NULL),
 ('max_export_records', '1000000', 'configuration', '单次导出最大记录数', false, NULL),
 ('audit_log_retention_days', '365', 'configuration', '审计日志保留天数', false, NULL),
-('system_admin_email', '"admin@autoads.com"', 'configuration', '系统管理员邮箱', false, NULL)
+('system_admin_email', '"admin@adsai.com"', 'configuration', '系统管理员邮箱', false, NULL)
 ON CONFLICT (key) DO NOTHING;
 
 -- 插入默认代币规则

@@ -3,13 +3,13 @@ set -euo pipefail
 
 # Build all backend services via Cloud Build + Kaniko Dockerfiles
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
-#   ARTIFACT_REPO=autoads-services STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
+#   ARTIFACT_REPO=adsai-services STACK=preview \
 #   ./deployments/scripts/deploy-all-services-cloudbuild.sh billing offer siterank adscenter batchopen console recommendations notifications
 
 PROJECT_ID=${PROJECT_ID:?PROJECT_ID required}
 REGION=${REGION:-asia-northeast1}
-ARTIFACT_REPO=${ARTIFACT_REPO:-autoads-services}
+ARTIFACT_REPO=${ARTIFACT_REPO:-adsai-services}
 STACK=${STACK:-preview}
 
 AR_HOST="${REGION}-docker.pkg.dev"
@@ -28,7 +28,7 @@ for SVC in "${SERVICES[@]}"; do
     --project "${PROJECT_ID}" \
     --config deployments/cloudbuild/build-service-docker.yaml \
     --substitutions _SERVICE="${SVC}",_IMAGE="${IMAGE}" \
-    --gcs-log-dir gs://autoads-build-logs-asia-northeast1/logs
+    --gcs-log-dir gs://adsai-build-logs-asia-northeast1/logs
 done
 
 echo "[tag] Also add moving tag ${STACK}-latest"

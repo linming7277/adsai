@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/redis/go-redis/v9"
-	"github.com/xxrenzhe/autoads/services/user/internal/models"
-	"github.com/xxrenzhe/autoads/services/user/internal/repositories"
+	"github.com/linming7277/adsai/services/user/internal/models"
+	"github.com/linming7277/adsai/services/user/internal/repositories"
 )
 
 type UserService struct {

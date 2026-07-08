@@ -45,11 +45,11 @@ detect_environment() {
     # 确定当前环境
     if [ "$NEXT_PUBLIC_DEPLOYMENT_ENV" = "production" ]; then
         ENVIRONMENT="production"
-        BASE_URL="https://www.autoads.dev"
+        BASE_URL="https://www.example.com"
         ENV_NAME="生产环境"
     elif [ "$NEXT_PUBLIC_DEPLOYMENT_ENV" = "preview" ]; then
         ENVIRONMENT="preview"
-        BASE_URL="https://www.urlchecker.dev"
+        BASE_URL="https://preview.example.com"
         ENV_NAME="预发环境"
     else
         ENVIRONMENT="development"
@@ -216,7 +216,7 @@ verify_google_oauth() {
     fi
     
     if [ "$ENVIRONMENT" = "production" ]; then
-        echo "   ✓ https://www.urlchecker.dev/api/auth/callback/google (预发环境)"
+        echo "   ✓ https://preview.example.com/api/auth/callback/google (预发环境)"
     fi
 }
 

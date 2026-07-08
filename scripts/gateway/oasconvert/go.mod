@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/scripts/gateway/oasconvert
+module github.com/linming7277/adsai/scripts/gateway/oasconvert
 
 go 1.25
 

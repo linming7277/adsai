@@ -836,4 +836,4 @@ export function useErrorAnalytics(error: APIError | null, context?: Record<strin
 ---
 
 **最后更新**: 2025-01-12
-**维护者**: AutoAds Frontend Team
+**维护者**: AdsAI Frontend Team

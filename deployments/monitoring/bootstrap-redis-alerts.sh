@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Create Cloud Monitoring alerting policies for Memorystore for Redis
 # Usage:
-#   PROJECT_ID=<id> REGION=asia-northeast1 INSTANCE_ID=autoads-redis ./deployments/monitoring/bootstrap-redis-alerts.sh
+#   PROJECT_ID=<id> REGION=asia-northeast1 INSTANCE_ID=adsai-redis ./deployments/monitoring/bootstrap-redis-alerts.sh
 
 PROJECT_ID=${PROJECT_ID:-}
 REGION=${REGION:-asia-northeast1}

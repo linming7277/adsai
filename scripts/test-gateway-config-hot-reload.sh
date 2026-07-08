@@ -12,7 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-autoads-439917}"
+PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-adsai-439917}"
 TOPIC_NAME="gateway-config-updates"
 SERVICE_NAME="gateway-middleware-preview"
 

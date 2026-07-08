@@ -5,7 +5,7 @@ import Button from '~/core/ui/Button';
 import FadeIn from '~/components/FadeIn';
 
 export const metadata: Metadata = {
-  title: 'Error - AutoAds',
+  title: 'Error - AdsAI',
 };
 
 interface ErrorPageProps {
@@ -155,10 +155,10 @@ export default async function ErrorPage({ searchParams }: ErrorPageProps) {
               <p className="text-xs text-muted-foreground">
                 Need help?{' '}
                 <a
-                  href="mailto:support@autoads.dev"
+                  href="mailto:support@adsai.dev"
                   className="text-primary hover:underline"
                 >
-                  support@autoads.dev
+                  support@adsai.dev
                 </a>
               </p>
             </div>

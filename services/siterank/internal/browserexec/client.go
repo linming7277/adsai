@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
+	"github.com/linming7277/adsai/pkg/serviceclient"
 )
 
 // Client wraps browser-exec service API using serviceclient

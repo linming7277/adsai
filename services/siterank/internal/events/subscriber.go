@@ -1,4 +1,4 @@
-// github.com/xxrenzhe/autoads/services/siterank/internal/events/subscriber.go
+// github.com/linming7277/adsai/services/siterank/internal/events/subscriber.go
 package events
 
 import (
@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
 )
 
 type Subscriber struct {

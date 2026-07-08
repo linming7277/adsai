@@ -54,7 +54,7 @@
       "frontend",
       "auth callbacks"
     ],
-    "notes": "Preview auth base URL (https://www.urlchecker.dev)"
+    "notes": "Preview auth base URL (https://preview.example.com)"
   },
   {
     "name": "DATABASE_URL",
@@ -78,7 +78,7 @@
   {
     "name": "DOMAIN",
     "secret": "DOMAIN",
-    "description": "Primary production domain for customer-facing URLs (e.g. autoads.dev).",
+    "description": "Primary production domain for customer-facing URLs (e.g. example.com).",
     "required": true,
     "scopes": [
       "preview",

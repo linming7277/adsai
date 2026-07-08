@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Smoke tests for Billing config and transaction detail
 # Usage:
-#   HOST=autoads-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-billing.sh [txId]
+#   HOST=adsai-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-billing.sh [txId]
 
 HOST=${HOST:?HOST required}
 TOKEN=${TOKEN:?TOKEN (Firebase ID token) required}

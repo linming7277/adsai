@@ -16,13 +16,13 @@ type CORSConfig struct {
 	MaxAge           int
 }
 
-// DefaultCORSConfig returns a default CORS configuration for AutoAds
+// DefaultCORSConfig returns a default CORS configuration for AdsAI
 // Updated: 2025-10-13 - Trigger rebuild for console and offer services
 func DefaultCORSConfig() CORSConfig {
 	return CORSConfig{
 		AllowedOrigins: []string{
-			"https://www.urlchecker.dev", // Preview environment
-			"https://www.autoads.dev",    // Production environment
+			"https://preview.example.com", // Preview environment
+			"https://www.example.com",    // Production environment
 			"http://localhost:3000",      // Local development
 			"http://localhost:3001",      // Local development (alternative port)
 		},
@@ -100,7 +100,7 @@ func CORS(config CORSConfig) func(http.Handler) http.Handler {
 	}
 }
 
-// CORSWithDefaults returns a CORS middleware with default AutoAds configuration
+// CORSWithDefaults returns a CORS middleware with default AdsAI configuration
 func CORSWithDefaults() func(http.Handler) http.Handler {
 	return CORS(DefaultCORSConfig())
 }

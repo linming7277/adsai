@@ -19,20 +19,20 @@ fi
 # 设置镜像名称
 case $ENVIRONMENT in
     "development")
-        IMAGE_NAME="ghcr.io/xxrenzhe/url-batch-checker:dev-$VERSION"
+        IMAGE_NAME="ghcr.io/linming7277/adsai:dev-$VERSION"
         DOMAIN="http://localhost:3000"
         ;;
     "preview")
-        IMAGE_NAME="ghcr.io/xxrenzhe/url-batch-checker:preview-latest"
-        DOMAIN="https://urlchecker.dev"
+        IMAGE_NAME="ghcr.io/linming7277/adsai:preview-latest"
+        DOMAIN="https://preview.example.com"
         ;;
     "production")
         if [[ "$VERSION" == "latest" ]]; then
-            IMAGE_NAME="ghcr.io/xxrenzhe/url-batch-checker:prod-latest"
+            IMAGE_NAME="ghcr.io/linming7277/adsai:prod-latest"
         else
-            IMAGE_NAME="ghcr.io/xxrenzhe/url-batch-checker:prod-$VERSION"
+            IMAGE_NAME="ghcr.io/linming7277/adsai:prod-$VERSION"
         fi
-        DOMAIN="https://autoads.dev"
+        DOMAIN="https://example.com"
         ;;
 esac
 
@@ -68,11 +68,11 @@ echo "4. 确认环境变量配置正确:"
 
 case $ENVIRONMENT in
     "preview")
-        echo "   - NEXTAUTH_URL=https://urlchecker.dev"
+        echo "   - NEXTAUTH_URL=https://preview.example.com"
         echo "   - NODE_ENV=production"
         ;;
     "production")
-        echo "   - NEXTAUTH_URL=https://autoads.dev"
+        echo "   - NEXTAUTH_URL=https://example.com"
         echo "   - NODE_ENV=production"
         ;;
 esac

@@ -6,7 +6,7 @@
 set -e
 
 ENVIRONMENT=${1:-preview}
-BASE_URL=${2:-"https://urlchecker.dev"}
+BASE_URL=${2:-"https://preview.example.com"}
 MAX_RETRIES=30
 RETRY_INTERVAL=10
 

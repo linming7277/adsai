@@ -6,7 +6,7 @@ set -euo pipefail
 # 2) 派生目标跳过率过高（ac_derived_targets_total{result="skipped"} / total > 阈值）
 # 注：需先在 Cloud Run 暴露 /metrics 并接入 Cloud Monitoring Prometheus。
 
-PROJECT=${PROJECT:-gen-lang-client-0944935873}
+PROJECT=${PROJECT:-your-gcp-project-id}
 REGION=${REGION:-asia-northeast1}
 SERVICE=${SERVICE:-adscenter-preview}
 

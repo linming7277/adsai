@@ -147,11 +147,11 @@ spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/vpc-access-connector: projects/gen-lang-client-0944935873/locations/asia-northeast1/connectors/cr-conn-default-ane1
+        run.googleapis.com/vpc-access-connector: projects/your-gcp-project-id/locations/asia-northeast1/connectors/cr-conn-default-ane1
         run.googleapis.com/vpc-access-egress: all-traffic
     spec:
       containers:
-      - image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/console-integration-tests:latest
+      - image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/console-integration-tests:latest
         env:
         - name: CLOUDSQL_DATABASE_URL
           valueFrom:
@@ -166,7 +166,7 @@ spec:
           limits:
             cpu: '2'
             memory: 2Gi
-      serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+      serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
       timeoutSeconds: 600
 ```
 
@@ -174,7 +174,7 @@ spec:
 - ✅ VPC Connector: `cr-conn-default-ane1` (访问Cloud SQL私有IP)
 - ✅ Secret注入: `CLOUDSQL_DATABASE_URL` from `DATABASE_URL:latest`
 - ✅ 资源配置: 2 CPU, 2Gi内存, 10分钟超时
-- ✅ 服务账号: `codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com`
+- ✅ 服务账号: `service-account@your-gcp-project-id.iam.gserviceaccount.com`
 
 ### 4. 测试配置双环境支持
 
@@ -194,7 +194,7 @@ func SetupCloudSQLIntegrationTest(ctx context.Context) (*CloudSQLTestConfig, err
         dbPassword := os.Getenv("CLOUDSQL_DB_PASSWORD")
         encodedPassword := url.QueryEscape(dbPassword)
         connectionString = fmt.Sprintf(
-            "postgresql://postgres:%s@%s:5432/autoads_db?sslmode=disable",
+            "postgresql://postgres:%s@%s:5432/adsai_db?sslmode=disable",
             encodedPassword, dbHost,
         )
     }
@@ -228,14 +228,14 @@ bash scripts/deploy-console-integration-tests.sh
 # 2. 手动执行测试（可选）
 gcloud run jobs execute console-integration-tests \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --wait
 
 # 3. 查看测试日志
 gcloud logging read \
   'resource.type="cloud_run_job" AND resource.labels.job_name="console-integration-tests"' \
   --limit=50 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --freshness=10m
 ```
 

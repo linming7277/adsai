@@ -38,7 +38,7 @@ check_service "siterank" "https://siterank-preview-yt54xvsg5q-an.a.run.app"
 check_service "browser-exec" "https://browser-exec-preview-yt54xvsg5q-an.a.run.app"
 check_service "proxy-pool" "https://proxy-pool-preview-yt54xvsg5q-an.a.run.app"
 check_service "recommendations" "https://recommendations-preview-yt54xvsg5q-an.a.run.app"
-check_service "frontend" "https://www.urlchecker.dev" "/"
+check_service "frontend" "https://preview.example.com" "/"
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

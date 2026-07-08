@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-005: 配置 Cloud Scheduler（试用期到期检查）
-# AutoAds 定时任务配置脚本
+# AdsAI 定时任务配置脚本
 
 set -e
 
-echo "⏰ AutoAds Cloud Scheduler 配置"
+echo "⏰ AdsAI Cloud Scheduler 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP
@@ -55,7 +55,7 @@ if [ -z "$BILLING_PREVIEW_URL" ] && [ -z "$BILLING_PROD_URL" ]; then
 fi
 
 # Service Account
-SERVICE_ACCOUNT="codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
+SERVICE_ACCOUNT="service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 
 # 创建或更新 Preview 环境的定时任务
 if [ -n "$BILLING_PREVIEW_URL" ]; then

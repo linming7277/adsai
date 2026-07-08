@@ -536,34 +536,34 @@ export function useStructuredData() {
   };
 }
 
-// AutoAds特定的结构化数据生成器
-export function useAutoAdsStructuredData() {
+// AdsAI特定的结构化数据生成器
+export function useAdsAIStructuredData() {
   const { applyStructuredData } = useStructuredData();
 
-  // 生成AutoAds组织信息
+  // 生成AdsAI组织信息
   const generateOrganizationData = () => {
     return createOrganizationStructuredData({
-      name: 'AutoAds',
+      name: 'AdsAI',
       description: '专业的智能广告管理平台，提供AI驱动的广告优化、实时数据分析、A/B测试等功能。',
-      url: 'https://autoads.com',
+      url: 'https://example.com',
       logo: '/images/logo.png',
       contactPoint: {
-        email: 'support@autoads.com',
+        email: 'support@adsai.com',
         contactType: 'customer service',
       },
       socialMedia: [
-        { platform: 'Twitter', url: 'https://twitter.com/autoads' },
-        { platform: 'LinkedIn', url: 'https://linkedin.com/company/autoads' },
+        { platform: 'Twitter', url: 'https://twitter.com/adsai' },
+        { platform: 'LinkedIn', url: 'https://linkedin.com/company/adsai' },
       ],
     });
   };
 
-  // 生成AutoAds软件应用数据
+  // 生成AdsAI软件应用数据
   const generateSoftwareApplicationData = () => {
     return createSoftwareApplicationStructuredData({
-      name: 'AutoAds',
+      name: 'AdsAI',
       description: '智能广告管理平台，帮助广告主和开发者实现广告收益最大化',
-      url: 'https://autoads.com',
+      url: 'https://example.com',
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'Web',
       offers: {
@@ -581,15 +581,15 @@ export function useAutoAdsStructuredData() {
   // 生成定价页面的服务结构化数据
   const generatePricingServiceData = () => {
     return createServiceStructuredData({
-      name: 'AutoAds定价方案',
+      name: 'AdsAI定价方案',
       description: '灵活的定价策略，满足不同规模业务需求',
       provider: {
-        name: 'AutoAds',
-        url: 'https://autoads.com',
+        name: 'AdsAI',
+        url: 'https://example.com',
       },
       serviceType: 'Advertising Management',
       hasOfferCatalog: {
-        name: 'AutoAds订阅计划',
+        name: 'AdsAI订阅计划',
         itemListElement: [
           {
             name: '免费版',
@@ -624,16 +624,16 @@ export function useAutoAdsStructuredData() {
   const generateFAQData = () => {
     return createFAQStructuredData([
       {
-        question: '什么是AutoAds？',
-        answer: 'AutoAds是一个智能广告管理平台，提供AI驱动的广告优化、实时数据分析、A/B测试等功能，帮助广告主和开发者实现广告收益最大化。',
+        question: '什么是AdsAI？',
+        answer: 'AdsAI是一个智能广告管理平台，提供AI驱动的广告优化、实时数据分析、A/B测试等功能，帮助广告主和开发者实现广告收益最大化。',
       },
       {
-        question: 'AutoAds支持哪些广告平台？',
-        answer: 'AutoAds支持主流广告平台，包括Google AdSense、Facebook Ads、Amazon Advertising等，并提供统一的API接口进行管理。',
+        question: 'AdsAI支持哪些广告平台？',
+        answer: 'AdsAI支持主流广告平台，包括Google AdSense、Facebook Ads、Amazon Advertising等，并提供统一的API接口进行管理。',
       },
       {
-        question: '如何开始使用AutoAds？',
-        answer: '注册AutoAds账户后，您可以连接您的广告平台账户，设置广告位，配置优化规则，即可开始使用我们的智能广告管理功能。',
+        question: '如何开始使用AdsAI？',
+        answer: '注册AdsAI账户后，您可以连接您的广告平台账户，设置广告位，配置优化规则，即可开始使用我们的智能广告管理功能。',
       },
     ]);
   };

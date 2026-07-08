@@ -4,7 +4,7 @@ set -euo pipefail
 # Create/update Monitoring alert policies for browser-exec.
 # Requires: gcloud auth, roles/monitoring.editor.
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 ./deployments/monitoring/create-alerts-browser-exec.sh
+#   PROJECT_ID=your-gcp-project-id ./deployments/monitoring/create-alerts-browser-exec.sh
 
 PROJECT_ID=${PROJECT_ID:-$(gcloud config get-value project 2>/dev/null)}
 if [[ -z "$PROJECT_ID" || "$PROJECT_ID" == "(unset)" ]]; then

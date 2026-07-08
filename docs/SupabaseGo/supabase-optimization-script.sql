@@ -1,7 +1,7 @@
--- AutoAds Supabase数据库优化脚本
+-- AdsAI Supabase数据库优化脚本
 -- 基于三层用户架构设计
 -- 执行日期: 2025-10-22
--- 项目: AutoAds
+-- 项目: AdsAI
 -- 数据库: jzzvizacfyipzdyiqfzb
 
 -- =====================================
@@ -251,7 +251,7 @@ ORDER BY size_bytes DESC;
 -- 输出优化摘要
 DO $$
 BEGIN
-    RAISE NOTICE '=== AutoAds Supabase数据库优化完成 ===';
+    RAISE NOTICE '=== AdsAI Supabase数据库优化完成 ===';
     RAISE NOTICE '1. 已创建auth.users表的性能索引';
     RAISE NOTICE '2. 已创建优化的user_profiles视图';
     RAISE NOTICE '3. 已创建用户统计物化视图';

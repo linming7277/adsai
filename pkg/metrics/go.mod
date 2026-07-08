@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/metrics
+module github.com/linming7277/adsai/pkg/metrics
 
 go 1.23
 

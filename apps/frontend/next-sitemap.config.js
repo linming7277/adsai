@@ -1,4 +1,4 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.autoads.dev';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.example.com';
 
 const exclude = ['/dashboard*', '/settings*'];
 

@@ -180,9 +180,9 @@ jobs:
 
 ```bash
 #!/bin/bash
-# Create backup of autoads_db
-pg_dump -h /cloudsql/... -U postgres -d autoads_db \
-  -F c -f /backup/autoads_db_$(date +%Y%m%d_%H%M%S).dump
+# Create backup of adsai_db
+pg_dump -h /cloudsql/... -U postgres -d adsai_db \
+  -F c -f /backup/adsai_db_$(date +%Y%m%d_%H%M%S).dump
 ```
 
 ### 2. Reset Script
@@ -213,7 +213,7 @@ DROP SCHEMA IF EXISTS offers CASCADE;
 ```bash
 #!/bin/bash
 # Restore from backup
-pg_restore -h /cloudsql/... -U postgres -d autoads_db \
+pg_restore -h /cloudsql/... -U postgres -d adsai_db \
   --clean --if-exists /backup/$BACKUP_FILE
 ```
 

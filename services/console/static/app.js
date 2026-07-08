@@ -1,6 +1,6 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const tokenKey = 'autoads_admin_id_token';
+  const tokenKey = 'adsai_admin_id_token';
   const tokenInput = $('#tokenInput');
   const saveTokenBtn = $('#saveTokenBtn');
   const loadUsersBtn = $('#loadUsersBtn');

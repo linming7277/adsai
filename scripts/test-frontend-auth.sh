@@ -8,8 +8,8 @@ echo "🧪 测试前端Supabase认证..."
 echo ""
 
 # 测试URL
-PREVIEW_URL="https://www.urlchecker.dev"
-PROD_URL="https://www.autoads.dev"
+PREVIEW_URL="https://preview.example.com"
+PROD_URL="https://www.example.com"
 
 # 测试函数
 test_url() {

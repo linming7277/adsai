@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/database
+module github.com/linming7277/adsai/pkg/database
 
 go 1.25
 

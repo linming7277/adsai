@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: autoads
+  name: adsai
   labels:
-    app: autoads
+    app: adsai
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: autoads
+      app: adsai
   template:
     metadata:
       labels:
-        app: autoads
+        app: adsai
     spec:
       containers:
-        - name: autoads
-          image: ghcr.io/xxrenzhe/autoads:preview-latest
+        - name: adsai
+          image: ghcr.io/linming7277/adsai:preview-latest
           imagePullPolicy: Always
           env:
             - name: NODE_ENV
@@ -24,7 +24,7 @@ spec:
             - name: NEXT_PUBLIC_DEPLOYMENT_ENV
               value: "preview"
             - name: NEXT_PUBLIC_DOMAIN
-              value: "urlchecker.dev"
+              value: "preview.example.com"
             - name: PORT
               value: "8080"
             - name: NEXTJS_PORT

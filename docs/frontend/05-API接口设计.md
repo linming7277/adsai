@@ -1,4 +1,4 @@
-# AutoAds API 接口设计文档
+# AdsAI API 接口设计文档
 
 > 基于 RESTful 风格的前后端 API 接口规范
 >
@@ -45,8 +45,8 @@
 ### URL 命名规范
 
 ```
-基础 URL: https://api.autoads.dev/api/v1/
-预发环境: https://api.urlchecker.dev/api/v1/
+基础 URL: https://api.example.com/api/v1/
+预发环境: https://api.preview.example.com/api/v1/
 
 资源命名:
 - 使用复数名词: /offers, /ads-accounts
@@ -666,7 +666,7 @@ GET /api/v1/adscenter/oauth/url
 
 **Query 参数:**
 ```
-?redirect_uri=https://www.autoads.dev/adscenter/callback
+?redirect_uri=https://www.example.com/adscenter/callback
 ```
 
 **Response (200 OK):**
@@ -1927,4 +1927,4 @@ X-RateLimit-Reset: 1696338000
 
 **文档版本**: v2.0
 **最后更新**: 2024-10-03
-**维护者**: AutoAds 后端开发团队
+**维护者**: AdsAI 后端开发团队

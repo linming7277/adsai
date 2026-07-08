@@ -5,7 +5,7 @@ set -euo pipefail
 # It calls: POST /api/v1/offers/internal/kpi/retry?max=N with OIDC and X-Service-Token.
 #
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   MAX=10 INTERNAL_SERVICE_TOKEN=xxxx \
 #   ./deployments/scripts/create-offer-kpi-retry-scheduler.sh
 

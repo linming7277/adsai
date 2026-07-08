@@ -26,7 +26,7 @@ export TEST_USER_TOKEN="your-test-token"
 ```bash
 gcloud secrets versions access latest \
   --secret="SUPABASE_DB_PASSWORD" \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ## 运行测试

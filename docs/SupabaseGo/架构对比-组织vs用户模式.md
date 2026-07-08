@@ -1,4 +1,4 @@
-# AutoAds 架构对比：组织模式 vs 用户模式
+# AdsAI 架构对比：组织模式 vs 用户模式
 
 > **对比日期**: 2025-10-11
 > **重构版本**: V2.0
@@ -52,7 +52,7 @@
 
 **示例 URL**:
 ```
-https://autoads.dev/dashboard/550e8400-e29b-41d4-a716-446655440000/offers
+https://example.com/dashboard/550e8400-e29b-41d4-a716-446655440000/offers
                               └──────────────┬──────────────┘
                                         组织 UUID (36字符)
 ```
@@ -90,7 +90,7 @@ https://autoads.dev/dashboard/550e8400-e29b-41d4-a716-446655440000/offers
 
 **示例 URL**:
 ```
-https://autoads.dev/dashboard/offers
+https://example.com/dashboard/offers
                     └────┬─────┘
                       简洁路径
 ```
@@ -633,8 +633,8 @@ const routes = [
 
 **示例产品**: Todoist, Notion（个人版）, Evernote
 
-**AutoAds 的选择**:
-- AutoAds 定位为**个人广告管理工具**
+**AdsAI 的选择**:
+- AdsAI 定位为**个人广告管理工具**
 - 每个用户独立管理自己的 Offers/Tasks
 - 无需团队协作功能
 - **用户模式更适合** ✅
@@ -685,7 +685,7 @@ ALTER TABLE offers DROP COLUMN organization_id;
 | **安全性** | 高 | 高 | 相同 |
 | **扩展性** | 高（支持多租户） | 低（仅单用户） | 看需求 |
 
-### AutoAds 重构成果
+### AdsAI 重构成果
 
 | 指标 | 改进 |
 |------|------|

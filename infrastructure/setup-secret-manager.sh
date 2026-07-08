@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-001: 配置 Secret Manager（SimilarWeb API）
-# AutoAds Secret Manager 配置脚本
+# AdsAI Secret Manager 配置脚本
 
 set -e
 
-echo "🔐 AutoAds Secret Manager 配置"
+echo "🔐 AdsAI Secret Manager 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP

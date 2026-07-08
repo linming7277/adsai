@@ -28,7 +28,7 @@ export default function ErrorActions() {
         className="w-full"
         onClick={() => {
           // 联系支持
-          window.location.href = 'mailto:support@autoads.dev';
+          window.location.href = 'mailto:support@adsai.dev';
         }}
       >
         联系支持

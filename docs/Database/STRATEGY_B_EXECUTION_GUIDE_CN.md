@@ -6,7 +6,7 @@
 
 ## 📋 概述
 
-策略B是一个**高风险**的数据库重建方案，将完全清空并重建 `autoads_db` 数据库。此操作适用于以下场景：
+策略B是一个**高风险**的数据库重建方案，将完全清空并重建 `adsai_db` 数据库。此操作适用于以下场景：
 
 - 数据库结构严重混乱，无法通过增量迁移修复
 - 需要从干净状态重新开始
@@ -105,7 +105,7 @@ gh workflow run database-rebuild-strategy-b.yml \
    ```bash
    # 查看工作流执行状态
    gh run list --workflow=database-rebuild-strategy-b.yml
-   
+
    # 查看特定运行的日志
    gh run view <run-id> --log
    ```
@@ -118,11 +118,11 @@ gh workflow run database-rebuild-strategy-b.yml \
 3. **数据库监控**
    ```bash
    # 连接到数据库查看状态
-   gcloud sql connect autoads --user=postgres --database=autoads_db
-   
+   gcloud sql connect adsai --user=postgres --database=adsai_db
+
    # 查看Schema列表
    \dn
-   
+
    # 查看表列表
    \dt billing.*
    \dt offers.*
@@ -144,12 +144,12 @@ gh workflow run database-rebuild-strategy-b.yml \
 
 ```sql
 -- 1. 检查Schema
-SELECT schema_name FROM information_schema.schemata 
+SELECT schema_name FROM information_schema.schemata
 WHERE schema_name IN ('billing', 'offers', 'adscenter', 'siterank', 'useractivity', 'console');
 
 -- 2. 检查表数量
 SELECT schemaname, COUNT(*) as table_count
-FROM pg_catalog.pg_tables 
+FROM pg_catalog.pg_tables
 WHERE schemaname IN ('billing', 'offers', 'adscenter', 'siterank', 'useractivity', 'console')
 GROUP BY schemaname;
 
@@ -157,7 +157,7 @@ GROUP BY schemaname;
 SELECT version, dirty FROM schema_migrations ORDER BY version;
 
 -- 4. 检查数据库大小
-SELECT pg_size_pretty(pg_database_size('autoads_db'));
+SELECT pg_size_pretty(pg_database_size('adsai_db'));
 ```
 
 ## 🔄 回滚流程
@@ -187,14 +187,14 @@ SELECT pg_size_pretty(pg_database_size('autoads_db'));
    # 创建恢复Job
    gcloud run jobs create db-restore-strategy-b-preview \
      --region=asia-northeast1 \
-     --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:latest \
+     --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:latest \
      --set-env-vars="BACKUP_FILE=<备份文件名>.dump" \
      --set-secrets="DATABASE_URL=DATABASE_URL:latest" \
-     --set-cloudsql-instances=gen-lang-client-0944935873:asia-northeast1:autoads \
+     --set-cloudsql-instances=your-gcp-project-id:asia-northeast1:adsai \
      --max-retries=0 \
      --task-timeout=30m \
      --command="/restore.sh"
-   
+
    # 执行恢复
    gcloud run jobs execute db-restore-strategy-b-preview \
      --region=asia-northeast1 \
@@ -204,8 +204,8 @@ SELECT pg_size_pretty(pg_database_size('autoads_db'));
 3. **验证恢复结果**
    ```bash
    # 连接数据库验证
-   gcloud sql connect autoads --user=postgres --database=autoads_db
-   
+   gcloud sql connect adsai --user=postgres --database=adsai_db
+
    # 检查数据
    SELECT COUNT(*) FROM billing.users;
    SELECT COUNT(*) FROM offers.offers;
@@ -280,7 +280,7 @@ SELECT pg_size_pretty(pg_database_size('autoads_db'));
 df -h
 
 # 测试数据库连接
-gcloud sql connect autoads --user=postgres
+gcloud sql connect adsai --user=postgres
 
 # 检查Secret Manager权限
 gcloud secrets versions access latest --secret=DATABASE_URL
@@ -299,17 +299,17 @@ gcloud secrets versions access latest --secret=DATABASE_URL
 ```bash
 # 检查活动连接
 psql "$DATABASE_URL" -c "
-  SELECT pid, usename, application_name, state 
-  FROM pg_stat_activity 
-  WHERE datname = 'autoads_db' 
+  SELECT pid, usename, application_name, state
+  FROM pg_stat_activity
+  WHERE datname = 'adsai_db'
   AND pid != pg_backend_pid();
 "
 
 # 强制断开连接（谨慎使用）
 psql "$DATABASE_URL" -c "
-  SELECT pg_terminate_backend(pid) 
-  FROM pg_stat_activity 
-  WHERE datname = 'autoads_db' 
+  SELECT pg_terminate_backend(pid)
+  FROM pg_stat_activity
+  WHERE datname = 'adsai_db'
   AND pid != pg_backend_pid();
 "
 ```

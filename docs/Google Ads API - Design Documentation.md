@@ -1,8 +1,8 @@
-Company Name: AutoAds Inc.
+Company Name: AdsAI Inc.
 
-Business Model: Our company operates a Software-as-a-Service (SaaS) platform named AutoAds, which is available to external, third-party advertisers via a monthly subscription. Our clients are professional advertisers who use our tool to more efficiently manage and analyze their own Google Ads accounts. We do not manage ads for any other business, nor do we use the tool to advertise for our own company.
+Business Model: Our company operates a Software-as-a-Service (SaaS) platform named AdsAI, which is available to external, third-party advertisers via a monthly subscription. Our clients are professional advertisers who use our tool to more efficiently manage and analyze their own Google Ads accounts. We do not manage ads for any other business, nor do we use the tool to advertise for our own company.
 
-Tool Access/Use: The AutoAds platform is a secure, web-based application. Paying subscribers log in to our tool and connect their own Google Ads accounts through a standard OAuth2 authorization flow. Once connected, they use our platform's interface to view performance reports and make management actions on their own campaigns. The tool is entirely self-service and is designed to improve our clients' operational efficiency.
+Tool Access/Use: The AdsAI platform is a secure, web-based application. Paying subscribers log in to our tool and connect their own Google Ads accounts through a standard OAuth2 authorization flow. Once connected, they use our platform's interface to view performance reports and make management actions on their own campaigns. The tool is entirely self-service and is designed to improve our clients' operational efficiency.
 
 Tool Design: Our tool is designed as a standard web application with a secure backend and a user-friendly frontend.
 
@@ -22,4 +22,4 @@ AdGroupService & AdGroupAdService: To make modifications to ad groups and ads, s
 
 CustomerService: To retrieve the hierarchy of accounts accessible by the user.
 
-Tool Mockup: Below is a mockup of the main dashboard of our AutoAds tool. It demonstrates how users can view aggregated performance data and access their campaigns for management.
+Tool Mockup: Below is a mockup of the main dashboard of our AdsAI tool. It demonstrates how users can view aggregated performance data and access their campaigns for management.

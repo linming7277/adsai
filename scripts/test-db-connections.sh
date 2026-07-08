@@ -58,7 +58,7 @@ import (
     "os"
     "time"
 
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 func main() {
@@ -190,9 +190,9 @@ go mod init db-test
 
 # 添加依赖
 echo "添加依赖..."
-go mod edit -replace github.com/xxrenzhe/autoads=$(pwd)/Users/jason/Documents/Kiro/autoads
+go mod edit -replace github.com/linming7277/adsai=$(pwd)/path/to/adsai
 
-go get github.com/xxrenzhe/autoads/pkg/database@v0.0.0-00010101000000-000000000000
+go get github.com/linming7277/adsai/pkg/database@v0.0.0-00010101000000-000000000000
 go get github.com/jackc/pgx/v5@v5.5.0
 go get github.com/supabase-community/supabase-go@v0.0.4
 

@@ -3,7 +3,7 @@ substitutions:
   _TAG: preview-local
   _SERVICE: frontend-preview
   _REGION: asia-northeast1
-  _HOSTING_SITE: autoads-preview
+  _HOSTING_SITE: adsai-preview
   _IMAGE: gcr.io/$PROJECT_ID/frontend:${_TAG}
   _PREVIEW_STUB: "0"
 

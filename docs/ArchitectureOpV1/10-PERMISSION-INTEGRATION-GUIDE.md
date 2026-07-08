@@ -80,7 +80,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
-	"autoads/services/billing/internal/permissions"
+	"adsai/services/billing/internal/permissions"
 )
 
 type EvaluationHandler struct {
@@ -322,7 +322,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
-	"autoads/services/billing/internal/permissions"
+	"adsai/services/billing/internal/permissions"
 )
 
 type BatchopenHandler struct {
@@ -522,7 +522,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
-	"autoads/services/billing/internal/permissions"
+	"adsai/services/billing/internal/permissions"
 )
 
 type BindingHandler struct {
@@ -762,7 +762,7 @@ export default function DashboardPage() {
 
 ```bash
 # 测试1: Starter用户尝试AI评估（应该失败）
-curl -X POST https://offer-preview.autoads.dev/api/v1/offers/123/evaluate \
+curl -X POST https://offer-preview.example.com/api/v1/offers/123/evaluate \
   -H "Authorization: Bearer $STARTER_TOKEN" \
   -d '{"offer_id": "123", "use_ai": true}'
 
@@ -774,7 +774,7 @@ curl -X POST https://offer-preview.autoads.dev/api/v1/offers/123/evaluate \
 # }
 
 # 测试2: Pro用户AI评估成功
-curl -X POST https://offer-preview.autoads.dev/api/v1/offers/123/evaluate \
+curl -X POST https://offer-preview.example.com/api/v1/offers/123/evaluate \
   -H "Authorization: Bearer $PRO_TOKEN" \
   -d '{"offer_id": "123", "use_ai": true}'
 
@@ -804,7 +804,7 @@ curl -X POST .../evaluate -H "Authorization: Bearer $STARTER_TOKEN" &
 
 ```bash
 # 测试1: Starter用户只能使用US代理
-curl -X POST https://batchopen-preview.autoads.dev/api/v1/batchopen/tasks \
+curl -X POST https://batchopen-preview.example.com/api/v1/batchopen/tasks \
   -H "Authorization: Bearer $STARTER_TOKEN" \
   -d '{
     "url": "https://example.com",
@@ -821,7 +821,7 @@ curl -X POST https://batchopen-preview.autoads.dev/api/v1/batchopen/tasks \
 # }
 
 # 测试2: Elite用户可以使用任意国家
-curl -X POST https://batchopen-preview.autoads.dev/api/v1/batchopen/tasks \
+curl -X POST https://batchopen-preview.example.com/api/v1/batchopen/tasks \
   -H "Authorization: Bearer $ELITE_TOKEN" \
   -d '{"url": "...", "country": "JP", "click_count": 10}'
 
@@ -833,7 +833,7 @@ curl -X POST https://batchopen-preview.autoads.dev/api/v1/batchopen/tasks \
 ```bash
 # 测试1: Starter用户绑定第2个账号（应该失败）
 # 前提：已有1个绑定
-curl -X POST https://adscenter-preview.autoads.dev/api/v1/adscenter/bindings \
+curl -X POST https://adscenter-preview.example.com/api/v1/adscenter/bindings \
   -H "Authorization: Bearer $STARTER_TOKEN" \
   -d '{
     "ads_account_id": "1234567890",
@@ -850,7 +850,7 @@ curl -X POST https://adscenter-preview.autoads.dev/api/v1/adscenter/bindings \
 # }
 
 # 测试2: 查询绑定配额
-curl https://adscenter-preview.autoads.dev/api/v1/adscenter/bindings/quota \
+curl https://adscenter-preview.example.com/api/v1/adscenter/bindings/quota \
   -H "Authorization: Bearer $PRO_TOKEN"
 
 # 预期: 200 OK

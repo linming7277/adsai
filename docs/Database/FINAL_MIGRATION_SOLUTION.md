@@ -129,9 +129,9 @@ CREATE TRIGGER update_users_updated_at
 # 创建清理Job
 gcloud run jobs create db-reset-migrations --region=asia-northeast1 \
   --image=postgres:15-alpine \
-  --set-env-vars="PGHOST=/cloudsql/...,PGDATABASE=autoads_db,PGUSER=postgres,PGPASSWORD=..." \
+  --set-env-vars="PGHOST=/cloudsql/...,PGDATABASE=adsai_db,PGUSER=postgres,PGPASSWORD=..." \
   --set-cloudsql-instances="..." \
-  --service-account="codex-dev@..." \
+  --service-account="service-account@..." \
   --command="psql" \
   --args="-c,DELETE FROM schema_migrations;"
 

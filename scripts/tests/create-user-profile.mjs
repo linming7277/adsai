@@ -15,7 +15,7 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const TEST_USER_ID = '37fd3629-a06a-47c8-b33a-31944afaa14c';
-const TEST_USER_EMAIL = 'test-user@autoads.dev';
+const TEST_USER_EMAIL = 'test-user@adsai.dev';
 
 async function createUserProfile() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {

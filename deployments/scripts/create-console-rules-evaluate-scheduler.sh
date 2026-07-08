@@ -5,7 +5,7 @@ set -euo pipefail
 # Calls: POST /api/v1/console/notifications/rules/evaluate with X-Service-Token.
 #
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   INTERNAL_SERVICE_TOKEN=xxxx SCHEDULE="*/5 * * * *" \
 #   ./deployments/scripts/create-console-rules-evaluate-scheduler.sh
 

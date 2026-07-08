@@ -8,9 +8,9 @@ set -euo pipefail
 # - Lists API Gateway gateways/APIs/configs
 # - Lists Pub/Sub topics/subscriptions
 
-PROJECT_ID="${PROJECT_ID:-gen-lang-client-0944935873}"
+PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 REGION="${REGION:-asia-northeast1}"
-SA_EMAIL="${SA_EMAIL:-codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com}"
+SA_EMAIL="${SA_EMAIL:-service-account@your-gcp-project-id.iam.gserviceaccount.com}"
 KEY_FILE="${KEY_FILE:-secrets/gcp_codex_dev.json}"
 
 echo "== Using project: ${PROJECT_ID} / region: ${REGION} =="

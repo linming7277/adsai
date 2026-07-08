@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-003: 配置 Pub/Sub Topics and Subscriptions
-# AutoAds Pub/Sub 配置脚本
+# AdsAI Pub/Sub 配置脚本
 
 set -e
 
-echo "📨 AutoAds Pub/Sub 配置"
+echo "📨 AdsAI Pub/Sub 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP

@@ -1,6 +1,6 @@
 # Grafana Cloud 配置指南 (免费版)
 
-**目标**: 为 AutoAds 配置 Grafana Cloud 免费版,接入所有业务指标
+**目标**: 为 AdsAI 配置 Grafana Cloud 免费版,接入所有业务指标
 
 ---
 
@@ -22,7 +22,7 @@ https://grafana.com/auth/sign-up/create-user
 
 ### 1.2 免费版限制 (足够使用)
 
-| 资源 | 免费额度 | AutoAds 预计使用 |
+| 资源 | 免费额度 | AdsAI 预计使用 |
 |------|---------|-----------------|
 | Active series (metrics) | 10,000 | ~2,000 (100用户 × 20指标) |
 | Logs | 50 GB/月 | ~5-10 GB/月 |
@@ -35,9 +35,9 @@ https://grafana.com/auth/sign-up/create-user
 ### 1.3 注册信息填写
 
 - **Email**: 你的工作邮箱
-- **Company**: Kiro / AutoAds
+- **Company**: Kiro / AdsAI
 - **Role**: Developer / DevOps
-- **Stack name**: 建议使用 `autoads` 或 `autoads-prod`
+- **Stack name**: 建议使用 `adsai` 或 `adsai-prod`
 
 ---
 
@@ -50,7 +50,7 @@ https://grafana.com/auth/sign-up/create-user
 for service in billing-preview offer-preview adscenter-preview; do
   URL=$(gcloud run services describe $service \
     --region=asia-northeast1 \
-    --project=autoads-439917 \
+    --project=adsai-439917 \
     --format='value(status.url)' 2>/dev/null)
 
   if [ -n "$URL" ]; then
@@ -76,7 +76,7 @@ done
 
 注册完成后,你会看到:
 ```
-Your Grafana instance: https://autoads.grafana.net
+Your Grafana instance: https://adsai.grafana.net
 ```
 
 点击 **"Launch Grafana"** 进入仪表盘。
@@ -94,7 +94,7 @@ Your Grafana instance: https://autoads.grafana.net
 4. 填写配置:
 
 ```yaml
-Name: AutoAds Billing
+Name: AdsAI Billing
 URL: https://billing-preview-XXX-an.a.run.app/metrics
 HTTP Method: GET
 Access: Server (default)
@@ -131,8 +131,8 @@ HTTP Headers:
 #### 选项 A: 为每个服务创建独立数据源 (简单但达到限制)
 
 重复步骤 3.2,分别为:
-- AutoAds Offer (https://offer-preview-XXX.a.run.app/metrics)
-- AutoAds Adscenter (https://adscenter-preview-XXX.a.run.app/metrics)
+- AdsAI Offer (https://offer-preview-XXX.a.run.app/metrics)
+- AdsAI Adscenter (https://adscenter-preview-XXX.a.run.app/metrics)
 
 #### 选项 B: 部署 Prometheus 聚合器 (推荐,生产环境)
 
@@ -160,7 +160,7 @@ HTTP Headers:
 
 1. 点击左侧 **+ → Import**
 2. 上传 `billing-overview.json`
-3. 选择 data source: **AutoAds Billing**
+3. 选择 data source: **AdsAI Billing**
 4. 点击 **Import**
 
 重复以上步骤导入 `ad-performance.json`。
@@ -171,12 +171,12 @@ HTTP Headers:
 
 1. 点击 **+ → Dashboard**
 2. 点击 **Add new panel**
-3. 在 **Query** 部分选择数据源: **AutoAds Billing**
+3. 在 **Query** 部分选择数据源: **AdsAI Billing**
 4. 输入 PromQL 查询,例如:
 
 ```promql
 # Panel 1: 全局 Token 消耗速率
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 ```
 
 5. 配置可视化类型:
@@ -194,28 +194,28 @@ sum(rate(autoads_billing_tokens_consumed_total[5m]))
 
 | Panel 标题 | PromQL 查询 | 类型 |
 |-----------|------------|------|
-| Token 消耗速率 | `sum(rate(autoads_billing_tokens_consumed_total[5m]))` | Stat |
-| Token 退款率 | `sum(rate(autoads_billing_tokens_refunded_total[5m])) / sum(rate(autoads_billing_tokens_consumed_total[5m]))` | Stat (百分比) |
-| 消耗 by Operation | `sum(rate(autoads_billing_tokens_consumed_total[5m])) by (operation)` | Time series (stacked) |
-| Top 10 用户 | `topk(10, sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id))` | Table |
-| 退款原因分布 | `sum(rate(autoads_billing_tokens_refunded_total[5m])) by (reason)` | Pie chart |
+| Token 消耗速率 | `sum(rate(adsai_billing_tokens_consumed_total[5m]))` | Stat |
+| Token 退款率 | `sum(rate(adsai_billing_tokens_refunded_total[5m])) / sum(rate(adsai_billing_tokens_consumed_total[5m]))` | Stat (百分比) |
+| 消耗 by Operation | `sum(rate(adsai_billing_tokens_consumed_total[5m])) by (operation)` | Time series (stacked) |
+| Top 10 用户 | `topk(10, sum(rate(adsai_billing_tokens_consumed_total[5m])) by (user_id))` | Table |
+| 退款原因分布 | `sum(rate(adsai_billing_tokens_refunded_total[5m])) by (reason)` | Pie chart |
 
 ### 5.2 Offer Dashboard 面板建议
 
 | Panel 标题 | PromQL 查询 | 类型 |
 |-----------|------------|------|
-| Offer 成功率 | `sum(rate(autoads_offer_offers_completed_total[5m])) / sum(rate(autoads_offer_offers_created_total[5m]))` | Stat (百分比) |
-| Offer 失败率 | `sum(rate(autoads_offer_offers_failed_total[5m])) / sum(rate(autoads_offer_offers_created_total[5m]))` | Stat (百分比) |
-| Offer 创建趋势 | `sum(rate(autoads_offer_offers_created_total[5m]))` | Time series |
-| 失败原因 Top 5 | `topk(5, sum(rate(autoads_offer_offers_failed_total[5m])) by (reason))` | Bar gauge |
+| Offer 成功率 | `sum(rate(adsai_offer_offers_completed_total[5m])) / sum(rate(adsai_offer_offers_created_total[5m]))` | Stat (百分比) |
+| Offer 失败率 | `sum(rate(adsai_offer_offers_failed_total[5m])) / sum(rate(adsai_offer_offers_created_total[5m]))` | Stat (百分比) |
+| Offer 创建趋势 | `sum(rate(adsai_offer_offers_created_total[5m]))` | Time series |
+| 失败原因 Top 5 | `topk(5, sum(rate(adsai_offer_offers_failed_total[5m])) by (reason))` | Bar gauge |
 
 ### 5.3 Ad Performance Dashboard 面板建议
 
 | Panel 标题 | PromQL 查询 | 类型 |
 |-----------|------------|------|
-| 广告创建速率 | `sum(rate(autoads_adscenter_ads_created_total[5m])) by (platform)` | Time series |
-| Platform 分布 | `sum(rate(autoads_adscenter_ads_created_total[5m])) by (platform)` | Pie chart |
-| Top 10 用户 | `topk(10, sum(rate(autoads_adscenter_ads_created_total[5m])) by (user_id))` | Table |
+| 广告创建速率 | `sum(rate(adsai_adscenter_ads_created_total[5m])) by (platform)` | Time series |
+| Platform 分布 | `sum(rate(adsai_adscenter_ads_created_total[5m])) by (platform)` | Pie chart |
+| Top 10 用户 | `topk(10, sum(rate(adsai_adscenter_ads_created_total[5m])) by (user_id))` | Table |
 
 **注意**: 当前 adscenter 只集成了基础的 ads_created 指标。完整的 impressions/clicks/conversions 指标需要后续添加。
 
@@ -243,9 +243,9 @@ Condition:
   WHEN avg() OF query(A, 5m, now) IS ABOVE 0.10
 
 # query(A) 是:
-sum(rate(autoads_billing_tokens_refunded_total[5m]))
+sum(rate(adsai_billing_tokens_refunded_total[5m]))
 /
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 # 当退款率 > 10% 且持续 5 分钟时触发
 ```
@@ -262,11 +262,11 @@ sum(rate(autoads_billing_tokens_consumed_total[5m]))
 ### 7.1 测试 metrics 数据流
 
 1. 打开 **Explore** (左侧菜单)
-2. 选择数据源: **AutoAds Billing**
+2. 选择数据源: **AdsAI Billing**
 3. 输入查询:
 
 ```promql
-autoads_billing_tokens_consumed_total
+adsai_billing_tokens_consumed_total
 ```
 
 4. 点击 **Run query**
@@ -274,8 +274,8 @@ autoads_billing_tokens_consumed_total
 **预期结果**: 应该看到类似的时间序列数据:
 
 ```
-autoads_billing_tokens_consumed_total{user_id="user123",operation="offer_creation"} 1500
-autoads_billing_tokens_consumed_total{user_id="user456",operation="ad_campaign"} 800
+adsai_billing_tokens_consumed_total{user_id="user123",operation="offer_creation"} 1500
+adsai_billing_tokens_consumed_total{user_id="user456",operation="ad_campaign"} 800
 ```
 
 如果看不到数据:
@@ -300,7 +300,7 @@ curl -X POST https://offer-preview-XXX.a.run.app/api/v1/offers \
   }'
 
 # 然后查看 metrics
-curl https://offer-preview-XXX.a.run.app/metrics | grep autoads_offer_offers_created_total
+curl https://offer-preview-XXX.a.run.app/metrics | grep adsai_offer_offers_created_total
 ```
 
 ---
@@ -411,7 +411,7 @@ HTTP 指标: ~500 series
 - **Grafana Cloud 文档**: https://grafana.com/docs/grafana-cloud/
 - **Prometheus 查询示例**: `monitoring/prometheus/promql-queries.md`
 - **Dashboard 模板**: `monitoring/prometheus/dashboards/`
-- **AutoAds 监控架构**: `monitoring/prometheus/README.md`
+- **AdsAI 监控架构**: `monitoring/prometheus/README.md`
 
 ---
 

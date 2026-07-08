@@ -1,7 +1,7 @@
 # Phase 7: 全面测试报告
 
 > **测试日期**: 2025-10-11
-> **测试环境**: Preview (https://www.urlchecker.dev)
+> **测试环境**: Preview (https://preview.example.com)
 > **测试账号**: yj2008ay611@gmail.com (管理员)
 > **基于**: 重构任务清单 Phase 7
 
@@ -49,7 +49,7 @@
 ### T7.1.1: 用户登录流程 ⏳
 
 **测试步骤**:
-1. 访问 https://www.urlchecker.dev
+1. 访问 https://preview.example.com
 2. 点击 "Sign in with Google"
 3. 使用 yj2008ay611@gmail.com 登录
 4. 观察跳转行为
@@ -218,7 +218,7 @@
 ### T7.3.2: 直接访问 URL ⏳
 
 **测试步骤**:
-1. 在浏览器地址栏直接输入 `https://www.urlchecker.dev/dashboard/offers`
+1. 在浏览器地址栏直接输入 `https://preview.example.com/dashboard/offers`
 2. 观察首屏加载
 
 **预期结果**:
@@ -312,7 +312,7 @@
 
 **测试命令**:
 ```bash
-lighthouse https://www.urlchecker.dev/dashboard/offers \
+lighthouse https://preview.example.com/dashboard/offers \
   --output json --output html \
   --chrome-flags="--headless"
 ```

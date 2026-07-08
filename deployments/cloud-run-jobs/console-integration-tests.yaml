@@ -5,18 +5,18 @@ apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
   name: console-integration-tests
-  namespace: 'gen-lang-client-0944935873'
+  namespace: 'your-gcp-project-id'
   labels:
     cloud.googleapis.com/location: asia-northeast1
 spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/vpc-access-connector: projects/gen-lang-client-0944935873/locations/asia-northeast1/connectors/cr-conn-default-ane1
+        run.googleapis.com/vpc-access-connector: projects/your-gcp-project-id/locations/asia-northeast1/connectors/cr-conn-default-ane1
         run.googleapis.com/vpc-access-egress: all-traffic
     spec:
       containers:
-      - image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/console-integration-tests:latest
+      - image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/console-integration-tests:latest
         env:
         # Database connection URL (from Secret Manager)
         - name: CLOUDSQL_DATABASE_URL
@@ -39,7 +39,7 @@ spec:
             memory: 1Gi
 
       # Service account with necessary permissions
-      serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+      serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
 
       # Timeout for the entire job
       timeoutSeconds: 600

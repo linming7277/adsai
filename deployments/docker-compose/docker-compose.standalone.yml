@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  autoads:
+  adsai:
     build:
       context: ../..
       dockerfile: Dockerfile.standalone
-    image: autoads-standalone:embedded
+    image: adsai-standalone:embedded
     ports:
       - "3000:3000"
       - "8080:8080"

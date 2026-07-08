@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/errors"
+	"github.com/linming7277/adsai/pkg/errors"
 )
 
 // GetDashboardStats implements the dashboard stats endpoint for user dashboard

@@ -66,7 +66,7 @@ graph LR
 
 #### 步骤1: 用户首次Google登录
 ```
-1. 访问: https://www.urlchecker.dev (preview) 或 https://www.autoads.dev (生产)
+1. 访问: https://preview.example.com (preview) 或 https://www.example.com (生产)
 2. 点击: "Sign in with Google"
 3. 选择: 目标Google账号
 4. 授权: 允许应用访问基本信息

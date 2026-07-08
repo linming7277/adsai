@@ -156,7 +156,7 @@ async function generateRecoveryCodes() {
   showRecoveryCodes(codes); // ⚠️ 刷新后不可再查看
 
   // Step 4: 自动下载为 TXT 文件
-  downloadRecoveryCodes(codes, 'autoads_recovery_codes.txt');
+  downloadRecoveryCodes(codes, 'adsai_recovery_codes.txt');
 }
 ```
 
@@ -236,7 +236,7 @@ async function deleteUser(userId) {
   });
 
   // Step 4: 自动发送告警
-  // → Slack: "🚨 管理员 alice@autoads.dev 删除了用户 xxx"
+  // → Slack: "🚨 管理员 alice@adsai.dev 删除了用户 xxx"
 }
 ```
 
@@ -258,7 +258,7 @@ async function deleteUser(userId) {
 **示例消息**:
 ```
 🚨 Critical Admin Action
-User: alice@autoads.dev
+User: alice@adsai.dev
 Action: DELETE_USER
 Resource: users (user-id-123)
 Reason: 用户要求删除个人数据（GDPR）
@@ -338,7 +338,7 @@ Time: 2025-10-09T14:30:00Z
 │ ⚠️ 此功能仅用于 Google 登录故障时的应急访问 │
 │                                          │
 │ 管理员邮箱:                              │
-│ [alice@autoads.dev____________]          │
+│ [alice@adsai.dev____________]          │
 │                                          │
 │ 恢复码:                                  │
 │ [ABCD-EFGH-IJKL-MNOP___________]         │
@@ -398,17 +398,17 @@ cd services/console
 # 1. 生成恢复码
 curl -X POST \
   -H "Authorization: Bearer $TOKEN" \
-  https://console.autoads.dev/api/v1/console/recovery-codes/generate
+  https://console.example.com/api/v1/console/recovery-codes/generate
 
 # 2. 使用恢复码登录
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{"email": "admin@autoads.dev", "recoveryCode": "ABCD-EFGH-IJKL-MNOP"}' \
-  https://console.autoads.dev/api/v1/auth/recovery-code
+  -d '{"email": "admin@adsai.dev", "recoveryCode": "ABCD-EFGH-IJKL-MNOP"}' \
+  https://console.example.com/api/v1/auth/recovery-code
 
 # 3. 验证审计日志
 curl -H "Authorization: Bearer $TOKEN" \
-  https://console.autoads.dev/api/v1/console/audit-logs/enhanced
+  https://console.example.com/api/v1/console/audit-logs/enhanced
 
 # 4. 测试告警
 # → 执行敏感操作（如删除用户）

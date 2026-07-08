@@ -28,7 +28,7 @@ else
 fi
 
 echo "[gcp-smoke] Publishing a test message to Pub/Sub: ${PUBSUB_TOPIC_ID}"
-gcloud pubsub topics publish "${PUBSUB_TOPIC_ID}" --message="autoads-smoke-test-$(date +%s)" >/dev/null
+gcloud pubsub topics publish "${PUBSUB_TOPIC_ID}" --message="adsai-smoke-test-$(date +%s)" >/dev/null
 echo "[gcp-smoke] Pub/Sub publish OK"
 
 echo "[gcp-smoke] Done"

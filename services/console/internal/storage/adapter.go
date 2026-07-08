@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // Adapter 数据库适配器，支持CloudSQL和Supabase两种模式

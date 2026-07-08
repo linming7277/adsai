@@ -215,9 +215,9 @@ apply ... failed: file not found
 
 **错误日志**：
 ```
-go: github.com/xxrenzhe/autoads/services/offer imports
-    github.com/xxrenzhe/autoads/pkg/middleware imports
-    github.com/xxrenzhe/autoads/pkg/supabaseauth: reading github.com/xxrenzhe/autoads/pkg/supabaseauth/go.mod at revision pkg/supabaseauth/v0.0.1: unknown revision pkg/supabaseauth/v0.0.1
+go: github.com/linming7277/adsai/services/offer imports
+    github.com/linming7277/adsai/pkg/middleware imports
+    github.com/linming7277/adsai/pkg/supabaseauth: reading github.com/linming7277/adsai/pkg/supabaseauth/go.mod at revision pkg/supabaseauth/v0.0.1: unknown revision pkg/supabaseauth/v0.0.1
 ```
 
 **根因**:
@@ -230,10 +230,10 @@ go: github.com/xxrenzhe/autoads/services/offer imports
 
 ```dockerfile
 # services/offer/go.mod
-replace github.com/xxrenzhe/autoads/pkg/middleware => ../../pkg/middleware
-replace github.com/xxrenzhe/autoads/pkg/supabaseauth => ../../pkg/supabaseauth  # 关键！
-replace github.com/xxrenzhe/autoads/pkg/database => ../../pkg/database
-replace github.com/xxrenzhe/autoads/pkg/dburl => ../../pkg/dburl
+replace github.com/linming7277/adsai/pkg/middleware => ../../pkg/middleware
+replace github.com/linming7277/adsai/pkg/supabaseauth => ../../pkg/supabaseauth  # 关键！
+replace github.com/linming7277/adsai/pkg/database => ../../pkg/database
+replace github.com/linming7277/adsai/pkg/dburl => ../../pkg/dburl
 ```
 
 **问题2: go.work引用的模块缺失**
@@ -332,7 +332,7 @@ RUN go mod tidy && CGO_ENABLED=0 GOOS=linux go build -o /billing-service .
 ## 七、推荐的目录结构
 
 ```
-autoads/
+adsai/
 ├── .github/workflows/
 │   ├── deploy-backend.yml          # 统一部署流程
 │   └── deploy-frontend.yml
@@ -531,10 +531,10 @@ unknown revision pkg/supabaseauth/v0.0.1
 // services/myservice/go.mod
 // 添加所有传递依赖的replace指令
 
-replace github.com/xxrenzhe/autoads/pkg/middleware => ../../pkg/middleware
-replace github.com/xxrenzhe/autoads/pkg/supabaseauth => ../../pkg/supabaseauth  // 关键！
-replace github.com/xxrenzhe/autoads/pkg/auth => ../../pkg/auth
-replace github.com/xxrenzhe/autoads/pkg/logger => ../../pkg/logger
+replace github.com/linming7277/adsai/pkg/middleware => ../../pkg/middleware
+replace github.com/linming7277/adsai/pkg/supabaseauth => ../../pkg/supabaseauth  // 关键！
+replace github.com/linming7277/adsai/pkg/auth => ../../pkg/auth
+replace github.com/linming7277/adsai/pkg/logger => ../../pkg/logger
 ```
 
 **识别缺失的replace**:
@@ -573,8 +573,8 @@ done
 
 **症状**:
 ```
-cmd/useractivity/main.go:23:2: no required module provides package github.com/xxrenzhe/autoads/pkg/serviceclient; to add it:
-    go get github.com/xxrenzhe/autoads/pkg/serviceclient
+cmd/useractivity/main.go:23:2: no required module provides package github.com/linming7277/adsai/pkg/serviceclient; to add it:
+    go get github.com/linming7277/adsai/pkg/serviceclient
 ```
 
 **根因**:
@@ -598,7 +598,7 @@ for service in console bff offer recommendations useractivity adscenter batchope
   cd services/$service
   # 检查是否已有replace
   if ! grep -q "replace.*pkg/serviceclient" go.mod; then
-    echo "replace github.com/xxrenzhe/autoads/pkg/serviceclient => ../../pkg/serviceclient" >> go.mod
+    echo "replace github.com/linming7277/adsai/pkg/serviceclient => ../../pkg/serviceclient" >> go.mod
     go mod tidy
   fi
   cd ../..
@@ -637,8 +637,8 @@ for service_dir in services/*/; do
   fi
 
   # 检查代码中使用的pkg模块
-  used_pkgs=$(grep -rh "github.com/xxrenzhe/autoads/pkg/" "$service_dir" --include="*.go" 2>/dev/null | \
-              sed -n 's/.*"github\.com\/xxrenzhe\/autoads\/\(pkg\/[^"]*\)".*/\1/p' | \
+  used_pkgs=$(grep -rh "github.com/linming7277/adsai/pkg/" "$service_dir" --include="*.go" 2>/dev/null | \
+              sed -n 's/.*"github\.com\/linming7277\/adsai\/\(pkg\/[^"]*\)".*/\1/p' | \
               sort -u)
 
   # 检查go.mod中的replace指令

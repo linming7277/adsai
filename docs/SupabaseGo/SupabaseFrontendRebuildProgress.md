@@ -9,7 +9,7 @@
 
 - [x] 1.1 拷贝 Makerkit `src/`、`public/` 及基础配置到 `apps/frontend`
 - [x] 1.2 接入 Supabase Auth Provider（`SupabaseAuthProvider`、`AuthChangeListener`）
-- [x] 1.3 配置全局 Layout、导航、主题（侧边栏、站点主题已切换 AutoAds 品牌）
+- [x] 1.3 配置全局 Layout、导航、主题（侧边栏、站点主题已切换 AdsAI 品牌）
 - [x] 1.4 实现基础页面骨架 `/dashboard`、`/settings/profile`、`/admin`（Dashboard 子模块占位、Admin 占位就绪）
 - [x] 1.5 统一 `core/supabase/server|client` helper（Server/Route/Middleware 动态客户端已统一封装）
 - [x] 1.6 lint/typecheck 通过 — *`npm run lint && npm run typecheck` 均已返回通过*

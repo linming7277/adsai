@@ -1,5 +1,5 @@
 {
-  "$id": "https://autoads.com/schemas/events/UserRegistered.json",
+  "$id": "https://example.com/schemas/events/UserRegistered.json",
   "type": "object",
   "properties": {
     "eventId": { "type": "string", "format": "uuid" },

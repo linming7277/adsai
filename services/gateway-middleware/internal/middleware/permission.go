@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/clients"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/config"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/clients"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/config"
 )
 
 // PermissionCache defines the cache interface for permission operations

@@ -119,7 +119,7 @@
   "accounts": [
     {
       "id": "act_106936427815563",
-      "displayName": "AutoAds HK",
+      "displayName": "AdsAI HK",
       "status": "active",
       "currency": "HKD",
       "linkedMcc": "mcc_6543-2190-7761"

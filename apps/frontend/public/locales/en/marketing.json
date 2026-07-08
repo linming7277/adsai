@@ -11,7 +11,7 @@
       "prefix": "Let AI uncover your",
       "highlight": "highest-converting offers"
     },
-    "description": "AutoAds blends SimilarWeb traffic insights with Vertex AI to evaluate landing pages, surface issues, and deliver actionable optimisation advice so every dollar works harder.",
+    "description": "AdsAI blends SimilarWeb traffic insights with Vertex AI to evaluate landing pages, surface issues, and deliver actionable optimisation advice so every dollar works harder.",
     "primaryCta": "Start free trial",
     "secondaryCta": "Book a demo",
     "sellingPoints": {
@@ -43,7 +43,7 @@
   },
   "features": {
     "heading": "4 Core Capabilities for Smarter Ad Decisions",
-    "subheading": "From Offer evaluation, account management to budget optimization, AutoAds provides end-to-end intelligent tools for affiliate marketers.",
+    "subheading": "From Offer evaluation, account management to budget optimization, AdsAI provides end-to-end intelligent tools for affiliate marketers.",
     "defaults": [
       {
         "title": "AI Smart Landing Page Evaluation",
@@ -93,7 +93,7 @@
   },
   "howItWorks": {
     "heading": "Three steps to automated growth",
-    "subheading": "AutoAds eliminates repetitive execution so your team can stay focused on strategy.",
+    "subheading": "AdsAI eliminates repetitive execution so your team can stay focused on strategy.",
     "stepLabel": "Step {{index}}",
     "steps": [
       {
@@ -130,7 +130,7 @@
   },
   "benefits": {
     "heading": "Solve the core challenges growth teams face",
-    "subheading": "AutoAds builds a reusable growth engine covering efficiency, quality and decision making.",
+    "subheading": "AdsAI builds a reusable growth engine covering efficiency, quality and decision making.",
     "painPoints": {
       "defaults": [
         {
@@ -162,7 +162,7 @@
           ]
         },
         {
-          "title": "AutoAds AI collaboration",
+          "title": "AdsAI AI collaboration",
           "description": "Unified account assets, landing page audits and campaign operations in one automated workflow.",
           "highlights": [
             "Account sync and asset import in 1 minute",
@@ -195,10 +195,10 @@
   },
   "pricing": {
     "heading": "Choose the right plan for your affiliate business",
-    "subheading": "AutoAds offers three tiers designed for individual marketers and studios — from testing single markets to scaling across 50+ regions. Start with a 14-day free trial.",
+    "subheading": "AdsAI offers three tiers designed for individual marketers and studios — from testing single markets to scaling across 50+ regions. Start with a 14-day free trial.",
     "hero": {
       "title": "Choose the right plan for your affiliate business",
-      "description": "AutoAds offers three tiers designed for individual marketers and studios — from testing single markets to scaling across 50+ regions. Start with a 7-day free trial, then unlock advanced AI and global proxy access.",
+      "description": "AdsAI offers three tiers designed for individual marketers and studios — from testing single markets to scaling across 50+ regions. Start with a 7-day free trial, then unlock advanced AI and global proxy access.",
       "ctaPrimary": "Start 7-day free trial",
       "ctaSecondary": "Talk to sales",
       "badge": "All plans include 50% off with annual billing"
@@ -455,18 +455,18 @@
   "careers": {
     "hero": {
       "title": "Join our team",
-      "description": "AutoAds is built by people who love growth and automation. We’re looking for teammates who are excited about AI applications, growth strategy, and collaborative advertising."
+      "description": "AdsAI is built by people who love growth and automation. We’re looking for teammates who are excited about AI applications, growth strategy, and collaborative advertising."
     },
     "positions": [
       {
         "title": "Frontend Engineer (Next.js)",
         "location": "Shanghai / Remote",
-        "description": "Upgrade the AutoAds frontend architecture and component system, improve the marketing site and workspace experience, and drive AI-assisted workflows."
+        "description": "Upgrade the AdsAI frontend architecture and component system, improve the marketing site and workspace experience, and drive AI-assisted workflows."
       },
       {
         "title": "Growth Strategy Consultant",
         "location": "Beijing / Remote",
-        "description": "Provide landing-page diagnostics, marketing automation, and campaign strategy guidance. Help customers operationalise AutoAds best practices."
+        "description": "Provide landing-page diagnostics, marketing automation, and campaign strategy guidance. Help customers operationalise AdsAI best practices."
       },
       {
         "title": "Product Operations Lead",
@@ -478,14 +478,14 @@
   },
   "caseStudies": {
     "heading": "Customer stories and measurable impact",
-    "subheading": "From lean growth teams to enterprise ecommerce, AutoAds enables sustainable acceleration.",
+    "subheading": "From lean growth teams to enterprise ecommerce, AdsAI enables sustainable acceleration.",
     "defaults": [
       {
         "name": "Siyu Chen",
         "role": "Marketing Automation Lead",
         "company": "Zhilian Cloud",
         "avatar": "",
-        "quote": "AutoAds lets us invest more time in strategy and creativity. AI evaluations highlight landing page issues within 10 minutes, lifting conversions by 26%.",
+        "quote": "AdsAI lets us invest more time in strategy and creativity. AI evaluations highlight landing page issues within 10 minutes, lifting conversions by 26%.",
         "improvement": "Conversion rate +26%"
       },
       {
@@ -509,7 +509,7 @@
   "caseStudiesPage": {
     "hero": {
       "title": "Case studies",
-      "description": "Teams across industries and sizes use AutoAds AI and automation to achieve measurable outcomes faster."
+      "description": "Teams across industries and sizes use AdsAI AI and automation to achieve measurable outcomes faster."
     },
     "items": [
       {
@@ -645,7 +645,7 @@
   "updates": {
     "hero": {
       "title": "Product Updates",
-      "description": "Stay informed about the latest features, roadmap, and future plans for AutoAds."
+      "description": "Stay informed about the latest features, roadmap, and future plans for AdsAI."
     },
     "tabs": {
       "roadmap": "Roadmap",
@@ -704,7 +704,7 @@
         "version": "v1.0.0",
         "date": "2024-11-01",
         "highlights": [
-          "AutoAds official launch",
+          "AdsAI official launch",
           "Released core AI Offer evaluation features",
           "Support for Google Ads, Meta, and TikTok account management"
         ]
@@ -714,7 +714,7 @@
   "featuresPage": {
     "hero": {
       "title": "Key Features",
-      "description": "AutoAds focuses on landing page evaluation, campaign collaboration, and cross-channel insights to help growth teams build continuous optimization capabilities."
+      "description": "AdsAI focuses on landing page evaluation, campaign collaboration, and cross-channel insights to help growth teams build continuous optimization capabilities."
     },
     "blocks": [
       {
@@ -755,7 +755,7 @@
   },
   "blogPage": {
     "hero": {
-      "title": "AutoAds Blog",
+      "title": "AdsAI Blog",
       "description": "Sharing growth strategies, product updates, and real-world case studies to help teams master AI-driven campaign methodologies."
     },
     "cta": {
@@ -795,13 +795,13 @@
   "privacyPage": {
     "hero": {
       "title": "Privacy Policy",
-      "description": "AutoAds is committed to protecting the security and privacy of customer data. The following terms apply to all teams using AutoAds products."
+      "description": "AdsAI is committed to protecting the security and privacy of customer data. The following terms apply to all teams using AdsAI products."
     },
     "sections": [
       {
         "title": "Data Collection and Use",
         "content": [
-          "We collect account registration information, ad account authorization data, and landing page evaluation data solely to provide AutoAds services.",
+          "We collect account registration information, ad account authorization data, and landing page evaluation data solely to provide AdsAI services.",
           "We do not sell customer data or use it for unauthorized commercial purposes."
         ]
       },
@@ -816,7 +816,7 @@
         "title": "Customer Data Rights",
         "content": [
           "Customers can export or delete their data at any time. Requests will be processed within 72 hours.",
-          "For Data Processing Agreement (DPA) signing, please contact privacy@autoads.dev."
+          "For Data Processing Agreement (DPA) signing, please contact privacy@adsai.dev."
         ]
       }
     ]
@@ -831,7 +831,7 @@
         "title": "Getting Started",
         "description": "Follow step-by-step guidance to complete platform initialization, including team invites, plan setup, and token configuration.",
         "links": [
-          { "label": "AutoAds Getting Started Guide", "href": "/docs/getting-started" },
+          { "label": "AdsAI Getting Started Guide", "href": "/docs/getting-started" },
           { "label": "Account Setup Manual", "href": "/docs/playbooks/account-setup" }
         ]
       },
@@ -854,14 +854,14 @@
     ],
     "support": {
       "title": "Need More Personalized Support?",
-      "description": "Contact AutoAds experts for team training, data migration, and private deployment solutions.",
+      "description": "Contact AdsAI experts for team training, data migration, and private deployment solutions.",
       "salesCta": "Contact Sales Team"
     }
   },
   "support": {
     "hero": {
       "title": "Support Center",
-      "description": "Get quick help, documentation resources, and community support to maximize your team's value from AutoAds."
+      "description": "Get quick help, documentation resources, and community support to maximize your team's value from AdsAI."
     },
     "sections": [
       {
@@ -885,7 +885,7 @@
         "items": [
           { "label": "Contact Support Team", "href": "/contact" },
           { "label": "Submit Ticket", "href": "/contact" },
-          { "label": "Join Community", "href": "https://discord.gg/autoads" }
+          { "label": "Join Community", "href": "https://discord.gg/adsai" }
         ]
       }
     ],
@@ -899,7 +899,7 @@
   "privacyPage": {
     "hero": {
       "title": "Privacy Policy",
-      "description": "AutoAds is committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information. Last updated: October 2025"
+      "description": "AdsAI is committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information. Last updated: October 2025"
     },
     "sections": [
       {
@@ -994,8 +994,8 @@
       {
         "title": "10. Contact Us",
         "content": [
-          "Privacy questions or requests: privacy@autoads.dev",
-          "Data Protection Officer: dpo@autoads.dev",
+          "Privacy questions or requests: privacy@adsai.dev",
+          "Data Protection Officer: dpo@adsai.dev",
           "Response time: We will respond to your request within 30 days"
         ]
       }
@@ -1004,13 +1004,13 @@
   "terms": {
     "hero": {
       "title": "Terms of Service",
-      "description": "Please read these Terms of Service carefully before using AutoAds services. Using our services indicates your agreement to these terms. Last updated: October 2025"
+      "description": "Please read these Terms of Service carefully before using AdsAI services. Using our services indicates your agreement to these terms. Last updated: October 2025"
     },
     "sections": [
       {
         "title": "1. Service Description",
         "clauses": [
-          "AutoAds provides AI-based landing page evaluation, ad account management, and campaign coordination services",
+          "AdsAI provides AI-based landing page evaluation, ad account management, and campaign coordination services",
           "Services include but are not limited to: Offer evaluation, real-time bidding analysis, multi-platform account integration, budget optimization recommendations",
           "We reserve the right to modify, suspend, or terminate part or all of the services at any time",
           "Service content and features may vary depending on your chosen plan",
@@ -1055,11 +1055,11 @@
       {
         "title": "5. Intellectual Property",
         "clauses": [
-          "AutoAds services and all content (code, design, algorithms, documentation, etc.) are owned by us",
+          "AdsAI services and all content (code, design, algorithms, documentation, etc.) are owned by us",
           "You retain ownership of uploaded data but grant us a license to use it to provide services",
           "You agree we may use anonymous, aggregated data to improve services and conduct research",
           "You may not copy, modify, or distribute any of our content without written permission",
-          "AutoAds trademarks, logos, and brand elements are our property and may not be used without permission"
+          "AdsAI trademarks, logos, and brand elements are our property and may not be used without permission"
         ]
       },
       {
@@ -1137,7 +1137,7 @@
       {
         "title": "13. Miscellaneous",
         "clauses": [
-          "These terms constitute the entire agreement between you and AutoAds",
+          "These terms constitute the entire agreement between you and AdsAI",
           "If any part of these terms is deemed invalid, the remaining parts remain valid",
           "Our failure to exercise any right does not constitute a waiver of that right",
           "You may not assign rights under these terms without our written consent",
@@ -1147,10 +1147,10 @@
       {
         "title": "14. Contact Us",
         "clauses": [
-          "Legal and compliance: legal@autoads.dev",
-          "Account and subscription: billing@autoads.dev",
-          "Technical support: support@autoads.dev",
-          "General inquiries: hello@autoads.dev",
+          "Legal and compliance: legal@adsai.dev",
+          "Account and subscription: billing@adsai.dev",
+          "Technical support: support@adsai.dev",
+          "General inquiries: hello@adsai.dev",
           "Response time: 1-2 business days"
         ]
       }
@@ -1159,12 +1159,12 @@
   "featuresPage": {
     "hero": {
       "title": "Key Features",
-      "description": "AutoAds provides a complete landing page evaluation and ad campaign coordination solution, helping you make data-driven campaign decisions."
+      "description": "AdsAI provides a complete landing page evaluation and ad campaign coordination solution, helping you make data-driven campaign decisions."
     },
     "blocks": [
       {
         "title": "AI-Powered Evaluation - 12-Dimension Deep Analysis",
-        "description": "AutoAds' AI engine analyzes landing pages across 12 key dimensions, including content quality, user experience, technical performance, and conversion optimization, generating comprehensive scores and detailed recommendations.",
+        "description": "AdsAI' AI engine analyzes landing pages across 12 key dimensions, including content quality, user experience, technical performance, and conversion optimization, generating comprehensive scores and detailed recommendations.",
         "highlights": [
           "Content Dimensions: Headline appeal, value proposition clarity, social proof credibility",
           "Experience Dimensions: Page load speed, mobile responsiveness, navigation smoothness",
@@ -1239,12 +1239,12 @@
   "about": {
     "hero": {
       "title": "About Us",
-      "subtitle": "AutoAds leverages AI and automation to help affiliate marketers and growth teams improve advertising efficiency and ROI."
+      "subtitle": "AdsAI leverages AI and automation to help affiliate marketers and growth teams improve advertising efficiency and ROI."
     },
     "mission": {
-      "paragraph1": "We understand the core challenges of affiliate marketing: how to quickly identify high-value opportunities among countless offers, how to efficiently test landing page conversion, and how to coordinate budget allocation across multiple ad platforms. These repetitive, time-consuming tasks are exactly what AutoAds is built to solve.",
+      "paragraph1": "We understand the core challenges of affiliate marketing: how to quickly identify high-value opportunities among countless offers, how to efficiently test landing page conversion, and how to coordinate budget allocation across multiple ad platforms. These repetitive, time-consuming tasks are exactly what AdsAI is built to solve.",
       "paragraph2": "Through AI-powered offer evaluation, global proxy IP testing, cross-channel campaign coordination, and other core features, we help users transform from experience-driven to data-driven decision making, from manual operations to automated workflows, freeing up more time to focus on strategy and creativity.",
-      "paragraph3": "The AutoAds team consists of engineers from Google and Meta advertising platforms, as well as seasoned affiliate marketing practitioners. We believe that the deep integration of technology and industry experience is key to building products that truly solve real problems."
+      "paragraph3": "The AdsAI team consists of engineers from Google and Meta advertising platforms, as well as seasoned affiliate marketing practitioners. We believe that the deep integration of technology and industry experience is key to building products that truly solve real problems."
     },
     "valuesTitle": "Our Core Values",
     "values": [

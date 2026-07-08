@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/redis/go-redis/v9"
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
+	"github.com/linming7277/adsai/pkg/serviceclient"
 )
 
 // DashboardHandler handles dashboard aggregation requests

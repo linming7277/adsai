@@ -306,7 +306,7 @@ gateway_notification_routes:
     channels:
       - slack: "#gateway-critical"
       - pagerduty: "gateway-service-key"
-      - email: "gateway-team@autoads.com"
+      - email: "gateway-team@adsai.com"
     group_wait: 10s
     group_interval: 3m
     repeat_interval: 30m
@@ -317,7 +317,7 @@ gateway_notification_routes:
       - service = gateway-middleware
     channels:
       - slack: "#gateway-warnings"
-      - email: "gateway-team@autoads.com"
+      - email: "gateway-team@adsai.com"
     group_wait: 30s
     group_interval: 5m
     repeat_interval: 2h

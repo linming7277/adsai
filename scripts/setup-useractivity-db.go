@@ -176,7 +176,7 @@ func main() {
 		INSERT INTO user_notifications (user_id, type, title, message, created_at)
 		VALUES ($1, $2, $3, $4, NOW())
 		ON CONFLICT DO NOTHING
-	`, "test-user-123", "TEST", "Welcome to AutoAds", "Your account has been successfully created!")
+	`, "test-user-123", "TEST", "Welcome to AdsAI", "Your account has been successfully created!")
 	if err != nil {
 		log.Printf("Error inserting test notification: %v", err)
 	} else {

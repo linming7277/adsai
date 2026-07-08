@@ -3,12 +3,12 @@
 
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-ARTIFACT_REPO="autoads-services"
+ARTIFACT_REPO="adsai-services"
 
 echo "========================================="
-echo "  AutoAds 部署准备状态检查"
+echo "  AdsAI 部署准备状态检查"
 echo "========================================="
 echo
 
@@ -93,17 +93,17 @@ echo "6. 检查 Firebase Hosting targets..."
 cd "$(dirname "$0")/../apps/frontend" 2>/dev/null || cd apps/frontend
 if [ -f ".firebaserc" ]; then
     check_pass "Firebase 配置文件存在"
-    if firebase target:list --project="$PROJECT_ID" 2>/dev/null | grep -q "autoads-preview"; then
+    if firebase target:list --project="$PROJECT_ID" 2>/dev/null | grep -q "adsai-preview"; then
         check_pass "Preview target 已配置"
     else
         check_warn "Preview target 未配置"
-        echo "   配置命令: firebase target:apply hosting autoads-preview autoads-preview"
+        echo "   配置命令: firebase target:apply hosting adsai-preview adsai-preview"
     fi
-    if firebase target:list --project="$PROJECT_ID" 2>/dev/null | grep -q "autoads-prod"; then
+    if firebase target:list --project="$PROJECT_ID" 2>/dev/null | grep -q "adsai-prod"; then
         check_pass "Production target 已配置"
     else
         check_warn "Production target 未配置"
-        echo "   配置命令: firebase target:apply hosting autoads-prod autoads-prod"
+        echo "   配置命令: firebase target:apply hosting adsai-prod adsai-prod"
     fi
 else
     check_warn "Firebase 配置文件不存在"
@@ -157,7 +157,7 @@ echo
 
 # 10. 检查服务账号权限
 echo "10. 检查服务账号权限..."
-SA="codex-dev@$PROJECT_ID.iam.gserviceaccount.com"
+SA="service-account@$PROJECT_ID.iam.gserviceaccount.com"
 REQUIRED_ROLES=(
     "roles/cloudbuild.builds.editor"
     "roles/artifactregistry.writer"
@@ -180,11 +180,11 @@ echo
 
 # 11. 检查 Cloud Build 日志桶
 echo "11. 检查 Cloud Build 日志桶..."
-if gsutil ls "gs://autoads-build-logs-$REGION" 2>/dev/null | grep -q "gs://"; then
-    check_pass "日志桶: gs://autoads-build-logs-$REGION"
+if gsutil ls "gs://adsai-build-logs-$REGION" 2>/dev/null | grep -q "gs://"; then
+    check_pass "日志桶: gs://adsai-build-logs-$REGION"
 else
     check_warn "日志桶不存在（将使用默认日志）"
-    echo "   创建命令: gsutil mb -l $REGION gs://autoads-build-logs-$REGION"
+    echo "   创建命令: gsutil mb -l $REGION gs://adsai-build-logs-$REGION"
 fi
 echo
 

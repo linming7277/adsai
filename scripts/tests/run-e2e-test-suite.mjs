@@ -119,7 +119,7 @@ const TEST_SUITES = [
 
 // 测试环境配置
 const TEST_CONFIG = {
-  baseUrl: process.env.PREVIEW_BASE || 'https://www.urlchecker.dev',
+  baseUrl: process.env.PREVIEW_BASE || 'https://preview.example.com',
   headless: process.env.HEADLESS === 'true',
   parallel: process.env.PARALLEL === 'true',
   retries: parseInt(process.env.RETRIES || '2'),
@@ -446,7 +446,7 @@ function printHelp() {
   --timeout <seconds>     超时时间 (默认: 180秒)
 
 环境变量:
-  PREVIEW_BASE            测试环境URL (默认: https://www.urlchecker.dev)
+  PREVIEW_BASE            测试环境URL (默认: https://preview.example.com)
   HEADLESS                无头模式 (true/false)
   PARALLEL                并行执行 (true/false)
   RETRIES                 重试次数

@@ -1,4 +1,4 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-f','services/console/Dockerfile','-t','asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/console:latest','.']
-images: ['asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/console:latest']
+  args: ['build','-f','services/console/Dockerfile','-t','asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/console:latest','.']
+images: ['asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/console:latest']

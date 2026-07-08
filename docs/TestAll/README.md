@@ -1,6 +1,6 @@
-# AutoAds 测试文档中心
+# AdsAI 测试文档中心
 
-欢迎来到AutoAds测试文档中心。本目录包含完整的测试策略、计划和执行记录。
+欢迎来到AdsAI测试文档中心。本目录包含完整的测试策略、计划和执行记录。
 
 ---
 
@@ -26,7 +26,7 @@ docs/TestAll/
 **常用操作**:
 ```bash
 # 运行当周测试
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 node scripts/tests/run-all-tests.mjs
 
 # 查看测试进度
@@ -94,7 +94,7 @@ cat docs/TestAll/TEST_EXECUTION_PLAN.md | grep "状态"
 
 ```bash
 # 运行所有测试
-export PREVIEW_BASE=https://www.urlchecker.dev
+export PREVIEW_BASE=https://preview.example.com
 node scripts/tests/run-all-tests.mjs
 
 # 浏览器可见模式 (调试用)

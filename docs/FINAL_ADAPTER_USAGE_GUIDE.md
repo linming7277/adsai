@@ -2,7 +2,7 @@
 
 ## 概述
 
-**FinalAdapter** 是AutoAds项目的统一数据访问层，为所有微服务提供标准化的数据库操作接口。
+**FinalAdapter** 是AdsAI项目的统一数据访问层，为所有微服务提供标准化的数据库操作接口。
 
 ### 设计原则
 
@@ -41,7 +41,7 @@ import (
     "context"
     "log"
 
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 func main() {
@@ -521,7 +521,7 @@ log.Printf("Connection pool stats: %+v", adapter.GetConnectionStats())
 
 ## 总结
 
-FinalAdapter为AutoAds项目提供了：
+FinalAdapter为AdsAI项目提供了：
 
 1. **统一的数据访问接口** - 所有服务使用相同的数据库访问模式
 2. **高性能优化** - 直接pgxpool访问，最小化开销
@@ -529,4 +529,4 @@ FinalAdapter为AutoAds项目提供了：
 4. **向后兼容性** - 支持现有sql.*代码的平滑迁移
 5. **生产就绪** - 经过优化和测试的稳定接口
 
-通过FinalAdapter，AutoAds实现了数据访问层的统一，简化了开发复杂性，同时保持了高性能和可维护性。
+通过FinalAdapter，AdsAI实现了数据访问层的统一，简化了开发复杂性，同时保持了高性能和可维护性。

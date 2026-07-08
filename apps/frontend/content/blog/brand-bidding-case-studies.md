@@ -3,7 +3,7 @@ title: "5 个 Brand Bidding 案例分析：如何用 AI 评估实现 ROI 300%+"
 slug: "brand-bidding-case-studies"
 description: "真实案例拆解：从选品到投放，看 5 位营销人员如何用 AI 评估工具提升 Brand Bidding ROI。"
 category: "案例分析"
-author: "AutoAds Team"
+author: "AdsAI Team"
 publishedAt: "2025-10-14"
 updatedAt: "2025-10-14"
 featured: true
@@ -52,9 +52,9 @@ readingTime: "12 分钟"
 
 李明几乎要放弃这个 Offer。
 
-### 用 AutoAds AI 评估发现的问题
+### 用 AdsAI AI 评估发现的问题
 
-李明决定用 [AutoAds](https://autoads.dev) 重新评估这个落地页。AI 报告指出：
+李明决定用 [AdsAI](https://example.com) 重新评估这个落地页。AI 报告指出：
 
 #### 🔴 关键问题
 
@@ -121,9 +121,9 @@ Sarah 在联盟平台看到一个高佣金 Offer：
 
 凭经验判断，这是个"必赢"的 Offer。
 
-### AutoAds AI 评估拯救了她
+### AdsAI AI 评估拯救了她
 
-Sarah 在投放前用 AutoAds 评估了这个落地页，AI 给出了 **4.8/10 分（不建议投放）**。
+Sarah 在投放前用 AdsAI 评估了这个落地页，AI 给出了 **4.8/10 分（不建议投放）**。
 
 #### 🔴 致命问题
 
@@ -186,9 +186,9 @@ Sarah 避免了 $1,200 的测试成本浪费，并用这笔预算投放了另一
 
 他不确定应该先测试哪个市场。
 
-### 用 AutoAds 全球代理 IP 测试
+### 用 AdsAI 全球代理 IP 测试
 
-王伟使用 AutoAds **Professional 套餐**（支持 10+ 地区代理 IP），分别用不同地区的代理 IP 评估同一个落地页。
+王伟使用 AdsAI **Professional 套餐**（支持 10+ 地区代理 IP），分别用不同地区的代理 IP 评估同一个落地页。
 
 #### 📊 AI 评估结果
 
@@ -264,9 +264,9 @@ Sarah 避免了 $1,200 的测试成本浪费，并用这笔预算投放了另一
 - 转化率低（竞争太激烈）
 - ROI 难以超过 150%
 
-### 用 AutoAds 竞争环境分析找到机会
+### 用 AdsAI 竞争环境分析找到机会
 
-张丽用 AutoAds 批量评估了 50 个家居品牌的落地页，AI 报告中的 **"竞争环境分析"** 维度帮她发现了 3 个"蓝海"品牌：
+张丽用 AdsAI 批量评估了 50 个家居品牌的落地页，AI 报告中的 **"竞争环境分析"** 维度帮她发现了 3 个"蓝海"品牌：
 
 #### 📊 蓝海品牌特征
 
@@ -332,9 +332,9 @@ Alex 投放了一个软件订阅 Offer，数据显示：
 
 Alex 怀疑是追踪出了问题，但不确定问题在哪。
 
-### 用 AutoAds "真实补点击"功能排查
+### 用 AdsAI "真实补点击"功能排查
 
-Alex 使用 AutoAds 的 **"真实补点击"** 功能：
+Alex 使用 AdsAI 的 **"真实补点击"** 功能：
 
 1. 模拟真实用户点击广告
 2. 追踪完整转化路径
@@ -368,7 +368,7 @@ Alex 联系 Offer 提供方修复了 pixel 代码。修复后重新测试：
 
 1. **追踪问题是隐形杀手**：你可能花了几百美金，但因为追踪错误，一分钱佣金都拿不到
 2. **真实补点击功能是必需的**：人工很难发现 pixel 代码的细微错误
-3. **投放前务必测试追踪**：用 AutoAds 的"真实补点击"功能，确保 pixel 正常工作
+3. **投放前务必测试追踪**：用 AdsAI 的"真实补点击"功能，确保 pixel 正常工作
 
 ---
 
@@ -398,15 +398,15 @@ Alex 联系 Offer 提供方修复了 pixel 代码。修复后重新测试：
 
 ### 5. **工具赋能效率**
 
-用 AutoAds 将评估时间从 2 小时降到 1 分钟，效率提升 120 倍。
+用 AdsAI 将评估时间从 2 小时降到 1 分钟，效率提升 120 倍。
 
 ---
 
 ## 你也可以复制这些成功策略
 
-### 立即开始：用 AutoAds 评估你的下一个 Offer
+### 立即开始：用 AdsAI 评估你的下一个 Offer
 
-1. 访问 [https://autoads.dev](https://autoads.dev)
+1. 访问 [https://example.com](https://example.com)
 2. 注册账号（7 天免费试用）
 3. 提交落地页 URL
 4. 1 分钟后查看完整 AI 评估报告
@@ -435,16 +435,16 @@ Alex 联系 Offer 提供方修复了 pixel 代码。修复后重新测试：
 
 **不要让你的下一个 Offer 成为"学费"。**
 
-👉 [立即开始 7 天免费试用](https://autoads.dev)
+👉 [立即开始 7 天免费试用](https://example.com)
 
 ---
 
-**关于 AutoAds**
+**关于 AdsAI**
 
-AutoAds 是 AI 驱动的落地页评估与广告投放平台，已帮助 1,000+ 联盟营销人员：
+AdsAI 是 AI 驱动的落地页评估与广告投放平台，已帮助 1,000+ 联盟营销人员：
 - 1 分钟完成 12 维度落地页评估
 - 精准预判投放回报，给出预算建议
 - 统一管理 Google Ads、Meta、TikTok 广告账号
 
-**联系我们**：support@autoads.dev
-**加入社区**：[Discord](https://discord.gg/autoads)
+**联系我们**：support@adsai.dev
+**加入社区**：[Discord](https://discord.gg/adsai)

@@ -2,7 +2,7 @@ steps:
   - name: gcr.io/kaniko-project/executor:latest
     args:
       - --dockerfile=services/siterank/Dockerfile
-      - --destination=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/siterank:preview-latest
+      - --destination=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/siterank:preview-latest
       - --context=.
       - --cache=true
       - --cache-ttl=6h

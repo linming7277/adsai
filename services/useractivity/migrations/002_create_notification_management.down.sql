@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库回滚: Notification Management
+-- AdsAI 数据库回滚: Notification Management
 -- 回滚通知管理表
 -- 迁移ID: 004
 -- 版本: v2.0

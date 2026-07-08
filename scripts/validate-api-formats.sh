@@ -29,7 +29,7 @@ if [ -z "$AUTH_TOKEN" ]; then
     echo "   Please set it with: export AUTH_TOKEN='your_jwt_token'"
     echo ""
     echo "   You can get your token from:"
-    echo "   1. Login to https://www.urlchecker.dev"
+    echo "   1. Login to https://preview.example.com"
     echo "   2. Open browser console"
     echo "   3. Run: (await supabase.auth.getSession()).data.session.access_token"
     echo ""
@@ -37,7 +37,7 @@ if [ -z "$AUTH_TOKEN" ]; then
 fi
 
 # API基础URL
-BASE_URL="${API_BASE_URL:-https://www.urlchecker.dev}"
+BASE_URL="${API_BASE_URL:-https://preview.example.com}"
 
 # 测试计数器
 TOTAL_TESTS=0

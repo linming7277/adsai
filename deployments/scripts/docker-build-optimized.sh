@@ -15,7 +15,7 @@ echo -e "${GREEN}🚀 Starting optimized Docker build process...${NC}"
 
 # Build arguments
 NODE_VERSION=${NODE_VERSION:-"22"}
-IMAGE_TAG=${IMAGE_TAG:-"ghcr.io/xxrenzhe/url-batch-checker:optimized-$(date +%Y%m%d-%H%M%S)"}
+IMAGE_TAG=${IMAGE_TAG:-"ghcr.io/linming7277/adsai:optimized-$(date +%Y%m%d-%H%M%S)"}
 
 echo -e "${YELLOW}📋 Build configuration:${NC}"
 echo "  - Node.js version: $NODE_VERSION"
@@ -65,13 +65,13 @@ fi
 
 # Tag the image for production
 echo -e "${YELLOW}🏷️  Tagging image for production...${NC}"
-docker tag "$IMAGE_TAG" ghcr.io/xxrenzhe/url-batch-checker:prod-latest
+docker tag "$IMAGE_TAG" ghcr.io/linming7277/adsai:prod-latest
 
 echo -e "${GREEN}🎉 Build process completed successfully!${NC}"
 echo ""
 echo "Available tags:"
 echo "  - $IMAGE_TAG"
-echo "  - ghcr.io/xxrenzhe/url-batch-checker:prod-latest"
+echo "  - ghcr.io/linming7277/adsai:prod-latest"
 echo ""
 echo "To run the container:"
 echo "  docker-compose -f docker-compose.prod.yml up -d"

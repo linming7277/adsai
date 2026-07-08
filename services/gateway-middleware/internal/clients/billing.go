@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
+	"github.com/linming7277/adsai/pkg/serviceclient"
 )
 
 // BillingClient handles communication with the Billing service using serviceclient

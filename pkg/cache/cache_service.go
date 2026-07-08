@@ -1,4 +1,4 @@
-// Package cache provides unified caching service for AutoAds
+// Package cache provides unified caching service for AdsAI
 package cache
 
 import (
@@ -126,7 +126,7 @@ type DomainStatistics struct {
 // NewCacheService creates a new cache service instance
 func NewCacheService(config CacheConfig, logger Logger) (CacheService, error) {
 	// Create Redis client
-	redisClient, err := NewRedisClient(config.Redis, "autoads", logger)
+	redisClient, err := NewRedisClient(config.Redis, "adsai", logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Redis client: %w", err)
 	}

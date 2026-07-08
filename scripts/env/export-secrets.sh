@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
   echo "Usage: $0 <project-id> <output-file>" >&2
-  echo "Example: $0 gen-lang-client-0944935873 .env.preview.generated" >&2
+  echo "Example: $0 your-gcp-project-id .env.preview.generated" >&2
   exit 1
 fi
 

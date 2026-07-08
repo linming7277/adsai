@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/testutil
+module github.com/linming7277/adsai/pkg/testutil
 
 go 1.25.1
 

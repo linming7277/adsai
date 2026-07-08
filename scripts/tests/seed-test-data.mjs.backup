@@ -24,12 +24,12 @@ import { createClient } from '@supabase/supabase-js';
 const TEST_USERS = [
   {
     id: '37fd3629-a06a-47c8-b33a-31944afaa14c',
-    email: 'test-user@autoads.dev',
+    email: 'test-user@adsai.dev',
     role: 'user',
   },
   {
     id: 'f0e8b3c6-9d7a-4e1f-8c5b-2a3d4e5f6g7h',
-    email: 'test-admin@autoads.dev',
+    email: 'test-admin@adsai.dev',
     role: 'admin',
   },
 ];

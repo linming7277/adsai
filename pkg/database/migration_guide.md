@@ -121,8 +121,8 @@ package main
 import (
     "context"
     "log"
-    "github.com/xxrenzhe/autoads/pkg/database"
-    "github.com/xxrenzhe/autoads/services/console/internal/handlers"
+    "github.com/linming7277/adsai/pkg/database"
+    "github.com/linming7277/adsai/services/console/internal/handlers"
 )
 
 func main() {
@@ -156,7 +156,7 @@ package handlers
 import (
     "context"
     "database/sql"
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 type Handler struct {

@@ -1,6 +1,6 @@
 #!/bin/bash
 # ========================================
-# AutoAds 数据库一键初始化脚本
+# AdsAI 数据库一键初始化脚本
 # 用途: 在空数据库中构建干净的三层架构
 # 版本: v2.0
 # 创建时间: 2025-10-22
@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # 数据库连接配置
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-5432}"
-DB_NAME="${DB_NAME:-autoads}"
+DB_NAME="${DB_NAME:-adsai}"
 DB_USER="${DB_USER:-postgres}"
 DB_PASSWORD="${DB_PASSWORD:-}"
 
@@ -157,7 +157,7 @@ ORDER BY
 main() {
     echo ""
     echo "========================================"
-    echo "🚀 AutoAds 数据库初始化脚本"
+    echo "🚀 AdsAI 数据库初始化脚本"
     echo "========================================"
     echo ""
 

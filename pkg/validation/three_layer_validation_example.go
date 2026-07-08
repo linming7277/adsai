@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // SetupThreeLayerValidation 为服务设置三层验证中间件

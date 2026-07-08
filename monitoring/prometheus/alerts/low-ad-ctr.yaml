@@ -1,7 +1,7 @@
 # Alert Policy: Low Ad Click-Through Rate
 # Triggers when global CTR falls below 1% for 30 minutes
 
-displayName: "AutoAds - Low Ad Click-Through Rate"
+displayName: "AdsAI - Low Ad Click-Through Rate"
 documentation:
   content: |
     ## Low Ad CTR Alert
@@ -13,11 +13,11 @@ documentation:
     ### Investigation Steps:
     1. Check CTR by platform:
        ```
-       autoads:adscenter:ctr:ratio_by_platform
+       adsai:adscenter:ctr:ratio_by_platform
        ```
     2. Identify underperforming campaigns:
        ```
-       autoads:adscenter:ctr:ratio_by_campaign
+       adsai:adscenter:ctr:ratio_by_campaign
        ```
     3. Review recent ad creative changes
     4. Check targeting configuration
@@ -40,7 +40,7 @@ conditions:
     conditionThreshold:
       filter: |
         resource.type = "cloud_run_revision"
-        AND metric.type = "prometheus.googleapis.com/autoads_adscenter_ad_clicks_total/counter"
+        AND metric.type = "prometheus.googleapis.com/adsai_adscenter_ad_clicks_total/counter"
       aggregations:
         - alignmentPeriod: "300s"
           perSeriesAligner: "ALIGN_RATE"

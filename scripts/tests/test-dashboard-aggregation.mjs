@@ -27,7 +27,7 @@ import { chromium } from 'playwright';
 import { setupAuthForTest, cleanupAuthForTest } from './helpers/auth.mjs';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 async function testDashboardAggregation() {
   console.log('📊 Dashboard聚合API测试');

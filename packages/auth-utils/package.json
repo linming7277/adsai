@@ -1,5 +1,5 @@
 {
-  "name": "@autoads/auth-utils",
+  "name": "@adsai/auth-utils",
   "version": "0.1.0",
   "description": "Shared authentication utilities for Firebase Auth",
   "private": true,

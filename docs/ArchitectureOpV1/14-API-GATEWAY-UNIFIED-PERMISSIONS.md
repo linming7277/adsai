@@ -221,7 +221,7 @@ sequenceDiagram
 
 ### 当前架构说明
 
-**已部署**：GCP API Gateway (autoads-gw / autoads-gw-preview)
+**已部署**：GCP API Gateway (adsai-gw / adsai-gw-preview)
 - ✅ 功能：统一入口 + 路由转发（基于OpenAPI规范）
 - ❌ 限制：无法实现复杂业务逻辑（权限检查、Token管理）
 
@@ -267,10 +267,10 @@ GCP API Gateway (保持不变)
 
 3. **✅ 环境隔离**
    ```yaml
-   # 预发环境 (autoads-gw-preview)
+   # 预发环境 (adsai-gw-preview)
    所有路由 → gateway-middleware-preview → 业务服务-preview
 
-   # 生产环境 (autoads-gw)
+   # 生产环境 (adsai-gw)
    所有路由 → gateway-middleware → 业务服务
    ```
 
@@ -1591,7 +1591,7 @@ ADSCENTER_SERVICE_URL=https://adscenter-service-xxxxx.run.app
 BATCHOPEN_SERVICE_URL=https://batchopen-service-xxxxx.run.app
 
 # 数据库配置（用于路由规则查询）
-DATABASE_URL=postgresql://user:pass@10.x.x.x:5432/autoads
+DATABASE_URL=postgresql://user:pass@10.x.x.x:5432/adsai
 
 # 日志级别
 LOG_LEVEL=info

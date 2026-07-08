@@ -178,9 +178,9 @@ def build_base_document(project_id: str) -> Dict:
     return_doc = {
         "openapi": "3.0.3",
         "info": {
-            "title": "AutoAds API Gateway",
+            "title": "AdsAI API Gateway",
             "version": "1.0.0",
-            "description": "Unified API Gateway for AutoAds microservices",
+            "description": "Unified API Gateway for AdsAI microservices",
         },
         "paths": {},
         "components": {
@@ -196,8 +196,8 @@ def build_base_document(project_id: str) -> Dict:
         "x-google-management": {
             "cors": {
                 "allowOrigins": [
-                    "https://www.urlchecker.dev",
-                    "https://www.autoads.dev",
+                    "https://preview.example.com",
+                    "https://www.example.com",
                     "http://localhost:3000",
                     "http://localhost:3001",
                 ],
@@ -223,7 +223,7 @@ def build_base_document(project_id: str) -> Dict:
         },
         "x-google-endpoints": [
             {
-                "name": f"autoads-gateway.endpoints.{project_id}.cloud.goog",
+                "name": f"adsai-gateway.endpoints.{project_id}.cloud.goog",
                 "allowCors": True,
             }
         ],

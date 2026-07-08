@@ -28,7 +28,7 @@ func SetupCloudSQLIntegrationTest(ctx context.Context) (*CloudSQLTestConfig, err
 		// Local testing: build connection string for Cloud SQL Proxy
 		dbHost := "localhost"
 		dbPort := "5432"
-		dbName := "autoads_db"
+		dbName := "adsai_db"
 		dbUser := "postgres"
 
 		// Get password from environment

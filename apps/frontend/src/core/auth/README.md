@@ -1,4 +1,4 @@
-# AutoAds 简化认证系统
+# AdsAI 简化认证系统
 
 ## 架构设计
 
@@ -27,7 +27,7 @@ core/auth/
 
 ```tsx
 // app/layout.tsx
-import { AutoAdsAuthProvider } from '~/core/auth/simple-auth-provider';
+import { AdsAIAuthProvider } from '~/core/auth/simple-auth-provider';
 
 export default function RootLayout({
   children,
@@ -37,9 +37,9 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <body>
-        <AutoAdsAuthProvider>
+        <AdsAIAuthProvider>
           {children}
-        </AutoAdsAuthProvider>
+        </AdsAIAuthProvider>
       </body>
     </html>
   );
@@ -50,10 +50,10 @@ export default function RootLayout({
 
 ```tsx
 // components/UserProfile.tsx
-import { useAutoAdsAuth, useAuthStatus, useUserDisplayName } from '~/core/auth/simple-auth-provider';
+import { useAdsAIAuth, useAuthStatus, useUserDisplayName } from '~/core/auth/simple-auth-provider';
 
 export function UserProfile() {
-  const { user, signOut } = useAutoAdsAuth();
+  const { user, signOut } = useAdsAIAuth();
   const { isAuthenticated, isAdmin } = useAuthStatus();
   const displayName = useUserDisplayName();
 
@@ -142,12 +142,12 @@ export function formatUserInfo(user: User) {
 
 ## API 参考
 
-### useAutoAdsAuth()
+### useAdsAIAuth()
 
 返回完整的认证上下文：
 
 ```typescript
-interface AutoAdsAuthContext {
+interface AdsAIAuthContext {
   user: User | null;           // Supabase User对象
   session: Session | null;     // Supabase Session对象
   loading: boolean;            // 加载状态
@@ -241,7 +241,7 @@ try {
 
 ```tsx
 // 显示加载指示器
-const { loading } = useAutoAdsAuth();
+const { loading } = useAdsAIAuth();
 
 if (loading) {
   return <Spinner />;
@@ -252,7 +252,7 @@ if (loading) {
 
 ```tsx
 // 使用类型守卫确保用户存在
-const { user } = useAutoAdsAuth();
+const { user } = useAdsAIAuth();
 
 if (user) {
   // TypeScript 知道 user 不为 null
@@ -262,7 +262,7 @@ if (user) {
 
 ### 4. 性能优化
 
-- 使用 `useAutoAdsAuth()` 而不是多个独立的 hooks
+- 使用 `useAdsAIAuth()` 而不是多个独立的 hooks
 - 避免在渲染循环中调用认证函数
 - 使用 React.memo 包装大型认证相关组件
 
@@ -281,7 +281,7 @@ if (user) {
 2. **类型安全**: 完整的 TypeScript 类型定义
 3. **性能优化**: 减少不必要的数据获取和状态更新
 4. **易于维护**: 清晰的代码结构和完整的文档
-5. **架构一致**: 完全符合 AutoAds 三层用户架构
+5. **架构一致**: 完全符合 AdsAI 三层用户架构
 
 ## 故障排除
 
@@ -293,7 +293,7 @@ if (user) {
    - 检查网络连接
 
 2. **认证状态不更新**
-   - 确认使用了 `AutoAdsAuthProvider` 包装应用
+   - 确认使用了 `AdsAIAuthProvider` 包装应用
    - 检查浏览器控制台错误信息
    - 验证 Supabase 项目配置
 
@@ -318,7 +318,7 @@ if (user) {
    import { AuthProvider } from '~/components/SupabaseAuthProvider';
 
    // 新系统
-   import { AutoAdsAuthProvider } from '~/core/auth/simple-auth-provider';
+   import { AdsAIAuthProvider } from '~/core/auth/simple-auth-provider';
    ```
 
 2. **更新 Hook 调用**:
@@ -327,7 +327,7 @@ if (user) {
    const { userSession } = useContext(UserSessionContext);
 
    // 新系统
-   const { user, isAuthenticated } = useAutoAdsAuth();
+   const { user, isAuthenticated } = useAdsAIAuth();
    ```
 
 3. **简化认证检查**:
@@ -346,5 +346,5 @@ if (user) {
 - ✅ 实现 Google OAuth 登录
 - ✅ 添加管理员权限检查
 - ✅ 完整 TypeScript 支持
-- ✅ 符合 AutoAds 三层架构
+- ✅ 符合 AdsAI 三层架构
 - ✅ 简化设计，避免过度工程化

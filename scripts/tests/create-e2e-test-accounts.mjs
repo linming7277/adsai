@@ -22,7 +22,7 @@ async function createE2ETestAccounts() {
 
   const accounts = [
     {
-      email: 'test-user-e2e@autoads.dev',
+      email: 'test-user-e2e@adsai.dev',
       role: 'user',
       displayName: 'E2E Test User',
       tokens: 10000,
@@ -32,7 +32,7 @@ async function createE2ETestAccounts() {
       subscription: 'pro'
     },
     {
-      email: 'test-admin-e2e@autoads.dev',
+      email: 'test-admin-e2e@adsai.dev',
       role: 'admin',
       displayName: 'E2E Test Admin',
       tokens: 50000,
@@ -177,15 +177,15 @@ async function createE2ETestAccounts() {
   console.log('🎉 所有E2E测试账号创建完成！');
   console.log('\n📋 账号信息:');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('普通用户: test-user-e2e@autoads.dev');
-  console.log('管理员: test-admin-e2e@autoads.dev');
+  console.log('普通用户: test-user-e2e@adsai.dev');
+  console.log('管理员: test-admin-e2e@adsai.dev');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 }
 
 async function verifyAccounts() {
   console.log('\n🔍 验证账号创建结果...\n');
 
-  const accounts = ['test-user-e2e@autoads.dev', 'test-admin-e2e@autoads.dev'];
+  const accounts = ['test-user-e2e@adsai.dev', 'test-admin-e2e@adsai.dev'];
 
   for (const email of accounts) {
     console.log(`📧 验证账号: ${email}`);
@@ -240,8 +240,8 @@ async function main() {
 
     console.log('🚀 E2E测试账号创建完成！');
     console.log('💡 现在可以使用这些账号进行E2E测试:');
-    console.log('   - 普通用户测试: test-user-e2e@autoads.dev');
-    console.log('   - 管理员测试: test-admin-e2e@autoads.dev');
+    console.log('   - 普通用户测试: test-user-e2e@adsai.dev');
+    console.log('   - 管理员测试: test-admin-e2e@adsai.dev');
 
   } catch (error) {
     console.error('❌ 创建失败:', error.message);

@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # 项目配置
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 SERVICE_NAME="db-performance-test"
 
@@ -85,7 +85,7 @@ gcloud run deploy "$SERVICE_NAME" \
     --memory=1Gi \
     --cpu=1 \
     --timeout=300s \
-    --set-cloudsql-instances="autoads:asia-northeast1:autoads" \
+    --set-cloudsql-instances="adsai:asia-northeast1:adsai" \
     --set-env-vars="DB_CONNECTION_MODE=cloudsql" \
     --set-env-vars="CONCURRENT_USERS=20" \
     --set-env-vars="QUERIES_PER_USER=100" \

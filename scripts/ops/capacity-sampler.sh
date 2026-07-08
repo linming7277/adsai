@@ -5,7 +5,7 @@ set -euo pipefail
 # - 聚合关键 SLO（/api/v1/console/slo）与浏览器队列/池状态（/api/v1/browser/queue/stats, /api/v1/browser/stats）
 # - 输出 NDJSON 到本地文件，便于后续分析容量-成本关系与扩缩容参数
 # 用法：
-#   GATEWAY=https://www.urlchecker.dev AUTH="Bearer <token>" INTERVAL=10 COUNT=30 \
+#   GATEWAY=https://preview.example.com AUTH="Bearer <token>" INTERVAL=10 COUNT=30 \
 #   ./scripts/ops/capacity-sampler.sh | tee logs/capacity-samples.ndjson
 
 for b in curl jq python3; do

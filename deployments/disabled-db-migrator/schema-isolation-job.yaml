@@ -2,7 +2,7 @@ apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
   name: schema-isolation-migrator
-  namespace: 'gen-lang-client-0944935873'
+  namespace: 'your-gcp-project-id'
   labels:
     cloud.googleapis.com/location: asia-northeast1
 spec:
@@ -10,7 +10,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+          serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
           containers:
           - image: postgres:17-alpine
             command:

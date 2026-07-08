@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 // SimilarWebHandler handles SimilarWeb data requests

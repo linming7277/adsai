@@ -1,6 +1,6 @@
 # Autoads 快速开始指南
 
-欢迎使用 autoads！本指南将帮助您在 2 小时内快速了解项目架构、搭建开发环境并运行整个系统。
+欢迎使用 adsai！本指南将帮助您在 2 小时内快速了解项目架构、搭建开发环境并运行整个系统。
 
 ---
 
@@ -52,7 +52,7 @@ Go 微服务 (Cloud Run)
 基础设施 (GCP)
     ├── Supabase PostgreSQL (认证 + 应用数据)
     ├── Cloud SQL PostgreSQL (微服务数据)
-    ├── Redis (autoads-redis)
+    ├── Redis (adsai-redis)
     ├── Pub/Sub (异步消息)
     └── Secret Manager (密钥管理)
 ```
@@ -83,8 +83,8 @@ Go 微服务 (Cloud Run)
 
 ### GCP 访问
 
-- ✅ **GCP 项目**: gen-lang-client-0944935873
-- ✅ **服务账号**: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+- ✅ **GCP 项目**: your-gcp-project-id
+- ✅ **服务账号**: service-account@your-gcp-project-id.iam.gserviceaccount.com
 - ✅ **密钥文件**: `secrets/gcp_codex_dev.json`
 
 ### 安装工具
@@ -106,19 +106,19 @@ gcloud version
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/xxrenzhe/autoads.git
-cd autoads
+git clone https://github.com/linming7277/adsai.git
+cd adsai
 ```
 
 ### 2. 配置 GCP 认证
 
 ```bash
 # 设置 GCP 项目
-gcloud config set project gen-lang-client-0944935873
+gcloud config set project your-gcp-project-id
 
 # 使用服务账号认证
 gcloud auth activate-service-account \
-  codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com \
+  service-account@your-gcp-project-id.iam.gserviceaccount.com \
   --key-file=secrets/gcp_codex_dev.json
 
 # 验证认证
@@ -386,7 +386,7 @@ echo $REDIS_URL
 redis-cli -h <redis-host> -p 6379 ping
 
 # 检查 Redis 实例
-gcloud redis instances describe autoads-redis \
+gcloud redis instances describe adsai-redis \
   --region=asia-northeast1
 ```
 
@@ -485,7 +485,7 @@ echo $GOOGLE_ADS_DEVELOPER_TOKEN
 
 ## 🎉 恭喜！
 
-您已经完成了 autoads 的快速开始！现在您可以：
+您已经完成了 adsai 的快速开始！现在您可以：
 
 - ✅ 理解项目架构
 - ✅ 配置开发环境
@@ -531,19 +531,19 @@ redis-cli -h <redis-host> -p 6379 KEYS "*"
 ### 环境 URL
 
 **Preview 环境**:
-- Frontend: https://www.urlchecker.dev
+- Frontend: https://preview.example.com
 - Services: https://<service>-preview-...run.app
 
 **生产环境**:
-- Frontend: https://www.autoads.dev
+- Frontend: https://www.example.com
 - Services: https://<service>-...run.app
 
 ### 重要链接
 
-- **GitHub**: https://github.com/xxrenzhe/autoads
+- **GitHub**: https://github.com/linming7277/adsai
 - **GCP Console**: https://console.cloud.google.com/
 - **Supabase**: https://jzzvizacfyipzdyiqfzb.supabase.co
-- **Cloud Run**: https://console.cloud.google.com/run?project=gen-lang-client-0944935873
+- **Cloud Run**: https://console.cloud.google.com/run?project=your-gcp-project-id
 
 ---
 

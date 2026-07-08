@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/circuitbreaker
+module github.com/linming7277/adsai/pkg/circuitbreaker
 
 go 1.25.1
 

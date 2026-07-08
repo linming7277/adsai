@@ -11,8 +11,8 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/pubsub"
-	ev "github.com/xxrenzhe/autoads/pkg/events"
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
+	ev "github.com/linming7277/adsai/pkg/events"
+	"github.com/linming7277/adsai/pkg/serviceclient"
 	"net/http"
 	"strings"
 )

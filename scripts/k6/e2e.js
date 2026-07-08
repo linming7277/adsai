@@ -10,7 +10,7 @@ export const options = {
   },
 };
 
-const GATEWAY = __ENV.GATEWAY || 'https://www.urlchecker.dev';
+const GATEWAY = __ENV.GATEWAY || 'https://preview.example.com';
 const AUTH = __ENV.AUTH || '';
 
 export default function () {

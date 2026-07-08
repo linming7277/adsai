@@ -11,7 +11,7 @@ spec:
     metadata:
       annotations:
         # 🔥 Cloud SQL Proxy配置 - 关键！
-        run.googleapis.com/cloudsql-instances: "gen-lang-client-0944935873:asia-northeast1:autoads"
+        run.googleapis.com/cloudsql-instances: "your-gcp-project-id:asia-northeast1:adsai"
         run.googleapis.com/execution-environment: gen2
     spec:
       taskCount: 1
@@ -19,10 +19,10 @@ spec:
         spec:
           maxRetries: 1
           timeoutSeconds: "600"
-          serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+          serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
           containers:
           - name: db-migrator
-            image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:latest
+            image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:latest
 
             # 环境变量配置
             env:

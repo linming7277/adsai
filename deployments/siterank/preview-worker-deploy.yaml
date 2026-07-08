@@ -14,14 +14,14 @@ spec:
       annotations:
         autoscaling.knative.dev/minScale: '1'
         autoscaling.knative.dev/maxScale: '20'
-        run.googleapis.com/cloudsql-instances: gen-lang-client-0944935873:asia-northeast1:autoads
+        run.googleapis.com/cloudsql-instances: your-gcp-project-id:asia-northeast1:adsai
         run.googleapis.com/startup-cpu-boost: 'true'
     spec:
-      serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+      serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
       containerConcurrency: 10
       timeoutSeconds: 600
       containers:
-      - image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/siterank:preview-latest
+      - image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/siterank:preview-latest
         ports:
         - name: http1
           containerPort: 8080
@@ -58,7 +58,7 @@ spec:
 
         # Billing API URL
         - name: BILLING_API_URL
-          value: "https://autoads-gw-preview-885pd7lz.an.gateway.dev/api/v1/billing"
+          value: "https://adsai-gw-preview-885pd7lz.an.gateway.dev/api/v1/billing"
 
         # SimilarWeb API Base URL
         - name: SIMILARWEB_BASE_URL
@@ -69,10 +69,10 @@ spec:
 
         # GCP项目ID
         - name: GCP_PROJECT_ID
-          value: "gen-lang-client-0944935873"
+          value: "your-gcp-project-id"
 
         - name: GOOGLE_CLOUD_PROJECT
-          value: "gen-lang-client-0944935873"
+          value: "your-gcp-project-id"
 
         # Pub/Sub订阅配置 (监听 EventSiterankRequested)
         - name: PUBSUB_SUBSCRIPTION
@@ -87,7 +87,7 @@ spec:
           value: "domain-events-preview"
 
         - name: PROJECT_ID
-          value: "gen-lang-client-0944935873"
+          value: "your-gcp-project-id"
 
         # 日志级别
         - name: LOG_LEVEL

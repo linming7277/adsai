@@ -82,7 +82,7 @@ const AnimationShowcase: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              体验AutoAds的现代化交互动画效果，包括3D倾斜、波纹效果、数字动画和视差滚动
+              体验AdsAI的现代化交互动画效果，包括3D倾斜、波纹效果、数字动画和视差滚动
             </motion.p>
           </div>
         </MultiLayerParallax>

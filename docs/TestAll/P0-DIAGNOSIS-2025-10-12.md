@@ -1,8 +1,8 @@
 # P0问题诊断报告
 
 **日期**: 2025-10-12
-**环境**: Preview (www.urlchecker.dev)
-**测试用户**: test-user@autoads.dev (ID: 37fd3629-a06a-47c8-b33a-31944afaa14c)
+**环境**: Preview (preview.example.com)
+**测试用户**: test-user@adsai.dev (ID: 37fd3629-a06a-47c8-b33a-31944afaa14c)
 
 ---
 
@@ -11,7 +11,7 @@
 ### 已完成的工作
 - ✅ 修复30+ TypeScript编译错误
 - ✅ 成功构建前端代码
-- ✅ 部署到生产环境(www.urlchecker.dev)
+- ✅ 部署到生产环境(preview.example.com)
 - ✅ 验证登录测试通过(data-testid工作)
 
 ### 当前E2E测试状态
@@ -60,14 +60,14 @@ Error: Cannot coerce the result to a single JSON object (0 rows)
 
 **现象**:
 ```
-Access to fetch at 'https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
-from origin 'https://www.urlchecker.dev' has been blocked by CORS policy:
+Access to fetch at 'https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
+from origin 'https://preview.example.com' has been blocked by CORS policy:
 Response to preflight request doesn't pass access control check:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
 **根因**:
-API Gateway未配置允许www.urlchecker.dev的CORS策略。
+API Gateway未配置允许preview.example.com的CORS策略。
 
 **影响**:
 - ❌ Navigation配置加载失败
@@ -79,8 +79,8 @@ API Gateway未配置允许www.urlchecker.dev的CORS策略。
 ```yaml
 cors:
   allowOrigins:
-    - https://www.urlchecker.dev
-    - https://www.autoads.dev
+    - https://preview.example.com
+    - https://www.example.com
   allowMethods:
     - GET
     - POST
@@ -166,8 +166,8 @@ cors:
 
 ### Console错误日志
 ```
-[error] Access to fetch at 'https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
-        from origin 'https://www.urlchecker.dev' has been blocked by CORS policy
+[error] Access to fetch at 'https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
+        from origin 'https://preview.example.com' has been blocked by CORS policy
 
 [error] Failed to fetch subscription info: {
   code: PGRST116,

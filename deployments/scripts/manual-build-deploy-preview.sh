@@ -4,15 +4,15 @@ set -euo pipefail
 # Manual build & deploy to Cloud Run (preview) for selected services.
 # Prerequisites:
 #  - gcloud auth activate-service-account --key-file <sa.json> --project <project>
-#  - Artifact Registry repo exists: $PROJECT_ID/$REPO (default: autoads-services)
+#  - Artifact Registry repo exists: $PROJECT_ID/$REPO (default: adsai-services)
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
-#   REPO=autoads-services TAG=preview-latest \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
+#   REPO=adsai-services TAG=preview-latest \
 #   ./deployments/scripts/manual-build-deploy-preview.sh offer adscenter console
 
 PROJECT_ID=${PROJECT_ID:?PROJECT_ID required}
 REGION=${REGION:-asia-northeast1}
-REPO=${REPO:-autoads-services}
+REPO=${REPO:-adsai-services}
 TAG=${TAG:-preview-latest}
 
 AR_HOST="${REGION}-docker.pkg.dev"
@@ -24,7 +24,7 @@ build_service() {
   gcloud builds submit . \
     --project "${PROJECT_ID}" \
     --config deployments/cloudbuild/build-service-docker.yaml \
-    --gcs-log-dir gs://autoads-build-logs-asia-northeast1/logs \
+    --gcs-log-dir gs://adsai-build-logs-asia-northeast1/logs \
     --substitutions _SERVICE="${svc}",_IMAGE="${image}"
 }
 

@@ -1,4 +1,4 @@
-# AutoAds 前端页面设计补充方案
+# AdsAI 前端页面设计补充方案
 
 **文档日期**: 2025-10-09
 **补充内容**: Footer链接、首页营销页、个人中心重构、多用户数据隔离
@@ -33,9 +33,9 @@ export function Footer() {
                 AI 驱动的多渠道广告自动化平台
               </p>
               <div className="flex space-x-4">
-                <SocialLink href="https://twitter.com/AutoAds" icon={<TwitterIcon />} />
-                <SocialLink href="https://github.com/autoads-dev" icon={<GithubIcon />} />
-                <SocialLink href="mailto:support@autoads.dev" icon={<EnvelopeIcon />} />
+                <SocialLink href="https://twitter.com/AdsAI" icon={<TwitterIcon />} />
+                <SocialLink href="https://github.com/adsai-dev" icon={<GithubIcon />} />
+                <SocialLink href="mailto:support@adsai.dev" icon={<EnvelopeIcon />} />
               </div>
             </div>
 
@@ -135,7 +135,7 @@ export function Footer() {
           <div className="mt-12 border-t pt-8">
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
               <p className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} AutoAds. All rights reserved.
+                © {new Date().getFullYear()} AdsAI. All rights reserved.
               </p>
               <div className="flex items-center gap-6 text-sm">
                 <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
@@ -164,8 +164,8 @@ export function Footer() {
 ```tsx
 // app/(site)/features/page.tsx
 export const metadata = {
-  title: '功能特性 - AutoAds',
-  description: '了解 AutoAds 的核心功能：智能 Offer 评估、多渠道广告管理、自动化投放策略',
+  title: '功能特性 - AdsAI',
+  description: '了解 AdsAI 的核心功能：智能 Offer 评估、多渠道广告管理、自动化投放策略',
 };
 
 export default function FeaturesPage() {
@@ -278,8 +278,8 @@ export default function FeaturesPage() {
 ```tsx
 // app/(site)/changelog/page.tsx
 export const metadata = {
-  title: '更新日志 - AutoAds',
-  description: '查看 AutoAds 的最新功能更新和优化改进',
+  title: '更新日志 - AdsAI',
+  description: '查看 AdsAI 的最新功能更新和优化改进',
 };
 
 export default function ChangelogPage() {
@@ -351,7 +351,7 @@ export default function ChangelogPage() {
             changes={[
               {
                 type: 'feature',
-                title: 'AutoAds 正式发布！',
+                title: 'AdsAI 正式发布！',
                 description: '包含 Offer 评估、广告管理、自动化投放等核心功能',
               },
             ]}
@@ -374,7 +374,7 @@ export default function CaseStudiesPage() {
         <div className="text-center mb-16">
           <Heading type={1}>客户成功案例</Heading>
           <SubHeading className="mt-4">
-            看看 AutoAds 如何帮助企业提升广告 ROI
+            看看 AdsAI 如何帮助企业提升广告 ROI
           </SubHeading>
         </div>
 
@@ -388,7 +388,7 @@ export default function CaseStudiesPage() {
               '人工审核时间减少 80%',
               '广告账号数量从 3 个增加到 50 个',
             ]}
-            quote="AutoAds 让我们的广告投放效率提升了 10 倍，团队从 3 人缩减到 1 人就能管理所有广告账号。"
+            quote="AdsAI 让我们的广告投放效率提升了 10 倍，团队从 3 人缩减到 1 人就能管理所有广告账号。"
             author="王先生，运营总监"
             href="/case-studies/ecommerce"
           />
@@ -521,7 +521,7 @@ export default function SupportPage() {
               联系我们的技术支持团队，我们将在 24 小时内回复
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" href="mailto:support@autoads.dev">
+              <Button variant="outline" href="mailto:support@adsai.dev">
                 <EnvelopeIcon className="mr-2 h-4 w-4" />
                 发送邮件
               </Button>
@@ -543,8 +543,8 @@ export default function SupportPage() {
 ```tsx
 // app/(site)/privacy/page.tsx
 export const metadata = {
-  title: '隐私政策 - AutoAds',
-  description: 'AutoAds 隐私政策，了解我们如何收集、使用和保护您的个人信息',
+  title: '隐私政策 - AdsAI',
+  description: 'AdsAI 隐私政策，了解我们如何收集、使用和保护您的个人信息',
 };
 
 export default function PrivacyPolicyPage() {
@@ -570,7 +570,7 @@ export default function PrivacyPolicyPage() {
           我们使用收集的信息用于：
         </p>
         <ul>
-          <li>提供 AutoAds 服务功能</li>
+          <li>提供 AdsAI 服务功能</li>
           <li>改进产品体验和性能</li>
           <li>发送重要通知和更新</li>
           <li>处理支付和账单</li>
@@ -625,7 +625,7 @@ export default function PrivacyPolicyPage() {
           如有隐私相关问题，请联系：
         </p>
         <ul>
-          <li>邮箱：privacy@autoads.dev</li>
+          <li>邮箱：privacy@adsai.dev</li>
           <li>地址：[公司地址]</li>
         </ul>
       </div>
@@ -639,8 +639,8 @@ export default function PrivacyPolicyPage() {
 ```tsx
 // app/(site)/terms/page.tsx
 export const metadata = {
-  title: '服务条款 - AutoAds',
-  description: 'AutoAds 服务条款，了解使用本服务的规则和责任',
+  title: '服务条款 - AdsAI',
+  description: 'AdsAI 服务条款，了解使用本服务的规则和责任',
 };
 
 export default function TermsOfServicePage() {
@@ -652,7 +652,7 @@ export default function TermsOfServicePage() {
 
         <h2>1. 服务使用</h2>
         <p>
-          使用 AutoAds 服务，您同意：
+          使用 AdsAI 服务，您同意：
         </p>
         <ul>
           <li>仅用于合法的广告投放目的</li>
@@ -678,7 +678,7 @@ export default function TermsOfServicePage() {
 
         <h2>4. 免责声明</h2>
         <ul>
-          <li>AutoAds 不对广告投放效果做保证</li>
+          <li>AdsAI 不对广告投放效果做保证</li>
           <li>评估结果仅供参考，最终投放决策由用户自行判断</li>
           <li>我们不对第三方广告平台的政策变化负责</li>
         </ul>
@@ -698,7 +698,7 @@ export default function TermsOfServicePage() {
           如有服务条款相关问题，请联系：
         </p>
         <ul>
-          <li>邮箱：legal@autoads.dev</li>
+          <li>邮箱：legal@adsai.dev</li>
         </ul>
       </div>
     </Container>
@@ -822,7 +822,7 @@ function HeroSection() {
             <div className="relative rounded-2xl shadow-2xl overflow-hidden border border-border">
               <Image
                 src="/assets/images/hero-dashboard.png"
-                alt="AutoAds Dashboard"
+                alt="AdsAI Dashboard"
                 width={1200}
                 height={800}
                 priority
@@ -871,7 +871,7 @@ function TrustBar() {
       <Container>
         <div className="flex flex-col items-center gap-6">
           <p className="text-sm text-muted-foreground">
-            已有 <strong className="text-foreground">1,200+</strong> 广告主信赖 AutoAds
+            已有 <strong className="text-foreground">1,200+</strong> 广告主信赖 AdsAI
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
             <TrustBadge
@@ -1311,7 +1311,7 @@ export default function ProfileTab() {
 |------|----------|------|------|------|
 | **方案 1: 隐藏用户ID** | `/dashboard` | 简洁美观，用户无感知 | 需要中间件/Cookie | ✅ **推荐** |
 | **方案 2: URL 包含用户ID** | `/u/[userId]/dashboard` | 明确清晰，便于调试 | URL 冗长，暴露用户ID | ❌ 不推荐 |
-| **方案 3: 子域名** | `user123.autoads.dev/dashboard` | 完全隔离，专业 | 配置复杂，成本高 | ❌ 过度设计 |
+| **方案 3: 子域名** | `user123.example.com/dashboard` | 完全隔离，专业 | 配置复杂，成本高 | ❌ 过度设计 |
 
 ### 4.2 推荐方案：隐藏用户ID（中间件注入）
 

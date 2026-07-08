@@ -34,7 +34,7 @@
 406 https://jzzvizacfyipzdyiqfzb.supabase.co/rest/v1/user_profiles?select=*&user_id=eq.37fd3629-a06a-47c8-b33a-31944afaa14c
 
 🐛 步骤6: 分析Console日志...
-[error] Access to fetch at 'https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation' from origin 'https://www.urlchecker.dev' has been blocked by CORS policy
+[error] Access to fetch at 'https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation' from origin 'https://preview.example.com' has been blocked by CORS policy
 [error] Failed to fetch subscription info: {code: PGRST116, details: The result contains 0 rows, hint: null, message: Cannot coerce the result to a single JSON object}
 ```
 
@@ -47,7 +47,7 @@
 **证据**:
 - ❌ 页面HTML不包含任何 `data-testid` 属性
 - ❌ 我们在本地代码中添加了50+ data-testid属性
-- ❌ 生产环境 (https://www.urlchecker.dev) 未包含这些更改
+- ❌ 生产环境 (https://preview.example.com) 未包含这些更改
 
 **影响**:
 - 所有基于data-testid的测试必然失败
@@ -80,8 +80,8 @@ Cannot coerce the result to a single JSON object
 
 **错误**:
 ```
-Access to fetch at 'https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
-from origin 'https://www.urlchecker.dev' has been blocked by CORS policy
+Access to fetch at 'https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
+from origin 'https://preview.example.com' has been blocked by CORS policy
 ```
 
 **影响**:
@@ -89,7 +89,7 @@ from origin 'https://www.urlchecker.dev' has been blocked by CORS policy
 - 可能影响导航菜单显示
 
 **修复方案**:
-1. 配置API Gateway允许来自 www.urlchecker.dev 的请求
+1. 配置API Gateway允许来自 preview.example.com 的请求
 2. 或者：使用相对路径避免跨域
 
 ---
@@ -219,10 +219,10 @@ from origin 'https://www.urlchecker.dev' has been blocked by CORS policy
 
 ## 环境信息
 
-**测试URL**: https://www.urlchecker.dev
+**测试URL**: https://preview.example.com
 **Supabase Project**: jzzvizacfyipzdyiqfzb
 **Test User ID**: 37fd3629-a06a-47c8-b33a-31944afaa14c
-**Test User Email**: test-user@autoads.dev
+**Test User Email**: test-user@adsai.dev
 
 ---
 

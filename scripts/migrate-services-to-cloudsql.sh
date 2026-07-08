@@ -13,9 +13,9 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # 配置常量
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-CLOUDSQL_INSTANCE="gen-lang-client-0944935873:asia-northeast1:autoads"
+CLOUDSQL_INSTANCE="your-gcp-project-id:asia-northeast1:adsai"
 
 # 需要迁移的服务列表（基于DATABASE_URL使用情况）
 SERVICES=(

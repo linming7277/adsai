@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

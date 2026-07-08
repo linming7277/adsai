@@ -6,7 +6,7 @@ set -euo pipefail
 # 认证：X-Service-Token: ENV（由分发函数注入 INTERNAL_SERVICE_TOKEN），需与 Offer 的 SERVICE_INTERNAL_TOKEN 一致。
 
 # 用法：
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   SCHEDULE="*/30 * * * *" ./deployments/scripts/create-offer-auto-status-scheduler.sh
 
 PROJECT_ID=${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-}} 

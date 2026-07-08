@@ -155,7 +155,7 @@ export NEXT_PUBLIC_SUPABASE_URL=$(gcloud secrets versions access latest --secret
 export SUPABASE_SERVICE_KEY=$(gcloud secrets versions access latest --secret="SUPABASE_SERVICE_KEY")
 
 # 运行种子数据脚本
-PREVIEW_BASE=https://www.urlchecker.dev node scripts/tests/seed-test-data.mjs
+PREVIEW_BASE=https://preview.example.com node scripts/tests/seed-test-data.mjs
 ```
 
 2. **验证数据创建成功**
@@ -168,7 +168,7 @@ SELECT
   (SELECT COUNT(*) FROM tasks WHERE user_id = u.id) as tasks_count,
   (SELECT COUNT(*) FROM ads_accounts WHERE user_id = u.id) as accounts_count
 FROM auth.users u
-WHERE u.email = 'test-user@autoads.dev';
+WHERE u.email = 'test-user@adsai.dev';
 ```
 
 **优点**:

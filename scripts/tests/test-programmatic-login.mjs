@@ -37,7 +37,7 @@ async function testProgrammaticLogin() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: 'test-playwright@autoads.dev',
+          email: 'test-playwright@adsai.dev',
           role: 'user',
         }),
       });

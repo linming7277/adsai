@@ -4,10 +4,10 @@
 
 set -e  # 遇到错误立即退出
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 SERVICE_NAME="siterank-preview"
-IMAGE_NAME="asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/siterank"
+IMAGE_NAME="asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/siterank"
 
 echo "========================================="
 echo "Siterank Preview环境部署"

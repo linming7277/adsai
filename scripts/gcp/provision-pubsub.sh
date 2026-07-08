@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Provision Pub/Sub topic and subscriptions for a single-project multi-environment setup.
-# Usage: PROJECT=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=prod \
+# Usage: PROJECT=your-gcp-project-id REGION=asia-northeast1 STACK=prod \
 #        SERVICES="offer billing adscenter batchopen siterank notifications" ./scripts/gcp/provision-pubsub.sh
 
 : "${PROJECT:?PROJECT required}"

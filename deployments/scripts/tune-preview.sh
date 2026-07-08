@@ -3,7 +3,7 @@ set -euo pipefail
 
 # One-click tuning for preview stack: set scaling and important non-secret envs
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   ./deployments/scripts/tune-preview.sh
 
 PROJECT_ID=${PROJECT_ID:?PROJECT_ID required}

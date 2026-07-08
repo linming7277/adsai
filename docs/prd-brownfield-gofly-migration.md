@@ -1,16 +1,16 @@
-# AutoAds GoFly 迁移项目 Brownfield PRD
+# AdsAI GoFly 迁移项目 Brownfield PRD
 
 ## 文档信息
-- **项目名称**: AutoAds GoFly 迁移项目
+- **项目名称**: AdsAI GoFly 迁移项目
 - **PRD 版本**: Brownfield V1.0
 - **创建日期**: 2025-09-10
 - **文档类型**: Brownfield 增强型 PRD
 - **基础架构版本**: GoFly Architecture V5.1
-- **现有系统**: AutoAds Next.js V5.0
+- **现有系统**: AdsAI Next.js V5.0
 
 ## 执行摘要
 
-AutoAds GoFly 迁移项目是一个典型的 Brownfield 增强项目，旨在将现有的 Next.js 单体应用无缝迁移到 GoFly 框架架构，同时保持业务连续性和功能完整性。项目基于已经完成的架构设计（docs/architecture-gofly-v5.1/），通过12周的5阶段实施计划，实现从 Node.js 到 Go 的技术栈升级，并达成4900%的性能提升目标。
+AdsAI GoFly 迁移项目是一个典型的 Brownfield 增强项目，旨在将现有的 Next.js 单体应用无缝迁移到 GoFly 框架架构，同时保持业务连续性和功能完整性。项目基于已经完成的架构设计（docs/architecture-gofly-v5.1/），通过12周的5阶段实施计划，实现从 Node.js 到 Go 的技术栈升级，并达成4900%的性能提升目标。
 
 ## 1. 项目背景与现有系统分析
 
@@ -283,7 +283,7 @@ func (p *BatchProcessor) ProcessTask(task *Task) error {
 #### 4.2.1 并行开发策略
 ```mermaid
 gantt
-    title AutoAds GoFly 迁移项目时间线
+    title AdsAI GoFly 迁移项目时间线
     dateFormat  YYYY-MM-DD
     section 基础架构
     环境搭建           :a1, 2025-09-16, 3d
@@ -547,7 +547,7 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: autoads
+      MYSQL_DATABASE: adsai
     volumes:
       - mysql_data:/var/lib/mysql
   
@@ -757,7 +757,7 @@ gf.Log().SetConfig(gf.LogConfig{
 
 ## 14. 总结
 
-AutoAds GoFly迁移项目是一个典型的Brownfield增强项目，通过充分利用GoFly框架的企业级能力，实现从Next.js到Go的技术栈升级。项目基于完整的架构设计文档，采用5阶段12周的实施计划，确保平滑迁移和业务连续性。
+AdsAI GoFly迁移项目是一个典型的Brownfield增强项目，通过充分利用GoFly框架的企业级能力，实现从Next.js到Go的技术栈升级。项目基于完整的架构设计文档，采用5阶段12周的实施计划，确保平滑迁移和业务连续性。
 
 ### 14.1 项目亮点
 
@@ -775,4 +775,4 @@ AutoAds GoFly迁移项目是一个典型的Brownfield增强项目，通过充分
 4. **团队协作**: 明确的职责分工和沟通机制
 5. **持续优化**: 后续的优化计划和演进路径
 
-通过本项目的实施，AutoAds将获得一个高性能、高可用、易维护的企业级SaaS平台，为业务的快速发展奠定坚实的技术基础。
+通过本项目的实施，AdsAI将获得一个高性能、高可用、易维护的企业级SaaS平台，为业务的快速发展奠定坚实的技术基础。

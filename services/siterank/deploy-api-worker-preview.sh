@@ -5,13 +5,13 @@
 #
 # 前置条件:
 # - gcloud CLI 已配置
-# - 有权限访问 gen-lang-client-0944935873 项目
+# - 有权限访问 your-gcp-project-id 项目
 # - Pub/Sub Topic 'evaluation-tasks' 已创建
 # - Pub/Sub Subscription 'evaluation-tasks-sub' 已创建
 
 set -e  # 遇到错误立即退出
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 
 echo "=========================================="

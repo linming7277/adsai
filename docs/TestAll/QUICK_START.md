@@ -14,7 +14,7 @@
 node --version  # 需要 v18+
 
 # 确认在项目根目录
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 # 安装依赖 (如果还未安装)
 npm install
@@ -41,10 +41,10 @@ node scripts/tests/seed-test-data.mjs
 
 ```bash
 # 运行所有E2E测试 (无头模式)
-PREVIEW_BASE=https://www.urlchecker.dev node scripts/tests/run-all-tests.mjs
+PREVIEW_BASE=https://preview.example.com node scripts/tests/run-all-tests.mjs
 
 # 或使用浏览器可见模式 (调试用)
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
 HEADLESS=false \
 node scripts/tests/run-all-tests.mjs
 ```
@@ -67,15 +67,15 @@ open test-reports/
 
 ```bash
 # Dashboard测试
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
 node scripts/tests/test-dashboard-overview.mjs
 
 # 订阅管理测试
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
 node scripts/tests/test-subscription-management.mjs
 
 # Token管理测试
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
 node scripts/tests/test-token-management.mjs
 ```
 
@@ -83,7 +83,7 @@ node scripts/tests/test-token-management.mjs
 
 ```bash
 # 浏览器可见 + 慢速执行
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
 HEADLESS=false \
 SLOWMO=100 \
 node scripts/tests/test-dashboard-overview.mjs
@@ -114,7 +114,7 @@ node scripts/tests/seed-test-data.mjs
 # 从Secret Manager获取环境变量
 gcloud secrets versions access latest \
   --secret="SUPABASE_SERVICE_KEY" \
-  --project="gen-lang-client-0944935873"
+  --project="your-gcp-project-id"
 
 # 或使用.env文件
 cat > .env.test << EOF
@@ -138,7 +138,7 @@ locator.click: Timeout 30000ms exceeded.
 **解决**:
 1. 检查预发环境是否运行正常
    ```bash
-   curl https://www.urlchecker.dev/api/health
+   curl https://preview.example.com/api/health
    ```
 
 2. 使用浏览器可见模式检查页面
@@ -168,8 +168,8 @@ locator.click: Timeout 30000ms exceeded.
 node scripts/tests/seed-test-data.mjs
 
 # 验证数据已创建
-# 访问 https://www.urlchecker.dev/en/dashboard
-# 手动登录 test-user@autoads.dev 检查是否有数据
+# 访问 https://preview.example.com/en/dashboard
+# 手动登录 test-user@adsai.dev 检查是否有数据
 ```
 
 ---
@@ -310,7 +310,7 @@ node scripts/tests/run-all-tests.mjs
 import { chromium } from 'playwright';
 import { setupAuthForTest } from './helpers/auth.mjs';
 
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 async function main() {
   const browser = await chromium.launch({ headless: true });
@@ -401,7 +401,7 @@ A: 在 GitHub Actions 中添加:
 ```yaml
 - name: Run E2E Tests
   env:
-    PREVIEW_BASE: https://www.urlchecker.dev
+    PREVIEW_BASE: https://preview.example.com
     NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
     SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
   run: |

@@ -1,4 +1,4 @@
-# AutoAds 前端迁移阶段2 - Supabase 基础接入
+# AdsAI 前端迁移阶段2 - Supabase 基础接入
 
 ## 本阶段目标
 - 在 Next.js 全局入口挂载 Supabase Auth Provider，为后续页面迁移准备上下文。

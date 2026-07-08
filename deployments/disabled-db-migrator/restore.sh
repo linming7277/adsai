@@ -8,7 +8,7 @@ set -euo pipefail
 DATABASE_URL="${DATABASE_URL:-}"
 BACKUP_FILE="${BACKUP_FILE:-}"
 BACKUP_DIR="${BACKUP_DIR:-/backup}"
-CLOUDSQL_SOCKET="/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/.s.PGSQL.5432"
+CLOUDSQL_SOCKET="/cloudsql/your-gcp-project-id:asia-northeast1:adsai/.s.PGSQL.5432"
 
 # 颜色输出
 RED='\033[0;31m'
@@ -160,9 +160,9 @@ execute_restore() {
     # --no-owner: 不恢复所有者信息
     # --no-acl: 不恢复访问权限
     if pg_restore \
-        -h /cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads \
+        -h /cloudsql/your-gcp-project-id:asia-northeast1:adsai \
         -U postgres \
-        -d autoads_db \
+        -d adsai_db \
         --clean \
         --if-exists \
         -v \
@@ -234,7 +234,7 @@ verify_restore() {
     
     # 检查数据库大小
     local db_size=$(psql "$DATABASE_URL" -t -c "
-        SELECT pg_size_pretty(pg_database_size('autoads_db'));
+        SELECT pg_size_pretty(pg_database_size('adsai_db'));
     ")
     log_info "恢复后数据库大小: $db_size"
 }
@@ -268,8 +268,8 @@ generate_report() {
 # 数据库恢复报告
 
 **执行时间**: $(date '+%Y-%m-%d %H:%M:%S')
-**数据库**: autoads_db
-**实例**: gen-lang-client-0944935873:asia-northeast1:autoads
+**数据库**: adsai_db
+**实例**: your-gcp-project-id:asia-northeast1:adsai
 **备份文件**: $BACKUP_FILE
 
 ## 恢复操作
@@ -293,7 +293,7 @@ $(psql "$DATABASE_URL" -c "SELECT schemaname, COUNT(*) as table_count FROM pg_ca
 
 ### 数据库大小
 \`\`\`
-$(psql "$DATABASE_URL" -c "SELECT pg_size_pretty(pg_database_size('autoads_db')) as database_size;")
+$(psql "$DATABASE_URL" -c "SELECT pg_size_pretty(pg_database_size('adsai_db')) as database_size;")
 \`\`\`
 
 ## 验证结果

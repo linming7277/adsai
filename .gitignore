@@ -14,6 +14,7 @@ dist/
 storybook-static/
 *.tsbuildinfo
 apps/frontend/.next/
+.turbo/
 
 # Firebase local/preview artifacts
 .firebase/
@@ -25,10 +26,24 @@ go.work.sum
 go/pkg/mod/
 
 # Go compiled binaries (service executables)
+adscenter
+billing
+offer
+server
+cloud_sql_proxy
 services/offer/offer
 services/siterank/siterank-service
+services/siterank/siterank
+services/siterank/siterank-api
+services/siterank/siterank-api-simple
+services/siterank/worker
 services/useractivity/useractivity
+services/user/server
 services/billing/billing
+services/billing/testdb
+services/billing/migrator
+services/billing/cloud_sql_proxy
+services/billing/cloud_sql_proxy_darwin
 services/adscenter/adscenter
 services/bff/bff
 services/console/console
@@ -101,8 +116,11 @@ logs/
 
 # Test and coverage
 test-results/
+test-reports/
 coverage/
 *.coverage
+coverage.out
+**/coverage.out
 
 # GoFly admin local caches (avoid tracking third‑party module cache)
 gofly_admin_v3/.gomodcache/
@@ -115,7 +133,17 @@ makerkit/
 apps/frontend-legacy/
 
 # Git mirror objects (large files)
+autoads-mirror/
 autoads-mirror/objects/
+
+# Local cleanup artifacts and extracted references
+..bfg-report/
+claudedocs/
+pattern-craft/
+hosting/
+codex-dev@*.iam.gserviceaccount.com
+.clawcloud.env
+.env.migrate
 
 # Legacy frontend build artifacts
 apps/frontend-legacy/.next/

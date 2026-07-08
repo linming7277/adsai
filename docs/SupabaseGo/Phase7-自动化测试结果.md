@@ -1,7 +1,7 @@
 # Phase 7: 自动化测试结果
 
 > **测试时间**: 2025-10-11
-> **测试环境**: Local + Preview (https://www.urlchecker.dev)
+> **测试环境**: Local + Preview (https://preview.example.com)
 > **执行人**: Claude Code
 
 ---

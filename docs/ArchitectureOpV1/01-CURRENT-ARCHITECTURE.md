@@ -1,7 +1,7 @@
 # 当前架构全景分析
 
 **创建日期**: 2025-10-16
-**审查范围**: AutoAds 全系统架构
+**审查范围**: AdsAI 全系统架构
 
 ---
 
@@ -114,12 +114,12 @@ graph TB
 
 ### 网关层说明
 
-**当前状态**：GCP API Gateway已部署（autoads-gw / autoads-gw-preview）
+**当前状态**：GCP API Gateway已部署（adsai-gw / adsai-gw-preview）
 
 **当前功能**：
 - ✅ 统一入口：Frontend通过Gateway访问所有后端服务
 - ✅ 路由转发：基于OpenAPI规范自动生成路由配置
-- ✅ 域名管理：autoads-gw-preview-885pd7lz.an.gateway.dev
+- ✅ 域名管理：adsai-gw-preview-885pd7lz.an.gateway.dev
 
 **当前限制**：
 - ❌ **无统一权限管理**：每个微服务独立进行JWT验证
@@ -191,7 +191,7 @@ graph TB
 - **云平台**: Google Cloud Platform
 - **容器**: Docker + Artifact Registry
 - **CI/CD**: GitHub Actions + Cloud Build
-- **网关**: GCP API Gateway (已部署: autoads-gw, autoads-gw-preview)
+- **网关**: GCP API Gateway (已部署: adsai-gw, adsai-gw-preview)
 - **认证**: Supabase Auth
 - **监控**: Cloud Monitoring + Prometheus
 
@@ -239,14 +239,14 @@ graph TB
 ```
 ┌─────────────────────────────────────────┐
 │  Preview环境 (preview分支)                │
-│  域名: www.urlchecker.dev                │
+│  域名: preview.example.com                │
 │  服务: *-preview                         │
 │  镜像标签: preview-latest, preview-{sha} │
 └─────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────┐
 │  Production环境 (production分支)         │
-│  域名: www.autoads.dev                   │
+│  域名: www.example.com                   │
 │  服务: frontend, offer, billing等        │
 │  镜像标签: prod-latest, prod-{sha}       │
 └─────────────────────────────────────────┘
@@ -270,7 +270,7 @@ graph TB
 
 #### Cloud SQL PostgreSQL
 ```
-autoads_db (主数据库)
+adsai_db (主数据库)
 ├── Offer 表（Offer Service）
 │   ├── Offer: 主表
 │   ├── OfferStatusHistory: 状态历史

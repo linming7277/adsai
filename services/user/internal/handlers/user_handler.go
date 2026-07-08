@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xxrenzhe/autoads/services/user/internal/services"
+	"github.com/linming7277/adsai/services/user/internal/services"
 )
 
 type UserHandler struct {

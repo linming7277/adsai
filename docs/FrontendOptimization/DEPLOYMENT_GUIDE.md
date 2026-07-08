@@ -90,7 +90,7 @@ gcloud builds submit --config cloudbuild.yaml
 
 # 4. 验证部署
 curl -H "Authorization: Bearer $TOKEN" \
-  https://console.autoads.dev/api/v1/console/tokens/rules
+  https://console.example.com/api/v1/console/tokens/rules
 ```
 
 **预期响应**:
@@ -135,7 +135,7 @@ apps/frontend/
 ```bash
 # apps/frontend/.env.local
 NEXT_PUBLIC_USE_CONSOLE_DASHBOARD=true  # 启用新仪表盘
-NEXT_PUBLIC_API_BASE_URL=https://console.autoads.dev  # Console服务地址
+NEXT_PUBLIC_API_BASE_URL=https://console.example.com  # Console服务地址
 ```
 
 **部署步骤**:
@@ -170,7 +170,7 @@ NEXT_PUBLIC_USE_CONSOLE_DASHBOARD=false
 
 **1. 访问管理页面**:
 ```
-https://console.autoads.dev/console/admin/index.html
+https://console.example.com/console/admin/index.html
 → 点击 "Token规则" 链接
 → 应显示 6 条初始规则
 ```
@@ -194,15 +194,15 @@ https://console.autoads.dev/console/admin/index.html
 ```bash
 # 获取所有规则
 curl -H "Authorization: Bearer $TOKEN" \
-  https://console.autoads.dev/api/v1/console/tokens/rules
+  https://console.example.com/api/v1/console/tokens/rules
 
 # 仅获取启用规则
 curl -H "Authorization: Bearer $TOKEN" \
-  "https://console.autoads.dev/api/v1/console/tokens/rules?enabledOnly=true"
+  "https://console.example.com/api/v1/console/tokens/rules?enabledOnly=true"
 
 # 按服务筛选
 curl -H "Authorization: Bearer $TOKEN" \
-  "https://console.autoads.dev/api/v1/console/tokens/rules?service=siterank"
+  "https://console.example.com/api/v1/console/tokens/rules?service=siterank"
 
 # 创建新规则
 curl -X POST \
@@ -214,14 +214,14 @@ curl -X POST \
     "costPerUnit": 1,
     "description": "查询订阅套餐信息"
   }' \
-  https://console.autoads.dev/api/v1/console/tokens/rules
+  https://console.example.com/api/v1/console/tokens/rules
 
 # 更新规则
 curl -X PUT \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"costPerUnit": 2, "enabled": false}' \
-  https://console.autoads.dev/api/v1/console/tokens/rules/{rule-id}
+  https://console.example.com/api/v1/console/tokens/rules/{rule-id}
 ```
 
 ---
@@ -230,7 +230,7 @@ curl -X PUT \
 
 **1. 访问仪表盘**:
 ```
-https://autoads.dev/dashboard/[your-org]
+https://example.com/dashboard/[your-org]
 → 应显示新的 Console Dashboard
 → 包含 4 个 KPI 卡片: Offers, Tokens, Accounts, ROAS
 ```
@@ -345,7 +345,7 @@ echo $NEXT_PUBLIC_API_BASE_URL           # 应为 Console 服务地址
 
 # 2. 测试 Dashboard API
 curl -H "Authorization: Bearer $TOKEN" \
-  https://console.autoads.dev/api/v1/console/dashboard/{user-id}
+  https://console.example.com/api/v1/console/dashboard/{user-id}
 
 # 3. 检查浏览器 Console 错误
 # 打开开发者工具 → Console → 查找红色错误
@@ -371,7 +371,7 @@ redis-cli -h $REDIS_HOST -p $REDIS_PORT
 
 # 2. 强制刷新缓存
 curl -H "Authorization: Bearer $TOKEN" \
-  "https://console.autoads.dev/api/v1/console/dashboard/{user-id}?force=1"
+  "https://console.example.com/api/v1/console/dashboard/{user-id}?force=1"
 
 # 3. 对比数据库原始数据
 psql $DATABASE_URL -c "SELECT COUNT(*) FROM offers WHERE user_id = '{user-id}';"

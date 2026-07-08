@@ -1,13 +1,13 @@
 /**
- * @autoads/shared-types
+ * @adsai/shared-types
  *
  * Shared TypeScript types generated from OpenAPI specifications.
  * All types are generated from `.kiro/specs/addictive-ads-management-system/openapi/*.yaml`
  *
  * @example
  * ```typescript
- * import type { paths as AdscenterPaths } from '@autoads/shared-types/adscenter'
- * import type { components as BillingComponents } from '@autoads/shared-types/billing'
+ * import type { paths as AdscenterPaths } from '@adsai/shared-types/adscenter'
+ * import type { components as BillingComponents } from '@adsai/shared-types/billing'
  *
  * type Account = BillingComponents['schemas']['Account']
  * type ListAccountsResponse = AdscenterPaths['/api/v1/adscenter/accounts']['get']['responses']['200']

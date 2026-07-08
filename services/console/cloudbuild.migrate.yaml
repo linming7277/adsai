@@ -6,8 +6,8 @@ steps:
   - name: gcr.io/kaniko-project/executor:latest
     args:
       - --dockerfile=services/console/Dockerfile.migrate
-      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/console-migrate:latest
-      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/console-migrate:${SHORT_SHA}
+      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/console-migrate:latest
+      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/console-migrate:${SHORT_SHA}
       - --context=dir:///workspace/services/console
       - --cache=true
       - --cache-ttl=6h
@@ -21,7 +21,7 @@ steps:
         if gcloud run jobs describe console-db-migrate --region=asia-northeast1 --project=${PROJECT_ID} 2>/dev/null; then
           echo "Updating existing job..."
           gcloud run jobs update console-db-migrate \
-            --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/console-migrate:latest \
+            --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/console-migrate:latest \
             --region=asia-northeast1 \
             --set-env-vars=MIGRATIONS_DIR=/app/migrations \
             --set-secrets=DATABASE_URL=DATABASE_URL:latest \
@@ -31,7 +31,7 @@ steps:
         else
           echo "Creating new job..."
           gcloud run jobs create console-db-migrate \
-            --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/console-migrate:latest \
+            --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/console-migrate:latest \
             --region=asia-northeast1 \
             --set-env-vars=MIGRATIONS_DIR=/app/migrations \
             --set-secrets=DATABASE_URL=DATABASE_URL:latest \

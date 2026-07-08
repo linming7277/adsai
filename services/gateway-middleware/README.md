@@ -4,7 +4,7 @@ API Gateway统一权限管理和Token管理中间件服务。
 
 ## 概述
 
-Gateway Middleware是AutoAds系统的核心基础设施层组件，负责：
+Gateway Middleware是AdsAI系统的核心基础设施层组件，负责：
 
 - ✅ JWT验证和用户身份认证
 - 🔐 订阅套餐和权限检查
@@ -106,7 +106,7 @@ go run cmd/server/main.go
 # 构建镜像
 gcloud builds submit \
   --config=cloudbuild-preview.yaml \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 部署到Cloud Run
 gcloud run deploy gateway-middleware-preview \
@@ -232,7 +232,7 @@ GET /metrics
 
 ## License
 
-Proprietary - AutoAds Platform
+Proprietary - AdsAI Platform
 
 ---
 

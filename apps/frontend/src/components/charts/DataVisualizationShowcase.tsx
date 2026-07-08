@@ -89,7 +89,7 @@ const DataVisualizationShowcase: React.FC = () => {
             数据可视化展示
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            体验AutoAds的现代化数据可视化系统，包括实时数据更新、交互式图表和高级分析功能
+            体验AdsAI的现代化数据可视化系统，包括实时数据更新、交互式图表和高级分析功能
           </p>
         </motion.div>
 

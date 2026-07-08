@@ -5,12 +5,12 @@ set -euo pipefail
 # 先决条件：已登录 gcloud，具备 Artifact Registry、Cloud Build、Run 权限
 # 安全更新策略：默认使用 --update-env-vars，避免覆盖已有的 secrets/env（如 DATABASE_URL_SECRET_NAME）
 
-PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-gen-lang-client-0944935873}}"
+PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-your-gcp-project-id}}"
 REGION="${REGION:-asia-northeast1}"
-REPO="${REPO:-autoads-services}"
-BUILD_LOG_BUCKET="${BUILD_LOG_BUCKET:-gs://autoads-build-logs-asia-northeast1}"
+REPO="${REPO:-adsai-services}"
+BUILD_LOG_BUCKET="${BUILD_LOG_BUCKET:-gs://adsai-build-logs-asia-northeast1}"
 STACK="${STACK:-prod}"
-RUN_SA="${RUN_SA:-codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com}"
+RUN_SA="${RUN_SA:-service-account@your-gcp-project-id.iam.gserviceaccount.com}"
 
 # 支持仅部署变更的服务：
 # - 如果设置了环境变量 SERVICES（逗号或空格分隔），则按其部署

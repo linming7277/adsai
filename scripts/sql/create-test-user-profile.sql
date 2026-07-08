@@ -1,7 +1,7 @@
 -- P0-1: 创建测试用户的user_profiles记录
 --
 -- 测试用户信息:
---   email: test-user@autoads.dev
+--   email: test-user@adsai.dev
 --   user_id: 37fd3629-a06a-47c8-b33a-31944afaa14c
 --
 -- 执行方式:
@@ -80,8 +80,8 @@ WHERE user_id = '37fd3629-a06a-47c8-b33a-31944afaa14c';
 -- 37fd3629-a06a-47c8-b33a-31944afaa14c | trial             | 2025-11-11 xx:xx:xx | 10000         | 10000                    | Test User    | true      | 2025-10-12 xx:xx:xx        | 2025-10-12 xx:xx:xx
 
 -- 后续验证步骤:
--- 1. 在浏览器中访问: https://www.urlchecker.dev/dashboard
--- 2. 使用 test-user@autoads.dev 登录
+-- 1. 在浏览器中访问: https://preview.example.com/dashboard
+-- 2. 使用 test-user@adsai.dev 登录
 -- 3. 检查 Dashboard 统计卡片是否正常显示
 -- 4. 检查浏览器控制台是否还有 406 错误
 -- 5. 检查订阅信息是否显示 "Trial - 30天剩余"

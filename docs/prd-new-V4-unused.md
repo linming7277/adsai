@@ -1,7 +1,7 @@
-# AutoAds 营销自动化平台 PRD V4.2
+# AdsAI 营销自动化平台 PRD V4.2
 
 ## 文档信息
-- **项目名称**: AutoAds 营销自动化平台
+- **项目名称**: AdsAI 营销自动化平台
 - **版本**: v4.3
 - **创建日期**: 2025-01-09
 - **最后更新**: 2025-09-10
@@ -12,7 +12,7 @@
 
 ## 执行摘要
 
-AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ AdsCenter（Google Ads管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、AdsCenter→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。本文档基于实际代码分析，准确描述现有功能特性和技术架构。
+AdsAI 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ AdsCenter（Google Ads管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、AdsCenter→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。本文档基于实际代码分析，准确描述现有功能特性和技术架构。
 
 ## 1. 项目概述
 
@@ -22,7 +22,7 @@ AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 S
 基于实际代码库分析（2025-09-10）
 
 #### 当前项目状态
-AutoAds 是一个运行中的营销自动化平台，三大核心功能实现状态：
+AdsAI 是一个运行中的营销自动化平台，三大核心功能实现状态：
 - **✅ BatchOpen（批量访问）**: 完整实现，支持 HTTP 和 Puppeteer 两种执行模式
 - **✅ SiteRank（网站排名）**: 完整实现，已集成 SimilarWeb API
 - **❌ AdsCenter（Google Ads 管理）**: 仅有UI界面，OAuth和链接管理未实现
@@ -693,7 +693,7 @@ Frontend (Next.js) ←→ API Layer (Go + GoFly) ←→ Database (MySQL 8.0)
 
 基于 GoFly 的 gform ORM，定义数据模型：
 ```go
-// app/autoads/auth/jwt.go
+// app/adsai/auth/jwt.go
 package auth
 
 import (
@@ -701,7 +701,7 @@ import (
     "gofly/utils/tools/gjwt"
 )
 
-type AutoAdsClaims struct {
+type AdsAIClaims struct {
     UserID       string `json:"user_id"`
     Email        string `json:"email"`
     Role         string `json:"role"`
@@ -714,7 +714,7 @@ type AutoAdsClaims struct {
 
 // 生成 JWT Token
 func GenerateToken(user *User) (string, error) {
-    claims := AutoAdsClaims{
+    claims := AdsAIClaims{
         UserID:       user.ID,
         Email:        user.Email,
         Role:         user.Role,
@@ -734,7 +734,7 @@ func GenerateToken(user *User) (string, error) {
 
 **Google OAuth 集成**:
 ```go
-// app/autoads/auth/oauth.go
+// app/adsai/auth/oauth.go
 package auth
 
 import (
@@ -1233,8 +1233,8 @@ CREATE TABLE consultation_requests (
 **1. 克隆项目**:
 ```bash
 # 克隆主项目
-git clone https://github.com/your-org/autoads.git
-cd autoads
+git clone https://github.com/your-org/adsai.git
+cd adsai
 
 # 初始化子模块
 git submodule update --init --recursive
@@ -1260,9 +1260,9 @@ APP_SECRET=your-secret-key-here
 # 数据库配置
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=autoads_dev
-DB_USER=autoads
-DB_PASSWORD=autoads123
+DB_NAME=adsai_dev
+DB_USER=adsai
+DB_PASSWORD=adsai123
 DB_MAX_IDLE=10
 DB_MAX_OPEN=100
 
@@ -1291,7 +1291,7 @@ SIMILARWEB_BASE_URL=https://data.similarweb.com/api/v1/data
 **环境配置 (config/config.yaml)**:
 ```yaml
 app:
-  name: autoads
+  name: adsai
   env: development
   port: 8080
   debug: true
@@ -1300,7 +1300,7 @@ database:
   driver: mysql
   host: localhost
   port: 3306
-  database: autoads
+  database: adsai
   username: root
   password: ""
   charset: utf8mb4
@@ -1455,8 +1455,8 @@ docker-compose up -d
 # 或手动启动服务
 # 启动 MySQL
 docker run --name mysql-dev -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=autoads_dev -e MYSQL_USER=autoads \
-  -e MYSQL_PASSWORD=autoads123 -p 3306:3306 -d mysql:8.0
+  -e MYSQL_DATABASE=adsai_dev -e MYSQL_USER=adsai \
+  -e MYSQL_PASSWORD=adsai123 -p 3306:3306 -d mysql:8.0
 
 # 启动 Redis
 docker run --name redis-dev -p 6379:6379 -d redis:7-alpine
@@ -1505,7 +1505,7 @@ git push origin feature/batchgo-optimization
 **测试规范**:
 ```go
 // 单元测试示例
-// app/autoads/batchgo/mode_selector_test.go
+// app/adsai/batchgo/mode_selector_test.go
 package batchgo
 
 import (
@@ -1565,7 +1565,7 @@ curl -X POST http://localhost:8080/api/v1/batchgo/execute \
 **2. 数据库调试**:
 ```bash
 # 连接 MySQL
-mysql -h localhost -u autoads -pautoads123 autoads_dev
+mysql -h localhost -u adsai -padsai123 adsai_dev
 
 # 查看表结构
 DESCRIBE users;
@@ -1581,10 +1581,10 @@ SELECT * FROM batch_tasks ORDER BY created_at DESC LIMIT 10;
 redis-cli
 
 # 查看缓存
-KEYS autoads:cache:*
+KEYS adsai:cache:*
 
 # 查看队列信息
-LLEN autoads:task:queue
+LLEN adsai:task:queue
 ```
 
 **4. 性能分析**:
@@ -1646,12 +1646,12 @@ echo "🚀 Deploying to $ENVIRONMENT environment..."
 
 # 构建镜像
 echo "🏗️ Building Docker image..."
-docker build -t autoads:$IMAGE_TAG .
+docker build -t adsai:$IMAGE_TAG .
 
 # 推送到镜像仓库
 echo "📤 Pushing image..."
-docker tag autoads:$IMAGE_TAG registry.example.com/autoads:$IMAGE_TAG
-docker push registry.example.com/autoads:$IMAGE_TAG
+docker tag adsai:$IMAGE_TAG registry.example.com/adsai:$IMAGE_TAG
+docker push registry.example.com/adsai:$IMAGE_TAG
 
 # 部署到测试环境
 echo "🎯 Deploying to test..."
@@ -1660,11 +1660,11 @@ kubectl apply -f k8s/test/
 
 # 等待部署完成
 echo "⏳ Waiting for deployment..."
-kubectl rollout status deployment/autoads -n test
+kubectl rollout status deployment/adsai -n test
 
 # 运行健康检查
 echo "🏥 Running health checks..."
-kubectl get pods -n test -l app=autoads
+kubectl get pods -n test -l app=adsai
 
 echo "✅ Deployment completed!"
 ```
@@ -1684,10 +1684,10 @@ go version
 **2. 数据库连接问题**:
 ```bash
 # 检查 MySQL 状态
-docker exec mysql-dev mysql -pautoads123 -e "STATUS"
+docker exec mysql-dev mysql -padsai123 -e "STATUS"
 
 # 重置数据库
-docker exec mysql-dev mysql -pautoads123 -e "DROP DATABASE IF EXISTS autoads_dev; CREATE DATABASE autoads_dev;"
+docker exec mysql-dev mysql -padsai123 -e "DROP DATABASE IF EXISTS adsai_dev; CREATE DATABASE adsai_dev;"
 ```
 
 **3. 缓存问题**:

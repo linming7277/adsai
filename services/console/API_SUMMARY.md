@@ -726,8 +726,8 @@ OFFER_SERVICE_URL=http://offer:8080
 ADSCENTER_SERVICE_URL=http://adscenter:8080
 
 # Admin Authentication
-SUPER_ADMIN_EMAIL=admin@autoads.com
-ADMIN_EMAILS=admin1@autoads.com,admin2@autoads.com
+SUPER_ADMIN_EMAIL=admin@adsai.com
+ADMIN_EMAILS=admin1@adsai.com,admin2@adsai.com
 ADMIN_UIDS=uid_123,uid_456
 
 # Supabase
@@ -759,4 +759,4 @@ services/console/internal/handlers/
 
 **版本**: V1.0
 **最后更新**: 2025-10-16
-**维护者**: AutoAds Backend Team
+**维护者**: AdsAI Backend Team

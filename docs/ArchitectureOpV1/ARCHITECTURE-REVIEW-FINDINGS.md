@@ -299,10 +299,10 @@ proxy-pool采用单体架构是**正确的设计决策**：
 **实际情况**:
 系统**已经部署了GCP API Gateway**：
 ```bash
-$ gcloud api-gateway gateways list --project=gen-lang-client-0944935873
+$ gcloud api-gateway gateways list --project=your-gcp-project-id
 GATEWAY_ID          DISPLAY_NAME            STATE   DEFAULT_HOSTNAME
-autoads-gw          Production API Gateway  ACTIVE  autoads-gw-885pd7lz.an.gateway.dev
-autoads-gw-preview  autoads-gw-preview      ACTIVE  autoads-gw-preview-885pd7lz.an.gateway.dev
+adsai-gw          Production API Gateway  ACTIVE  adsai-gw-885pd7lz.an.gateway.dev
+adsai-gw-preview  adsai-gw-preview      ACTIVE  adsai-gw-preview-885pd7lz.an.gateway.dev
 ```
 
 **当前功能**:

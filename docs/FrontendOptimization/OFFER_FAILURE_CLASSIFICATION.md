@@ -200,7 +200,7 @@
 ### 1. 自动错误分类
 
 ```go
-import "github.com/xxrenzhe/autoads/services/offer/internal/evaluation"
+import "github.com/linming7277/adsai/services/offer/internal/evaluation"
 
 // 在评估过程中捕获错误
 err := evaluateOffer(url)
@@ -220,7 +220,7 @@ if err != nil {
 ### 2. 手动创建失败原因
 
 ```go
-import "github.com/xxrenzhe/autoads/services/offer/internal/evaluation"
+import "github.com/linming7277/adsai/services/offer/internal/evaluation"
 
 // 手动创建特定类别的失败原因
 failureReason := evaluation.NewFailureReason(
@@ -299,7 +299,7 @@ type EvaluationFailureReason struct {
 ```
 PASS
 coverage: 93.1% of statements
-ok  	github.com/xxrenzhe/autoads/services/offer/internal/evaluation	0.565s
+ok  	github.com/linming7277/adsai/services/offer/internal/evaluation	0.565s
 ```
 
 ---
@@ -442,4 +442,4 @@ function RetryButton({ estimatedRetryTime }: { estimatedRetryTime: Date }) {
 ---
 
 **最后更新**: 2025-01-12
-**维护者**: AutoAds Backend Team
+**维护者**: AdsAI Backend Team

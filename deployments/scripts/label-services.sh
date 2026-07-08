@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Label Cloud Run services with autoads-stack=<stack> and optional extra labels.
+# Label Cloud Run services with adsai-stack=<stack> and optional extra labels.
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   SERVICES="offer billing batchopen adscenter siterank notifications" \
 #   ./deployments/scripts/label-services.sh
 
@@ -14,11 +14,11 @@ SERVICES=${SERVICES:-"offer billing batchopen adscenter siterank notifications"}
 EXTRA_LABELS=${EXTRA_LABELS:-}
 
 for s in $SERVICES; do
-  echo "[label] $s autoads-stack=$STACK $EXTRA_LABELS"
+  echo "[label] $s adsai-stack=$STACK $EXTRA_LABELS"
   gcloud run services update "$s" \
     --region "$REGION" \
     --project "$PROJECT_ID" \
-    --update-labels "autoads-stack=$STACK${EXTRA_LABELS:+,$EXTRA_LABELS}"
+    --update-labels "adsai-stack=$STACK${EXTRA_LABELS:+,$EXTRA_LABELS}"
 done
 echo "[DONE] labels updated"
 

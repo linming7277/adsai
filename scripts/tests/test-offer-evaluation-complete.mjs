@@ -17,7 +17,7 @@ import { chromium } from 'playwright';
 import { setupAuthForTest, cleanupAuthForTest } from './helpers/auth.mjs';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const API_GATEWAY_URL = BASE_URL;
 
 // 评估类型配置
@@ -48,21 +48,21 @@ const EVALUATION_TYPES = {
 // 测试用户配置
 const TEST_USERS = {
   starter: {
-    email: 'test-starter@autoads.dev',
+    email: 'test-starter@adsai.dev',
     subscription: 'starter',
     tokens: 1000,
     allowedEvaluations: ['basic'],
     restrictedEvaluations: ['ai', 'complete']
   },
   professional: {
-    email: 'test-professional@autoads.dev',
+    email: 'test-professional@adsai.dev',
     subscription: 'professional',
     tokens: 5000,
     allowedEvaluations: ['basic', 'ai', 'complete'],
     restrictedEvaluations: []
   },
   elite: {
-    email: 'test-elite@autoads.dev',
+    email: 'test-elite@adsai.dev',
     subscription: 'elite',
     tokens: 10000,
     allowedEvaluations: ['basic', 'ai', 'complete'],

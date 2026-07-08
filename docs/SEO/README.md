@@ -1,8 +1,8 @@
-# AutoAds SEO 优化指南
+# AdsAI SEO 优化指南
 
 ## 📋 概述
 
-本文档提供AutoAds平台搜索引擎优化的完整指南，包括最佳实践、实施步骤和维护建议。
+本文档提供AdsAI平台搜索引擎优化的完整指南，包括最佳实践、实施步骤和维护建议。
 
 ## 🎯 SEO优化目标
 
@@ -216,8 +216,8 @@ https://search.google.com/search-console
 ## 📞 联系和支持
 
 如有SEO相关问题或需要进一步协助，请联系：
-- **技术支持**: support@autoads.dev
-- **SEO咨询**: marketing@autoads.dev
+- **技术支持**: support@adsai.dev
+- **SEO咨询**: marketing@adsai.dev
 
 ---
 

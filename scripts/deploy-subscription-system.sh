@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_ID=${GCP_PROJECT_ID:-"codex-dev-440106"}
+PROJECT_ID=${GCP_PROJECT_ID:-"service-account-440106"}
 REGION=${GCP_REGION:-"asia-northeast1"}
 SERVICE_ACCOUNT_KEY=${GCP_SERVICE_ACCOUNT_KEY:-"secrets/gcp_codex_dev.json"}
 

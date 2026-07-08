@@ -9,8 +9,8 @@ import (
 
 	"cloud.google.com/go/vertexai/genai"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 // Service provides AI evaluation using Vertex AI Gemini API

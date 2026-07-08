@@ -8,7 +8,7 @@ set -e
 echo "🚀 开始预发环境集成测试..."
 
 # 预发环境配置
-export GCP_PROJECT="gen-lang-client-0944935873"
+export GCP_PROJECT="your-gcp-project-id"
 export GCP_REGION="asia-northeast1"
 
 # Supabase 数据库配置（预发环境）

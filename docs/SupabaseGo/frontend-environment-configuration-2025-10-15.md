@@ -18,12 +18,12 @@
 
 | 环境 | Gateway名称 | Gateway URL | 用途 |
 |------|------------|-------------|------|
-| **Preview** | autoads-gw-preview | https://autoads-gw-preview-885pd7lz.an.gateway.dev | 预发环境前端调用 |
-| **Production** | autoads-gw | https://autoads-gw-885pd7lz.an.gateway.dev | 生产环境前端调用 |
+| **Preview** | adsai-gw-preview | https://adsai-gw-preview-885pd7lz.an.gateway.dev | 预发环境前端调用 |
+| **Production** | adsai-gw | https://adsai-gw-885pd7lz.an.gateway.dev | 生产环境前端调用 |
 
 **命名规范**：
-- 生产环境：`autoads-gw`（无后缀）
-- 预发环境：`autoads-gw-preview`（带`-preview`后缀）
+- 生产环境：`adsai-gw`（无后缀）
+- 预发环境：`adsai-gw-preview`（带`-preview`后缀）
 
 ### Secret Manager配置
 
@@ -31,10 +31,10 @@
 
 ```bash
 # Preview环境
-NEXT_PUBLIC_API_BASE_URL_PREVIEW = https://autoads-gw-preview-885pd7lz.an.gateway.dev
+NEXT_PUBLIC_API_BASE_URL_PREVIEW = https://adsai-gw-preview-885pd7lz.an.gateway.dev
 
 # Production环境
-NEXT_PUBLIC_API_BASE_URL_PROD = https://autoads-gw-885pd7lz.an.gateway.dev
+NEXT_PUBLIC_API_BASE_URL_PROD = https://adsai-gw-885pd7lz.an.gateway.dev
 ```
 
 ---
@@ -94,10 +94,10 @@ BUILD_NAME=$(gcloud builds submit "$TARBALL" \
 
 ```bash
 # 本地开发环境配置（默认使用preview环境）
-NEXT_PUBLIC_API_BASE_URL=https://autoads-gw-preview-885pd7lz.an.gateway.dev
+NEXT_PUBLIC_API_BASE_URL=https://adsai-gw-preview-885pd7lz.an.gateway.dev
 
 # Production环境API Gateway (本地开发不推荐使用)
-# NEXT_PUBLIC_API_BASE_URL=https://autoads-gw-885pd7lz.an.gateway.dev
+# NEXT_PUBLIC_API_BASE_URL=https://adsai-gw-885pd7lz.an.gateway.dev
 ```
 
 ---
@@ -108,9 +108,9 @@ NEXT_PUBLIC_API_BASE_URL=https://autoads-gw-preview-885pd7lz.an.gateway.dev
 
 | 分支/Tag | 环境 | Gateway | 服务名 |
 |---------|------|---------|--------|
-| `main` | preview | autoads-gw-preview | frontend-preview |
-| `production` | prod | autoads-gw | frontend |
-| `v*.*.*` (tag) | prod | autoads-gw | frontend |
+| `main` | preview | adsai-gw-preview | frontend-preview |
+| `production` | prod | adsai-gw | frontend |
+| `v*.*.*` (tag) | prod | adsai-gw | frontend |
 
 **流程说明**：
 1. GitHub Actions根据分支/tag自动判断environment（preview/prod）
@@ -123,15 +123,15 @@ NEXT_PUBLIC_API_BASE_URL=https://autoads-gw-preview-885pd7lz.an.gateway.dev
 ```bash
 # Preview环境
 gcloud builds submit /tmp/frontend-source.tar.gz \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --config=deployments/cloudbuild/build-frontend-supabase.yaml \
-  --substitutions _IMAGE="asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/frontend:preview-latest",_SITE_URL="https://www.urlchecker.dev",_ENVIRONMENT="preview"
+  --substitutions _IMAGE="asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/frontend:preview-latest",_SITE_URL="https://preview.example.com",_ENVIRONMENT="preview"
 
 # Production环境
 gcloud builds submit /tmp/frontend-source.tar.gz \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --config=deployments/cloudbuild/build-frontend-supabase.yaml \
-  --substitutions _IMAGE="asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/frontend:prod-latest",_SITE_URL="https://www.autoads.dev",_ENVIRONMENT="prod"
+  --substitutions _IMAGE="asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/frontend:prod-latest",_SITE_URL="https://www.example.com",_ENVIRONMENT="prod"
 ```
 
 ---
@@ -143,7 +143,7 @@ gcloud builds submit /tmp/frontend-source.tar.gz \
 ```bash
 # 列出所有Gateway
 gcloud api-gateway gateways list \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="table(name,displayName,defaultHostname,state)"
 ```
 
@@ -153,22 +153,22 @@ gcloud api-gateway gateways list \
 # 查看Preview环境secret
 gcloud secrets versions access latest \
   --secret=NEXT_PUBLIC_API_BASE_URL_PREVIEW \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 查看Production环境secret
 gcloud secrets versions access latest \
   --secret=NEXT_PUBLIC_API_BASE_URL_PROD \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ### 3. 验证前端应用
 
 ```bash
 # 检查preview环境
-curl -s https://www.urlchecker.dev | grep -o 'autoads-gw-preview'
+curl -s https://preview.example.com | grep -o 'adsai-gw-preview'
 
 # 检查production环境
-curl -s https://www.autoads.dev | grep -o 'autoads-gw[^-]'
+curl -s https://www.example.com | grep -o 'adsai-gw[^-]'
 ```
 
 ---
@@ -182,9 +182,9 @@ curl -s https://www.autoads.dev | grep -o 'autoads-gw[^-]'
    - 如需测试生产环境，手动修改`.env.local`
 
 2. **Gateway命名规范**
-   - 生产环境：`autoads-gw`（无后缀）
-   - 预发环境：`autoads-gw-preview`（带后缀）
-   - ❌ 不要使用`autoads-gw-prod`
+   - 生产环境：`adsai-gw`（无后缀）
+   - 预发环境：`adsai-gw-preview`（带后缀）
+   - ❌ 不要使用`adsai-gw-prod`
 
 3. **Secret Manager更新**
    - 使用`gcloud secrets versions add`而非`create`更新已有secret
@@ -204,19 +204,19 @@ curl -s https://www.autoads.dev | grep -o 'autoads-gw[^-]'
 ```bash
 # 列出所有API_BASE_URL相关secrets
 gcloud secrets list \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --filter="name:NEXT_PUBLIC_API_BASE_URL"
 
 # 更新Preview环境secret
-echo "https://autoads-gw-preview-885pd7lz.an.gateway.dev" | \
+echo "https://adsai-gw-preview-885pd7lz.an.gateway.dev" | \
   gcloud secrets versions add NEXT_PUBLIC_API_BASE_URL_PREVIEW \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --data-file=-
 
 # 更新Production环境secret
-echo "https://autoads-gw-885pd7lz.an.gateway.dev" | \
+echo "https://adsai-gw-885pd7lz.an.gateway.dev" | \
   gcloud secrets versions add NEXT_PUBLIC_API_BASE_URL_PROD \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --data-file=-
 ```
 
@@ -224,14 +224,14 @@ echo "https://autoads-gw-885pd7lz.an.gateway.dev" | \
 
 ```bash
 # 查看Gateway详情
-gcloud api-gateway gateways describe autoads-gw-preview \
-  --project=gen-lang-client-0944935873 \
+gcloud api-gateway gateways describe adsai-gw-preview \
+  --project=your-gcp-project-id \
   --location=asia-northeast1
 
 # 列出Gateway API配置
 gcloud api-gateway api-configs list \
-  --api=autoads-api-preview \
-  --project=gen-lang-client-0944935873
+  --api=adsai-api-preview \
+  --project=your-gcp-project-id
 ```
 
 ---
@@ -253,21 +253,21 @@ gcloud api-gateway api-configs list \
 │                    Frontend应用                          │
 ├─────────────────────────────────────────────────────────┤
 │                                                           │
-│  Preview (www.urlchecker.dev)                            │
+│  Preview (preview.example.com)                            │
 │    ↓                                                      │
 │  NEXT_PUBLIC_API_BASE_URL_PREVIEW                        │
 │    ↓                                                      │
-│  autoads-gw-preview-885pd7lz.an.gateway.dev              │
+│  adsai-gw-preview-885pd7lz.an.gateway.dev              │
 │    ↓                                                      │
 │  Console-preview, Offer-preview, Billing-preview等        │
 │                                                           │
 │  ─────────────────────────────────────────────────       │
 │                                                           │
-│  Production (www.autoads.dev)                            │
+│  Production (www.example.com)                            │
 │    ↓                                                      │
 │  NEXT_PUBLIC_API_BASE_URL_PROD                           │
 │    ↓                                                      │
-│  autoads-gw-885pd7lz.an.gateway.dev                      │
+│  adsai-gw-885pd7lz.an.gateway.dev                      │
 │    ↓                                                      │
 │  Console, Offer, Billing等                                │
 │                                                           │

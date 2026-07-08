@@ -1,4 +1,4 @@
-// github.com/xxrenzhe/autoads/services/siterank/internal/events/config.go
+// github.com/linming7277/adsai/services/siterank/internal/events/config.go
 package events
 
 import "os"

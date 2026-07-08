@@ -1,4 +1,4 @@
-# AutoAds SSR 依赖审计报告
+# AdsAI SSR 依赖审计报告
 
 > **审计时间**: 2025-10-10
 > **审计范围**: `apps/frontend/src/app/dashboard/[organization]` 目录

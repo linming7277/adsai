@@ -1,7 +1,7 @@
 # Preview环境测试报告 - 最终版
 
 > **测试时间**: 2025-10-11
-> **测试环境**: https://www.urlchecker.dev
+> **测试环境**: https://preview.example.com
 > **测试方式**: HTTP API自动化测试
 > **测试执行**: Claude Code
 
@@ -152,7 +152,7 @@ npm run build
 | 项目 | 值 |
 |------|-----|
 | **环境** | Preview |
-| **域名** | https://www.urlchecker.dev |
+| **域名** | https://preview.example.com |
 | **最新提交** | 3557fa3e |
 | **镜像标签** | preview-3557fa3e |
 | **部署时间** | 2025-10-10 16:54 |

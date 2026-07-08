@@ -1,4 +1,4 @@
-# AutoAds API Specifications
+# AdsAI API Specifications
 
 This directory contains the canonical source of truth for all API specifications.
 

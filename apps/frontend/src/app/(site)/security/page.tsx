@@ -13,7 +13,7 @@ type SecuritySection = {
 };
 
 export const metadata = {
-  title: 'Security & Compliance - AutoAds',
+  title: 'Security & Compliance - AdsAI',
 };
 
 export default async function SecurityPage() {

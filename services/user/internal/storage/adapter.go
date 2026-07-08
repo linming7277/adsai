@@ -10,9 +10,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/services/user/internal/config"
-	"github.com/xxrenzhe/autoads/services/user/internal/models"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/services/user/internal/config"
+	"github.com/linming7277/adsai/services/user/internal/models"
 )
 
 // DualDatabaseAdapter 支持双数据库（Cloud SQL + Supabase）的适配器

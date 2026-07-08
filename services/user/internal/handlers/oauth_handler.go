@@ -15,12 +15,12 @@ import (
 	"golang.org/x/oauth2/google"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xxrenzhe/autoads/pkg/apierrors"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	usercfg "github.com/xxrenzhe/autoads/services/user/internal/config"
-	"github.com/xxrenzhe/autoads/services/user/internal/repositories"
-	"github.com/xxrenzhe/autoads/services/user/internal/services"
-	tokencrypto "github.com/xxrenzhe/autoads/services/user/internal/crypto"
+	"github.com/linming7277/adsai/pkg/apierrors"
+	"github.com/linming7277/adsai/pkg/middleware"
+	usercfg "github.com/linming7277/adsai/services/user/internal/config"
+	"github.com/linming7277/adsai/services/user/internal/repositories"
+	"github.com/linming7277/adsai/services/user/internal/services"
+	tokencrypto "github.com/linming7277/adsai/services/user/internal/crypto"
 )
 
 // OAuthHandler handles OAuth-related endpoints

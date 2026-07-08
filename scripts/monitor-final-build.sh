@@ -6,7 +6,7 @@ echo "Commit: c3172b5f"
 echo "时间: $(date)"
 echo ""
 
-REPO="xxrenzhe/autoads"
+REPO="linming7277/adsai"
 CHECK_INTERVAL=30
 MAX_CHECKS=60  # 30分钟
 

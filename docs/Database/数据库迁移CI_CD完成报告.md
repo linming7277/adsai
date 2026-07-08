@@ -179,7 +179,7 @@ gh workflow run database-migration-cloudrun.yml \
 
 ```bash
 # 连接数据库
-gcloud sql connect autoads --user=postgres --database=autoads_db
+gcloud sql connect adsai --user=postgres --database=adsai_db
 
 # 检查Schema
 \dn

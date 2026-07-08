@@ -14,18 +14,18 @@
 ### 1. 基础设施（100% 完成）
 
 #### Cloud 环境
-- ✅ GCP 项目：gen-lang-client-0944935873
+- ✅ GCP 项目：your-gcp-project-id
 - ✅ 区域：asia-northeast1
 - ✅ Cloud SQL：PostgreSQL（私网）
 - ✅ Serverless VPC Access：cr-conn-default-ane1（10.8.0.0/28）
 - ✅ 防火墙规则：allow-serverless-vpc-to-sql
 - ✅ Pub/Sub：domain-events-prod + 订阅（identity/offer/workflow/billing）
 - ✅ Secret Manager：DATABASE_URL, GOOGLE_ADS_*, NEXTAUTH_SECRET, INTERNAL_JWT_SECRET
-- ✅ Cloud Build 日志：gs://autoads-build-logs-asia-northeast1
-- ✅ Artifact Registry：autoads-services
+- ✅ Cloud Build 日志：gs://adsai-build-logs-asia-northeast1
+- ✅ Artifact Registry：adsai-services
 
 #### API Gateway（100% 完成）
-- ✅ Gateway ID：autoads-gw-885pd7lz.an.gateway.dev (ACTIVE)
+- ✅ Gateway ID：adsai-gw-885pd7lz.an.gateway.dev (ACTIVE)
 - ✅ 健康检查：/api/health → 200
 - ✅ 受保护路由：JWT验证（/api/v1/offers → 401 without JWT）
 - ✅ 新增路由：/api/health, /api/health/console
@@ -98,14 +98,14 @@
 - ✅ SSR 瘦身：重依赖（google-ads-api, googleapis, puppeteer）指向本地桩
 
 #### Hosting 配置（100% 完成）
-- ✅ 站点：autoads-preview, autoads-prod
+- ✅ 站点：adsai-preview, adsai-prod
 - ✅ 默认 URL：
-  - Preview: https://autoads-preview.web.app
-  - Production: https://autoads-prod.web.app
+  - Preview: https://adsai-preview.web.app
+  - Production: https://adsai-prod.web.app
 - ✅ 自定义域（待绑定）：
-  - Preview: www.urlchecker.dev
-  - Production: www.autoads.dev
-- ✅ 防收录：middleware 对 urlchecker.dev 返回 X-Robots-Tag: noindex
+  - Preview: preview.example.com
+  - Production: www.example.com
+- ✅ 防收录：middleware 对 preview.example.com 返回 X-Robots-Tag: noindex
 
 #### Prisma 移除（100% 完成）
 - ✅ 移除前端 @prisma/client、prisma 依赖

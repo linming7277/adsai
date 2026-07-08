@@ -33,8 +33,8 @@ gcloud builds submit --config services/billing/cloudbuild.yaml
 
 2. **填写注册信息**:
    - [ ] Email: _____________ (你的工作邮箱)
-   - [ ] Stack name: `autoads` (或 `autoads-preview`)
-   - [ ] Company: Kiro / AutoAds
+   - [ ] Stack name: `adsai` (或 `adsai-preview`)
+   - [ ] Company: Kiro / AdsAI
    - [ ] Role: Developer
 
 3. **选择 Free Plan**:
@@ -49,7 +49,7 @@ gcloud builds submit --config services/billing/cloudbuild.yaml
    - [ ] 点击验证链接
 
 5. **登录到你的 Grafana 实例**:
-   - URL 格式: `https://autoads.grafana.net` (根据你的 stack name)
+   - URL 格式: `https://adsai.grafana.net` (根据你的 stack name)
    - [ ] 记录这个 URL: _________________________
 
 ---
@@ -59,7 +59,7 @@ gcloud builds submit --config services/billing/cloudbuild.yaml
 运行脚本获取所有服务的 /metrics 端点:
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 ./scripts/get-metrics-urls.sh
 ```
 
@@ -89,7 +89,7 @@ gcloud run deploy billing-preview \
 #### 3.1 添加 Billing 数据源
 
 1. **进入数据源配置**:
-   - [ ] 登录 Grafana Cloud: `https://autoads.grafana.net`
+   - [ ] 登录 Grafana Cloud: `https://adsai.grafana.net`
    - [ ] 点击左侧菜单 **⚙️ Configuration → Data sources**
    - [ ] 点击 **Add data source**
 
@@ -99,7 +99,7 @@ gcloud run deploy billing-preview \
 
 3. **配置 Billing 数据源**:
    ```yaml
-   Name: AutoAds Billing
+   Name: AdsAI Billing
    URL: <billing-preview URL from Step 2>
    # 例如: https://billing-preview-xxx-an.a.run.app/metrics
 
@@ -123,7 +123,7 @@ gcloud run deploy billing-preview \
 
 - [ ] 重复步骤 3.1,使用:
   ```yaml
-  Name: AutoAds Offer
+  Name: AdsAI Offer
   URL: <offer-preview URL>/metrics
   ```
 
@@ -131,7 +131,7 @@ gcloud run deploy billing-preview \
 
 - [ ] 重复步骤 3.1,使用:
   ```yaml
-  Name: AutoAds Adscenter
+  Name: AdsAI Adscenter
   URL: <adscenter-preview URL>/metrics
   ```
 
@@ -145,10 +145,10 @@ gcloud run deploy billing-preview \
    - [ ] 点击左侧菜单 **🔍 Explore** (放大镜图标)
 
 2. **选择数据源**:
-   - [ ] 在顶部下拉菜单选择 **AutoAds Billing**
+   - [ ] 在顶部下拉菜单选择 **AdsAI Billing**
 
 3. **运行测试查询**:
-   - [ ] 在查询框输入: `autoads_billing_tokens_consumed_total`
+   - [ ] 在查询框输入: `adsai_billing_tokens_consumed_total`
    - [ ] 点击 **Run query** (或按 Shift+Enter)
 
 4. **验证结果**:
@@ -158,13 +158,13 @@ gcloud run deploy billing-preview \
 **测试其他 metrics**:
 ```promql
 # Offer metrics
-autoads_offer_offers_created_total
+adsai_offer_offers_created_total
 
 # Ad metrics
-autoads_adscenter_ads_created_total
+adsai_adscenter_ads_created_total
 
 # HTTP metrics
-autoads_billing_http_requests_total
+adsai_billing_http_requests_total
 ```
 
 **如果看不到数据**:
@@ -187,10 +187,10 @@ autoads_billing_http_requests_total
 
 3. **配置 Dashboard**:
    ```yaml
-   Name: AutoAds Billing Overview (可自定义)
-   Folder: General (或创建新文件夹 "AutoAds")
+   Name: AdsAI Billing Overview (可自定义)
+   Folder: General (或创建新文件夹 "AdsAI")
 
-   Data Source for Billing: AutoAds Billing
+   Data Source for Billing: AdsAI Billing
    ```
 
 4. **导入**:
@@ -201,7 +201,7 @@ autoads_billing_http_requests_total
 
 - [ ] 重复步骤 5.1,使用:
   - 文件: `monitoring/prometheus/dashboards/ad-performance.json`
-  - Data Source: **AutoAds Adscenter**
+  - Data Source: **AdsAI Adscenter**
 
 #### 5.3 创建 Home Dashboard (可选)
 
@@ -213,19 +213,19 @@ autoads_billing_http_requests_total
 
 **Panel 1: Token 消耗速率**
 ```yaml
-Data source: AutoAds Billing
-Query: sum(rate(autoads_billing_tokens_consumed_total[5m]))
+Data source: AdsAI Billing
+Query: sum(rate(adsai_billing_tokens_consumed_total[5m]))
 Visualization: Stat
 Title: Token 消耗速率 (tokens/sec)
 ```
 
 **Panel 2: Offer 成功率**
 ```yaml
-Data source: AutoAds Offer
+Data source: AdsAI Offer
 Query:
-  sum(rate(autoads_offer_offers_completed_total[5m]))
+  sum(rate(adsai_offer_offers_completed_total[5m]))
   /
-  sum(rate(autoads_offer_offers_created_total[5m]))
+  sum(rate(adsai_offer_offers_created_total[5m]))
 Visualization: Stat
 Unit: Percent (0-1)
 Title: Offer 成功率
@@ -233,14 +233,14 @@ Title: Offer 成功率
 
 **Panel 3: Token 消耗趋势**
 ```yaml
-Data source: AutoAds Billing
-Query: sum(rate(autoads_billing_tokens_consumed_total[5m])) by (operation)
+Data source: AdsAI Billing
+Query: sum(rate(adsai_billing_tokens_consumed_total[5m])) by (operation)
 Visualization: Time series
 Title: Token 消耗 by Operation
 ```
 
 4. - [ ] 点击 **Save dashboard**
-5. - [ ] 输入名称: "AutoAds Overview"
+5. - [ ] 输入名称: "AdsAI Overview"
 6. - [ ] 点击 **Save**
 
 ---
@@ -276,12 +276,12 @@ Title: Token 消耗 by Operation
 2. **创建第一个告警**:
    - [ ] **Alerting** → **Alert rules** → **New alert rule**
    - [ ] Rule name: `High Token Refund Rate`
-   - [ ] Data source: `AutoAds Billing`
+   - [ ] Data source: `AdsAI Billing`
    - [ ] Query A:
      ```promql
-     sum(rate(autoads_billing_tokens_refunded_total[5m]))
+     sum(rate(adsai_billing_tokens_refunded_total[5m]))
      /
-     sum(rate(autoads_billing_tokens_consumed_total[5m]))
+     sum(rate(adsai_billing_tokens_consumed_total[5m]))
      ```
    - [ ] Condition: `WHEN last() OF A IS ABOVE 0.10`
    - [ ] Evaluate every: `1m`, For: `5m`

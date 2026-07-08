@@ -10,7 +10,7 @@
         "type": "stat",
         "targets": [
           {
-            "expr": "autoads_offer_circuit_breaker_state{breaker=\"billing\"}",
+            "expr": "adsai_offer_circuit_breaker_state{breaker=\"billing\"}",
             "legendFormat": "{{ breaker }}"
           }
         ],
@@ -36,7 +36,7 @@
         "type": "stat",
         "targets": [
           {
-            "expr": "(rate(autoads_offer_circuit_breaker_requests_total{result=\"success\"}[5m]) / rate(autoads_offer_circuit_breaker_requests_total[5m])) * 100",
+            "expr": "(rate(adsai_offer_circuit_breaker_requests_total{result=\"success\"}[5m]) / rate(adsai_offer_circuit_breaker_requests_total[5m])) * 100",
             "legendFormat": "Success Rate"
           }
         ],
@@ -61,7 +61,7 @@
         "type": "stat",
         "targets": [
           {
-            "expr": "sum(increase(autoads_offer_circuit_breaker_requests_total[5m]))",
+            "expr": "sum(increase(adsai_offer_circuit_breaker_requests_total[5m]))",
             "legendFormat": "Total Requests"
           }
         ],
@@ -73,7 +73,7 @@
         "type": "stat",
         "targets": [
           {
-            "expr": "autoads_offer_circuit_breaker_failures_total{type=\"consecutive\"}",
+            "expr": "adsai_offer_circuit_breaker_failures_total{type=\"consecutive\"}",
             "legendFormat": "Consecutive Failures"
           }
         ],
@@ -97,11 +97,11 @@
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(autoads_offer_circuit_breaker_requests_total{result=\"success\"}[1m])",
+            "expr": "rate(adsai_offer_circuit_breaker_requests_total{result=\"success\"}[1m])",
             "legendFormat": "Success"
           },
           {
-            "expr": "rate(autoads_offer_circuit_breaker_requests_total{result=\"failure\"}[1m])",
+            "expr": "rate(adsai_offer_circuit_breaker_requests_total{result=\"failure\"}[1m])",
             "legendFormat": "Failure"
           }
         ],
@@ -113,7 +113,7 @@
         "type": "graph",
         "targets": [
           {
-            "expr": "(rate(autoads_offer_circuit_breaker_requests_total{result=\"failure\"}[5m]) / rate(autoads_offer_circuit_breaker_requests_total[5m])) * 100",
+            "expr": "(rate(adsai_offer_circuit_breaker_requests_total{result=\"failure\"}[5m]) / rate(adsai_offer_circuit_breaker_requests_total[5m])) * 100",
             "legendFormat": "Failure Rate"
           }
         ],
@@ -130,7 +130,7 @@
         "type": "graph",
         "targets": [
           {
-            "expr": "autoads_offer_circuit_breaker_state{breaker=\"billing\"}",
+            "expr": "adsai_offer_circuit_breaker_state{breaker=\"billing\"}",
             "legendFormat": "State (0=Closed, 1=Half-Open, 2=Open)"
           }
         ],
@@ -142,17 +142,17 @@
         "type": "table",
         "targets": [
           {
-            "expr": "autoads_offer_circuit_breaker_successes_total{type=\"total\"}",
+            "expr": "adsai_offer_circuit_breaker_successes_total{type=\"total\"}",
             "legendFormat": "Total Successes",
             "instant": true
           },
           {
-            "expr": "autoads_offer_circuit_breaker_failures_total{type=\"total\"}",
+            "expr": "adsai_offer_circuit_breaker_failures_total{type=\"total\"}",
             "legendFormat": "Total Failures",
             "instant": true
           },
           {
-            "expr": "autoads_offer_circuit_breaker_failures_total{type=\"consecutive\"}",
+            "expr": "adsai_offer_circuit_breaker_failures_total{type=\"consecutive\"}",
             "legendFormat": "Consecutive Failures",
             "instant": true
           }
@@ -165,7 +165,7 @@
         "type": "stat",
         "targets": [
           {
-            "expr": "changes(autoads_offer_circuit_breaker_state[10m])",
+            "expr": "changes(adsai_offer_circuit_breaker_state[10m])",
             "legendFormat": "State Changes"
           }
         ],

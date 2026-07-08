@@ -4,10 +4,10 @@
 #
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 SERVICE_NAME="siterank-preview"
-REPO="autoads-services"
+REPO="adsai-services"
 IMAGE_TAG="preview-$(date +%Y%m%d-%H%M%S)"
 
 echo "🚀 开始部署Siterank服务..."
@@ -19,7 +19,7 @@ echo ""
 
 # 1. 从项目根目录构建镜像
 echo "📦 步骤1: 构建Docker镜像..."
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 gcloud builds submit \
   --config=services/siterank/cloudbuild.yaml \
   --substitutions=_IMAGE_TAG="$IMAGE_TAG" \
@@ -40,7 +40,7 @@ gcloud run deploy $SERVICE_NAME \
   --timeout=300 \
   --concurrency=80 \
   --max-instances=10 \
-  --service-account=codex-dev@$PROJECT_ID.iam.gserviceaccount.com \
+  --service-account=service-account@$PROJECT_ID.iam.gserviceaccount.com \
   --set-env-vars="GCP_PROJECT_ID=$PROJECT_ID" \
   --project=$PROJECT_ID
 

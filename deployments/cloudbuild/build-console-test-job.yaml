@@ -33,7 +33,7 @@ steps:
     id: 'push-test-image'
 
 substitutions:
-  _IMAGE: 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/console-integration-tests:latest'
+  _IMAGE: 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/console-integration-tests:latest'
 
 options:
   machineType: 'E2_HIGHCPU_8'

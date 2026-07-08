@@ -5,7 +5,7 @@ import (
 	"time"
 
 	redis "github.com/redis/go-redis/v9"
-	pcache "github.com/xxrenzhe/autoads/pkg/cache"
+	pcache "github.com/linming7277/adsai/pkg/cache"
 )
 
 // tokenBucketLua implements a simple token bucket allowing fractional refill per ms.

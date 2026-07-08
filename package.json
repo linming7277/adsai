@@ -1,7 +1,7 @@
 {
-  "name": "autoads-monorepo",
+  "name": "adsai-monorepo",
   "version": "3.0.0",
-  "description": "AutoAds SaaS Platform - Go Backend + Next.js Frontend",
+  "description": "AdsAI SaaS Platform - Go Backend + Next.js Frontend",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -18,7 +18,7 @@
     "test": "npm run test:frontend",
     "test:frontend": "cd apps/frontend && npm test",
     "test:backend": "cd services && go test ./...",
-    "docker:build": "docker build -f configs/docker/Dockerfile.monorepo -t autoads:latest .",
+    "docker:build": "docker build -f configs/docker/Dockerfile.monorepo -t adsai:latest .",
     "docker:dev": "docker-compose up -d",
     "docker:prod": "docker-compose -f deployments/docker-compose/docker-compose.prod.yml up -d",
     "deploy:preview": "./deployments/scripts/deploy.sh preview",
@@ -48,16 +48,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xxrenzhe/autoads.git"
+    "url": "https://github.com/linming7277/adsai.git"
   },
   "keywords": [
     "saas",
     "go",
     "nextjs",
     "docker",
-    "autoads"
+    "adsai"
   ],
-  "author": "AutoAds Team",
+  "author": "AdsAI Team",
   "license": "MIT",
   "packageManager": "npm@10.8.2",
   "dependencies": {

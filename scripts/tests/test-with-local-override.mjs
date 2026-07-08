@@ -22,8 +22,8 @@ const LOCAL_CONFIG = {
     port: 8080,
     protocol: 'http'
   },
-  targetDomain: 'www.urlchecker.dev',
-  targetApiDomain: 'api.urlchecker.dev'
+  targetDomain: 'preview.example.com',
+  targetApiDomain: 'api.preview.example.com'
 };
 
 class LocalDomainTester {

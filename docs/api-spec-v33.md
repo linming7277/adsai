@@ -84,13 +84,13 @@ type Response struct {
 
 ```go
 // 任务进度推送
-ws://autoads.dev/ws/business/batchgo/task/{task_id}/progress
+ws://example.com/ws/business/batchgo/task/{task_id}/progress
 
 // 系统通知
-ws://autoads.dev/ws/business/user/notifications
+ws://example.com/ws/business/user/notifications
 
 // 管理员实时监控
-ws://autoads.dev/ws/admin/dashboard/stats
+ws://example.com/ws/admin/dashboard/stats
 ```
 
 ### 5.7 API限流策略

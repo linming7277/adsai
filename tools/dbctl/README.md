@@ -1,6 +1,6 @@
 # dbctl - 数据库管理CLI工具
 
-dbctl 是用于管理AutoAds数据库的命令行工具，通过 db-admin 服务提供统一的数据库操作接口。
+dbctl 是用于管理AdsAI数据库的命令行工具，通过 db-admin 服务提供统一的数据库操作接口。
 
 ## 功能特性
 
@@ -77,7 +77,7 @@ dbctl deploy-schemas
 
 ```bash
 # 创建新的DDL迁移文件
-dbctl ddl create useractivity 001 --author "admin@autoads.dev"
+dbctl ddl create useractivity 001 --author "admin@adsai.dev"
 
 # 验证DDL迁移文件
 dbctl ddl validate useractivity 001

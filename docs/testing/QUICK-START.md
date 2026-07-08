@@ -18,7 +18,7 @@
 
 ```bash
 # 导出测试数据库 URL
-export TEST_DATABASE_URL='postgresql://test:test@localhost:5433/autoads_test?sslmode=disable'
+export TEST_DATABASE_URL='postgresql://test:test@localhost:5433/adsai_test?sslmode=disable'
 ```
 
 或者创建 `.env.test` 文件（已提供）。
@@ -57,7 +57,7 @@ package handlers
 
 import (
     "testing"
-    "github.com/xxrenzhe/autoads/services/offer/testutil"
+    "github.com/linming7277/adsai/services/offer/testutil"
 )
 
 func TestHandler_CreateOffer_Integration(t *testing.T) {
@@ -92,7 +92,7 @@ package projectors
 
 import (
     "testing"
-    "github.com/xxrenzhe/autoads/services/offer/testutil"
+    "github.com/linming7277/adsai/services/offer/testutil"
 )
 
 func TestOfferProjector_HandleOfferCreated_Integration(t *testing.T) {

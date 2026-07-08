@@ -1,5 +1,5 @@
 # ==============================================================================
-# Database Migrator Dockerfile - Optimized for AutoAds
+# Database Migrator Dockerfile - Optimized for AdsAI
 # ==============================================================================
 # Multi-stage build with minimal runtime image and optimized layers
 
@@ -20,8 +20,8 @@ RUN apk add --no-cache ca-certificates curl && \
 FROM alpine:3.18
 
 # Metadata
-LABEL maintainer="AutoAds DevOps Team" \
-      description="Database migration runner for AutoAds services" \
+LABEL maintainer="AdsAI DevOps Team" \
+      description="Database migration runner for AdsAI services" \
       version="2.0.0" \
       build.date="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
       go.version="1.25"

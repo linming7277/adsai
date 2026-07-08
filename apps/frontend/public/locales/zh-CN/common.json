@@ -141,7 +141,7 @@
     "terms": "服务条款",
     "securityDetails": "安全详情",
     "securityNotice": "安全公告",
-    "description": "AutoAds 通过 AI 评估、自动化协同与跨渠道数据洞察，帮助增长团队持续提升广告投放效率与转化表现。",
+    "description": "AdsAI 通过 AI 评估、自动化协同与跨渠道数据洞察，帮助增长团队持续提升广告投放效率与转化表现。",
     "allRightsReserved": "保留所有权利"
   },
   "tokens": {
@@ -546,7 +546,7 @@
     },
     "gettingStarted": {
       "title": "创建你的第一个 Offer",
-      "description": "导入或录入落地页后，AutoAds 会自动识别品牌与渠道，并提供 AI 评估与优化建议。",
+      "description": "导入或录入落地页后，AdsAI 会自动识别品牌与渠道，并提供 AI 评估与优化建议。",
       "connectAdsAccount": "连接广告账号",
       "quickEvaluationTitle": "快速发起评估",
       "quickEvaluationDescription": "选择落地页后触发 AI 评估，十分钟内生成结构化诊断与优先级建议。",

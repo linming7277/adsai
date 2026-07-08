@@ -3,8 +3,8 @@ set -euo pipefail
 
 # E2E smoke for settings endpoints via Gateway or direct service URL
 # Usage examples:
-#   HOST=autoads-gw-xxxx.an.gateway.dev AUTH="Bearer <firebase_id_token>" ./scripts/ops/e2e-settings.sh
-#   BASE=https://autoads-gw-xxxx.an.gateway.dev AUTH="Bearer <token>" OFFER_ID=abc ./scripts/ops/e2e-settings.sh
+#   HOST=adsai-gw-xxxx.an.gateway.dev AUTH="Bearer <firebase_id_token>" ./scripts/ops/e2e-settings.sh
+#   BASE=https://adsai-gw-xxxx.an.gateway.dev AUTH="Bearer <token>" OFFER_ID=abc ./scripts/ops/e2e-settings.sh
 
 HOST=${HOST:-}
 BASE=${BASE:-}

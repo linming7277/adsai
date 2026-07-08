@@ -5,7 +5,7 @@
 
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 SERVICE_NAME="siterank-preview"
 IMAGE_NAME="siterank"
@@ -19,7 +19,7 @@ COMMIT_SHA=$(git rev-parse --short HEAD)
 IMAGE_TAG="preview-${COMMIT_SHA}"
 
 echo "📦 Building Docker image..."
-echo "   Image: ${REGISTRY}/${PROJECT_ID}/autoads-services/${IMAGE_NAME}:${IMAGE_TAG}"
+echo "   Image: ${REGISTRY}/${PROJECT_ID}/adsai-services/${IMAGE_NAME}:${IMAGE_TAG}"
 echo ""
 
 # Create optimized tarball
@@ -50,9 +50,9 @@ echo ""
 # Deploy to Cloud Run
 echo "🚢 Deploying to Cloud Run..."
 gcloud run deploy ${SERVICE_NAME} \
-  --image=${REGISTRY}/${PROJECT_ID}/autoads-services/${IMAGE_NAME}:${IMAGE_TAG} \
+  --image=${REGISTRY}/${PROJECT_ID}/adsai-services/${IMAGE_NAME}:${IMAGE_TAG} \
   --region=${REGION} \
-  --service-account=codex-dev@${PROJECT_ID}.iam.gserviceaccount.com \
+  --service-account=service-account@${PROJECT_ID}.iam.gserviceaccount.com \
   --project=${PROJECT_ID} \
   --platform=managed \
   --allow-unauthenticated

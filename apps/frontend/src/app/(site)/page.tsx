@@ -18,9 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('default.title'),
     description: t('default.description'),
     keywords: t('default.keywords'),
-    authors: [{ name: 'AutoAds Team' }],
-    creator: 'AutoAds',
-    publisher: 'AutoAds',
+    authors: [{ name: 'AdsAI Team' }],
+    creator: 'AdsAI',
+    publisher: 'AdsAI',
     openGraph: {
       type: 'website',
       locale: i18n.language,
@@ -127,7 +127,7 @@ function buildStructuredData({
         sameAs: sameAs.length > 0 ? sameAs : undefined,
         contactPoint: {
           '@type': 'ContactPoint',
-          email: 'support@autoads.dev',
+          email: 'support@adsai.dev',
           contactType: 'customer support',
           availableLanguage: ['en', 'zh-CN'],
         },

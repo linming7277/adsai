@@ -7,7 +7,7 @@ set -e
 
 echo "🔍 数据库迁移干运行测试开始..."
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 
 # 获取数据库连接信息
@@ -32,7 +32,7 @@ WORK_DIR="/tmp/migration-dry-run-$(date +%s)"
 mkdir -p $WORK_DIR
 
 echo "📁 准备迁移文件..."
-cp -r /Users/jason/Documents/Kiro/autoads/services/billing/migrations $WORK_DIR/
+cp -r /path/to/adsai/services/billing/migrations $WORK_DIR/
 
 # 1. SQL语法验证
 echo "1️⃣ SQL语法验证..."
@@ -365,4 +365,4 @@ echo ""
 
 EOF
 
-chmod +x /Users/jason/Documents/Kiro/autoads/scripts/migration-dry-run.sh
+chmod +x /path/to/adsai/scripts/migration-dry-run.sh

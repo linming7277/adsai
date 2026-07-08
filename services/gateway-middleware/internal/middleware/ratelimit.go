@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/config"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/metrics"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/config"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/metrics"
 )
 
 // RateLimitCache defines the cache interface needed for rate limiting

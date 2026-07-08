@@ -326,7 +326,7 @@ if __name__ == "__main__":
 export SIMILARWEB_BASE_URL="https://data.similarweb.com/api/v1/data"
 
 # 数据库和Redis配置
-export DATABASE_URL="mysql://user:password@localhost:3306/autoads_gofly"
+export DATABASE_URL="mysql://user:password@localhost:3306/adsai_gofly"
 export REDIS_URL="redis://localhost:6379"
 ```
 

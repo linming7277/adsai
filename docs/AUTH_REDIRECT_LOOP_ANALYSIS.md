@@ -196,7 +196,7 @@ WHERE proname LIKE '%auth%user%';
 
 ```
 名称: sb-jzzvizacfyipzdyiqfzb-auth-token
-域名: .urlchecker.dev 或 urlchecker.dev
+域名: .preview.example.com 或 preview.example.com
 路径: /
 值: base64编码的JSON
 ```
@@ -211,10 +211,10 @@ WHERE proname LIKE '%auth%user%';
 
 ```bash
 # 使用curl跟踪重定向
-curl -L -v https://www.urlchecker.dev/dashboard 2>&1 | grep -E "< HTTP|< location"
+curl -L -v https://preview.example.com/dashboard 2>&1 | grep -E "< HTTP|< location"
 
 # 检查是否有循环
-curl -L --max-redirs 5 https://www.urlchecker.dev/dashboard
+curl -L --max-redirs 5 https://preview.example.com/dashboard
 ```
 
 ### 5. 检查日志

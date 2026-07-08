@@ -44,7 +44,7 @@ services:
       context: ./services/billing
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/autoads_local
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/adsai_local
       - REDIS_URL=redis://redis:6379
       - PORT=8081
     networks:
@@ -58,7 +58,7 @@ services:
       context: ./services/offer
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/autoads_local
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/adsai_local
       - PORT=8082
     networks:
       - local-testing
@@ -70,7 +70,7 @@ services:
       context: ./services/siterank
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/autoads_local
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/adsai_local
       - PORT=8083
       - SIMILARWEB_API_KEY=your-test-key
       - GEMINI_API_KEY=your-test-key
@@ -84,7 +84,7 @@ services:
       context: ./services/useractivity
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/autoads_local
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/adsai_local
       - PORT=8084
     networks:
       - local-testing
@@ -96,7 +96,7 @@ services:
       context: ./services/console
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/autoads_local
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/adsai_local
       - PORT=8085
     networks:
       - local-testing
@@ -128,7 +128,7 @@ services:
       context: ./services/adscenter
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/autoads_local
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/adsai_local
       - PORT=8087
     networks:
       - local-testing
@@ -139,7 +139,7 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_DB=autoads_local
+      - POSTGRES_DB=adsai_local
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
     ports:
@@ -198,8 +198,8 @@ services:
       context: .
       dockerfile: docker/test-runner.Dockerfile
     environment:
-      - PREVIEW_BASE=http://www.urlchecker.dev
-      - API_BASE_URL=http://api.urlchecker.dev
+      - PREVIEW_BASE=http://preview.example.com
+      - API_BASE_URL=http://api.preview.example.com
       - HEADLESS=false
     volumes:
       - ./scripts/tests:/app/tests

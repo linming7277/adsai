@@ -1,7 +1,7 @@
 substitutions:
   _SERVICE: frontend-preview
   _REGION: asia-northeast1
-  _IMAGE: asia-northeast1-docker.pkg.dev/$PROJECT_ID/autoads-services/frontend:preview-v3
+  _IMAGE: asia-northeast1-docker.pkg.dev/$PROJECT_ID/adsai-services/frontend:preview-v3
 
 steps:
   - name: gcr.io/cloud-builders/docker

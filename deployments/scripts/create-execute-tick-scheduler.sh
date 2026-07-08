@@ -8,7 +8,7 @@ set -euo pipefail
 #
 # Create or update a Cloud Scheduler job to call adscenter execute-tick periodically with OIDC.
 # Usage:
-#   PROJECT_ID=gen-lang-client-... REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   MAX=2 SCHEDULE="* * * * *" ./deployments/scripts/create-execute-tick-scheduler.sh
 #
 # Env:

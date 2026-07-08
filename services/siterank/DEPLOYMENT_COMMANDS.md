@@ -7,15 +7,15 @@
 ```bash
 # 1. 确认 Pub/Sub 基础设施
 gcloud pubsub topics describe evaluation-tasks \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 gcloud pubsub subscriptions describe evaluation-tasks-sub \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 2. 确认 VPC Connector
 gcloud compute networks vpc-access connectors describe cr-conn-default-ane1 \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ---
@@ -23,7 +23,7 @@ gcloud compute networks vpc-access connectors describe cr-conn-default-ane1 \
 ## 📦 方法一：使用自动化脚本（最简单）
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 ./services/siterank/deploy-api-worker-preview.sh
 ```
 
@@ -40,18 +40,18 @@ cd /Users/jason/Documents/Kiro/autoads
 ### Step 1: 构建 API 服务镜像
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 gcloud builds submit \
   --config=services/siterank/cloudbuild-api-preview.yaml \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 **预计时间**: 3-5 分钟
 
 **监控构建进度**:
 ```bash
-gcloud builds list --ongoing --project=gen-lang-client-0944935873
+gcloud builds list --ongoing --project=your-gcp-project-id
 ```
 
 ---
@@ -61,7 +61,7 @@ gcloud builds list --ongoing --project=gen-lang-client-0944935873
 ```bash
 gcloud builds submit \
   --config=services/siterank/cloudbuild-worker-preview.yaml \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 **预计时间**: 3-5 分钟
@@ -73,13 +73,13 @@ gcloud builds submit \
 ```bash
 gcloud run services update siterank-api-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --update-secrets=DATABASE_URL=DATABASE_URL:latest,REDIS_URL=REDIS_URL:latest \
   --update-env-vars=\
 BROWSER_EXEC_URL=https://browser-exec-preview-yt54xvsg5q-an.a.run.app,\
 BILLING_API_URL=https://billing-preview-yt54xvsg5q-an.a.run.app,\
-GCP_PROJECT_ID=gen-lang-client-0944935873,\
-GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873,\
+GCP_PROJECT_ID=your-gcp-project-id,\
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id,\
 LOG_LEVEL=info,\
 ENVIRONMENT=preview
 ```
@@ -91,15 +91,15 @@ ENVIRONMENT=preview
 ```bash
 gcloud run services update siterank-worker-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --update-secrets=DATABASE_URL=DATABASE_URL:latest,REDIS_URL=REDIS_URL:latest \
   --update-env-vars=\
 BROWSER_EXEC_URL=https://browser-exec-preview-yt54xvsg5q-an.a.run.app,\
 BILLING_API_URL=https://billing-preview-yt54xvsg5q-an.a.run.app,\
-GCP_PROJECT_ID=gen-lang-client-0944935873,\
-GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873,\
+GCP_PROJECT_ID=your-gcp-project-id,\
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id,\
 PUBSUB_SUBSCRIPTION=evaluation-tasks-sub,\
-PROJECT_ID=gen-lang-client-0944935873,\
+PROJECT_ID=your-gcp-project-id,\
 LOG_LEVEL=info,\
 ENVIRONMENT=preview
 ```
@@ -114,13 +114,13 @@ ENVIRONMENT=preview
 # API 服务
 gcloud run services describe siterank-api-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="value(status.url,status.conditions[0].status)"
 
 # Worker 服务
 gcloud run services describe siterank-worker-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="value(status.url,status.conditions[0].status)"
 ```
 
@@ -129,7 +129,7 @@ gcloud run services describe siterank-worker-preview \
 ```bash
 API_URL=$(gcloud run services describe siterank-api-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="value(status.url)")
 
 curl -s "$API_URL/health" | jq .
@@ -149,7 +149,7 @@ curl -s "$API_URL/health" | jq .
 ```bash
 gcloud run logs read siterank-worker-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --limit=20
 ```
 
@@ -170,7 +170,7 @@ gcloud run logs read siterank-worker-preview \
 ```bash
 gcloud run services update offer-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --update-env-vars=SITERANK_API_URL=$API_URL
 ```
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-BASE_URL="${PREVIEW_BASE:-https://www.urlchecker.dev}"
+# 测试环境: preview.example.com (预发) | www.example.com (生产)
+BASE_URL="${PREVIEW_BASE:-https://preview.example.com}"
 PASSED=0
 FAILED=0
 

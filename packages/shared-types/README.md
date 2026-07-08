@@ -1,4 +1,4 @@
-# @autoads/shared-types
+# @adsai/shared-types
 
 共享的 TypeScript 类型定义，由 OpenAPI 规范自动生成。
 
@@ -6,8 +6,8 @@
 
 ```typescript
 // 导入特定服务的类型
-import type { paths } from '@autoads/shared-types/adscenter'
-import type { components } from '@autoads/shared-types/billing'
+import type { paths } from '@adsai/shared-types/adscenter'
+import type { components } from '@adsai/shared-types/billing'
 
 // 使用类型
 type Account = components['schemas']['Account']

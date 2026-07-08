@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库迁移: Notification Management (Fixed)
+-- AdsAI 数据库迁移: Notification Management (Fixed)
 -- 创建通知管理表 (集成console服务功能)
 -- 迁移ID: 004
 -- 版本: v2.1 (修复版)
@@ -236,7 +236,7 @@ ORDER BY date DESC, activity_type;
 -- 插入默认通知模板
 INSERT INTO useractivity.notification_templates (name, subject, body, type, category, variables, is_active) VALUES
 -- 欢迎消息
-('welcome_notification', '欢迎加入AutoAds', '欢迎您加入AutoAds平台！我们很高兴为您提供服务。', 'in_app', 'general', '{"user_name": "用户名"}', true),
+('welcome_notification', '欢迎加入AdsAI', '欢迎您加入AdsAI平台！我们很高兴为您提供服务。', 'in_app', 'general', '{"user_name": "用户名"}', true),
 -- 试用期提醒
 ('trial_expiry_warning', '试用期即将到期', '尊敬的用户，您的7天试用期即将在{{days_remaining}}天后到期，请及时升级套餐以继续使用我们的服务。', 'in_app', 'billing', '{"days_remaining": "剩余天数", "user_name": "用户名"}', true),
 -- 账单通知

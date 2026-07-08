@@ -3,8 +3,8 @@
 import { chromium } from 'playwright';
 import { setupAuthForTest } from './helpers/auth.mjs';
 
-// 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+// 测试环境: preview.example.com (预发) | www.example.com (生产)
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 async function testDashboardOverview() {
   const browser = await chromium.launch({ headless: false });

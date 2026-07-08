@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===================================================================
-# AutoAds Architecture Compliance Integration Test Suite
+# AdsAI Architecture Compliance Integration Test Suite
 # ===================================================================
 # 验证架构优化实施的完整性和��规性
 #
@@ -432,7 +432,7 @@ test_cicd_automation() {
 # 主测试执行函数
 # ===================================================================
 main() {
-    log_info "AutoAds 架构合规性集成测试开始..."
+    log_info "AdsAI 架构合规性集成测试开始..."
     log_info "项目根目录: $PROJECT_ROOT"
 
     # 切换到项目根目录

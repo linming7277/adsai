@@ -13,7 +13,7 @@ type SupportSection = {
 };
 
 export const metadata = {
-  title: 'Support Center - AutoAds',
+  title: 'Support Center - AdsAI',
 };
 
 export default async function SupportPage() {
@@ -81,11 +81,11 @@ export default async function SupportPage() {
                     {t('support.cta.primary')}
                   </a>
                   <a
-                    href="mailto:support@autoads.dev"
+                    href="mailto:support@adsai.dev"
                     className="inline-flex items-center rounded-full border-2 border-primary-foreground/40 px-6 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/10 transition"
                   >
                     {t('support.cta.secondary', {
-                      email: 'support@autoads.dev',
+                      email: 'support@adsai.dev',
                     })}
                   </a>
                 </div>

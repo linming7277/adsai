@@ -6,7 +6,7 @@ set -euo pipefail
 #   PROJECT_ID=... REGION=asia-northeast1 SERVICE=adscenter \
 #   SECRET_NAME=adscenter-limits-preview FILE=limits.json ./deployments/scripts/set-adscenter-limits-secret.sh
 
-PROJECT_ID=${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}
+PROJECT_ID=${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}
 REGION=${REGION:-asia-northeast1}
 SERVICE=${SERVICE:-adscenter}
 SECRET_NAME=${SECRET_NAME:-adscenter-limits}

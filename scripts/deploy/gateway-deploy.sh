@@ -3,11 +3,11 @@ set -euo pipefail
 
 # 使用渲染后的 gateway.yaml 创建/更新 API 与 Gateway
 
-PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-gen-lang-client-0944935873}}"
+PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-your-gcp-project-id}}"
 REGION="${REGION:-asia-northeast1}"
-API_NAME="${API_NAME:-autoads-api}"
-API_CONFIG="${API_CONFIG:-autoads-v1}"
-GATEWAY_NAME="${GATEWAY_NAME:-autoads-gw}"
+API_NAME="${API_NAME:-adsai-api}"
+API_CONFIG="${API_CONFIG:-adsai-v1}"
+GATEWAY_NAME="${GATEWAY_NAME:-adsai-gw}"
 SPEC="${SPEC:-deployments/api-gateway/gateway.rendered.yaml}"
 
 gcloud config set project "${PROJECT_ID}" >/dev/null

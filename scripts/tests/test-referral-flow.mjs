@@ -25,7 +25,7 @@ import { chromium } from 'playwright';
 import { setupAuthForTest, cleanupAuthForTest } from './helpers/auth.mjs';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 async function testReferralFlow() {
   console.log('🎁 邀请系统完整流程测试');

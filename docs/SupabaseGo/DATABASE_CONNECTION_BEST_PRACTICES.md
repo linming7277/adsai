@@ -43,10 +43,10 @@ SUPABASE_DB_URL=postgresql://postgres.jzzvizacfyipzdyiqfzb:[PASSWORD]@aws-1-ap-n
 SUPABASE_SERVICE_KEY=[SERVICE_ROLE_KEY]
 
 # Cloud SQL连接 (应用数据)
-CLOUDSQL_DB_URL=postgresql://user:password@10.6.0.2:5432/autoads_db
+CLOUDSQL_DB_URL=postgresql://user:password@10.6.0.2:5432/adsai_db
 CLOUDSQL_DB_HOST=10.6.0.2
 CLOUDSQL_DB_PORT=5432
-CLOUDSQL_DB_NAME=autoads_db
+CLOUDSQL_DB_NAME=adsai_db
 CLOUDSQL_DB_USER=[USERNAME]
 CLOUDSQL_DB_PASSWORD=[PASSWORD]
 ```
@@ -190,7 +190,7 @@ DB_TYPE=${2:-"auto"}
 case $SERVICE in
   "useractivity"|"billing"|"offer"|"siterank"|"adscenter")
     echo "🔗 Connecting to Cloud SQL for $SERVICE..."
-    gcloud sql connect autoads --user=postgres --database=autoads_db
+    gcloud sql connect adsai --user=postgres --database=adsai_db
     ;;
   "frontend"|"auth")
     echo "🔗 Connecting to Supabase..."
@@ -220,7 +220,7 @@ psql "postgresql://postgres.jzzvizacfyipzdyiqfzb:\${SUPABASE_DB_PASSWORD}@aws-1-
 
 echo ""
 echo "🔍 Cloud SQL Connection:"
-gcloud sql connect autoads --user=postgres --database=autoads_db -c "SELECT current_database(), current_user, version();"
+gcloud sql connect adsai --user=postgres --database=adsai_db -c "SELECT current_database(), current_user, version();"
 ```
 
 ### 3. 更新文档参考卡
@@ -229,8 +229,8 @@ gcloud sql connect autoads --user=postgres --database=autoads_db -c "SELECT curr
 
 ## Cloud SQL (应用数据)
 - **Host**: 10.6.0.2:5432 (VPC内部)
-- **Database**: autoads_db
-- **连接命令**: `gcloud sql connect autoads --user=postgres --database=autoads_db`
+- **Database**: adsai_db
+- **连接命令**: `gcloud sql connect adsai --user=postgres --database=adsai_db`
 - **使用服务**: useractivity, billing, offer, siterank, adscenter
 
 ## Supabase (用户认证)
@@ -240,7 +240,7 @@ gcloud sql connect autoads --user=postgres --database=autoads_db -c "SELECT curr
 - **使用服务**: frontend, auth
 
 ## 环境变量
-- **CLOUDSQL_DB_URL**: postgresql://user:password@10.6.0.2:5432/autoads_db
+- **CLOUDSQL_DB_URL**: postgresql://user:password@10.6.0.2:5432/adsai_db
 - **SUPABASE_DB_URL**: postgresql://postgres.project_ref@pooler.supabase.com:5432/postgres
 ```
 

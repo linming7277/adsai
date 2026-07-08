@@ -275,7 +275,7 @@ func (m *EnhancedJWTManager) GenerateEnhancedAccessToken(userID, email, name, ro
 		IssuedAt:   time.Now().Unix(),
 		ExpiresAt:   time.Now().Add(time.Duration(m.config.AccessTokenTTL) * time.Minute).Unix(),
 		Issuer:     m.config.Issuer,
-		Audience:   []string{"autoads-api"},
+		Audience:   []string{"adsai-api"},
 		jwt.RegisteredClaims{
 			ID:        m.generateTokenID(),
 		},
@@ -322,7 +322,7 @@ func (m *EnhancedJWTManager) ValidateEnhancedToken(tokenString string) (*Enhance
 		}
 
 		// 验证受众
-		if !containsString(claims.Audience, "autoads-api") {
+		if !containsString(claims.Audience, "adsai-api") {
 			return nil, fmt.Errorf("invalid token audience")
 		}
 

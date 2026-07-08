@@ -32,7 +32,7 @@ COPY adscenter/ ./adscenter/
 # 设置环境变量
 ENV MIGRATION_DIR=/migrations
 ENV CLOUD_SQL_CONNECTION_NAME=""
-ENV DB_NAME=autoads_db
+ENV DB_NAME=adsai_db
 ENV DB_USER=postgres
 
 # 默认执行迁移脚本

@@ -3,12 +3,12 @@ set -euo pipefail
 
 # Wait until a Gateway becomes ACTIVE, then update it to target API config.
 # Usage:
-#   PROJECT_ID=... REGION=asia-northeast1 GATEWAY=autoads-gw API=autoads-api CONFIG=autoads-v2-3 ./deployments/scripts/update-gateway-config.sh
+#   PROJECT_ID=... REGION=asia-northeast1 GATEWAY=adsai-gw API=adsai-api CONFIG=adsai-v2-3 ./deployments/scripts/update-gateway-config.sh
 
 PROJECT_ID=${PROJECT_ID:?PROJECT_ID required}
 REGION=${REGION:-asia-northeast1}
-GATEWAY=${GATEWAY:-autoads-gw}
-API=${API:-autoads-api}
+GATEWAY=${GATEWAY:-adsai-gw}
+API=${API:-adsai-api}
 CONFIG=${CONFIG:?CONFIG required}
 
 gcloud config set project "$PROJECT_ID" >/dev/null

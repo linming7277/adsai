@@ -158,7 +158,7 @@ show_google_console_guide() {
     echo ""
     echo "4️⃣  配置OAuth同意屏幕："
     echo "   - 用户类型: 外部"
-    echo "   - 应用名称: AutoAds（或您的应用名称）"
+    echo "   - 应用名称: AdsAI（或您的应用名称）"
     echo "   - 授权域名: localhost"
     echo "   - 作用域: openid, email, profile"
     echo ""

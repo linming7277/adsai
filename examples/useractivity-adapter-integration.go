@@ -7,10 +7,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/pkg/dbadmin"
-	"github.com/xxrenzhe/autoads/services/useractivity/internal/config"
-	"github.com/xxrenzhe/autoads/services/useractivity/internal/models"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/pkg/dbadmin"
+	"github.com/linming7277/adsai/services/useractivity/internal/config"
+	"github.com/linming7277/adsai/services/useractivity/internal/models"
 )
 
 // UserService 展示如何使用数据库适配器重构后的用户服务

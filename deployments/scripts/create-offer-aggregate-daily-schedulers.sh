@@ -5,7 +5,7 @@ set -euo pipefail
 # It targets: POST /api/v1/offers/internal/kpi/aggregate-daily?date=YYYY-MM-DD&shard=i&totalShards=N
 #
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   TOTAL_SHARDS=4 INTERNAL_SERVICE_TOKEN=xxxx \
 #   ./deployments/scripts/create-offer-aggregate-daily-schedulers.sh
 #

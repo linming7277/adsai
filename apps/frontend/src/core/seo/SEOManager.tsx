@@ -52,7 +52,7 @@ interface PageSEOConfig {
 
 // 默认SEO配置
 const DEFAULT_SEO_CONFIG: Partial<SEOMetadata> = {
-  title: 'AutoAds - 智能广告管理平台',
+  title: 'AdsAI - 智能广告管理平台',
   description: '专业的广告管理平台，提供智能广告优化、数据分析、ROI提升等功能。帮助广告主和开发者实现广告收益最大化。',
   keywords: ['广告管理', '广告优化', '数据分析', 'ROI提升', '智能广告'],
   viewport: 'width=device-width, initial-scale=1.0',
@@ -63,12 +63,12 @@ const DEFAULT_SEO_CONFIG: Partial<SEOMetadata> = {
   },
   openGraph: {
     type: 'website',
-    siteName: 'AutoAds',
+    siteName: 'AdsAI',
     image: '/images/og-default.jpg',
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@autoads',
+    site: '@adsai',
   },
 };
 
@@ -77,12 +77,12 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/',
     static: {
-      title: 'AutoAds - 智能广告管理平台 | 最大化广告收益',
-      description: 'AutoAds是专业的智能广告管理平台，提供AI驱动的广告优化、实��数据分析、A/B测试等功能。帮助您的业务实现广告收益最大化，降低运营成本。',
+      title: 'AdsAI - 智能广告管理平台 | 最大化广告收益',
+      description: 'AdsAI是专业的智能广告管理平台，提供AI驱动的广告优化、实��数据分析、A/B测试等功能。帮助您的业务实现广告收益最大化，降低运营成本。',
       keywords: ['智能广告', '广告管理', 'AI优化', '收益最大化', '数据分析'],
       openGraph: {
         type: 'website',
-        title: 'AutoAds - 智能广告管理平台',
+        title: 'AdsAI - 智能广告管理平台',
         description: '专业的智能广告管理平台，AI驱动，收益最大化',
         image: '/images/og-home.jpg',
       },
@@ -90,7 +90,7 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
         {
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
-          name: 'AutoAds',
+          name: 'AdsAI',
           description: '智能广告管理平台',
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Web',
@@ -101,12 +101,12 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/pricing',
     static: {
-      title: '定价方案 - AutoAds | 灵活的定价策略',
-      description: 'AutoAds提供灵活的定价方案，从免费版到企业版，满足不同规模业务需求。透明定价，无隐藏费用，随时升级或降级。',
+      title: '定价方案 - AdsAI | 灵活的定价策略',
+      description: 'AdsAI提供灵活的定价方案，从免费版到企业版，满足不同规模业务需求。透明定价，无隐藏费用，随时升级或降级。',
       keywords: ['定价', '价格', '订阅', '计划', '费用'],
       openGraph: {
         type: 'website',
-        title: 'AutoAds定价方案',
+        title: 'AdsAI定价方案',
         description: '灵活的定价策略，满足各种业务需求',
         image: '/images/og-pricing.jpg',
       },
@@ -114,8 +114,8 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
         {
           '@context': 'https://schema.org',
           '@type': 'OfferCatalog',
-          name: 'AutoAds定价方案',
-          description: 'AutoAds平台的定价计划',
+          name: 'AdsAI定价方案',
+          description: 'AdsAI平台的定价计划',
         },
       ],
     },
@@ -123,12 +123,12 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/features',
     static: {
-      title: '功能特性 - AutoAds | 强大的广告管理工具',
-      description: 'AutoAds提供全面的广告管理功能：智能优化、实时监控、A/B测试、多平台支持、数据分析等。一站式解决您的广告管理需求。',
+      title: '功能特性 - AdsAI | 强大的广告管理工具',
+      description: 'AdsAI提供全面的广告管理功能：智能优化、实时监控、A/B测试、多平台支持、数据分析等。一站式解决您的广告管理需求。',
       keywords: ['功能', '特性', '工具', '智能优化', '实时监控'],
       openGraph: {
         type: 'website',
-        title: 'AutoAds功能特性',
+        title: 'AdsAI功能特性',
         description: '强大的广告管理工具集',
         image: '/images/og-features.jpg',
       },
@@ -136,11 +136,11 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
         {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'AutoAds功能特性',
+          name: 'AdsAI功能特性',
           description: '全面的广告管理服务',
           provider: {
             '@type': 'Organization',
-            name: 'AutoAds',
+            name: 'AdsAI',
           },
         },
       ],
@@ -149,12 +149,12 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/about',
     static: {
-      title: '关于我们 - AutoAds | 团队与使命',
-      description: '了解AutoAds团队、我们的使命和价值观。我们致力于为广告主和开发者提供最优秀的广告管理解决方案，让广告投放更简单、更智能。',
+      title: '关于我们 - AdsAI | 团队与使命',
+      description: '了解AdsAI团队、我们的使命和价值观。我们致力于为广告主和开发者提供最优秀的广告管理解决方案，让广告投放更简单、更智能。',
       keywords: ['关于', '��队', '使命', '公司介绍', '发展历程'],
       openGraph: {
         type: 'website',
-        title: '关于AutoAds',
+        title: '关于AdsAI',
         description: '了解我们的团队和使命',
         image: '/images/og-about.jpg',
       },
@@ -162,9 +162,9 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
         {
           '@context': 'https://schema.org',
           '@type': 'Organization',
-          name: 'AutoAds',
+          name: 'AdsAI',
           description: '智能广告管理平台',
-          url: 'https://autoads.com',
+          url: 'https://example.com',
           logo: '/images/logo.png',
         },
       ],
@@ -173,7 +173,7 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/app/offers',
     static: {
-      title: '广告优惠管理 - AutoAds',
+      title: '广告优惠管理 - AdsAI',
       description: '管理和优化您的广告优惠，提高转化率和ROI。智能推荐、数据分析、A/B测试等功能助力广告成功。',
       robots: {
         index: false, // 应用内页面不索引
@@ -184,7 +184,7 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/app/tasks',
     static: {
-      title: '任务管理 - AutoAds',
+      title: '任务管理 - AdsAI',
       description: '高效管理广告任务，跟踪进度，优化流程。提升团队协作效率。',
       robots: {
         index: false,
@@ -195,7 +195,7 @@ const PAGE_SEO_CONFIGS: PageSEOConfig[] = [
   {
     path: '/dashboard',
     static: {
-      title: '仪表板 - AutoAds',
+      title: '仪表板 - AdsAI',
       description: '查看您的广告数据概览，关键指标一目了然。实时监控、智能分析、决策支持。',
       robots: {
         index: false,
@@ -258,7 +258,7 @@ export function useSEOManager() {
       updateMetaTag('og:type', metadata.openGraph.type || 'website', true);
       updateMetaTag('og:image', metadata.openGraph.image || '/images/og-default.jpg', true);
       updateMetaTag('og:url', metadata.openGraph.url || window.location.href, true);
-      updateMetaTag('og:site_name', metadata.openGraph.siteName || 'AutoAds', true);
+      updateMetaTag('og:site_name', metadata.openGraph.siteName || 'AdsAI', true);
     }
 
     // 更新Twitter卡片标签
@@ -355,7 +355,7 @@ export function useSEOManager() {
     }
 
     // 设置canonical URL
-    metadata.canonical = `https://autoads.com${path}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+    metadata.canonical = `https://example.com${path}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
 
     return metadata as SEOMetadata;
   };
@@ -464,7 +464,7 @@ export function useDynamicSEO(basePath: string) {
         // 动态页面的SEO逻辑
         const dynamicId = pathSegments[0];
         updateDynamicSEO({
-          title: `${dynamicId} - AutoAds`,
+          title: `${dynamicId} - AdsAI`,
           description: `查看${dynamicId}的详细信息和数据`,
         });
       }

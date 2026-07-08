@@ -2,7 +2,7 @@
 
 /**
  * Preview Environment E2E Testing
- * Direct testing of www.urlchecker.dev without local setup
+ * Direct testing of preview.example.com without local setup
  */
 
 import { chromium } from 'playwright';

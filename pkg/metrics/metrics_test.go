@@ -12,7 +12,7 @@ import (
 func TestNew(t *testing.T) {
 	cfg := Config{
 		ServiceName: "test-service-unique",
-		Namespace:   "autoads-test",
+		Namespace:   "adsai-test",
 	}
 
 	m := New(cfg)

@@ -1,4 +1,4 @@
-# AutoAds 前端迁移阶段1盘点（Firebase → Supabase）
+# AdsAI 前端迁移阶段1盘点（Firebase → Supabase）
 
 ## 前端目录与核心模块概览
 - **`src/pages/`**：包含仪表盘、Offers、Tokens、Tasks、Settings、AdsCenter 等核心控制台页面，以及 `/auth`、`/api`、`/admin`、`/onboarding` 等入口。

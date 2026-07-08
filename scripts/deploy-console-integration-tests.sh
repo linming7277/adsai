@@ -5,12 +5,12 @@
 set -e
 
 # Configuration
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 JOB_NAME="console-integration-tests"
-IMAGE="asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/console-integration-tests:latest"
+IMAGE="asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/console-integration-tests:latest"
 VPC_CONNECTOR="projects/${PROJECT_ID}/locations/${REGION}/connectors/cr-conn-default-ane1"
-SERVICE_ACCOUNT="codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
+SERVICE_ACCOUNT="service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 
 # Colors for output
 GREEN='\033[0;32m'

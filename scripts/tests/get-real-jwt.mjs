@@ -2,11 +2,11 @@
 
 import { chromium } from '@playwright/test';
 
-// 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
-const TEST_EMAIL = 'test-user@autoads.dev';
+// 测试环境: preview.example.com (预发) | www.example.com (生产)
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
+const TEST_EMAIL = 'test-user@adsai.dev';
 // 使用API Gateway而非直接访问后端服务
-const GATEWAY_URL = process.env.GATEWAY_URL || 'https://autoads-gw-885pd7lz.an.gateway.dev';
+const GATEWAY_URL = process.env.GATEWAY_URL || 'https://adsai-gw-885pd7lz.an.gateway.dev';
 
 async function getRealJWT() {
   console.log('\n🔍 获取真实JWT Token并测试API Gateway');

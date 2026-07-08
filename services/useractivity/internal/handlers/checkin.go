@@ -12,10 +12,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/xxrenzhe/autoads/pkg/errors"
-	"github.com/xxrenzhe/autoads/pkg/events"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
+	"github.com/linming7277/adsai/pkg/errors"
+	"github.com/linming7277/adsai/pkg/events"
+	"github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/serviceclient"
 )
 
 // Global service registry (set by main.go)

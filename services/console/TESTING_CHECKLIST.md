@@ -238,7 +238,7 @@ AND status = 'active';
 
 #### **5.3 下载恢复码**
 - [ ] 点击 "下载为 TXT" 按钮
-- [ ] 文件名格式正确（`autoads_recovery_codes_2025-10-09.txt`）
+- [ ] 文件名格式正确（`adsai_recovery_codes_2025-10-09.txt`）
 - [ ] 文件内容包含10个恢复码（每行一个）
 
 #### **5.4 复制恢复码**

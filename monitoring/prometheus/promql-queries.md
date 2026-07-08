@@ -1,4 +1,4 @@
-# PromQL Query Examples for AutoAds
+# PromQL Query Examples for AdsAI
 
 本文档包含所有常用的 PromQL 查询示例，可直接在 Grafana 中使用。
 
@@ -25,7 +25,7 @@
 
 ```promql
 # 所有用户的 Token 消耗速率
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 ```
 
 **用途：** 监控系统整体负载
@@ -38,7 +38,7 @@ sum(rate(autoads_billing_tokens_consumed_total[5m]))
 
 ```promql
 # 按操作类型分组的 Token 消耗
-sum(rate(autoads_billing_tokens_consumed_total[5m])) by (operation)
+sum(rate(adsai_billing_tokens_consumed_total[5m])) by (operation)
 ```
 
 **用途：** 分析哪些操作消耗最多 Token
@@ -51,7 +51,7 @@ sum(rate(autoads_billing_tokens_consumed_total[5m])) by (operation)
 
 ```promql
 # 消耗 Token 最多的 10 个用户
-topk(10, sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id))
+topk(10, sum(rate(adsai_billing_tokens_consumed_total[5m])) by (user_id))
 ```
 
 **用途：** 识别重度用户或潜在滥用
@@ -64,9 +64,9 @@ topk(10, sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id))
 
 ```promql
 # 退款率 = 退款 / 消耗
-sum(rate(autoads_billing_tokens_refunded_total[5m]))
+sum(rate(adsai_billing_tokens_refunded_total[5m]))
 /
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 ```
 
 **用途：** 监控系统质量指标
@@ -80,9 +80,9 @@ sum(rate(autoads_billing_tokens_consumed_total[5m]))
 
 ```promql
 # 提交率 = 已提交 / 已预留
-sum(rate(autoads_billing_tokens_committed_total[5m]))
+sum(rate(adsai_billing_tokens_committed_total[5m]))
 /
-sum(rate(autoads_billing_tokens_reserved_total[5m]))
+sum(rate(adsai_billing_tokens_reserved_total[5m]))
 ```
 
 **用途：** 监控预留转化效率
@@ -96,7 +96,7 @@ sum(rate(autoads_billing_tokens_reserved_total[5m]))
 
 ```promql
 # 1 小时内的总消耗
-sum(increase(autoads_billing_tokens_consumed_total[1h]))
+sum(increase(adsai_billing_tokens_consumed_total[1h]))
 ```
 
 **用途：** 账单预估、容量规划
@@ -109,7 +109,7 @@ sum(increase(autoads_billing_tokens_consumed_total[1h]))
 
 ```promql
 # 多维度分析
-sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id, operation)
+sum(rate(adsai_billing_tokens_consumed_total[5m])) by (user_id, operation)
 ```
 
 **用途：** 详细分析用户行为模式
@@ -121,7 +121,7 @@ sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id, operation)
 
 ```promql
 # 退款原因分布
-sum(rate(autoads_billing_tokens_refunded_total[5m])) by (reason)
+sum(rate(adsai_billing_tokens_refunded_total[5m])) by (reason)
 ```
 
 **用途：** 识别系统问题
@@ -133,7 +133,7 @@ sum(rate(autoads_billing_tokens_refunded_total[5m])) by (reason)
 
 ```promql
 # 活跃订阅用户数
-autoads_billing_active_subscribers
+adsai_billing_active_subscribers
 ```
 
 **用途：** 业务指标监控
@@ -147,7 +147,7 @@ autoads_billing_active_subscribers
 ```promql
 # 基于过去 30 分钟预测未来 10 分钟
 predict_linear(
-  sum(rate(autoads_billing_tokens_consumed_total[5m]))[30m:],
+  sum(rate(adsai_billing_tokens_consumed_total[5m]))[30m:],
   600
 )
 ```
@@ -162,7 +162,7 @@ predict_linear(
 ### 1. Offer 创建速率（按类型）
 
 ```promql
-sum(rate(autoads_offer_offers_created_total[5m])) by (type)
+sum(rate(adsai_offer_offers_created_total[5m])) by (type)
 ```
 
 **用途：** 监控业务活跃度
@@ -174,9 +174,9 @@ sum(rate(autoads_offer_offers_created_total[5m])) by (type)
 
 ```promql
 # 成功率 = 完成 / 创建
-sum(rate(autoads_offer_offers_completed_total[5m]))
+sum(rate(adsai_offer_offers_completed_total[5m]))
 /
-sum(rate(autoads_offer_offers_created_total[5m]))
+sum(rate(adsai_offer_offers_created_total[5m]))
 ```
 
 **用途：** 系统健康指标
@@ -189,9 +189,9 @@ sum(rate(autoads_offer_offers_created_total[5m]))
 ### 3. Offer Success Rate（按类型）
 
 ```promql
-sum(rate(autoads_offer_offers_completed_total[5m])) by (type)
+sum(rate(adsai_offer_offers_completed_total[5m])) by (type)
 /
-sum(rate(autoads_offer_offers_created_total[5m])) by (type)
+sum(rate(adsai_offer_offers_created_total[5m])) by (type)
 ```
 
 **用途：** 分析不同类型 Offer 的质量
@@ -203,9 +203,9 @@ sum(rate(autoads_offer_offers_created_total[5m])) by (type)
 
 ```promql
 # 失败率 = 失败 / 创建
-sum(rate(autoads_offer_offers_failed_total[5m]))
+sum(rate(adsai_offer_offers_failed_total[5m]))
 /
-sum(rate(autoads_offer_offers_created_total[5m]))
+sum(rate(adsai_offer_offers_created_total[5m]))
 ```
 
 **用途：** 告警触发器
@@ -216,7 +216,7 @@ sum(rate(autoads_offer_offers_created_total[5m]))
 ### 5. Offer 失败原因分布
 
 ```promql
-sum(rate(autoads_offer_offers_failed_total[5m])) by (reason)
+sum(rate(adsai_offer_offers_failed_total[5m])) by (reason)
 ```
 
 **用途：** 故障分析
@@ -228,9 +228,9 @@ sum(rate(autoads_offer_offers_failed_total[5m])) by (reason)
 
 ```promql
 # 平均价值（分）= 总价值 / 创建数
-sum(rate(autoads_offer_offer_value_total[5m])) by (type)
+sum(rate(adsai_offer_offer_value_total[5m])) by (type)
 /
-sum(rate(autoads_offer_offers_created_total[5m])) by (type)
+sum(rate(adsai_offer_offers_created_total[5m])) by (type)
 ```
 
 **用途：** 业务分析
@@ -242,7 +242,7 @@ sum(rate(autoads_offer_offers_created_total[5m])) by (type)
 ### 7. Top 10 用户（按 Offer 创建数）
 
 ```promql
-topk(10, sum(rate(autoads_offer_offers_created_total[5m])) by (user_id))
+topk(10, sum(rate(adsai_offer_offers_created_total[5m])) by (user_id))
 ```
 
 **用途：** 识别活跃用户
@@ -255,9 +255,9 @@ topk(10, sum(rate(autoads_offer_offers_created_total[5m])) by (user_id))
 ```promql
 # 各类型占比
 (
-  sum(rate(autoads_offer_offers_created_total[5m])) by (type)
+  sum(rate(adsai_offer_offers_created_total[5m])) by (type)
   /
-  sum(rate(autoads_offer_offers_created_total[5m]))
+  sum(rate(adsai_offer_offers_created_total[5m]))
 ) * 100
 ```
 
@@ -272,9 +272,9 @@ topk(10, sum(rate(autoads_offer_offers_created_total[5m])) by (user_id))
 
 ```promql
 # CTR = 点击 / 展示
-sum(rate(autoads_adscenter_ad_clicks_total[5m]))
+sum(rate(adsai_adscenter_ad_clicks_total[5m]))
 /
-sum(rate(autoads_adscenter_ad_impressions_total[5m]))
+sum(rate(adsai_adscenter_ad_impressions_total[5m]))
 ```
 
 **用途：** 核心广告性能指标
@@ -287,9 +287,9 @@ sum(rate(autoads_adscenter_ad_impressions_total[5m]))
 ### 2. CTR（按平台）
 
 ```promql
-sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (platform)
 ```
 
 **用途：** 对比不同平台表现
@@ -301,9 +301,9 @@ sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
 
 ```promql
 # CVR = 转化 / 点击
-sum(rate(autoads_adscenter_ad_conversions_total[5m]))
+sum(rate(adsai_adscenter_ad_conversions_total[5m]))
 /
-sum(rate(autoads_adscenter_ad_clicks_total[5m]))
+sum(rate(adsai_adscenter_ad_clicks_total[5m]))
 ```
 
 **用途：** 转化效率监控
@@ -315,9 +315,9 @@ sum(rate(autoads_adscenter_ad_clicks_total[5m]))
 ### 4. CVR（按平台）
 
 ```promql
-sum(rate(autoads_adscenter_ad_conversions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_conversions_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (platform)
 ```
 
 **用途：** 平台转化对比
@@ -329,9 +329,9 @@ sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
 
 ```promql
 # CPC (分) = 花费 / 点击
-sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_spend_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (platform)
 ```
 
 **用途：** 成本控制
@@ -344,9 +344,9 @@ sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
 
 ```promql
 # CPA (分) = 花费 / 转化
-sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_spend_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_conversions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_conversions_total[5m])) by (platform)
 ```
 
 **用途：** ROI 分析
@@ -359,9 +359,9 @@ sum(rate(autoads_adscenter_ad_conversions_total[5m])) by (platform)
 
 ```promql
 topk(10,
-  sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (campaign_id)
+  sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (campaign_id)
   /
-  sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (campaign_id)
+  sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (campaign_id)
 )
 ```
 
@@ -373,7 +373,7 @@ topk(10,
 ### 8. Top 10 Campaigns（按 Impressions）
 
 ```promql
-topk(10, sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (campaign_id))
+topk(10, sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (campaign_id))
 ```
 
 **用途：** 识别高曝光 Campaign
@@ -384,7 +384,7 @@ topk(10, sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (campaign_id))
 ### 9. Platform 分布（按展示次数）
 
 ```promql
-sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (platform)
 ```
 
 **用途：** 平台流量分析
@@ -395,7 +395,7 @@ sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
 ### 10. Platform 分布（按花费金额）
 
 ```promql
-sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_spend_total[5m])) by (platform)
 ```
 
 **用途：** 预算分配分析
@@ -406,7 +406,7 @@ sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
 ### 11. 活跃广告数（按平台）
 
 ```promql
-sum(autoads_adscenter_ads_active) by (platform)
+sum(adsai_adscenter_ads_active) by (platform)
 ```
 
 **用途：** 监控广告库存
@@ -417,7 +417,7 @@ sum(autoads_adscenter_ads_active) by (platform)
 ### 12. 广告展示速率（Impression Rate）
 
 ```promql
-sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (platform)
 ```
 
 **用途：** 流量监控
@@ -433,7 +433,7 @@ sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
 ```promql
 # P50 延迟
 histogram_quantile(0.5,
-  sum(rate(autoads_http_request_duration_seconds_bucket[5m])) by (le)
+  sum(rate(adsai_http_request_duration_seconds_bucket[5m])) by (le)
 )
 ```
 
@@ -448,12 +448,12 @@ histogram_quantile(0.5,
 ```promql
 # P95
 histogram_quantile(0.95,
-  sum(rate(autoads_http_request_duration_seconds_bucket[5m])) by (le, path)
+  sum(rate(adsai_http_request_duration_seconds_bucket[5m])) by (le, path)
 ) by (path)
 
 # P99
 histogram_quantile(0.99,
-  sum(rate(autoads_http_request_duration_seconds_bucket[5m])) by (le, path)
+  sum(rate(adsai_http_request_duration_seconds_bucket[5m])) by (le, path)
 ) by (path)
 ```
 
@@ -465,7 +465,7 @@ histogram_quantile(0.99,
 ### 3. 请求速率（QPS）
 
 ```promql
-sum(rate(autoads_http_requests_total[5m]))
+sum(rate(adsai_http_requests_total[5m]))
 ```
 
 **用途：** 负载监控
@@ -478,9 +478,9 @@ sum(rate(autoads_http_requests_total[5m]))
 
 ```promql
 # 错误率 = 5xx / 总请求
-sum(rate(autoads_http_errors_total{status=~"5.."}[5m]))
+sum(rate(adsai_http_errors_total{status=~"5.."}[5m]))
 /
-sum(rate(autoads_http_requests_total[5m]))
+sum(rate(adsai_http_requests_total[5m]))
 ```
 
 **用途：** 可用性监控
@@ -493,9 +493,9 @@ sum(rate(autoads_http_requests_total[5m]))
 ### 5. 按 Path 的错误率
 
 ```promql
-sum(rate(autoads_http_errors_total{status=~"5.."}[5m])) by (path)
+sum(rate(adsai_http_errors_total{status=~"5.."}[5m])) by (path)
 /
-sum(rate(autoads_http_requests_total[5m])) by (path)
+sum(rate(adsai_http_requests_total[5m])) by (path)
 ```
 
 **用途：** 识别问题接口
@@ -507,7 +507,7 @@ sum(rate(autoads_http_requests_total[5m])) by (path)
 
 ```promql
 histogram_quantile(0.99,
-  sum(rate(autoads_http_request_duration_seconds_bucket[5m])) by (le, path)
+  sum(rate(adsai_http_request_duration_seconds_bucket[5m])) by (le, path)
 ) by (path) > 1
 ```
 
@@ -522,7 +522,7 @@ histogram_quantile(0.99,
 
 ```promql
 # 所有服务的总请求数
-sum(rate(autoads_http_requests_total[5m]))
+sum(rate(adsai_http_requests_total[5m]))
 ```
 
 ---
@@ -531,10 +531,10 @@ sum(rate(autoads_http_requests_total[5m]))
 
 ```promql
 # ROI = 收入 / 花费
-# 注意：需要先实现 autoads_adscenter_ad_revenue_total 指标
-sum(rate(autoads_adscenter_ad_revenue_total[5m])) by (platform)
+# 注意：需要先实现 adsai_adscenter_ad_revenue_total 指标
+sum(rate(adsai_adscenter_ad_revenue_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_spend_total[5m])) by (platform)
 ```
 
 ---
@@ -542,9 +542,9 @@ sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
 ### 3. 系统整体错误率
 
 ```promql
-sum(rate(autoads_http_errors_total{status=~"5.."}[5m]))
+sum(rate(adsai_http_errors_total{status=~"5.."}[5m]))
 /
-sum(rate(autoads_http_requests_total[5m]))
+sum(rate(adsai_http_requests_total[5m]))
 ```
 
 ---
@@ -558,9 +558,9 @@ sum(rate(autoads_http_requests_total[5m]))
 ```promql
 # 触发条件：错误率 > 5% 持续 5 分钟
 (
-  sum(rate(autoads_http_errors_total{status=~"5.."}[5m]))
+  sum(rate(adsai_http_errors_total{status=~"5.."}[5m]))
   /
-  sum(rate(autoads_http_requests_total[5m]))
+  sum(rate(adsai_http_requests_total[5m]))
 ) > 0.05
 ```
 
@@ -571,9 +571,9 @@ sum(rate(autoads_http_requests_total[5m]))
 ```promql
 # 触发条件：退款率 > 10%
 (
-  sum(rate(autoads_billing_tokens_refunded_total[5m]))
+  sum(rate(adsai_billing_tokens_refunded_total[5m]))
   /
-  sum(rate(autoads_billing_tokens_consumed_total[5m]))
+  sum(rate(adsai_billing_tokens_consumed_total[5m]))
 ) > 0.10
 ```
 
@@ -584,9 +584,9 @@ sum(rate(autoads_http_requests_total[5m]))
 ```promql
 # 触发条件：CTR < 1%
 (
-  sum(rate(autoads_adscenter_ad_clicks_total[5m]))
+  sum(rate(adsai_adscenter_ad_clicks_total[5m]))
   /
-  sum(rate(autoads_adscenter_ad_impressions_total[5m]))
+  sum(rate(adsai_adscenter_ad_impressions_total[5m]))
 ) < 0.01
 ```
 
@@ -597,9 +597,9 @@ sum(rate(autoads_http_requests_total[5m]))
 ```promql
 # 触发条件：成功率 < 90%
 (
-  sum(rate(autoads_offer_offers_completed_total[5m]))
+  sum(rate(adsai_offer_offers_completed_total[5m]))
   /
-  sum(rate(autoads_offer_offers_created_total[5m]))
+  sum(rate(adsai_offer_offers_created_total[5m]))
 ) < 0.90
 ```
 
@@ -610,7 +610,7 @@ sum(rate(autoads_http_requests_total[5m]))
 ```promql
 # 触发条件：P99 延迟 > 2 秒
 histogram_quantile(0.99,
-  sum(rate(autoads_http_request_duration_seconds_bucket[5m])) by (le)
+  sum(rate(adsai_http_request_duration_seconds_bucket[5m])) by (le)
 ) > 2
 ```
 

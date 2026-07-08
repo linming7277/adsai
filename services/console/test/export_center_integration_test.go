@@ -14,7 +14,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/xxrenzhe/autoads/services/console/internal/handlers"
+	"github.com/linming7277/adsai/services/console/internal/handlers"
 )
 
 func TestExportCenterIntegration(t *testing.T) {

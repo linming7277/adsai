@@ -1,11 +1,11 @@
-module github.com/xxrenzhe/autoads/pkg/auth
+module github.com/linming7277/adsai/pkg/auth
 
 go 1.25.1
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jackc/pgx/v5 v5.7.6
-	github.com/xxrenzhe/autoads/pkg/supabaseauth v0.0.1
+	github.com/linming7277/adsai/pkg/supabaseauth v0.0.1
 )
 
 require (
@@ -20,4 +20,4 @@ require (
 	golang.org/x/text v0.29.0 // indirect
 )
 
-replace github.com/xxrenzhe/autoads/pkg/supabaseauth => ../supabaseauth
+replace github.com/linming7277/adsai/pkg/supabaseauth => ../supabaseauth

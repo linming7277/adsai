@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Smoke test: billing credit → commit → consistency → plan → (optional) repair
 # Usage:
-#   GATEWAY=https://www.urlchecker.dev TOKEN="Bearer ey..." ./scripts/ops/smoke-billing-repair.sh
+#   GATEWAY=https://preview.example.com TOKEN="Bearer ey..." ./scripts/ops/smoke-billing-repair.sh
 
 BASE="${GATEWAY:-http://localhost}"
 AUTH="${TOKEN:-}"

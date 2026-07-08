@@ -13,8 +13,8 @@
 - **技术栈**: Next.js 14 (App Router) + Makerkit UI
 - **部署**: Cloud Run (frontend-preview / frontend)
 - **域名**:
-  - Preview: https://www.urlchecker.dev
-  - Production: https://www.autoads.dev
+  - Preview: https://preview.example.com
+  - Production: https://www.example.com
 - **核心职责**:
   - 用户界面展示
   - 与Supabase Auth交互（Google OAuth）

@@ -38,9 +38,9 @@ export async function POST(request: NextRequest) {
     }
 
     // 验证测试邮箱格式
-    if (!email.endsWith('@autoads.dev')) {
+    if (!email.endsWith('@adsai.dev')) {
       return NextResponse.json(
-        { error: 'Only @autoads.dev test emails are allowed' },
+        { error: 'Only @adsai.dev test emails are allowed' },
         { status: 400 }
       )
     }
@@ -160,7 +160,7 @@ export async function GET() {
     message: 'Test session creation API is active',
     endpoint: 'POST /api/test/create-session',
     example: {
-      email: 'test-user@autoads.dev',
+      email: 'test-user@adsai.dev',
       role: 'user', // or 'admin'
     }
   })

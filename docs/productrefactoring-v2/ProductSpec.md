@@ -1,7 +1,7 @@
 # ProductSpec（SSOT 总纲）
 
 ## 概述与版本
-- 文档：AutoAds SaaS 平台重构与演进蓝图（V2）
+- 文档：AdsAI SaaS 平台重构与演进蓝图（V2）
 - 适用范围：产品设计、模块规格、架构约束、实施路线、运营与计费
 - 状态：Draft/Converged（以 ADR 为准）
 - 关联：Architecture.md、ImplementationPlan.md、Operations.md、FunctionalSpecs/*、ADR/*、Glossary.md

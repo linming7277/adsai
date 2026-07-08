@@ -7,7 +7,7 @@ import (
 	"time"
 
 	redis "github.com/redis/go-redis/v9"
-	pcache "github.com/xxrenzhe/autoads/pkg/cache"
+	pcache "github.com/linming7277/adsai/pkg/cache"
 )
 
 // genToken returns a random 16-byte hex token.

@@ -7,7 +7,7 @@
 const ENVIRONMENTS = {
   preview: {
     name: 'Preview Environment',
-    baseUrl: 'https://www.urlchecker.dev',
+    baseUrl: 'https://preview.example.com',
     branch: 'main',
     imageTag: 'preview-latest',
     deploymentTarget: 'asia-northeast1',
@@ -30,7 +30,7 @@ const ENVIRONMENTS = {
   },
   production: {
     name: 'Production Environment',
-    baseUrl: 'https://www.autoads.dev',
+    baseUrl: 'https://www.example.com',
     branch: 'production',
     imageTag: 'prod-latest',
     deploymentTarget: 'asia-northeast1',
@@ -53,7 +53,7 @@ const ENVIRONMENTS = {
   },
   staging: {
     name: 'Staging Environment',
-    baseUrl: 'https://staging.autoads.dev',
+    baseUrl: 'https://staging.example.com',
     branch: 'staging',
     imageTag: 'staging-latest',
     deploymentTarget: 'asia-northeast1',

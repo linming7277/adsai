@@ -93,7 +93,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 # IAM授权
-codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+service-account@your-gcp-project-id.iam.gserviceaccount.com
 ↳ roles/secretmanager.secretAccessor
 ```
 
@@ -127,7 +127,7 @@ ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} \
 
 **构建详情**:
 - Build ID: `96e90845-f35d-4468-92b4-1ae68f912da8`
-- Image: `asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/frontend:preview-894d71f5`
+- Image: `asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/frontend:preview-894d71f5`
 - Build Time: 4分10秒
 - Logs: https://console.cloud.google.com/cloud-build/builds/96e90845-f35d-4468-92b4-1ae68f912da8
 
@@ -240,7 +240,7 @@ gcloud run services describe frontend-preview \
 
 # 4. 验证镜像标签
 gcloud artifacts docker tags list \
-  asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/frontend
+  asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/frontend
 ```
 
 ---
@@ -310,7 +310,7 @@ Fixes: Cloud Run deployment authentication failure"
 
 ```bash
 # 访问预发环境
-open https://www.urlchecker.dev/auth/sign-in
+open https://preview.example.com/auth/sign-in
 
 # 检查点:
 # - [ ] 页面正常加载
@@ -342,7 +342,7 @@ ORDER BY created_at DESC;
 # Cloud Run请求成功率
 gcloud monitoring time-series list \
   --filter='metric.type="run.googleapis.com/request_count"' \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 错误日志
 gcloud logging read \
@@ -350,7 +350,7 @@ gcloud logging read \
    resource.labels.service_name=frontend-preview AND \
    severity>=ERROR" \
   --limit=50 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ---
@@ -454,8 +454,8 @@ gcloud logging read \
 - 构建日志: `gcloud builds log 96e90845-f35d-4468-92b4-1ae68f912da8`
 
 ### GitHub
-- Repository: https://github.com/xxrenzhe/autoads
-- Latest run: https://github.com/xxrenzhe/autoads/actions/runs/18359693137
+- Repository: https://github.com/linming7277/adsai
+- Latest run: https://github.com/linming7277/adsai/actions/runs/18359693137
 - Workflow file: `.github/workflows/deploy-frontend.yml`
 
 ### Supabase
@@ -463,9 +463,9 @@ gcloud logging read \
 - Database URL: `postgresql://postgres.jzzvizacfyipzdyiqfzb:***@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres`
 
 ### GCP
-- Cloud Run Console: https://console.cloud.google.com/run?project=gen-lang-client-0944935873
-- Secret Manager: https://console.cloud.google.com/security/secret-manager?project=gen-lang-client-0944935873
-- Artifact Registry: https://console.cloud.google.com/artifacts/docker/gen-lang-client-0944935873/asia-northeast1/autoads-services/frontend
+- Cloud Run Console: https://console.cloud.google.com/run?project=your-gcp-project-id
+- Secret Manager: https://console.cloud.google.com/security/secret-manager?project=your-gcp-project-id
+- Artifact Registry: https://console.cloud.google.com/artifacts/docker/your-gcp-project-id/asia-northeast1/adsai-services/frontend
 
 ---
 

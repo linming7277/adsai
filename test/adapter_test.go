@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	databaseURL := os.Getenv("DATABASE_URL")
 	if databaseURL == "" {
 		// 使用默认值
-		databaseURL = "postgresql://postgres:password@localhost:5432/autoads_db"
+		databaseURL = "postgresql://postgres:password@localhost:5432/adsai_db"
 		fmt.Printf("使用默认数据库URL: %s\n", databaseURL)
 	}
 

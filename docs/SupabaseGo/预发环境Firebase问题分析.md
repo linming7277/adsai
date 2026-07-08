@@ -2,7 +2,7 @@
 
 ## 问题描述
 
-访问预发环境 https://www.urlchecker.dev/en/auth/sign-in 时，发现仍在使用Firebase认证流程，而非预期的Supabase认证。
+访问预发环境 https://preview.example.com/en/auth/sign-in 时，发现仍在使用Firebase认证流程，而非预期的Supabase认证。
 
 ## 根本原因分析
 
@@ -113,30 +113,30 @@ apps/
 echo -n "https://jzzvizacfyipzdyiqfzb.supabase.co" | \
   gcloud secrets create NEXT_PUBLIC_SUPABASE_URL \
   --data-file=- \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 添加Supabase Anon Key
 echo -n "YOUR_SUPABASE_ANON_KEY" | \
   gcloud secrets create NEXT_PUBLIC_SUPABASE_ANON_KEY \
   --data-file=- \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 添加Supabase Service Key（可选，用于服务端）
 echo -n "YOUR_SUPABASE_SERVICE_KEY" | \
   gcloud secrets create SUPABASE_SERVICE_KEY \
   --data-file=- \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 授权服务账号访问
 gcloud secrets add-iam-policy-binding NEXT_PUBLIC_SUPABASE_URL \
-  --member="serviceAccount:codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com" \
+  --member="serviceAccount:service-account@your-gcp-project-id.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor" \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 gcloud secrets add-iam-policy-binding NEXT_PUBLIC_SUPABASE_ANON_KEY \
-  --member="serviceAccount:codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com" \
+  --member="serviceAccount:service-account@your-gcp-project-id.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor" \
-  --project=gen-lang-client-0944935873.iam.gserviceaccount.com
+  --project=your-gcp-project-id.iam.gserviceaccount.com
 ```
 
 #### 步骤2: 更新Cloud Build配置
@@ -145,14 +145,14 @@ gcloud secrets add-iam-policy-binding NEXT_PUBLIC_SUPABASE_ANON_KEY \
 
 ```yaml
 timeout: "3600s"
-serviceAccount: 'projects/gen-lang-client-0944935873/serviceAccounts/codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com'
+serviceAccount: 'projects/your-gcp-project-id/serviceAccounts/service-account@your-gcp-project-id.iam.gserviceaccount.com'
 options:
   logging: GCS_ONLY
   machineType: 'E2_HIGHCPU_8'
-logsBucket: gs://autoads-build-logs-asia-northeast1/logs
+logsBucket: gs://adsai-build-logs-asia-northeast1/logs
 substitutions:
   _IMAGE: "asia-northeast1-docker.pkg.dev/PROJECT/REPO/frontend:dev"
-  _SITE_URL: "https://www.urlchecker.dev"
+  _SITE_URL: "https://preview.example.com"
 availableSecrets:
   secretManager:
   # Supabase配置
@@ -296,14 +296,14 @@ docker build \
 
 ```bash
 # 列出所有secrets
-gcloud secrets list --project=gen-lang-client-0944935873
+gcloud secrets list --project=your-gcp-project-id
 
 # 验证Supabase secrets存在
-gcloud secrets describe NEXT_PUBLIC_SUPABASE_URL --project=gen-lang-client-0944935873
-gcloud secrets describe NEXT_PUBLIC_SUPABASE_ANON_KEY --project=gen-lang-client-0944935873
+gcloud secrets describe NEXT_PUBLIC_SUPABASE_URL --project=your-gcp-project-id
+gcloud secrets describe NEXT_PUBLIC_SUPABASE_ANON_KEY --project=your-gcp-project-id
 
 # 查看secret值（仅用于验证，不要在生产环境执行）
-gcloud secrets versions access latest --secret=NEXT_PUBLIC_SUPABASE_URL --project=gen-lang-client-0944935873
+gcloud secrets versions access latest --secret=NEXT_PUBLIC_SUPABASE_URL --project=your-gcp-project-id
 ```
 
 ### 2. 本地测试构建
@@ -312,7 +312,7 @@ gcloud secrets versions access latest --secret=NEXT_PUBLIC_SUPABASE_URL --projec
 # 设置环境变量
 export NEXT_PUBLIC_SUPABASE_URL="https://jzzvizacfyipzdyiqfzb.supabase.co"
 export NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
-export NEXT_PUBLIC_SITE_URL="https://www.urlchecker.dev"
+export NEXT_PUBLIC_SITE_URL="https://preview.example.com"
 
 # 构建Docker镜像
 docker build \
@@ -336,13 +336,13 @@ docker run -p 8080:8080 frontend-test
 gcloud run services describe frontend-preview \
   --region=asia-northeast1 \
   --format='value(spec.template.spec.containers[0].env)' \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 访问预发环境
-curl -I https://www.urlchecker.dev
+curl -I https://preview.example.com
 
 # 检查页面源代码中的环境变量
-curl https://www.urlchecker.dev | grep -i "supabase\|firebase"
+curl https://preview.example.com | grep -i "supabase\|firebase"
 ```
 
 
@@ -371,8 +371,8 @@ cat secrets/supabase-credentials.json
 #!/bin/bash
 set -euo pipefail
 
-PROJECT_ID="gen-lang-client-0944935873"
-SERVICE_ACCOUNT="codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
+PROJECT_ID="your-gcp-project-id"
+SERVICE_ACCOUNT="service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 
 # 读取Supabase配置
 SUPABASE_URL="https://jzzvizacfyipzdyiqfzb.supabase.co"
@@ -476,19 +476,19 @@ open http://localhost:3000/auth/sign-in
 git push origin main
 
 # 2. 监控GitHub Actions
-# 访问: https://github.com/xxrenzhe/autoads/actions
+# 访问: https://github.com/linming7277/adsai/actions
 
 # 3. 等待部署完成（约10-15分钟）
 
 # 4. 验证部署
-curl -I https://www.urlchecker.dev
+curl -I https://preview.example.com
 ```
 
 #### 任务3: 功能验证
 
 ```bash
 # 验证清单
-- [ ] 访问 https://www.urlchecker.dev/auth/sign-in
+- [ ] 访问 https://preview.example.com/auth/sign-in
 - [ ] 检查页面是否正常加载
 - [ ] 点击"Google登录"按钮
 - [ ] 验证重定向到Google OAuth页面
@@ -506,18 +506,18 @@ curl -I https://www.urlchecker.dev
 gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=frontend-preview" \
   --limit=50 \
   --format=json \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 2. 查看错误日志
 gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=frontend-preview AND severity>=ERROR" \
   --limit=20 \
   --format=json \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 3. 监控请求成功率
 gcloud monitoring time-series list \
   --filter='metric.type="run.googleapis.com/request_count"' \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 #### 回滚步骤
@@ -529,7 +529,7 @@ gcloud monitoring time-series list \
 gcloud run services update-traffic frontend-preview \
   --to-revisions=PREVIOUS_REVISION=100 \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 方案B: 回滚代码
 git revert HEAD

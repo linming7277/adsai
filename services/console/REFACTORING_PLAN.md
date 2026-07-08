@@ -151,7 +151,7 @@ package handlers
 import (
     "encoding/json"
     "net/http"
-    "github.com/xxrenzhe/autoads/pkg/errors"
+    "github.com/linming7277/adsai/pkg/errors"
 )
 
 type TokenRule struct {

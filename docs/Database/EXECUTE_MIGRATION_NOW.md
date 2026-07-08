@@ -34,7 +34,7 @@ gh run watch
 
 ### 方式3: 通过GitHub网页界面
 
-1. 访问: https://github.com/xxrenzhe/autoads/actions/workflows/database-migration.yml
+1. 访问: https://github.com/linming7277/adsai/actions/workflows/database-migration.yml
 2. 点击 "Run workflow" 按钮
 3. 选择参数：
    - Environment: `preview` 或 `production`
@@ -67,7 +67,7 @@ gh run watch
 
 - [ ] ✅ 已创建数据库备份（生产环境）
   ```bash
-  gcloud sql backups create --instance=autoads
+  gcloud sql backups create --instance=adsai
   ```
 
 ## 🔄 执行流程
@@ -128,7 +128,7 @@ gh run list --workflow=database-migration.yml
 
 ### 查看GitHub Actions页面
 
-访问: https://github.com/xxrenzhe/autoads/actions
+访问: https://github.com/linming7277/adsai/actions
 
 ## ✅ 验证成功
 
@@ -154,10 +154,10 @@ gh run list --workflow=database-migration.yml
 ./cloud_sql_proxy -instances=PROJECT_ID:REGION:INSTANCE=tcp:5432 &
 
 # 查看所有schemas
-psql -h localhost -U autoads_admin -d autoads_db -c "\dn+"
+psql -h localhost -U adsai_admin -d adsai_db -c "\dn+"
 
 # 查看表数量
-psql -h localhost -U autoads_admin -d autoads_db -c "
+psql -h localhost -U adsai_admin -d adsai_db -c "
   SELECT schemaname, COUNT(*) 
   FROM pg_tables 
   WHERE schemaname IN ('billing', 'useractivity', 'offers', 'siterank', 'adscenter', 'system')

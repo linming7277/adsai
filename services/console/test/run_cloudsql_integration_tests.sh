@@ -16,7 +16,7 @@ echo -e "${GREEN}=== Console Service Cloud SQL Integration Tests ===${NC}"
 echo ""
 
 # Cloud SQL instance connection name
-INSTANCE_CONNECTION_NAME="gen-lang-client-0944935873:asia-northeast1:autoads"
+INSTANCE_CONNECTION_NAME="your-gcp-project-id:asia-northeast1:adsai"
 PROXY_PORT=5432
 
 # Check if Cloud SQL Proxy is installed
@@ -33,11 +33,11 @@ fi
 
 # Get database password from Secret Manager
 echo -e "${BLUE}Fetching database password from Secret Manager...${NC}"
-DB_PASSWORD=$(gcloud secrets versions access latest --secret="DATABASE_URL" --project=gen-lang-client-0944935873 | grep -oP 'postgres:\K[^@]+' | sed 's/%24/$/g; s/%28/(/g; s/%29/)/g; s/%7E/~/g; s/%5D/]/g; s/%5B/[/g')
+DB_PASSWORD=$(gcloud secrets versions access latest --secret="DATABASE_URL" --project=your-gcp-project-id | grep -oP 'postgres:\K[^@]+' | sed 's/%24/$/g; s/%28/(/g; s/%29/)/g; s/%7E/~/g; s/%5D/]/g; s/%5B/[/g')
 
 if [ -z "$DB_PASSWORD" ]; then
     # Fallback: extract from full URL and decode
-    FULL_URL=$(gcloud secrets versions access latest --secret="DATABASE_URL" --project=gen-lang-client-0944935873)
+    FULL_URL=$(gcloud secrets versions access latest --secret="DATABASE_URL" --project=your-gcp-project-id)
     DB_PASSWORD=$(echo "$FULL_URL" | sed -n 's/.*postgres:\([^@]*\)@.*/\1/p' | python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read().strip()))")
 fi
 
@@ -50,7 +50,7 @@ export CLOUDSQL_DB_PASSWORD="$DB_PASSWORD"
 
 echo -e "${BLUE}Database Connection:${NC}"
 echo "  Instance: $INSTANCE_CONNECTION_NAME"
-echo "  Database: autoads_db"
+echo "  Database: adsai_db"
 echo "  Proxy Port: $PROXY_PORT"
 echo ""
 

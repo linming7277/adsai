@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // FinalAdapter 使用FinalAdapter的数据库适配器

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # 按 Offer 过滤批量操作列表的冒烟脚本
-# 用法：GATEWAY=https://www.urlchecker.dev AUTH="Bearer <token>" OFFER_ID=off_xxx ./scripts/ops/smoke-bulk-list-offer.sh
+# 用法：GATEWAY=https://preview.example.com AUTH="Bearer <token>" OFFER_ID=off_xxx ./scripts/ops/smoke-bulk-list-offer.sh
 
 GATEWAY=${GATEWAY:-}
 AUTH=${AUTH:-}

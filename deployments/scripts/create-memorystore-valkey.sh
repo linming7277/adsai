@@ -3,11 +3,11 @@ set -euo pipefail
 
 # Create a Memorystore for Valkey (Redis-compatible) instance
 # Usage:
-#   PROJECT_ID=<id> REGION=asia-northeast1 INSTANCE_ID=autoads-valkey TIER=STANDARD_HA SIZE_GB=1 ./deployments/scripts/create-memorystore-valkey.sh
+#   PROJECT_ID=<id> REGION=asia-northeast1 INSTANCE_ID=adsai-valkey TIER=STANDARD_HA SIZE_GB=1 ./deployments/scripts/create-memorystore-valkey.sh
 
 PROJECT_ID=${PROJECT_ID:-}
 REGION=${REGION:-asia-northeast1}
-INSTANCE_ID=${INSTANCE_ID:-autoads-valkey}
+INSTANCE_ID=${INSTANCE_ID:-adsai-valkey}
 TIER=${TIER:-STANDARD_HA}
 SIZE_GB=${SIZE_GB:-1}
 

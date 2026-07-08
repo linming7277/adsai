@@ -10,8 +10,8 @@ Disallow: /manage
 Disallow: /api
 
 # Host
-Host: https://www.autoads.dev
+Host: https://www.example.com
 
 # Sitemaps
-Sitemap: https://www.autoads.dev/sitemap.xml
-Sitemap: https://www.autoads.dev/server-sitemap.xml
+Sitemap: https://www.example.com/sitemap.xml
+Sitemap: https://www.example.com/server-sitemap.xml

@@ -2,7 +2,7 @@
 
 ## 概述
 
-Recommendations 服务是 autoads 项目的推荐和风险检测服务，负责提供关键词建议、品牌词风险检测等功能。本服务与 adscenter 解耦，减少 Google Ads API 调用，提高系统效率。
+Recommendations 服务是 adsai 项目的推荐和风险检测服务，负责提供关键词建议、品牌词风险检测等功能。本服务与 adscenter 解耦，减少 Google Ads API 调用，提高系统效率。
 
 ### 核心功能
 
@@ -45,7 +45,7 @@ DATABASE_URL=postgresql://...
 
 # Firestore (可选)
 FIRESTORE_ENABLED=1
-GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id
 
 # Browser-Exec 服务 (可选)
 BROWSER_EXEC_URL=https://browser-exec-preview-...
@@ -53,7 +53,7 @@ BROWSER_INTERNAL_TOKEN=...
 
 # BigQuery (可选)
 BQ_ENABLED=1
-BQ_PROJECT_ID=gen-lang-client-0944935873
+BQ_PROJECT_ID=your-gcp-project-id
 BQ_DATASET=ads_export
 BQ_TABLE=keywords
 BQ_KEYWORD_COL=keyword_text
@@ -401,7 +401,7 @@ git push origin production
 
 ```bash
 # 检查 BigQuery 权限
-gcloud projects get-iam-policy gen-lang-client-0944935873
+gcloud projects get-iam-policy your-gcp-project-id
 
 # 测试查询
 bq query --use_legacy_sql=false \
@@ -412,10 +412,10 @@ bq query --use_legacy_sql=false \
 
 ```bash
 # 检查 Firestore 配置
-gcloud firestore databases describe --project=gen-lang-client-0944935873
+gcloud firestore databases describe --project=your-gcp-project-id
 
 # 检查权限
-gcloud projects get-iam-policy gen-lang-client-0944935873 \
+gcloud projects get-iam-policy your-gcp-project-id \
   --flatten="bindings[].members" \
   --filter="bindings.role:roles/datastore.user"
 ```

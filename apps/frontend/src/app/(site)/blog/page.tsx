@@ -15,7 +15,7 @@ type FeaturedPost = {
 };
 
 export const metadata = {
-  title: 'Blog - AutoAds',
+  title: 'Blog - AdsAI',
 };
 
 async function BlogPage() {

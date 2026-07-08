@@ -11,8 +11,8 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configuration
-API_BASE_URL="http://api.urlchecker.dev"
-FRONTEND_BASE_URL="https://www.urlchecker.dev"
+API_BASE_URL="http://api.preview.example.com"
+FRONTEND_BASE_URL="https://preview.example.com"
 
 echo -e "${BLUE}🔍 Demo API Existence Test${NC}"
 echo "=============================="

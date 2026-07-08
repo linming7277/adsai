@@ -1,4 +1,4 @@
-# AutoAds 前端当前实现分析与行业最佳实践对比
+# AdsAI 前端当前实现分析与行业最佳实践对比
 
 **文档版本:** 1.0
 **创建时间:** 2025-10-09
@@ -245,24 +245,24 @@ const trendsQuery = useDashboardTrends(period, organizationUid);
 1. **数据密度平衡**
    - 首屏显示 3 个核心指标（Balance、Payments、Customers）
    - 次要指标折叠在 "More metrics" 下拉菜单
-   - AutoAds 可借鉴：将 6 个 KPI 精简为 3-4 个，其他放入可展开区域
+   - AdsAI 可借鉴：将 6 个 KPI 精简为 3-4 个，其他放入可展开区域
 
 2. **实时更新提示**
    - 页面顶部显示"Last updated 2 minutes ago"
    - 鼠标悬停显示下次更新倒计时
-   - AutoAds 可借鉴：在页面右上角显示"最后更新于 XX:XX"
+   - AdsAI 可借鉴：在页面右上角显示"最后更新于 XX:XX"
 
 3. **快捷操作栏**
    - 顶部固定 "Create payment" / "Create customer" 按钮
-   - AutoAds 可借鉴：固定 "创建 Offer" / "批量评估" 按钮
+   - AdsAI 可借鉴：固定 "创建 Offer" / "批量评估" 按钮
 
 4. **深度链接**
    - 图表可点击跳转到详细列表（如点击某日收入跳转到当天交易列表）
-   - AutoAds 可借鉴：点击 ROAS 曲线跳转到该日 Offer 详情
+   - AdsAI 可借鉴：点击 ROAS 曲线跳转到该日 Offer 详情
 
 5. **异常检测**
    - 自动标注异常数据点（如 "收入下降 30%"）
-   - AutoAds 可借鉴：在趋势图标注 "ROAS 异常下降"
+   - AdsAI 可借鉴：在趋势图标注 "ROAS 异常下降"
 
 ---
 
@@ -273,24 +273,24 @@ const trendsQuery = useDashboardTrends(period, organizationUid);
 1. **极简主义设计**
    - 无边框卡片，大量留白
    - 单色图标 + 清晰层级
-   - AutoAds 可借鉴：减少边框使用，增加负空间
+   - AdsAI 可借鉴：减少边框使用，增加负空间
 
 2. **Keyboard-first 交互**
    - Cmd+K 全局命令面板
    - 快捷键快速创建 Issue (C)
-   - AutoAds 可借鉴：实现命令面板（创建 Offer、搜索任务）
+   - AdsAI 可借鉴：实现命令面板（创建 Offer、搜索任务）
 
 3. **上下文预加载**
    - 鼠标悬停即开始预加载详情数据
-   - AutoAds 可借鉴：在 OffersTable 悬停时预加载 Offer 详情
+   - AdsAI 可借鉴：在 OffersTable 悬停时预加载 Offer 详情
 
 4. **个性化视图**
    - 用户可保存自定义筛选器为"视图"
-   - AutoAds 可借鉴：Offers 页面支持保存"待评估"、"高 ROAS"等自定义视图
+   - AdsAI 可借鉴：Offers 页面支持保存"待评估"、"高 ROAS"等自定义视图
 
 5. **空状态插图**
    - 高质量 SVG 插图 + 引导文案
-   - AutoAds 可借鉴：使用专业插图（可从 unDraw、Storyset 获取）
+   - AdsAI 可借鉴：使用专业插图（可从 unDraw、Storyset 获取）
 
 ---
 
@@ -301,20 +301,20 @@ const trendsQuery = useDashboardTrends(period, organizationUid);
 1. **部署状态实时流**
    - 使用 WebSocket 推送部署日志
    - 自动滚动到最新日志
-   - AutoAds 可借鉴：任务中心实时显示评估进度
+   - AdsAI 可借鉴：任务中心实时显示评估进度
 
 2. **性能优化透明化**
    - 显示每个页面的 Lighthouse 评分
    - 显示 Core Web Vitals 趋势
-   - AutoAds 可借鉴：显示落地页加载速度趋势
+   - AdsAI 可借鉴：显示落地页加载速度趋势
 
 3. **一键部署按钮**
    - 全局固定 "Deploy" 按钮
-   - AutoAds 可借鉴：全局固定 "创建 Offer" 按钮
+   - AdsAI 可借鉴：全局固定 "创建 Offer" 按钮
 
 4. **Edge Logs 筛选**
    - 支持正则表达式筛选日志
-   - AutoAds 可借鉴：任务日志支持高级筛选
+   - AdsAI 可借鉴：任务日志支持高级筛选
 
 ---
 
@@ -324,15 +324,15 @@ const trendsQuery = useDashboardTrends(period, organizationUid);
 
 1. **灵活视图系统**
    - Table、Board、Gallery、Calendar、Timeline 5 种视图
-   - AutoAds 可借鉴：Offers 支持表格/卡片/看板视图
+   - AdsAI 可借鉴：Offers 支持表格/卡片/看板视图
 
 2. **数据库属性系统**
    - 用户可自定义字段类型（Text、Select、Date、Formula）
-   - AutoAds 可借鉴：允许用户添加自定义标签字段
+   - AdsAI 可借鉴：允许用户添加自定义标签字段
 
 3. **实时协作**
    - 显示其他用户正在编辑的位置
-   - AutoAds 可借鉴：如果未来支持团队协作，显示谁在编辑 Offer
+   - AdsAI 可借鉴：如果未来支持团队协作，显示谁在编辑 Offer
 
 ---
 

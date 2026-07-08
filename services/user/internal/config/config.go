@@ -46,7 +46,7 @@ func Load() *Config {
 	cfg := &Config{
 		Environment: getEnvOrDefault("ENVIRONMENT", "development"),
 		Database: DatabaseConfig{
-			URL:             getEnvOrDefault("DATABASE_URL", "postgres://user:password@localhost:5432/autoads"),
+			URL:             getEnvOrDefault("DATABASE_URL", "postgres://user:password@localhost:5432/adsai"),
 			MaxConnections:  25,
 			MaxIdleTime:     5 * time.Minute,
 			ConnMaxLifetime: 2 * time.Hour,

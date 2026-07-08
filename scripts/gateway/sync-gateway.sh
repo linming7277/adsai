@@ -5,17 +5,17 @@
 set -euo pipefail
 
 ENVIRONMENT="${1:-preview}"
-PROJECT_ID="${PROJECT_ID:-gen-lang-client-0944935873}"
+PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 REGION="${REGION:-asia-northeast1}"
 
 case "$ENVIRONMENT" in
   preview)
-    API_ID="autoads-api-preview"
-    GATEWAY_ID="autoads-gw-preview"
+    API_ID="adsai-api-preview"
+    GATEWAY_ID="adsai-gw-preview"
     ;;
   prod|production)
-    API_ID="autoads-api"
-    GATEWAY_ID="autoads-gw"
+    API_ID="adsai-api"
+    GATEWAY_ID="adsai-gw"
     ;;
   *)
     echo "❌ Invalid environment: $ENVIRONMENT (must be 'preview' or 'prod')"

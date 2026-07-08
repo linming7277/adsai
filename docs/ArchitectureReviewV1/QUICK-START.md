@@ -39,7 +39,7 @@ git push origin main
 
 ```bash
 # 访问GitHub Actions页面
-# https://github.com/xxrenzhe/autoads/actions
+# https://github.com/linming7277/adsai/actions
 
 # 预期流程（5-10分钟）:
 # ✅ detect-changed-services.sh 检测到siterank变更
@@ -56,13 +56,13 @@ git push origin main
 # 检查服务状态
 gcloud run services describe siterank-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="table(status.url,status.conditions[0].status)"
 
 # 检查健康状态
 SERVICE_URL=$(gcloud run services describe siterank-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format='value(status.url)')
 
 curl -f $SERVICE_URL/health && echo "✅ 服务健康" || echo "❌ 健康检查失败"
@@ -79,7 +79,7 @@ curl -f $SERVICE_URL/health && echo "✅ 服务健康" || echo "❌ 健康检查
 gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=siterank-preview" \
   --limit=20 \
   --format="table(timestamp,textPayload)" \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 2. 触发一次评估任务（通过前端或API）
 # 观察是否有重试日志
@@ -109,7 +109,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 gcloud run services update-traffic siterank-preview \
   --to-revisions=PREVIOUS_REVISION=100 \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ---

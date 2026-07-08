@@ -16,7 +16,7 @@ readonly BACKUP_DIR="/tmp/adscenter_backup_${MIGRATION_ID}"
 # 数据库连接配置
 readonly DB_HOST="${DB_HOST:-localhost}"
 readonly DB_PORT="${DB_PORT:-5432}"
-readonly DB_NAME="${DB_NAME:-autoads_db}"
+readonly DB_NAME="${DB_NAME:-adsai_db}"
 readonly DB_USER="${DB_USER:-postgres}"
 readonly DB_PASSWORD="${DB_PASSWORD:-password}"
 

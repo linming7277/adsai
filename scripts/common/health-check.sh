@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# AutoAds SaaS 健康检查脚本
+# AdsAI SaaS 健康检查脚本
 # 使用方法: ./scripts/health-check.sh [preview|production|local]
 
 set -e
@@ -38,10 +38,10 @@ log_debug() {
 get_base_url() {
     case $ENVIRONMENT in
         production)
-            echo "https://www.autoads.dev"
+            echo "https://www.example.com"
             ;;
         preview)
-            echo "https://www.urlchecker.dev"
+            echo "https://preview.example.com"
             ;;
         local)
             # 优先使用 LOCAL_PORT，其次 PORT，最后默认 8080（与 Go 服务统一）
@@ -272,7 +272,7 @@ monitor_mode() {
             # 发送告警（如果配置了）
             if [[ -n "$ALERT_WEBHOOK" ]]; then
                 curl -X POST -H 'Content-type: application/json' \
-                    --data "{\"text\":\"🚨 AutoAds SaaS ($ENVIRONMENT) 健康检查失败\"}" \
+                    --data "{\"text\":\"🚨 AdsAI SaaS ($ENVIRONMENT) 健康检查失败\"}" \
                     "$ALERT_WEBHOOK" 2>/dev/null || true
             fi
         fi
@@ -284,14 +284,14 @@ monitor_mode() {
 # 显示帮助
 show_help() {
     cat << EOF
-AutoAds SaaS 健康检查脚本
+AdsAI SaaS 健康检查脚本
 
 使用方法:
     $0 [environment] [options]
 
 环境:
-    preview     预发环境 (urlchecker.dev)
-    production  生产环境 (autoads.dev)
+    preview     预发环境 (preview.example.com)
+    production  生产环境 (example.com)
     local       本地环境 (localhost:${LOCAL_PORT:-${PORT:-8080}})
 
 选项:
@@ -339,7 +339,7 @@ main() {
         esac
     done
     
-    log_info "AutoAds SaaS 健康检查 - 环境: $ENVIRONMENT"
+    log_info "AdsAI SaaS 健康检查 - 环境: $ENVIRONMENT"
     
     # 监控模式
     if [[ "$monitor" == "true" ]]; then

@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # 主基础设施配置脚本
-# AutoAds 完整基础设施配置
+# AdsAI 完整基础设施配置
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "🚀 AutoAds 基础设施配置"
+echo "🚀 AdsAI 基础设施配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "此脚本将依次执行以下配置："

@@ -15,7 +15,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/xxrenzhe/autoads/tools/dbctl/commands"
+	"github.com/linming7277/adsai/tools/dbctl/commands"
 )
 
 type Config struct {
@@ -34,7 +34,7 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "dbctl",
 		Short: "Database management CLI tool",
-		Long:  `dbctl is a CLI tool for managing AutoAds databases through the db-admin service`,
+		Long:  `dbctl is a CLI tool for managing AdsAI databases through the db-admin service`,
 	}
 )
 

@@ -1,4 +1,4 @@
-# AutoAds 数据库架构与操作指南
+# AdsAI 数据库架构与操作指南
 
 **文档版本**: v4.0
 **更新日期**: 2025-10-23
@@ -25,7 +25,7 @@
    - ✅ 数据库重置需确认文本 (`RESET DATABASE`)
 
 3. **服务连接架构**
-   - 所有Go微服务连接Cloud SQL (autoads_db)
+   - 所有Go微服务连接Cloud SQL (adsai_db)
    - 所有业务数据统一存储在Cloud SQL
    - Supabase仅用于认证，Frontend通过SDK访问
    - Backend不连接Supabase数据库，仅验证JWT
@@ -112,7 +112,7 @@
                                    │   Cloud SQL            │
                                    │   (统一业务数据存储)     │
                                    │                        │
-                                   │ • autoads_db           │
+                                   │ • adsai_db           │
                                    │ • PostgreSQL 17        │
                                    │                        │
                                    │ 8个业务Schema:          │
@@ -202,7 +202,7 @@ apiRoutes.Use(reverseProxy.ProxyMiddleware())  // 6. 反向代理
 
 ### 用户认证流程 (v4.0优化版)
 
-AutoAds采用Supabase托管认证 + Cloud SQL业务数据的分离架构，基于**用户数据三层架构**设计，通过智能初始化和完整性检查确保用户数据的一致性：
+AdsAI采用Supabase托管认证 + Cloud SQL业务数据的分离架构，基于**用户数据三层架构**设计，通过智能初始化和完整性检查确保用户数据的一致性：
 
 **🚀 v4.0优化认证流程 (2025-10-23更新)**:
 
@@ -238,7 +238,7 @@ Layer 3: Cloud SQL billing.accounts (计费层)
 
 **🔄 增强型单向同步机制 + 逆向同步支持**:
 
-AutoAds采用**应用层主动同步**模式，通过智能业务数据验证和初始化，确保认证层和业务层数据的一致性：
+AdsAI采用**应用层主动同步**模式，通过智能业务数据验证和初始化，确保认证层和业务层数据的一致性：
 
 **主要同步时机**:
 1. **新用户注册**: 用户首次通过Google OAuth登录，自动触发三层架构数据创建
@@ -611,10 +611,10 @@ Frontend用户登录
 ### 1. Cloud SQL (PostgreSQL 17)
 
 **实例信息**:
-- **实例ID**: `gen-lang-client-0944935873:asia-northeast1:autoads`
+- **实例ID**: `your-gcp-project-id:asia-northeast1:adsai`
 - **区域**: asia-northeast1
 - **版本**: PostgreSQL 17
-- **数据库**: autoads_db
+- **数据库**: adsai_db
 
 **连接方式**:
 - ✅ **Cloud SQL Proxy + Unix Socket** (当前)
@@ -623,7 +623,7 @@ Frontend用户登录
 **连接字符串格式**:
 ```bash
 # Unix Socket模式 (当前使用)
-DATABASE_URL="postgresql://user:password@/autoads_db?host=/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads"
+DATABASE_URL="postgresql://user:password@/adsai_db?host=/cloudsql/your-gcp-project-id:asia-northeast1:adsai"
 ```
 
 ### 2. Supabase (认证服务)
@@ -669,7 +669,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="[anon-key]"
 - 连接复用和生命周期管理
 
 **连接配置**:
-- 所有Go微服务连接Cloud SQL (autoads_db)
+- 所有Go微服务连接Cloud SQL (adsai_db)
 - 通过环境变量`DATABASE_URL`配置连接字符串
 - 使用Cloud SQL Proxy + Unix Socket连接
 
@@ -682,7 +682,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="[anon-key]"
 **服务连接模式**:
 
 ```yaml
-所有Go微服务 - 连接Cloud SQL (autoads_db):
+所有Go微服务 - 连接Cloud SQL (adsai_db):
   - billing-service       # 用户、订阅、代币管理
   - offer-service        # Offer管理
   - siterank-service     # 网站评估
@@ -712,7 +712,7 @@ env:
         key: latest
 
 annotations:
-  run.googleapis.com/cloudsql-instances: "gen-lang-client-0944935873:asia-northeast1:autoads"
+  run.googleapis.com/cloudsql-instances: "your-gcp-project-id:asia-northeast1:adsai"
 ```
 
 **Frontend配置** (Next.js):
@@ -1031,7 +1031,7 @@ rows, err := adapter.Query(ctx, query, args...)
 ```yaml
 # cloudbuild.yaml
 annotations:
-  run.googleapis.com/cloudsql-instances: "gen-lang-client-0944935873:asia-northeast1:autoads"
+  run.googleapis.com/cloudsql-instances: "your-gcp-project-id:asia-northeast1:adsai"
 
 env:
   - name: DB_CONNECTION_MODE
@@ -1092,7 +1092,7 @@ env:
 **触发方式**:
 ```bash
 # 通过GitHub Actions手动触发
-# 1. 访问: https://github.com/xxrenzhe/autoads/actions/workflows/database-migration-cloudrun.yml
+# 1. 访问: https://github.com/linming7277/adsai/actions/workflows/database-migration-cloudrun.yml
 # 2. 点击 "Run workflow"
 # 3. 选择环境: preview / production
 # 4. (可选) 勾选 reset_database 并输入确认文本 "RESET DATABASE"
@@ -1157,9 +1157,9 @@ env:
 **执行环境**:
 ```yaml
 环境变量:
-  PROJECT_ID: gen-lang-client-0944935873
+  PROJECT_ID: your-gcp-project-id
   REGION: asia-northeast1
-  CLOUDSQL_INSTANCE: autoads
+  CLOUDSQL_INSTANCE: adsai
   TARGET_ENV: preview / production
 
 Cloud Run Job配置:
@@ -1224,7 +1224,7 @@ Schema管理原则:
 
 ### 快速操作工具集概述
 
-AutoAds提供了一套完整的数据库快速操作工具，支持在本地开发环境中快速执行DML/DDL操作，大幅提升开发效率。
+AdsAI提供了一套完整的数据库快速操作工具，支持在本地开发环境中快速执行DML/DDL操作，大幅提升开发效率。
 
 **核心工具**:
 - `quick-db-ops.sh` - 快速DML/DDL操作工具
@@ -1642,7 +1642,7 @@ description=主要更新前检查点
 created_at=2025-10-23T14:30:22+08:00
 created_by=张三
 backup_file=/path/to/backup.sql
-database=autoads_db
+database=adsai_db
 ```
 
 #### 回滚操作
@@ -1833,7 +1833,7 @@ graph TD
 
 #### 3. 多数据库分散架构
 **状态**: ❌ 已重构
-**替代**: ✅ 统一数据库autoads_db + 6个schema
+**替代**: ✅ 统一数据库adsai_db + 6个schema
 **原因**:
 - 数据分散，查询复杂
 - 事务一致性难保证
@@ -2043,7 +2043,7 @@ const response = await fetch('/api/v1/user/profile', {
 })
 
 // ❌ 禁止：硬编码文本
-<h1>欢迎使用AutoAds</h1>
+<h1>欢迎使用AdsAI</h1>
 
 // ✅ 正确：使用国际化
 <h1>{t('welcome.title')}</h1>
@@ -2119,13 +2119,13 @@ git push origin main
 # 2. GitHub Actions自动执行迁移
 
 # 3. 查看执行日志
-# 访问: https://github.com/xxrenzhe/autoads/actions
+# 访问: https://github.com/linming7277/adsai/actions
 ```
 
 **手动触发迁移**:
 ```bash
 # 访问GitHub Actions页面
-# https://github.com/xxrenzhe/autoads/actions/workflows/database-migration-cloudrun.yml
+# https://github.com/linming7277/adsai/actions/workflows/database-migration-cloudrun.yml
 # 点击 "Run workflow" → 选择环境 → 执行
 ```
 

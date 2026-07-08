@@ -2,7 +2,7 @@
 
 ## 📋 概述
 
-Gateway Middleware 是 AutoAds 系统的统一 API 网关，负责：
+Gateway Middleware 是 AdsAI 系统的统一 API 网关，负责：
 - ✅ JWT 验证和用户身份认证
 - ✅ 订阅套餐和权限检查（Redis 缓存）
 - ✅ Token 预留和两阶段提交管理
@@ -27,11 +27,11 @@ Frontend → GCP API Gateway → Gateway Middleware → 业务服务 (offer, bil
 # 1. 确认 VPC Connector
 gcloud compute networks vpc-access connectors describe cr-conn-default-ane1 \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 2. 确认 Secrets
-gcloud secrets describe DATABASE_URL --project=gen-lang-client-0944935873
-gcloud secrets describe REDIS_URL --project=gen-lang-client-0944935873
+gcloud secrets describe DATABASE_URL --project=your-gcp-project-id
+gcloud secrets describe REDIS_URL --project=your-gcp-project-id
 
 # 3. 确认 Redis 实例运行中
 gcloud redis instances list --region=asia-northeast1
@@ -47,18 +47,18 @@ git push origin main
 
 # 2. Cloud Build 自动触发构建和部署
 # 监控构建进度:
-gcloud builds list --ongoing --project=gen-lang-client-0944935873
+gcloud builds list --ongoing --project=your-gcp-project-id
 ```
 
 ### 方法二：手动部署
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 # 构建并部署
 gcloud builds submit \
   --config=services/gateway-middleware/cloudbuild-preview.yaml \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 **预计时间**: 5-8 分钟
@@ -72,15 +72,15 @@ gcloud builds submit \
 ```bash
 gcloud run services update gateway-middleware-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --update-secrets=\
 DATABASE_URL=DATABASE_URL:latest,\
 REDIS_URL=REDIS_URL:latest \
   --update-env-vars=\
 CONFIG_PATH=/config/routes.yaml,\
 BILLING_SERVICE_URL=https://billing-preview-yt54xvsg5q-an.a.run.app,\
-JWT_ISSUER=https://autoads.dev,\
-JWT_AUDIENCE=autoads-api,\
+JWT_ISSUER=https://example.com,\
+JWT_AUDIENCE=adsai-api,\
 LOG_LEVEL=info,\
 ENVIRONMENT=preview,\
 GIN_MODE=release
@@ -95,7 +95,7 @@ GIN_MODE=release
 ```bash
 gcloud run services describe gateway-middleware-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="value(status.url,status.conditions[0].status)"
 ```
 
@@ -104,7 +104,7 @@ gcloud run services describe gateway-middleware-preview \
 ```bash
 GATEWAY_URL=$(gcloud run services describe gateway-middleware-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format="value(status.url)")
 
 curl -s "$GATEWAY_URL/health" | jq .
@@ -154,13 +154,13 @@ curl -s "$GATEWAY_URL/metrics" | grep gateway_
 
 # 2. 创建新的 API Config
 gcloud api-gateway api-configs create gateway-middleware-config-v1 \
-  --api=autoads-api-preview \
+  --api=adsai-api-preview \
   --openapi-spec=infrastructure/api-gateway/openapi-preview.yaml \
-  --backend-auth-service-account=api-gateway@gen-lang-client-0944935873.iam.gserviceaccount.com
+  --backend-auth-service-account=api-gateway@your-gcp-project-id.iam.gserviceaccount.com
 
 # 3. 更新 Gateway
-gcloud api-gateway gateways update autoads-gateway-preview \
-  --api=autoads-api-preview \
+gcloud api-gateway gateways update adsai-gateway-preview \
+  --api=adsai-api-preview \
   --api-config=gateway-middleware-config-v1 \
   --location=asia-northeast1
 ```
@@ -186,7 +186,7 @@ gcloud api-gateway gateways update autoads-gateway-preview \
 # 实时日志
 gcloud run logs tail gateway-middleware-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 最近 50 条日志
 gcloud run logs read gateway-middleware-preview \
@@ -297,8 +297,8 @@ gcloud run services update-traffic gateway-middleware-preview \
 
 ```bash
 # 更新 API Gateway 指向旧的直接路由
-gcloud api-gateway gateways update autoads-gateway-preview \
-  --api=autoads-api-preview \
+gcloud api-gateway gateways update adsai-gateway-preview \
+  --api=adsai-api-preview \
   --api-config=direct-routing-config \
   --location=asia-northeast1
 ```

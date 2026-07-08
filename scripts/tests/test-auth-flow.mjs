@@ -14,7 +14,7 @@
 
 import { chromium } from 'playwright';
 
-const BASE_URL = process.env.BASE_URL || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.BASE_URL || 'https://preview.example.com';
 const TIMEOUT = 30000;
 
 // ANSI 颜色代码

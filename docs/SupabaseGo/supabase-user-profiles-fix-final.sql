@@ -1,4 +1,4 @@
--- AutoAds Supabase user_profiles修正脚本 - 错误修复版
+-- AdsAI Supabase user_profiles修正脚本 - 错误修复版
 -- 基于DATABASE_ARCHITECTURE_CURRENT.md三层用户架构设计
 -- 执行日期: 2025-10-22
 

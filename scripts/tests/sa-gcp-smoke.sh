@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SA_FILE="${SA_FILE:-secrets/gcp_codex_dev.json}"
-PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}"
+PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}"
 PUBSUB_TOPIC_ID="${PUBSUB_TOPIC_ID:-domain-events}"
 DATABASE_URL_SECRET_NAME="${DATABASE_URL_SECRET_NAME:-projects/${PROJECT_ID}/secrets/DATABASE_URL/versions/latest}"
 FIRESTORE_DATABASE_ID="${FIRESTORE_DATABASE_ID:-(default)}"

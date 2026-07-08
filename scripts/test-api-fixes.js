@@ -2,7 +2,7 @@
  * API Fixes Validation Script
  *
  * Tests the fixed API endpoints to ensure they return the correct format
- * Run this in browser console on https://www.urlchecker.dev
+ * Run this in browser console on https://preview.example.com
  */
 
 // Test API endpoints after format fixes

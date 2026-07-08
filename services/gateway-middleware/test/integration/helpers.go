@@ -13,7 +13,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/require"
 
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/config"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/config"
 )
 
 // setupTestRedis creates a miniredis instance for testing

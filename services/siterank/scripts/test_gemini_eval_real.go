@@ -7,8 +7,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/aievaluator"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+	"github.com/linming7277/adsai/services/siterank/internal/aievaluator"
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 // RawSimilarWebData 从JSON文件读取的原始数据结构
@@ -91,7 +91,7 @@ func main() {
 	fmt.Println("🤖 初始化Gemini AI服务...")
 	projectID := os.Getenv("GCP_PROJECT_ID")
 	if projectID == "" {
-		projectID = "gen-lang-client-0944935873"
+		projectID = "your-gcp-project-id"
 	}
 
 	service, err := aievaluator.NewService(ctx, projectID)

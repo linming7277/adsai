@@ -25,7 +25,7 @@ import { createClient } from '@supabase/supabase-js';
 const TEST_USERS = [
   {
     id: '37fd3629-a06a-47c8-b33a-31944afaa14c',
-    email: 'test-user@autoads.dev',
+    email: 'test-user@adsai.dev',
     role: 'user',
   },
 ];

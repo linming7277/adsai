@@ -63,7 +63,7 @@ fatal: bad tree object b05d22db743928b62b3daf793311c4b43e99f0a1
 ```
 
 ### 2. 仓库备份 ✅
-- ✅ 创建完整mirror备份: `/Users/jason/Documents/Kiro/autoads-backup-20251022-102131.git`
+- ✅ 创建完整mirror备份: `/path/to/adsai-backup-20251022-102131.git`
 - ✅ 记录原始HEAD: `da92e35b87915b7f40b1fa66841e4c3ee3ea3342`
 
 ### 3. 安全文档 ✅
@@ -119,19 +119,19 @@ git push origin main
 # 警告：这将丢失所有Git历史
 
 # 1. 创建新的空仓库
-mkdir autoads-clean
-cd autoads-clean
+mkdir adsai-clean
+cd adsai-clean
 git init
 
 # 2. 复制当前代码（不包含.git）
-rsync -av --exclude='.git' ../autoads/ ./
+rsync -av --exclude='.git' ../adsai/ ./
 
 # 3. 创建初始提交
 git add -A
 git commit -m "Initial commit after security cleanup"
 
 # 4. 推送到新分支（不要覆盖main）
-git remote add origin https://github.com/xxrenzhe/autoads.git
+git remote add origin https://github.com/linming7277/adsai.git
 git push origin HEAD:clean-start
 
 # 5. 团队确认后，可以将clean-start设为默认分支
@@ -147,10 +147,10 @@ git push origin HEAD:clean-start
 
 ```bash
 # 1. 创建浅克隆（只保留最近100个提交）
-git clone --depth 100 https://github.com/xxrenzhe/autoads.git autoads-shallow
+git clone --depth 100 https://github.com/linming7277/adsai.git adsai-shallow
 
 # 2. 在浅克隆中移除旧的敏感提交
-cd autoads-shallow
+cd adsai-shallow
 # 如果敏感信息在最近100个提交之前，则已被移除
 
 # 3. 验证
@@ -172,7 +172,7 @@ git push --force origin main
 ### 步骤1: 提交代码修复
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 # 确认修改
 git status
@@ -210,10 +210,10 @@ psql "$SUPABASE_DB_URL"
 # 更新密码
 UPDATE auth.users
 SET encrypted_password = crypt('新的超强密码', gen_salt('bf'))
-WHERE email = 'admin@autoads.dev';
+WHERE email = 'admin@adsai.dev';
 
 # 验证
-SELECT id, email FROM auth.users WHERE email = 'admin@autoads.dev';
+SELECT id, email FROM auth.users WHERE email = 'admin@adsai.dev';
 ```
 
 ### 步骤3: 添加Pre-commit Hook
@@ -271,7 +271,7 @@ chmod +x .git/hooks/pre-commit
 ### 步骤4: 限制仓库访问
 
 **GitHub设置**:
-1. 访问: https://github.com/xxrenzhe/autoads/settings/access
+1. 访问: https://github.com/linming7277/adsai/settings/access
 2. 审查所有有权访问的用户
 3. 移除不必要的访问权限
 4. 启用分支保护规则

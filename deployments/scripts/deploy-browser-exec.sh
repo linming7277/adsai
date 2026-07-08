@@ -7,7 +7,7 @@ set -euo pipefail
 
 ENVIRONMENT="${1:-preview}"
 IMAGE="${2:-}"
-PROJECT_ID="${PROJECT_ID:-gen-lang-client-0944935873}"
+PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 REGION="${REGION:-asia-northeast1}"
 
 if [[ -z "$IMAGE" ]]; then

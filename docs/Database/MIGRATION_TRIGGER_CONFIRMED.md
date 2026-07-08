@@ -26,10 +26,10 @@
 
 ```yaml
 env:
-  PROJECT_ID: gen-lang-client-0944935873
+  PROJECT_ID: your-gcp-project-id
   REGION: asia-northeast1
-  CLOUDSQL_INSTANCE: autoads
-  IMAGE_NAME: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator
+  CLOUDSQL_INSTANCE: adsai
+  IMAGE_NAME: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator
   # Default to preview environment when triggered by push
   TARGET_ENV: ${{ inputs.environment || 'preview' }}
 ```
@@ -112,7 +112,7 @@ Status: ✅ 已推送到origin/main
 
 ### 监控地址
 
-- **GitHub Actions**: https://github.com/xxrenzhe/autoads/actions
+- **GitHub Actions**: https://github.com/linming7277/adsai/actions
 - **工作流**: "Database Migration (Cloud Run Job)"
 - **预计完成时间**: 6-10分钟
 
@@ -163,14 +163,14 @@ db-verify-preview
 ### Job配置参数
 
 ```yaml
-Image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:{sha}
+Image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:{sha}
 Region: asia-northeast1
 Environment Variables:
   - SERVICE_NAME: {service}
 Secrets:
   - DATABASE_URL: DATABASE_URL:latest
 Cloud SQL Instances:
-  - gen-lang-client-0944935873:asia-northeast1:autoads
+  - your-gcp-project-id:asia-northeast1:adsai
 Max Retries: 0
 Task Timeout: 10m
 ```
@@ -276,7 +276,7 @@ public schema: 5个管理表
 ### 立即执行
 
 1. ✅ 监控GitHub Actions执行
-   - 访问: https://github.com/xxrenzhe/autoads/actions
+   - 访问: https://github.com/linming7277/adsai/actions
    - 确认工作流已触发
    - 查看执行日志
 

@@ -12,7 +12,7 @@ interface AuthGuardProps {
 }
 
 /**
- * AutoAds 认证守卫组件
+ * AdsAI 认证守卫组件
  *
  * 设计原则：
  * 1. 基于Supabase Auth认证状态

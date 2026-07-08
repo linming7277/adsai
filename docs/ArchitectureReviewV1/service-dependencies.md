@@ -1,7 +1,7 @@
 # 服务依赖关系分析
 
-**分析日期**: 2025-10-08  
-**分析范围**: autoads 项目所有服务  
+**分析日期**: 2025-10-08
+**分析范围**: adsai 项目所有服务
 **目的**: 识别服务间依赖关系、耦合度和潜在问题
 
 ---
@@ -14,61 +14,61 @@
 graph TD
     %% 客户端
     Client[客户端/前端]
-    
+
     %% 核心服务
     Client --> Console[console<br/>控制台]
     Console --> Adscenter[adscenter<br/>广告中心]
     Console --> Offer[offer<br/>优惠管理]
     Console --> Billing[billing<br/>计费系统]
-    
+
     %% 功能服务
     Adscenter --> BrowserExec[browser-exec<br/>浏览器自动化]
     Adscenter --> Siterank[siterank<br/>网站评分]
     Offer --> Siterank
     Adscenter --> Recommendations[recommendations<br/>推荐服务]
-    
+
     %% 支持服务
     Adscenter --> Notifications[notifications<br/>通知服务]
     Offer --> Notifications
     Billing --> Notifications
-    
+
     Adscenter --> Batchopen[batchopen<br/>批量打开]
-    
+
     %% 代理服务
     BrowserExec --> ProxyPool[proxy-pool<br/>代理池]
     Siterank --> ProxyPool
     ProxyPool --> ProxyPoolMgr[proxy-pool-manager<br/>代理管理]
-    
+
     %% 数据存储
     Adscenter --> PostgreSQL[(PostgreSQL)]
     Offer --> PostgreSQL
     Billing --> PostgreSQL
     Siterank --> PostgreSQL
-    
+
     Adscenter --> Redis[(Redis)]
     Billing --> Redis
     ProxyPool --> Redis
-    
+
     Offer --> Firestore[(Firestore)]
     Billing --> Firestore
-    
+
     %% 事件总线
     Offer --> PubSub[Pub/Sub<br/>事件总线]
     Billing --> PubSub
     PubSub --> Notifications
     PubSub --> Projector[projector<br/>投影器]
-    
+
     %% 共享库
     Adscenter -.-> Internal[internal<br/>共享库]
     Offer -.-> Internal
     Billing -.-> Internal
-    
+
     %% 样式
     classDef core fill:#ff6b6b,stroke:#c92a2a,color:#fff
     classDef functional fill:#4dabf7,stroke:#1971c2,color:#fff
     classDef support fill:#51cf66,stroke:#2f9e44,color:#fff
     classDef infra fill:#ffd43b,stroke:#f59f00,color:#000
-    
+
     class Adscenter,Offer,Billing core
     class BrowserExec,Siterank,Recommendations,Internal functional
     class Notifications,Console,Projector,Batchopen,ProxyPool,ProxyPoolMgr support
@@ -288,6 +288,6 @@ graph TD
 
 ---
 
-**报告版本**: 1.0  
-**完成日期**: 2025-10-08  
+**报告版本**: 1.0
+**完成日期**: 2025-10-08
 **下一步**: 架构模式分析

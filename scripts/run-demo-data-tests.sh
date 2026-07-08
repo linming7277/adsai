@@ -26,7 +26,7 @@ echo ""
 
 # Environment variables for Node.js
 export NODE_ENV=test
-export PREVIEW_BASE="https://www.urlchecker.dev"
+export PREVIEW_BASE="https://preview.example.com"
 export HEADLESS=true
 
 echo -e "${BLUE}🧪 Running Demo Data System Tests...${NC}"

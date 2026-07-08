@@ -29,7 +29,7 @@
 - 模型: `gemini-1.5-flash-002`
 - 区域: `asia-northeast1`
 - 认证: Application Default Credentials (ADC)
-- 权限: `roles/aiplatform.user` (已配置给codex-dev服务账号)
+- 权限: `roles/aiplatform.user` (已配置给service-account服务账号)
 
 ### 部署配置
 
@@ -40,10 +40,10 @@
 - **并发**: 80
 - **超时**: 300s
 - **最大实例**: 10
-- **服务账号**: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+- **服务账号**: service-account@your-gcp-project-id.iam.gserviceaccount.com
 
 **环境变量**:
-- `GCP_PROJECT_ID`: gen-lang-client-0944935873
+- `GCP_PROJECT_ID`: your-gcp-project-id
 - ~~`GEMINI_API_KEY`~~: 已移除(使用Vertex AI ADC)
 
 ### Prometheus Metrics
@@ -96,8 +96,8 @@
 **问题**: `Permission denied` on Vertex AI API
 **解决**:
 ```bash
-gcloud projects add-iam-policy-binding gen-lang-client-0944935873 \
-  --member="serviceAccount:codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding your-gcp-project-id \
+  --member="serviceAccount:service-account@your-gcp-project-id.iam.gserviceaccount.com" \
   --role="roles/aiplatform.user"
 ```
 
@@ -112,7 +112,7 @@ gcloud auth application-default login
 **问题**: `Dockerfile not found`
 **解决**: 从项目根目录运行构建
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 gcloud builds submit --config=services/siterank/cloudbuild.yaml
 ```
 

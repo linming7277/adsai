@@ -96,7 +96,7 @@ grep -r "auth-service" deployments/ .github/ # 结果: 仅文档引用
 ### 2. 移除代码
 ```bash
 # 删除服务目录
-rm -rf /Users/jason/Documents/Kiro/autoads/services/auth
+rm -rf /path/to/adsai/services/auth
 
 # 验证删除
 ls -la services/ | grep auth  # 结果: 无输出
@@ -194,5 +194,5 @@ $ grep -r "services/auth" services/
 ## 参考文档
 
 - [DATABASE_ARCHITECTURE_CURRENT.md](./DATABASE_ARCHITECTURE_CURRENT.md) - v1.2
-- [pkg/auth/supabase.go](/Users/jason/Documents/Kiro/autoads/pkg/auth/supabase.go)
-- [gateway-middleware JWT中间件](/Users/jason/Documents/Kiro/autoads/services/gateway-middleware/internal/middleware/jwt.go)
+- [pkg/auth/supabase.go](/path/to/adsai/pkg/auth/supabase.go)
+- [gateway-middleware JWT中间件](/path/to/adsai/services/gateway-middleware/internal/middleware/jwt.go)

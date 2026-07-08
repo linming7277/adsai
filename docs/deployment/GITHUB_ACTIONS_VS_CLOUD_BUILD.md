@@ -15,8 +15,8 @@
 6. **总结**: 生成部署摘要报告
 
 **触发条件**:
-- `main` 分支 → Preview 环境 (www.urlchecker.dev)
-- `production` 分支 → Production 环境 (www.autoads.dev)
+- `main` 分支 → Preview 环境 (preview.example.com)
+- `production` 分支 → Production 环境 (www.example.com)
 - `v*` 标签 → Production 环境
 
 ### ⚠️ 计划但未必要的方案：Cloud Build 触发器

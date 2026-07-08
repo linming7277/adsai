@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库迁移: User Domain Schema
+-- AdsAI 数据库迁移: User Domain Schema
 -- Layer 2: 业务用户层
 -- 迁移ID: 000001
 -- 版本: v2.0

@@ -7,7 +7,7 @@ This folder contains helper scripts and guidance to operate and monitor the plat
 Enable required GCP APIs and grant minimal IAM via:
 
 ```
-PROJECT_ID=gen-lang-client-0944935873 ./deployments/scripts/enable-apis.sh
+PROJECT_ID=your-gcp-project-id ./deployments/scripts/enable-apis.sh
 ```
 
 ## API Gateway
@@ -15,10 +15,10 @@ PROJECT_ID=gen-lang-client-0944935873 ./deployments/scripts/enable-apis.sh
 Render and deploy gateway v2:
 
 ```
-PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
   ./deployments/scripts/render-gateway-auto.sh
 
-PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
   ./deployments/scripts/deploy-gateway-v2.sh
 ```
 
@@ -27,14 +27,14 @@ PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
 Create an hourly scheduler job to refresh MCC link statuses:
 
 ```
-PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
   ./deployments/scripts/create-mcc-refresh-scheduler.sh
 ```
 
 Sharded mode (e.g. 4 shards):
 
 ```
-PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 TOTAL_SHARDS=4 \
+PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 TOTAL_SHARDS=4 \
   ./deployments/scripts/create-mcc-refresh-scheduler.sh
 ```
 
@@ -49,7 +49,7 @@ REGION=asia-northeast1 gcloud scheduler jobs run adscenter-mcc-refresh-s0
 1) Create an uptime check for Gateway `/readyz` (replace hostname):
 
 ```
-HOST=$(gcloud api-gateway gateways describe autoads-gw --location=asia-northeast1 --format='value(defaultHostname)')
+HOST=$(gcloud api-gateway gateways describe adsai-gw --location=asia-northeast1 --format='value(defaultHostname)')
 # gcloud monitoring uptime checks configs create http is not GA in all SDKs; use Console or Terraform.
 # Alternatively, use Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.uptimeCheckConfigs
 ```
@@ -59,23 +59,23 @@ HOST=$(gcloud api-gateway gateways describe autoads-gw --location=asia-northeast
 ### Alert Policies (scripts)
 
 - Create API Gateway uptime check (already present):
-  - `PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 ./deployments/monitoring/create-uptime-check.sh`
+  - `PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 ./deployments/monitoring/create-uptime-check.sh`
 
 - Create Cloud Run P95 latency alert per service:
-  - `SERVICE=siterank THRESHOLD_SEC=10 PROJECT_ID=gen-lang-client-0944935873 ./deployments/monitoring/create-alert-latency.sh`
+  - `SERVICE=siterank THRESHOLD_SEC=10 PROJECT_ID=your-gcp-project-id ./deployments/monitoring/create-alert-latency.sh`
   - `SERVICE=adscenter THRESHOLD_SEC=0.8 ./deployments/monitoring/create-alert-latency.sh`
   - Notes:
     - Uses metric `run.googleapis.com/request_latencies` with ALIGN_PERCENTILE_95 over 5m windows.
     - Threshold in seconds. Customize via `THRESHOLD_SEC` and `WINDOW`.
 
 - Create Cloud Run 5xx error-rate alert per service (MQL):
-  - `SERVICE=batchopen THRESHOLD=0.01 PROJECT_ID=gen-lang-client-0944935873 ./deployments/monitoring/create-alert-error-rate.sh`
+  - `SERVICE=batchopen THRESHOLD=0.01 PROJECT_ID=your-gcp-project-id ./deployments/monitoring/create-alert-error-rate.sh`
   - Notes:
     - Computes 5-minute 5xx/total ratio via MQL over `run.googleapis.com/request_count`.
     - `THRESHOLD` is a ratio (e.g., 0.01 == 1%).
 
 - Bootstrap common alerts for preview stack:
-  - `PROJECT_ID=gen-lang-client-0944935873 ./deployments/monitoring/bootstrap-alerts.sh`
+  - `PROJECT_ID=your-gcp-project-id ./deployments/monitoring/bootstrap-alerts.sh`
   - Creates P95 and error-rate policies for: siterank, adscenter, batchopen, billing, notifications, console.
 
 ### About Prometheus stage metrics

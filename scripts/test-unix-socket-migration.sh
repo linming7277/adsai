@@ -15,7 +15,7 @@ mkdir -p /tmp/cloudsql
 
 # Start Cloud SQL Auth Proxy with Unix Socket
 echo "🚀 Starting Cloud SQL Auth Proxy with Unix Socket..."
-./cloud_sql_proxy gen-lang-client-0944935873:asia-northeast1:autoads \
+./cloud_sql_proxy your-gcp-project-id:asia-northeast1:adsai \
     --unix-socket /tmp/cloudsql \
     --credentials-file secrets/gcp_codex_dev.json &
 PROXY_PID=$!
@@ -26,20 +26,20 @@ sleep 10
 
 # Test Unix socket connection
 echo "🔍 Testing Unix socket connection..."
-SOCKET_PATH="/tmp/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/.s.PGSQL.5432"
+SOCKET_PATH="/tmp/cloudsql/your-gcp-project-id:asia-northeast1:adsai/.s.PGSQL.5432"
 
 if [ -S "$SOCKET_PATH" ]; then
     echo "✅ Unix socket is ready at $SOCKET_PATH"
 
     # Test database connection via Unix socket
     echo "🔍 Testing database connection..."
-    if PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h "$SOCKET_PATH" -U postgres -d autoads_db -c "SELECT version();"; then
+    if PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h "$SOCKET_PATH" -U postgres -d adsai_db -c "SELECT version();"; then
         echo "✅ Database connection successful via Unix socket"
 
         # Check migration status
         echo "📊 Checking migration status..."
         cd services/billing
-        export DB_URL="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@/autoads_db?host=/tmp/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads"
+        export DB_URL="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@/adsai_db?host=/tmp/cloudsql/your-gcp-project-id:asia-northeast1:adsai"
 
         # Install migrate if not present
         if ! command -v migrate &> /dev/null; then

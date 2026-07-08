@@ -1,4 +1,4 @@
-# AutoAds Go 后端 Dockerfile
+# AdsAI Go 后端 Dockerfile
 # 只构建 Go 后端，不包含前端
 
 # 构建阶段

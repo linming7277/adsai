@@ -8,7 +8,7 @@ groups:
       # 1. 断路器打开告警 - 高优先级
       - alert: CircuitBreakerOpen
         expr: |
-          autoads_.*_circuit_breaker_state == 2
+          adsai_.*_circuit_breaker_state == 2
         for: 1m
         labels:
           severity: critical
@@ -22,7 +22,7 @@ groups:
       # 2. 断路器半开状态 - 中优先级
       - alert: CircuitBreakerHalfOpen
         expr: |
-          autoads_.*_circuit_breaker_state == 1
+          adsai_.*_circuit_breaker_state == 1
         for: 2m
         labels:
           severity: warning
@@ -36,9 +36,9 @@ groups:
       - alert: CircuitBreakerHighFailureRate
         expr: |
           (
-            rate(autoads_.*_circuit_breaker_requests_total{result="failure"}[5m])
+            rate(adsai_.*_circuit_breaker_requests_total{result="failure"}[5m])
             /
-            rate(autoads_.*_circuit_breaker_requests_total[5m])
+            rate(adsai_.*_circuit_breaker_requests_total[5m])
           ) > 0.3
         for: 5m
         labels:
@@ -53,7 +53,7 @@ groups:
       # 4. 连续失败告警 - 中优先级
       - alert: CircuitBreakerConsecutiveFailures
         expr: |
-          autoads_.*_circuit_breaker_failures_total{type="consecutive"} > 5
+          adsai_.*_circuit_breaker_failures_total{type="consecutive"} > 5
         for: 2m
         labels:
           severity: warning
@@ -66,7 +66,7 @@ groups:
       # 5. 断路器频繁切换状态 - 低优先级
       - alert: CircuitBreakerFlapping
         expr: |
-          changes(autoads_.*_circuit_breaker_state[10m]) > 4
+          changes(adsai_.*_circuit_breaker_state[10m]) > 4
         for: 5m
         labels:
           severity: info
@@ -87,7 +87,7 @@ notification_config:
   - name: warning_alerts
     channels:
       - slack: "#ops-warnings"
-      - email: "ops-team@autoads.com"
+      - email: "ops-team@adsai.com"
   - name: info_alerts
     channels:
       - slack: "#ops-info"

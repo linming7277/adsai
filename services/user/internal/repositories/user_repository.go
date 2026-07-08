@@ -7,8 +7,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/xxrenzhe/autoads/services/user/internal/config"
-	"github.com/xxrenzhe/autoads/services/user/internal/models"
+	"github.com/linming7277/adsai/services/user/internal/config"
+	"github.com/linming7277/adsai/services/user/internal/models"
 )
 
 type UserRepository struct {

@@ -16,7 +16,7 @@ services:
       - NEXT_PUBLIC_DEBUG_MODE=true
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
       - PUPPETEER_EXECUTABLE_PATH=
-      - DATABASE_URL=mysql://autoads:devpassword@mysql:3306/google_ads_automation_dev
+      - DATABASE_URL=mysql://adsai:devpassword@mysql:3306/google_ads_automation_dev
     volumes:
       # Mount source code for hot reload
       - .:/app
@@ -52,7 +52,7 @@ services:
     container_name: google-ads-mysql-dev
     environment:
       - MYSQL_DATABASE=google_ads_automation_dev
-      - MYSQL_USER=autoads
+      - MYSQL_USER=adsai
       - MYSQL_PASSWORD=devpassword
       - MYSQL_ROOT_PASSWORD=rootpassword
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

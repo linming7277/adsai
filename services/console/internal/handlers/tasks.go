@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/apierrors"
-	"github.com/xxrenzhe/autoads/pkg/pagination"
+	"github.com/linming7277/adsai/pkg/apierrors"
+	"github.com/linming7277/adsai/pkg/pagination"
 )
 
 // TaskStats represents task statistics

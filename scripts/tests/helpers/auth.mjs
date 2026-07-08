@@ -9,8 +9,8 @@
  * @param {string} role - 用户角色 ('user' | 'admin' | 'guest')
  */
 
-// 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+// 测试环境: preview.example.com (预发) | www.example.com (生产)
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const TEST_API_URL = process.env.TEST_API_URL || BASE_URL;
 
 export async function setupAuthForTest(page, role = 'user') {
@@ -40,7 +40,7 @@ export async function setupAuthForTest(page, role = 'user') {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: `test-${role}@autoads.dev`,
+        email: `test-${role}@adsai.dev`,
         role: role,
       }),
     });
@@ -156,5 +156,5 @@ export async function cleanupAuthForTest(page) {
  * 获取测试用户邮箱
  */
 export function getTestUserEmail(role = 'user') {
-  return `test-${role}@autoads.dev`;
+  return `test-${role}@adsai.dev`;
 }

@@ -3,15 +3,15 @@
 本说明用于本地与 Cloud Run 部署前的环境变量与资源对齐，结合 `docker-compose.yml` 与各服务配置加载逻辑。
 
 ## GCP / 区域 / Cloud SQL
-- GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873
+- GOOGLE_CLOUD_PROJECT=your-gcp-project-id
 - 部署区域：asia-northeast1（东京）
-- Cloud SQL（PostgreSQL）实例：autoads
-- Cloud SQL 连接名（供 Proxy 使用）：`gen-lang-client-0944935873:asia-northeast1:autoads`
+- Cloud SQL（PostgreSQL）实例：adsai
+- Cloud SQL 连接名（供 Proxy 使用）：`your-gcp-project-id:asia-northeast1:adsai`
 
 ## Cloud SQL Proxy（docker-compose）
 - 需要本机提供 GCP 服务账号密钥：`GOOGLE_APPLICATION_CREDENTIALS=./secrets/key.json`
 - 在 `.env.local`（或等价环境）设置：
-  - `CLOUDSQL_CONNECTION_NAME=gen-lang-client-0944935873:asia-northeast1:autoads`
+  - `CLOUDSQL_CONNECTION_NAME=your-gcp-project-id:asia-northeast1:adsai`
   - `GOOGLE_APPLICATION_CREDENTIALS=./secrets/key.json`
 
 ## 数据库连接（服务侧）

@@ -32,7 +32,7 @@ case "$MODE" in
     echo "☁️  Running migrations on Cloud Run Jobs..."
 
     # Check if PROJECT_ID is set
-    PROJECT_ID="${PROJECT_ID:-gen-lang-client-0944935873}"
+    PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 
     # Submit Cloud Build
     echo "→ Submitting Cloud Build..."

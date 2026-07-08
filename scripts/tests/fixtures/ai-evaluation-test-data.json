@@ -7,21 +7,21 @@
 
   "testUsers": {
     "starter": {
-      "email": "test-starter@autoads.dev",
+      "email": "test-starter@adsai.dev",
       "password": "Test1234!",
       "plan": "starter",
       "initialTokens": 100,
       "canUseAI": false
     },
     "professional": {
-      "email": "test-pro@autoads.dev",
+      "email": "test-pro@adsai.dev",
       "password": "Test1234!",
       "plan": "professional",
       "initialTokens": 500,
       "canUseAI": true
     },
     "elite": {
-      "email": "test-elite@autoads.dev",
+      "email": "test-elite@adsai.dev",
       "password": "Test1234!",
       "plan": "elite",
       "initialTokens": 1000,

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/aievaluator"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/services/siterank/internal/aievaluator"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
 )
 
 // ExecuteAIEvaluation performs AI evaluation (2 tokens)

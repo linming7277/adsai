@@ -1,9 +1,9 @@
 # P0问题诊断报告 - 2025-10-11
 
 **诊断时间**: 2025年10月11日 11:18
-**诊断环境**: https://www.urlchecker.dev (预发环境)
+**诊断环境**: https://preview.example.com (预发环境)
 **诊断工具**: diagnose-dashboard.mjs + Playwright
-**测试用户**: test-user@autoads.dev
+**测试用户**: test-user@adsai.dev
 
 ---
 
@@ -12,7 +12,7 @@
 通过自动化诊断工具+浏览器截图+控制台日志分析，**确认了导致所有UI组件未渲染的根本原因：Dashboard页面实际返回了404错误页面**。
 
 **关键发现**:
-- ❌ 页面标题: `Page not found - AutoAds`
+- ❌ 页面标题: `Page not found - AdsAI`
 - ❌ 页面内容: 404错误页（"Ops. Page not Found."）
 - ❌ 数据库错误: `Could not find the table 'public.users'`
 - ❌ CORS阻塞: API Gateway未配置预发环境CORS
@@ -36,8 +36,8 @@
 ### 证据2: 页面元数据
 
 ```
-URL: https://www.urlchecker.dev/en/dashboard
-Title: Page not found - AutoAds - AI 多渠道广告平台
+URL: https://preview.example.com/en/dashboard
+Title: Page not found - AdsAI - AI 多渠道广告平台
 HTML长度: 34281 bytes
 ```
 
@@ -58,14 +58,14 @@ Failed to fetch subscription info: {
 
 #### 错误类型2: CORS跨域阻塞
 ```
-Access to fetch at 'https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
-from origin 'https://www.urlchecker.dev' has been blocked by CORS policy:
+Access to fetch at 'https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation'
+from origin 'https://preview.example.com' has been blocked by CORS policy:
 Response to preflight request doesn't pass access control check:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
 **出现次数**: 2次
-**根本原因**: API Gateway未配置允许`www.urlchecker.dev`域名访问
+**根本原因**: API Gateway未配置允许`preview.example.com`域名访问
 
 #### 错误类型3: 资源加载失败
 ```
@@ -80,8 +80,8 @@ Failed to load resource: the server responded with a status of 404 ()
 ```
 总请求数: 8
 API请求: 2条
-  - GET https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation (CORS阻塞)
-  - GET https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation (CORS阻塞)
+  - GET https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation (CORS阻塞)
+  - GET https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation (CORS阻塞)
 
 API响应: 0条成功
 ```
@@ -179,7 +179,7 @@ curl "https://jzzvizacfyipzdyiqfzb.supabase.co/rest/v1/?select=table_name" \
 
 **阻塞的API**:
 ```
-https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation
+https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation
 ```
 
 **错误消息**:
@@ -188,21 +188,21 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource
 ```
 
 **根本原因**:
-- API Gateway配置的CORS白名单未包含`https://www.urlchecker.dev`
+- API Gateway配置的CORS白名单未包含`https://preview.example.com`
 - 可能只配置了生产域名或本地开发域名
 
 **验证方法**:
 ```bash
 # 1. 查看API Gateway当前配置
-gcloud api-gateway gateways describe autoads-gw \
+gcloud api-gateway gateways describe adsai-gw \
   --location=asia-northeast1 \
   --format=json | jq '.corsPolicy'
 
 # 2. 手动测试CORS
 curl -X OPTIONS \
-  -H "Origin: https://www.urlchecker.dev" \
+  -H "Origin: https://preview.example.com" \
   -H "Access-Control-Request-Method: GET" \
-  -v https://autoads-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation
+  -v https://adsai-gw-885pd7lz.an.gateway.dev/api/v1/console/navigation
 ```
 
 **修复方向**:
@@ -211,8 +211,8 @@ curl -X OPTIONS \
 x-google-backend:
   cors:
     allow_origin_patterns:
-      - "https://www.urlchecker.dev"
-      - "https://www.autoads.dev"
+      - "https://preview.example.com"
+      - "https://www.example.com"
       - "http://localhost:3000"
     allow_methods:
       - GET
@@ -282,10 +282,10 @@ x-google-backend:
 
 ### ✅ 页面加载验收
 ```
-访问: https://www.urlchecker.dev/en/dashboard
+访问: https://preview.example.com/en/dashboard
 
 预期结果:
-- 页面标题: "Dashboard - AutoAds" (不是"Page not found")
+- 页面标题: "Dashboard - AdsAI" (不是"Page not found")
 - 可见3-4个统计卡片 (Offers总数、任务数、Token余额等)
 - 控制台无404错误
 - 控制台无数据库错误
@@ -295,7 +295,7 @@ x-google-backend:
 ### ✅ E2E测试验收
 ```bash
 # 重新运行Dashboard测试
-export PREVIEW_BASE=https://www.urlchecker.dev
+export PREVIEW_BASE=https://preview.example.com
 node scripts/tests/test-dashboard-overview.mjs
 
 预期结果:

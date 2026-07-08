@@ -56,7 +56,7 @@ export default async function ContactPage() {
   const description = tSeo('contact.description');
 
   const structuredData = buildOrganizationStructuredData({
-    name: 'AutoAds',
+    name: 'AdsAI',
     description,
     locale: i18n.language,
   });
@@ -84,7 +84,7 @@ export default async function ContactPage() {
                   title={t('sections.sales.title')}
                   prefix={t('sections.sales.description.prefix')}
                   suffix={t('sections.sales.description.suffix')}
-                  email="bd@autoads.dev"
+                  email="bd@adsai.dev"
                 />
 
                 <div>
@@ -103,7 +103,7 @@ export default async function ContactPage() {
                   title={t('sections.support.title')}
                   prefix={t('sections.support.description.prefix')}
                   suffix={t('sections.support.description.suffix')}
-                  email="support@autoads.dev"
+                  email="support@adsai.dev"
                 />
               </CardContent>
             </Card>

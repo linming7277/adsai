@@ -582,7 +582,7 @@ gcloud run deploy billing-preview --image=...
 
 ```bash
 # 1. 创建主题
-gcloud pubsub topics create subscription-config-updated --project=gen-lang-client-0944935873
+gcloud pubsub topics create subscription-config-updated --project=your-gcp-project-id
 
 # 2. 创建订阅（所有需要感知配置变更的服务）
 gcloud pubsub subscriptions create subscription-config-updated-billing \

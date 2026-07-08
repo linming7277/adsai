@@ -7,7 +7,7 @@ This guide covers the deployment of the subscription system enhancements includi
 
 1. **GCP Access**
    - Service account key: `secrets/gcp_codex_dev.json`
-   - Project ID: `codex-dev-440106`
+   - Project ID: `service-account-440106`
    - Required permissions: Pub/Sub Admin, Cloud Scheduler Admin
 
 2. **Supabase Access**
@@ -40,7 +40,7 @@ export DATABASE_URL="your-database-url"
 
 ```bash
 # Set GCP project
-export GCP_PROJECT_ID="codex-dev-440106"
+export GCP_PROJECT_ID="service-account-440106"
 export GCP_REGION="asia-northeast1"
 
 # Run deployment script
@@ -184,7 +184,7 @@ BILLING_SERVICE_URL=https://billing-xxx.run.app
 # View messages in subscription
 gcloud pubsub subscriptions pull billing-checkin-handler \
   --limit=10 \
-  --project=codex-dev-440106
+  --project=service-account-440106
 ```
 
 ### Check Cloud Scheduler

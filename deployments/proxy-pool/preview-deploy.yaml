@@ -15,9 +15,9 @@ spec:
     spec:
       containerConcurrency: 80
       timeoutSeconds: 300
-      serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+      serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
       containers:
-        - image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/proxy-pool:preview-latest
+        - image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/proxy-pool:preview-latest
           resources:
             limits:
               cpu: '1'

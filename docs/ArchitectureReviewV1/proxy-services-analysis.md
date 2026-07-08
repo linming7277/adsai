@@ -404,7 +404,7 @@ grep -r "proxy-pool-manager" services/ --include="*.go" --include="*.js" --inclu
    ```bash
    gcloud run services delete proxy-pool-manager-preview \
      --region=asia-northeast1 \
-     --project=gen-lang-client-0944935873 \
+     --project=your-gcp-project-id \
      --quiet
    ```
 

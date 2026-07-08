@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/xxrenzhe/autoads/services/proxy-pool/internal/pool"
+	"github.com/linming7277/adsai/services/proxy-pool/internal/pool"
 )
 
 type Handler struct {

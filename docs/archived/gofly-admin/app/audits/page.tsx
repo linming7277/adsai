@@ -38,7 +38,7 @@ export default function AuditsPage() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-        <div style={{ height: 48, margin: 12, color: '#fff' }}>AutoAds Console</div>
+        <div style={{ height: 48, margin: 12, color: '#fff' }}>AdsAI Console</div>
         <Menu theme="dark" defaultSelectedKeys={["audits"]} mode="inline" items={[
           { key: 'dashboard', icon: <DashboardOutlined />, label: '仪表盘', onClick:()=>location.assign('/') },
           { key: 'users', icon: <UserOutlined />, label: '用户与套餐', onClick:()=>location.assign('/users') },

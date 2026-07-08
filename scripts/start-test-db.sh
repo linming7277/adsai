@@ -24,19 +24,19 @@ MAX_RETRIES=30
 RETRY_COUNT=0
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    if docker-compose -f docker-compose.test.yml exec -T postgres pg_isready -U test -d autoads_test > /dev/null 2>&1; then
+    if docker-compose -f docker-compose.test.yml exec -T postgres pg_isready -U test -d adsai_test > /dev/null 2>&1; then
         echo "✅ Test database is ready!"
         echo ""
         echo "📊 Database connection info:"
-        echo "   URL: postgresql://test:test@localhost:5433/autoads_test"
+        echo "   URL: postgresql://test:test@localhost:5433/adsai_test"
         echo "   Host: localhost"
         echo "   Port: 5433"
-        echo "   Database: autoads_test"
+        echo "   Database: adsai_test"
         echo "   User: test"
         echo "   Password: test"
         echo ""
         echo "🧪 Run tests with:"
-        echo "   export TEST_DATABASE_URL='postgresql://test:test@localhost:5433/autoads_test?sslmode=disable'"
+        echo "   export TEST_DATABASE_URL='postgresql://test:test@localhost:5433/adsai_test?sslmode=disable'"
         echo "   go test ./services/offer/internal/handlers/... -v"
         echo ""
         echo "🛑 Stop test database with:"

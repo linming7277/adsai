@@ -38,7 +38,7 @@ function AuthPage({ searchParams }: AuthPageProps) {
             type={3}
             className="text-2xl font-semibold tracking-tight md:text-3xl"
           >
-            <Trans i18nKey={'auth:continueToAutoAds'} />
+            <Trans i18nKey={'auth:continueToAdsAI'} />
           </Heading>
         </div>
 

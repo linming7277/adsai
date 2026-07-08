@@ -2,7 +2,7 @@ package services
 
 import (
 	"database/sql"
-	"github.com/xxrenzhe/autoads/services/user/internal/repositories"
+	"github.com/linming7277/adsai/services/user/internal/repositories"
 )
 
 type SyncService struct {

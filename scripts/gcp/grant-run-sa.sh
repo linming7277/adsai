@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # 简化版：为一组 Cloud Run 服务账号授予项目级常用角色。
-# 使用：PROJECT_ID=gen-lang-client-0944935873 ./scripts/gcp/grant-run-sa.sh <sa1@...> [sa2@... ...]
+# 使用：PROJECT_ID=your-gcp-project-id ./scripts/gcp/grant-run-sa.sh <sa1@...> [sa2@... ...]
 
 PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-}}"
 REGION="${REGION:-asia-northeast1}"

@@ -1,5 +1,5 @@
 {
-  "$id": "https://autoads.com/schemas/events/SubscriptionStarted.json",
+  "$id": "https://example.com/schemas/events/SubscriptionStarted.json",
   "type": "object",
   "properties": {
     "eventId": { "type": "string", "format": "uuid" },

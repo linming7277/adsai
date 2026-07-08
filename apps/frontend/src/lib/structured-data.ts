@@ -461,7 +461,7 @@ export function buildOrganizationStructuredData({
       description,
       contactPoint: {
         '@type': 'ContactPoint',
-        email: 'support@autoads.dev',
+        email: 'support@adsai.dev',
         contactType: 'customer support',
         availableLanguage: ['en', 'zh-CN'],
       },
@@ -535,7 +535,7 @@ export function buildServiceStructuredData({
       areaServed: 'Worldwide',
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
-        name: 'AutoAds Services',
+        name: 'AdsAI Services',
         itemListElement: [
           {
             '@type': 'Offer',
@@ -628,7 +628,7 @@ export function buildArticleStructuredData({
       dateModified,
       author: {
         '@type': 'Organization',
-        name: 'AutoAds Team',
+        name: 'AdsAI Team',
         url: normalizedSiteUrl,
       },
       publisher: {

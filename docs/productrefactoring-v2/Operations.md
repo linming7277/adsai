@@ -8,14 +8,14 @@
 - 网关：API Gateway（JWT 校验与路由）。
 
 ### CI/CD 触发策略（主干）
-- 推送到 `main`：预发（preview）环境构建与部署；镜像标注 `preview-latest`、`preview-<commit>`；Hosting 目标 `autoads-preview`。
-- 推送到 `production`：生产（prod）环境构建与部署；镜像标注 `prod-latest`、`prod-<commit>`；Hosting 目标 `autoads-prod`。
-- 推送 tag（`v*`）：生产（prod）版本发布；镜像标注 `prod-<tag>`、`prod-<commit>`；Hosting 目标 `autoads-prod`。
+- 推送到 `main`：预发（preview）环境构建与部署；镜像标注 `preview-latest`、`preview-<commit>`；Hosting 目标 `adsai-preview`。
+- 推送到 `production`：生产（prod）环境构建与部署；镜像标注 `prod-latest`、`prod-<commit>`；Hosting 目标 `adsai-prod`。
+- 推送 tag（`v*`）：生产（prod）版本发布；镜像标注 `prod-<tag>`、`prod-<commit>`；Hosting 目标 `adsai-prod`。
 
 ## 配置与密钥
 - Secret Manager：DATABASE_URL、外部 API Key 等；以 *_SECRET_NAME 注入。
 - Firebase Admin：生产用 ADC，开发用 JSON（不推荐）。
-  - Hosting/CI：FIREBASE_SERVICE_ACCOUNT（secrets 内容为 firebase-adminsdk-fbsvc@gen-lang-client-0944935873.iam.gserviceaccount.com 的 JSON）。
+  - Hosting/CI：FIREBASE_SERVICE_ACCOUNT（secrets 内容为 firebase-adminsdk-fbsvc@your-gcp-project-id.iam.gserviceaccount.com 的 JSON）。
 
 ## 配置中心（后台）
 - 套餐/限额/Token 规则：版本、灰度、生效时间、审计。
@@ -41,10 +41,10 @@
 
 示例（execute-tick）：
 ```bash
-PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
 INTERNAL_SERVICE_TOKEN=xxxx ./deployments/scripts/create-pubsub-dispatcher.sh
 
-PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 TOPIC=jobs-dispatcher \
+PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 TOPIC=jobs-dispatcher \
 SCHEDULE="*/5 * * * *" \
 URL="https://<adscenter>/api/v1/adscenter/bulk-actions/execute-tick?max=2" \
 HEADERS_JSON='{"X-Service-Token":"ENV","Accept":"application/json"}' \
@@ -58,7 +58,7 @@ HEADERS_JSON='{"X-Service-Token":"ENV","Accept":"application/json"}' \
   - 配置仓库 Secrets：`FIREBASE_SERVICE_ACCOUNT`
   - 推送 main 分支触发 `.github/workflows/deploy-frontend.yml`
 - 本地（可选）：
-  - 安装 firebase-tools，登录/使用服务账号，执行 `firebase deploy --only hosting --project gen-lang-client-0944935873`
+  - 安装 firebase-tools，登录/使用服务账号，执行 `firebase deploy --only hosting --project your-gcp-project-id`
   - 若使用“重写至 Cloud Run frontend”，先完成 Cloud Run 前端部署，再更新 firebase.json rewrites 的 serviceId
 
 ## 安全部署注意事项（Cloud Run）

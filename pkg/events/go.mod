@@ -1,10 +1,10 @@
-module github.com/xxrenzhe/autoads/pkg/events
+module github.com/linming7277/adsai/pkg/events
 
 go 1.25
 
 require (
 	cloud.google.com/go/pubsub v1.50.1
-	github.com/xxrenzhe/autoads/pkg/idempotency v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/idempotency v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -46,4 +46,4 @@ require (
 	google.golang.org/protobuf v1.36.9 // indirect
 )
 
-replace github.com/xxrenzhe/autoads/pkg/idempotency => ../idempotency
+replace github.com/linming7277/adsai/pkg/idempotency => ../idempotency

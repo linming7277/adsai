@@ -1,4 +1,4 @@
-# AutoAds 构建脚本说明
+# AdsAI 构建脚本说明
 
 ## 脚本列表
 
@@ -60,8 +60,8 @@ git push main  # 触发GitHub Actions自动部署
 
 ```bash
 # 基础配置
-PROJECT_ID=gen-lang-client-0944935873
-GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873
+PROJECT_ID=your-gcp-project-id
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 
 # 服务配置

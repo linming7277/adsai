@@ -18,7 +18,7 @@
 
 - `DATABASE_URL`: 完整的数据库连接URL
   - 格式: `postgresql://user:password@/cloudsql/PROJECT:REGION:INSTANCE/dbname?sslmode=disable`
-  - 示例: `postgresql://autoads_admin:password@/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/autoads_db?sslmode=disable`
+  - 示例: `postgresql://adsai_admin:password@/cloudsql/your-gcp-project-id:asia-northeast1:adsai/adsai_db?sslmode=disable`
 
 ### 3. GCP权限
 
@@ -33,7 +33,7 @@
 
 1. 访问GitHub Actions页面：
    ```
-   https://github.com/xxrenzhe/autoads/actions/workflows/database-migration.yml
+   https://github.com/linming7277/adsai/actions/workflows/database-migration.yml
    ```
 
 2. 点击 "Run workflow" 按钮
@@ -147,10 +147,10 @@ Actions → Database Migration → 选择运行记录 → Artifacts → migratio
 ./cloud_sql_proxy -instances=PROJECT_ID:REGION:INSTANCE_NAME=tcp:5432 &
 
 # 查看所有schemas
-psql -h localhost -U autoads_admin -d autoads_db -c "\dn+"
+psql -h localhost -U adsai_admin -d adsai_db -c "\dn+"
 
 # 查看所有表
-psql -h localhost -U autoads_admin -d autoads_db -c "
+psql -h localhost -U adsai_admin -d adsai_db -c "
   SELECT schemaname, COUNT(*) as table_count
   FROM pg_tables 
   WHERE schemaname IN ('billing', 'useractivity', 'offers', 'siterank', 'adscenter', 'system')
@@ -220,7 +220,7 @@ ERROR: permission denied for schema billing
 1. 检查数据库用户权限
 2. 确保用户有CREATE权限：
    ```sql
-   GRANT CREATE ON DATABASE autoads_db TO autoads_admin;
+   GRANT CREATE ON DATABASE adsai_db TO adsai_admin;
    ```
 
 ## 回滚计划
@@ -283,8 +283,8 @@ gh workflow run database-migration.yml -f environment=preview -f dry_run=true
 ```bash
 # 创建Cloud SQL备份
 gcloud sql backups create \
-  --instance=autoads \
-  --project=gen-lang-client-0944935873
+  --instance=adsai \
+  --project=your-gcp-project-id
 ```
 
 ## 快速命令参考
@@ -321,7 +321,7 @@ GITHUB_TOKEN="your_github_token"
 curl -X POST \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
-  https://api.github.com/repos/xxrenzhe/autoads/actions/workflows/database-migration.yml/dispatches \
+  https://api.github.com/repos/linming7277/adsai/actions/workflows/database-migration.yml/dispatches \
   -d '{"ref":"main","inputs":{"environment":"preview","dry_run":"false"}}'
 ```
 

@@ -2,7 +2,7 @@ apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
   name: apply-performance-indexes-once
-  namespace: "gen-lang-client-0944935873"
+  namespace: "your-gcp-project-id"
   annotations:
     run.googleapis.com/launch-stage: BETA
     run.googleapis.com/vpc-access-connector: cr-conn-default-ane1
@@ -15,7 +15,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+          serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
           maxRetries: 0
           timeoutSeconds: 600
           containers:

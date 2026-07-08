@@ -294,7 +294,7 @@ function checkSeoInfrastructure() {
 
 // Main validation function
 function runValidation() {
-  log('🚀 AutoAds SEO Validation Report', 'bold');
+  log('🚀 AdsAI SEO Validation Report', 'bold');
   log('='.repeat(60), 'blue');
 
   let overallScore = 0;

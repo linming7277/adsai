@@ -9,7 +9,7 @@ set -euo pipefail
 # The job will call offer service endpoint with an OIDC token and an explicit X-User-Id header.
 #
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   OFFER_ID=offer-123 USER_ID=user-abc \
 #   ./deployments/scripts/create-offer-kpi-scheduler.sh
 #

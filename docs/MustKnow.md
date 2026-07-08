@@ -5,26 +5,26 @@
 
 背景知识，在设计时需要考虑，不要违反：
 1）部署流程：代码部署发布分2步，第一步：利用Github action生成不同环境的docker镜像；第二步，手动在ClawCloud上配置镜像拉取并部署
-- 代码推送到main分支，触发preview环境docker镜像构建：标注 docker image tag 为 ghcr.io/xxrenzhe/autoads:preview-latest
-- 代码推送到production分支，触发production环境docker镜像构建：标注 docker image tag 为 ghcr.io/xxrenzhe/autoads:prod-latest
-- 当production分支打了tag（如v3.0.0），则触发production环境docker镜像构建：标注 docker image tag 为 ghcr.io/xxrenzhe/autoads:prod-[tag]
+- 代码推送到main分支，触发preview环境docker镜像构建：标注 docker image tag 为 ghcr.io/linming7277/adsai:preview-latest
+- 代码推送到production分支，触发production环境docker镜像构建：标注 docker image tag 为 ghcr.io/linming7277/adsai:prod-latest
+- 当production分支打了tag（如v3.0.0），则触发production环境docker镜像构建：标注 docker image tag 为 ghcr.io/linming7277/adsai:prod-[tag]
 - 当前镜像构建使用的是：Dockerfile.standalone
 2）基本架构：前端Next，后端Go，单镜像单容器部署，实现多用户高并发SaaS应用
 3）不同环境的域名
 - 测试环境域名：localhost
-- 预发环境域名：urlchecker.dev，容器内部域名是 autoads-preview-xxx-xxx:3000
-- 生成环境域名：autoads.dev，容器内部域名是 autoads-prod-xxx-xxx:3000
+- 预发环境域名：preview.example.com，容器内部域名是 adsai-preview-xxx-xxx:3000
+- 生成环境域名：example.com，容器内部域名是 adsai-prod-xxx-xxx:3000
 4）301强制跳转（已在DNS解析层面实现，业务内部无需实现）
-- 预发环境，用户访问 https://urlchecker.dev 会301跳转到 https://www.urlchecker.dev
-- 生产环境，用户访问 https://autoads.dev 会301跳转到 https://www.autoads.dev
+- 预发环境，用户访问 https://preview.example.com 会301跳转到 https://preview.example.com
+- 生产环境，用户访问 https://example.com 会301跳转到 https://www.example.com
 5）预发/生产环境核心环境变量
 - NODE_ENV=production
-- NEXT_PUBLIC_DOMAIN=urlchecker.dev
+- NEXT_PUBLIC_DOMAIN=preview.example.com
 - NEXT_PUBLIC_DEPLOYMENT_ENV=preview/production
 - DATABASE_URL=mysql://root:jtl85fn8@dbprovider.sg-members-1.clawcloudrun.com:30354
 - REDIS_URL=redis://default:9xdjb8nf@dbprovider.sg-members-1.clawcloudrun.com:32284
 - AUTH_SECRET=pkfn9dOfmIv3uougZhF3ba9SZ5ExUJ3FEfoh4eAk0ZLxLPT6TwK+D5YIJ7Si01sBK01nIxzpoVU0IB/xGZvBFw==
-- AUTH_URL=https://www.urlchecker.dev
+- AUTH_URL=https://preview.example.com
 - AUTH_GOOGLE_ID=1007142410985-4945m48srrp056kp0q5n0e5he8omrdol.apps.googleusercontent.com
 - AUTH_GOOGLE_SECRET=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
 - SIMILARWEB_BASE_URL=https://data.similarweb.com/api/v1/data

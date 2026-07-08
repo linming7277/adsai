@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/xxrenzhe/autoads/pkg/logger"
+	"github.com/linming7277/adsai/pkg/logger"
 )
 
 var zlog = logger.Get()

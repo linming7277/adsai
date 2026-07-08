@@ -60,7 +60,7 @@ Cloud Run / Console 部署示例：
 ```yaml
 env:
   - name: VALKEY_URL
-    value: redis://default:${VALKEY_PASSWORD}@autoads-valkey:6379/0
+    value: redis://default:${VALKEY_PASSWORD}@adsai-valkey:6379/0
 ```
 
 ---

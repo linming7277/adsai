@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Smoke test for Siterank similarity with optional country and geo augmentation
 # Usage:
-#   HOST=autoads-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-siterank-similar-geo.sh <seed> <country?> <cand1> [cand2 ...]
+#   HOST=adsai-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-siterank-similar-geo.sh <seed> <country?> <cand1> [cand2 ...]
 
 HOST=${HOST:?HOST required}
 TOKEN=${TOKEN:?TOKEN (Firebase ID token) required}

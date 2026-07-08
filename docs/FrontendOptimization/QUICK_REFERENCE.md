@@ -148,7 +148,7 @@ CREATE INDEX idx_token_rules_updated ON token_consumption_rules(updated_at DESC)
 NEXT_PUBLIC_USE_CONSOLE_DASHBOARD=true   # true=新版, false=旧版
 
 # Console Service 地址
-NEXT_PUBLIC_API_BASE_URL=https://console.autoads.dev
+NEXT_PUBLIC_API_BASE_URL=https://console.example.com
 
 # Supabase 配置 (已有)
 NEXT_PUBLIC_SUPABASE_URL=...
@@ -159,17 +159,17 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 ```bash
 # 数据库连接
-DATABASE_URL=postgresql://user:pass@host:5432/autoads
+DATABASE_URL=postgresql://user:pass@host:5432/adsai
 
 # Redis 缓存
-REDIS_HOST=redis.autoads.dev
+REDIS_HOST=redis.example.com
 REDIS_PORT=6379
 
 # 服务地址 (用于聚合调用)
-OFFER_SERVICE_URL=https://offer.autoads.dev
-BILLING_SERVICE_URL=https://billing.autoads.dev
-ADSCENTER_SERVICE_URL=https://adscenter.autoads.dev
-SITERANK_SERVICE_URL=https://siterank.autoads.dev
+OFFER_SERVICE_URL=https://offer.example.com
+BILLING_SERVICE_URL=https://billing.example.com
+ADSCENTER_SERVICE_URL=https://adscenter.example.com
+SITERANK_SERVICE_URL=https://siterank.example.com
 ```
 
 ---
@@ -181,7 +181,7 @@ SITERANK_SERVICE_URL=https://siterank.autoads.dev
 ```bash
 # 设置 Token
 export TOKEN="your-admin-jwt-token"
-export API_URL="https://console.autoads.dev"
+export API_URL="https://console.example.com"
 
 # 测试获取规则
 curl -H "Authorization: Bearer $TOKEN" $API_URL/api/v1/console/tokens/rules

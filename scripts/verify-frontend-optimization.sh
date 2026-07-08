@@ -88,7 +88,7 @@ echo "📋 检查 7: 前端依赖配置"
 if command -v jq &> /dev/null; then
   FRONTEND_DEPS=$(jq -r '.dependencies | keys[]' apps/frontend/package.json 2>/dev/null | wc -l)
   check "前端有依赖包" "test $FRONTEND_DEPS -gt 0"
-  check "包含 @autoads/shared-types" "jq -e '.dependencies[\"@autoads/shared-types\"]' apps/frontend/package.json > /dev/null 2>&1"
+  check "包含 @adsai/shared-types" "jq -e '.dependencies[\"@adsai/shared-types\"]' apps/frontend/package.json > /dev/null 2>&1"
 else
   warn "jq 未安装，跳过依赖检查"
 fi
@@ -117,7 +117,7 @@ if [ $FAILED -eq 0 ]; then
   echo "🚀 下一步操作:"
   echo "  1. 本地测试构建: ./scripts/test-frontend-build.sh"
   echo "  2. 提交到 main 分支触发 preview 部署"
-  echo "  3. 验证部署结果: https://autoads-preview.web.app"
+  echo "  3. 验证部署结果: https://adsai-preview.web.app"
   exit 0
 else
   echo -e "${RED}❌ 发现 $FAILED 个问题，请修复后重试${NC}"

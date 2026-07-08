@@ -10,10 +10,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
-	"github.com/xxrenzhe/autoads/services/console/internal/clients"
-	"github.com/xxrenzhe/autoads/services/console/internal/supabase"
+	"github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/serviceclient"
+	"github.com/linming7277/adsai/services/console/internal/clients"
+	"github.com/linming7277/adsai/services/console/internal/supabase"
 )
 
 type User struct {
@@ -91,7 +91,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	// ========================================
 	manageBaseURL := os.Getenv("MANAGE_BASE_URL")
 	if manageBaseURL == "" {
-		manageBaseURL = "https://www.autoads.dev/manage"
+		manageBaseURL = "https://www.example.com/manage"
 	}
 
 	mux.HandleFunc("/console/", func(w http.ResponseWriter, r *http.Request) {

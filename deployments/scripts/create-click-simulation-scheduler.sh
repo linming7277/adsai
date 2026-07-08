@@ -5,7 +5,7 @@ set -euo pipefail
 # 依赖：已部署 Pub/Sub 分发 Cloud Function（参见 deployments/scripts/create-pubsub-dispatcher.sh）。
 #
 # 用法示例：
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 \
 #   OFFER_URL="https://example.com/offer?k=abc" SCHEDULE="*/10 * * * *" \
 #   ./deployments/scripts/create-click-simulation-scheduler.sh
 #

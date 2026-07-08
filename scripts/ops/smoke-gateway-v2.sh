@@ -3,10 +3,10 @@ set -euo pipefail
 
 # Smoke test for API Gateway v2 (readyz + protected path stubs)
 # Usage:
-#   BACKEND_BASE=${BACKEND_BASE:-https://autoads-gw-885pd7lz.an.gateway.dev}
+#   BACKEND_BASE=${BACKEND_BASE:-https://adsai-gw-885pd7lz.an.gateway.dev}
 #   ./scripts/ops/smoke-gateway-v2.sh
 
-BASE=${BACKEND_BASE:-https://autoads-gw-885pd7lz.an.gateway.dev}
+BASE=${BACKEND_BASE:-https://adsai-gw-885pd7lz.an.gateway.dev}
 echo "== Gateway V2: $BASE =="
 
 echo "-- /readyz --"

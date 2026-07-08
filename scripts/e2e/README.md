@@ -6,7 +6,7 @@
 
 ## 运行
 ```
-GATEWAY=https://www.urlchecker.dev AUTH="Bearer <id_token>" \
+GATEWAY=https://preview.example.com AUTH="Bearer <id_token>" \
   npx playwright test -c scripts/e2e/playwright.config.ts
 ```
 

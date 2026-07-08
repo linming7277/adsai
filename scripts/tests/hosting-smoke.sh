@@ -3,11 +3,11 @@ set -euo pipefail
 
 # Smoke test for Firebase Hosting deployed Next app
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 ./scripts/tests/hosting-smoke.sh
+#   PROJECT_ID=your-gcp-project-id ./scripts/tests/hosting-smoke.sh
 
 PROJECT_ID=${PROJECT_ID:-}
 if [[ -z "${PROJECT_ID}" ]]; then
-  echo "[err] PROJECT_ID required (e.g., gen-lang-client-0944935873)" >&2
+  echo "[err] PROJECT_ID required (e.g., your-gcp-project-id)" >&2
   exit 2
 fi
 

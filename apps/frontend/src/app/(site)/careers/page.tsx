@@ -14,7 +14,7 @@ type PositionItem = {
 };
 
 export const metadata = {
-  title: 'Join Us - AutoAds',
+  title: 'Join Us - AdsAI',
 };
 
 export default async function CareersPage() {
@@ -55,10 +55,10 @@ export default async function CareersPage() {
                     {position.description}
                   </p>
                   <a
-                    href="mailto:jobs@autoads.dev"
+                    href="mailto:jobs@adsai.dev"
                     className="mt-4 inline-flex text-sm font-semibold text-primary hover:underline"
                   >
-                    {t('careers.applyCta', { email: 'jobs@autoads.dev' })}
+                    {t('careers.applyCta', { email: 'jobs@adsai.dev' })}
                   </a>
                 </CardContent>
               </Card>

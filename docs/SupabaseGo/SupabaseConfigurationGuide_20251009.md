@@ -1,6 +1,6 @@
 # Supabase 完整配置指南
 
-本文档提供 AutoAds 项目中 Supabase 的完整配置步骤，确保开发人员可以独立完成环境搭建。
+本文档提供 AdsAI 项目中 Supabase 的完整配置步骤，确保开发人员可以独立完成环境搭建。
 
 ---
 
@@ -11,7 +11,7 @@
 1. 访问 [https://supabase.com](https://supabase.com)
 2. 点击 "New Project"
 3. 填写项目信息：
-   - **Name**: `autoads-production`（生产环境）或 `autoads-dev`（开发环境）
+   - **Name**: `adsai-production`（生产环境）或 `adsai-dev`（开发环境）
    - **Database Password**: 生成强密码（保存到密码管理器）
    - **Region**: 选择 `us-west-1`（靠近目标用户）
    - **Pricing Plan**: 选择 `Pro`（支持更高并发和存储）

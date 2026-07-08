@@ -1,8 +1,8 @@
-# AutoAds 告警系统配置指南
+# AdsAI 告警系统配置指南
 
 ## 概述
 
-本文档说明如何配置AutoAds监控告警系统的通知渠道。
+本文档说明如何配置AdsAI监控告警系统的通知渠道。
 
 ## 告警架构
 
@@ -56,7 +56,7 @@ Prometheus → Grafana → Alert Notification Channels
 
 ```bash
 # 1. 访问 https://api.slack.com/apps
-# 2. 创建新App "AutoAds Monitoring"
+# 2. 创建新App "AdsAI Monitoring"
 # 3. 启用 Incoming Webhooks
 # 4. 添加Webhook到以下频道：
 #    - #ops-critical (Critical alerts)
@@ -74,7 +74,7 @@ Name: ops-critical-slack
 Type: Slack
 Webhook URL: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
 Channel: #ops-critical
-Username: AutoAds Monitoring
+Username: AdsAI Monitoring
 Icon: :rotating_light:
 ```
 
@@ -128,10 +128,10 @@ Icon: :rotating_light:
 [smtp]
 enabled = true
 host = smtp.gmail.com:587
-user = ops@autoads.com
+user = ops@adsai.com
 password = your_app_password
-from_address = alerts@autoads.com
-from_name = AutoAds Monitoring
+from_address = alerts@adsai.com
+from_name = AdsAI Monitoring
 ```
 
 #### 添加Email Contact Point
@@ -142,7 +142,7 @@ from_name = AutoAds Monitoring
 ```yaml
 Name: ops-email
 Type: Email
-Addresses: ops-team@autoads.com, tech-lead@autoads.com
+Addresses: ops-team@adsai.com, tech-lead@adsai.com
 Single Email: false (发送单独邮件给每个收件人)
 ```
 
@@ -177,7 +177,7 @@ Single Email: false (发送单独邮件给每个收件人)
 
 ```bash
 # 1. 登录 PagerDuty
-# 2. 创建新Service "AutoAds Production"
+# 2. 创建新Service "AdsAI Production"
 # 3. 添加Grafana集成
 # 4. 复制Integration Key
 ```

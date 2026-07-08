@@ -6,7 +6,7 @@
 
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 SERVICE_NAME="siterank-preview"
 SECRET_NAME="GEMINI_API_KEY"

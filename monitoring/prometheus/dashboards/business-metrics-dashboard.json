@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "title": "AutoAds业务核心指标监控",
+    "title": "AdsAI业务核心指标监控",
     "tags": ["business", "kpi", "evaluation", "tokens"],
     "timezone": "Asia/Shanghai",
     "panels": [

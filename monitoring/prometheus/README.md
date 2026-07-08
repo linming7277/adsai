@@ -1,4 +1,4 @@
-# AutoAds Monitoring with Cloud Monitoring
+# AdsAI Monitoring with Cloud Monitoring
 
 本项目使用 **Google Cloud Monitoring** 来监控 Cloud Run 服务的业务指标。
 
@@ -55,32 +55,32 @@ monitoring/
 
 | 指标名称 | 类型 | Labels | 说明 |
 |---------|------|--------|------|
-| `autoads_billing_tokens_consumed_total` | Counter | user_id, operation | Token 消耗总量 |
-| `autoads_billing_tokens_reserved_total` | Counter | user_id | Token 预留总量 |
-| `autoads_billing_tokens_committed_total` | Counter | user_id, operation | Token 提交总量 |
-| `autoads_billing_tokens_refunded_total` | Counter | user_id, reason | Token 退款总量 |
-| `autoads_billing_active_subscribers` | Gauge | plan | 活跃订阅数 |
+| `adsai_billing_tokens_consumed_total` | Counter | user_id, operation | Token 消耗总量 |
+| `adsai_billing_tokens_reserved_total` | Counter | user_id | Token 预留总量 |
+| `adsai_billing_tokens_committed_total` | Counter | user_id, operation | Token 提交总量 |
+| `adsai_billing_tokens_refunded_total` | Counter | user_id, reason | Token 退款总量 |
+| `adsai_billing_active_subscribers` | Gauge | plan | 活跃订阅数 |
 
 ### Offer 指标 (5个)
 
 | 指标名称 | 类型 | Labels | 说明 |
 |---------|------|--------|------|
-| `autoads_offer_offers_created_total` | Counter | user_id, type | 创建的 Offer 数量 |
-| `autoads_offer_offers_completed_total` | Counter | user_id, type | 完成的 Offer 数量 |
-| `autoads_offer_offers_failed_total` | Counter | user_id, type, reason | 失败的 Offer 数量 |
-| `autoads_offer_offer_conversion_rate` | Gauge | type | Offer 转化率 |
-| `autoads_offer_offer_value_total` | Counter | user_id, type | Offer 总价值（分） |
+| `adsai_offer_offers_created_total` | Counter | user_id, type | 创建的 Offer 数量 |
+| `adsai_offer_offers_completed_total` | Counter | user_id, type | 完成的 Offer 数量 |
+| `adsai_offer_offers_failed_total` | Counter | user_id, type, reason | 失败的 Offer 数量 |
+| `adsai_offer_offer_conversion_rate` | Gauge | type | Offer 转化率 |
+| `adsai_offer_offer_value_total` | Counter | user_id, type | Offer 总价值（分） |
 
 ### Ad 指标 (6个)
 
 | 指标名称 | 类型 | Labels | 说明 |
 |---------|------|--------|------|
-| `autoads_adscenter_ads_created_total` | Counter | user_id, campaign_id, platform | 创建的广告数 |
-| `autoads_adscenter_ads_active` | Gauge | user_id, platform | 活跃广告数 |
-| `autoads_adscenter_ad_impressions_total` | Counter | user_id, campaign_id, platform | 广告展示次数 |
-| `autoads_adscenter_ad_clicks_total` | Counter | user_id, campaign_id, platform | 广告点击次数 |
-| `autoads_adscenter_ad_conversions_total` | Counter | user_id, campaign_id, platform | 广告转化次数 |
-| `autoads_adscenter_ad_spend_total` | Counter | user_id, campaign_id, platform | 广告花费（分） |
+| `adsai_adscenter_ads_created_total` | Counter | user_id, campaign_id, platform | 创建的广告数 |
+| `adsai_adscenter_ads_active` | Gauge | user_id, platform | 活跃广告数 |
+| `adsai_adscenter_ad_impressions_total` | Counter | user_id, campaign_id, platform | 广告展示次数 |
+| `adsai_adscenter_ad_clicks_total` | Counter | user_id, campaign_id, platform | 广告点击次数 |
+| `adsai_adscenter_ad_conversions_total` | Counter | user_id, campaign_id, platform | 广告转化次数 |
+| `adsai_adscenter_ad_spend_total` | Counter | user_id, campaign_id, platform | 广告花费（分） |
 
 ### Gateway Middleware 指标 (25个)
 
@@ -112,9 +112,9 @@ monitoring/
 
 | 指标名称 | 类型 | Labels | 说明 |
 |---------|------|--------|------|
-| `autoads_http_request_duration_seconds` | Histogram | method, path, status | 请求延迟分布 |
-| `autoads_http_requests_total` | Counter | method, path, status | 请求总数 |
-| `autoads_http_errors_total` | Counter | method, path, status | 错误总数 |
+| `adsai_http_request_duration_seconds` | Histogram | method, path, status | 请求延迟分布 |
+| `adsai_http_requests_total` | Counter | method, path, status | 请求总数 |
+| `adsai_http_errors_total` | Counter | method, path, status | 错误总数 |
 
 ## 查看指标
 
@@ -124,23 +124,23 @@ monitoring/
 # 获取 service URL
 SERVICE_URL=$(gcloud run services describe adscenter-preview \
   --region=asia-northeast1 \
-  --project=autoads-439917 \
+  --project=adsai-439917 \
   --format='value(status.url)')
 
 # 查看所有指标
 curl $SERVICE_URL/metrics
 
 # 过滤特定指标
-curl $SERVICE_URL/metrics | grep autoads_billing
+curl $SERVICE_URL/metrics | grep adsai_billing
 
 # 示例输出:
-# autoads_billing_tokens_consumed_total{user_id="user123",operation="offer_creation"} 1500
-# autoads_billing_tokens_consumed_total{user_id="user456",operation="ad_campaign"} 800
+# adsai_billing_tokens_consumed_total{user_id="user123",operation="offer_creation"} 1500
+# adsai_billing_tokens_consumed_total{user_id="user456",operation="ad_campaign"} 800
 ```
 
 ### 方法 2: 使用 Cloud Monitoring Metrics Explorer (仅查看 Cloud Run 原生指标)
 
-**注意：自定义的 autoads_* 指标不会自动出现在 Cloud Monitoring 中！**
+**注意：自定义的 adsai_* 指标不会自动出现在 Cloud Monitoring 中！**
 
 Cloud Monitoring 只显示 Cloud Run 原生指标：
 - `run.googleapis.com/request_count`
@@ -172,7 +172,7 @@ brew services start grafana
 2. Configuration → Data Sources → Add data source → Prometheus
 3. 配置：
    ```
-   Name: AutoAds Adscenter
+   Name: AdsAI Adscenter
    URL: https://adscenter-preview-XXXXX-an.a.run.app
    HTTP Method: GET
    ```
@@ -192,23 +192,23 @@ monitoring/prometheus/dashboards/ad-performance.json
 
 ```promql
 # 全局 Token 消耗速率
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 # 按 operation 分组
-sum(rate(autoads_billing_tokens_consumed_total[5m])) by (operation)
+sum(rate(adsai_billing_tokens_consumed_total[5m])) by (operation)
 
 # Top 10 用户
-topk(10, sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id))
+topk(10, sum(rate(adsai_billing_tokens_consumed_total[5m])) by (user_id))
 
 # Refund 率
-sum(rate(autoads_billing_tokens_refunded_total[5m]))
+sum(rate(adsai_billing_tokens_refunded_total[5m]))
 /
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 # CTR (点击率)
-sum(rate(autoads_adscenter_ad_clicks_total[5m]))
+sum(rate(adsai_adscenter_ad_clicks_total[5m]))
 /
-sum(rate(autoads_adscenter_ad_impressions_total[5m]))
+sum(rate(adsai_adscenter_ad_impressions_total[5m]))
 ```
 
 ## 常用 PromQL 查询示例
@@ -219,60 +219,60 @@ sum(rate(autoads_adscenter_ad_impressions_total[5m]))
 
 ```promql
 # 1. 全局 Token 消耗速率 (tokens/sec)
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 # 2. Token 消耗 by operation
-sum(rate(autoads_billing_tokens_consumed_total[5m])) by (operation)
+sum(rate(adsai_billing_tokens_consumed_total[5m])) by (operation)
 
 # 3. Top 10 用户 by Token 消耗
-topk(10, sum(rate(autoads_billing_tokens_consumed_total[5m])) by (user_id))
+topk(10, sum(rate(adsai_billing_tokens_consumed_total[5m])) by (user_id))
 
 # 4. Refund 率
-sum(rate(autoads_billing_tokens_refunded_total[5m]))
+sum(rate(adsai_billing_tokens_refunded_total[5m]))
 /
-sum(rate(autoads_billing_tokens_consumed_total[5m]))
+sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 # 5. Commit 率
-sum(rate(autoads_billing_tokens_committed_total[5m]))
+sum(rate(adsai_billing_tokens_committed_total[5m]))
 /
-sum(rate(autoads_billing_tokens_reserved_total[5m]))
+sum(rate(adsai_billing_tokens_reserved_total[5m]))
 
 # 6. 过去 1 小时的 Token 消耗总量
-sum(increase(autoads_billing_tokens_consumed_total[1h]))
+sum(increase(adsai_billing_tokens_consumed_total[1h]))
 ```
 
 ### Ad Performance 查询
 
 ```promql
 # 1. 全局 CTR (Click-Through Rate)
-sum(rate(autoads_adscenter_ad_clicks_total[5m]))
+sum(rate(adsai_adscenter_ad_clicks_total[5m]))
 /
-sum(rate(autoads_adscenter_ad_impressions_total[5m]))
+sum(rate(adsai_adscenter_ad_impressions_total[5m]))
 
 # 2. CTR by platform
-sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (platform)
 
 # 3. CVR (Conversion Rate)
-sum(rate(autoads_adscenter_ad_conversions_total[5m]))
+sum(rate(adsai_adscenter_ad_conversions_total[5m]))
 /
-sum(rate(autoads_adscenter_ad_clicks_total[5m]))
+sum(rate(adsai_adscenter_ad_clicks_total[5m]))
 
 # 4. CPC (Cost Per Click) by platform
-sum(rate(autoads_adscenter_ad_spend_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_spend_total[5m])) by (platform)
 /
-sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (platform)
 
 # 5. Top 10 campaigns by CTR
 topk(10,
-  sum(rate(autoads_adscenter_ad_clicks_total[5m])) by (campaign_id)
+  sum(rate(adsai_adscenter_ad_clicks_total[5m])) by (campaign_id)
   /
-  sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (campaign_id)
+  sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (campaign_id)
 )
 
 # 6. Platform 分布 (按展示次数)
-sum(rate(autoads_adscenter_ad_impressions_total[5m])) by (platform)
+sum(rate(adsai_adscenter_ad_impressions_total[5m])) by (platform)
 ```
 
 ### Gateway 中间件查询
@@ -446,7 +446,7 @@ Cloud Monitoring 定价:
 # 检查 service 是否正确部署
 gcloud run services describe adscenter-preview \
   --region=asia-northeast1 \
-  --project=autoads-439917
+  --project=adsai-439917
 
 # 检查路由配置
 curl -v https://YOUR_SERVICE_URL/metrics
@@ -465,7 +465,7 @@ gcloud run logs read adscenter-preview \
 
 # 3. 手动触发业务逻辑，然后查看 /metrics
 curl $SERVICE_URL/api/offers/create -X POST ...
-curl $SERVICE_URL/metrics | grep autoads_offer
+curl $SERVICE_URL/metrics | grep adsai_offer
 ```
 
 ### Grafana 无法连接到 /metrics
@@ -488,8 +488,8 @@ curl https://YOUR_SERVICE_URL/metrics
 
 ✅ **DO:**
 ```
-autoads_billing_tokens_consumed_total (清晰的 namespace + 动作 + _total 后缀)
-autoads_http_request_duration_seconds (使用标准单位后缀)
+adsai_billing_tokens_consumed_total (清晰的 namespace + 动作 + _total 后缀)
+adsai_http_request_duration_seconds (使用标准单位后缀)
 ```
 
 ❌ **DON'T:**

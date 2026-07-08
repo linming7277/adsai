@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
 )
 
 // SupabaseAuth is a middleware that validates Supabase JWT tokens

@@ -415,6 +415,6 @@ curl -d '{"userId":"abc-123"}' .../onboarding-retry
 ---
 
 **Implementation Completed**: 2025-10-18 10:47 UTC
-**Deployed Environment**: Preview (www.urlchecker.dev)
+**Deployed Environment**: Preview (preview.example.com)
 **Status**: ✅ Production Ready
 **Next Step**: Frontend integration and user testing

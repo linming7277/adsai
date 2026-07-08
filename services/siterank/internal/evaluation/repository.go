@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/brandextract"
+	"github.com/linming7277/adsai/services/siterank/internal/brandextract"
 )
 
 // Helper types

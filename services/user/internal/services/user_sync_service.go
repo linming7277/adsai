@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
-	"github.com/xxrenzhe/autoads/services/user/internal/models"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
+	"github.com/linming7277/adsai/services/user/internal/models"
 )
 
 // UserSyncService 处理从Supabase到Cloud SQL的用户数据同步

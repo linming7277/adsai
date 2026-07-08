@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# AutoAds SaaS 部署脚本 - 单镜像部署
-# 使用方法: ./scripts/deploy-autoads-saas.sh [preview|production]
+# AdsAI SaaS 部署脚本 - 单镜像部署
+# 使用方法: ./scripts/deploy-adsai-saas.sh [preview|production]
 
 set -e
 
@@ -37,14 +37,14 @@ log_debug() {
 # 显示帮助信息
 show_help() {
     cat << EOF
-AutoAds SaaS 部署脚本 - 单镜像部署
+AdsAI SaaS 部署脚本 - 单镜像部署
 
 使用方法:
     $0 [preview|production] [options]
 
 环境:
-    preview     部署到预发环境 (urlchecker.dev)
-    production  部署到生产环境 (autoads.dev)
+    preview     部署到预发环境 (preview.example.com)
+    production  部署到生产环境 (example.com)
 
 选项:
     --build-only        仅构建镜像，不部署
@@ -170,16 +170,16 @@ build_image() {
     local image_tag=""
     
     if [[ "$ENVIRONMENT" == "production" ]]; then
-        build_args="--build-arg NEXT_PUBLIC_DEPLOYMENT_ENV=production --build-arg NEXT_PUBLIC_DOMAIN=autoads.dev"
-        image_tag="autoads-saas:production"
+        build_args="--build-arg NEXT_PUBLIC_DEPLOYMENT_ENV=production --build-arg NEXT_PUBLIC_DOMAIN=example.com"
+        image_tag="adsai-saas:production"
     else
-        build_args="--build-arg NEXT_PUBLIC_DEPLOYMENT_ENV=preview --build-arg NEXT_PUBLIC_DOMAIN=urlchecker.dev"
-        image_tag="autoads-saas:preview"
+        build_args="--build-arg NEXT_PUBLIC_DEPLOYMENT_ENV=preview --build-arg NEXT_PUBLIC_DOMAIN=preview.example.com"
+        image_tag="adsai-saas:preview"
     fi
     
     # 构建镜像
-    log_debug "构建命令: docker build -f Dockerfile.autoads-saas $build_args -t $image_tag ."
-    docker build -f Dockerfile.autoads-saas $build_args -t "$image_tag" . || {
+    log_debug "构建命令: docker build -f Dockerfile.adsai-saas $build_args -t $image_tag ."
+    docker build -f Dockerfile.adsai-saas $build_args -t "$image_tag" . || {
         log_error "镜像构建失败"
         return 1
     }
@@ -195,11 +195,11 @@ push_image() {
     local remote_tag=""
     
     if [[ "$ENVIRONMENT" == "production" ]]; then
-        local_tag="autoads-saas:production"
-        remote_tag="ghcr.io/xxrenzhe/autoads:prod-latest"
+        local_tag="adsai-saas:production"
+        remote_tag="ghcr.io/linming7277/adsai:prod-latest"
     else
-        local_tag="autoads-saas:preview"
-        remote_tag="ghcr.io/xxrenzhe/autoads:preview-latest"
+        local_tag="adsai-saas:preview"
+        remote_tag="ghcr.io/linming7277/adsai:preview-latest"
     fi
     
     # 标记镜像
@@ -225,11 +225,11 @@ deploy_app() {
     local image_tag=""
     
     if [[ "$ENVIRONMENT" == "production" ]]; then
-        domain="autoads.dev"
-        image_tag="ghcr.io/xxrenzhe/autoads:prod-latest"
+        domain="example.com"
+        image_tag="ghcr.io/linming7277/adsai:prod-latest"
     else
-        domain="urlchecker.dev"
-        image_tag="ghcr.io/xxrenzhe/autoads:preview-latest"
+        domain="preview.example.com"
+        image_tag="ghcr.io/linming7277/adsai:preview-latest"
     fi
     
     cat << EOF
@@ -242,7 +242,7 @@ deploy_app() {
 
 📋 ClawCloud 手动部署步骤:
 1. 登录 ClawCloud 控制台
-2. 导航到 autoads-$ENVIRONMENT 服务
+2. 导航到 adsai-$ENVIRONMENT 服务
 3. 更新镜像为: $image_tag
 4. 配置环境变量（参考 .env.$ENVIRONMENT.template）
 5. 设置容器规格: 2C4G
@@ -278,9 +278,9 @@ health_check() {
     
     local domain=""
     if [[ "$ENVIRONMENT" == "production" ]]; then
-        domain="www.autoads.dev"
+        domain="www.example.com"
     else
-        domain="www.urlchecker.dev"
+        domain="preview.example.com"
     fi
     
     local max_attempts=10
@@ -314,9 +314,9 @@ post_deploy_verification() {
     
     local domain=""
     if [[ "$ENVIRONMENT" == "production" ]]; then
-        domain="www.autoads.dev"
+        domain="www.example.com"
     else
-        domain="www.urlchecker.dev"
+        domain="preview.example.com"
     fi
     
     # API 可用性检查
@@ -339,7 +339,7 @@ post_deploy_verification() {
 # 发送通知
 send_notification() {
     local status=$1
-    local message="AutoAds SaaS 部署到 $ENVIRONMENT 环境"
+    local message="AdsAI SaaS 部署到 $ENVIRONMENT 环境"
     
     if [[ $status -eq 0 ]]; then
         message="$message 成功 ✅"
@@ -369,7 +369,7 @@ cleanup() {
 
 # 主函数
 main() {
-    log_info "开始 AutoAds SaaS 部署流程..."
+    log_info "开始 AdsAI SaaS 部署流程..."
     log_info "环境: $ENVIRONMENT"
     
     # 检查环境
@@ -430,7 +430,7 @@ main() {
     # 发送成功通知
     send_notification 0
     
-    log_info "🎉 AutoAds SaaS 部署成功完成！"
+    log_info "🎉 AdsAI SaaS 部署成功完成！"
     
     # 显示部署摘要
     cat << EOF
@@ -439,20 +439,20 @@ main() {
 ===========
 环境: $ENVIRONMENT
 时间: $(date)
-镜像: ghcr.io/xxrenzhe/autoads:${ENVIRONMENT}-latest
+镜像: ghcr.io/linming7277/adsai:${ENVIRONMENT}-latest
 状态: ✅ 成功
 
 🔗 访问链接:
 EOF
     
     if [[ "$ENVIRONMENT" == "production" ]]; then
-        echo "- 主站: https://www.autoads.dev"
-        echo "- 健康检查: https://www.autoads.dev/health"
-        echo "- API: https://www.autoads.dev/api"
+        echo "- 主站: https://www.example.com"
+        echo "- 健康检查: https://www.example.com/health"
+        echo "- API: https://www.example.com/api"
     else
-        echo "- 主站: https://www.urlchecker.dev"
-        echo "- 健康检查: https://www.urlchecker.dev/health"
-        echo "- API: https://www.urlchecker.dev/api"
+        echo "- 主站: https://preview.example.com"
+        echo "- 健康检查: https://preview.example.com/health"
+        echo "- API: https://preview.example.com/api"
     fi
 }
 

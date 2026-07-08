@@ -1,4 +1,4 @@
-# AutoAds UI 美化方案 - 对标顶级AI SaaS
+# AdsAI UI 美化方案 - 对标顶级AI SaaS
 
 > **创建时间**: 2025-10-11
 > **参考对象**: base44.com, v0.dev, Vercel, Linear, Raycast
@@ -251,7 +251,7 @@ export const BACKGROUND_THEMES: BackgroundTheme[] = [
         'bg-gradient-to-r from-foreground to-foreground/70',
         'transition-all group-hover:from-primary group-hover:to-primary/70'
       )}>
-        AutoAds
+        AdsAI
       </span>
     </Link>
 

@@ -1,4 +1,4 @@
-# AutoAds Supabase 数据库清理执行指南
+# AdsAI Supabase 数据库清理执行指南
 
 ## 🎯 执行目标
 

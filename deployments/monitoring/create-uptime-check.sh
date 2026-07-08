@@ -4,17 +4,17 @@ set -euo pipefail
 # Create an uptime check for API Gateway /readyz via Monitoring API.
 # Requires: gcloud auth application-default login (or service account creds), Monitoring API enabled.
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 REGION="${REGION:-asia-northeast1}"
 HOSTNAME="${HOSTNAME:-}"
 
 if [[ -z "$HOSTNAME" ]]; then
   echo "[uptime] Resolving API Gateway hostname ..."
-  HOSTNAME=$(gcloud api-gateway gateways describe autoads-gw --location="$REGION" --format='value(defaultHostname)' 2>/dev/null || true)
+  HOSTNAME=$(gcloud api-gateway gateways describe adsai-gw --location="$REGION" --format='value(defaultHostname)' 2>/dev/null || true)
 fi
 
 if [[ -z "$HOSTNAME" ]]; then
-  echo "ERROR: HOSTNAME not provided and could not resolve autoads-gw. Set HOSTNAME explicitly." >&2
+  echo "ERROR: HOSTNAME not provided and could not resolve adsai-gw. Set HOSTNAME explicitly." >&2
   exit 1
 fi
 

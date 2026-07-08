@@ -13,8 +13,8 @@ const SUPABASE_CONFIG = {
   url: 'https://api.supabase.com',
   anonKey: process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', // 需要真实的anon key
   projectId: process.env.SUPABASE_PROJECT_ID || 'your-project-id',
-  testEmail: process.env.TEST_EMAIL || 'test@urlchecker.dev',
-  redirectUrl: 'https://www.urlchecker.dev/auth/callback'
+  testEmail: process.env.TEST_EMAIL || 'test@preview.example.com',
+  redirectUrl: 'https://preview.example.com/auth/callback'
 };
 
 class SupabaseMagicLinkAuth {
@@ -87,7 +87,7 @@ class SupabaseMagicLinkAuth {
     await new Promise(resolve => setTimeout(resolve, 3000));
 
     // 创建一个模拟的magic link
-    const magicLink = `https://www.urlchecker.dev/auth/callback#access_token=mock-token&type=magiclink&expires_in=3600`;
+    const magicLink = `https://preview.example.com/auth/callback#access_token=mock-token&type=magiclink&expires_in=3600`;
 
     console.log('✅ Magic link extracted from email');
     return magicLink;

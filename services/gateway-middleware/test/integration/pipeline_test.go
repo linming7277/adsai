@@ -13,11 +13,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/xxrenzhe/autoads/pkg/serviceclient"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/cache"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/clients"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/middleware"
-	"github.com/xxrenzhe/autoads/services/gateway-middleware/internal/proxy"
+	"github.com/linming7277/adsai/pkg/serviceclient"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/cache"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/clients"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/middleware"
+	"github.com/linming7277/adsai/services/gateway-middleware/internal/proxy"
 )
 
 // TestMiddlewarePipeline_E2E tests the complete middleware pipeline

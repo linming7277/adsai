@@ -8,7 +8,7 @@ steps:
     args:
       - --dockerfile=scripts/db/Dockerfile.schema-migration
       - --context=dir:///workspace
-      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/schema-migrator:latest
+      - --destination=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/schema-migrator:latest
       - --cache=true
 
   # 更新Cloud Run Job
@@ -19,7 +19,7 @@ steps:
       - jobs
       - update
       - schema-migrator-once
-      - --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/schema-migrator:latest
+      - --image=asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/schema-migrator:latest
       - --region=asia-northeast1
 
 timeout: 900s

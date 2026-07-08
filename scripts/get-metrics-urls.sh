@@ -4,7 +4,7 @@
 set -euo pipefail
 
 # Configuration
-PROJECT_ID="${GCP_PROJECT:-autoads-439917}"
+PROJECT_ID="${GCP_PROJECT:-adsai-439917}"
 REGION="${GCP_REGION:-asia-northeast1}"
 
 # Color codes
@@ -14,7 +14,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}╔════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║   AutoAds Metrics URLs                 ║${NC}"
+echo -e "${BLUE}║   AdsAI Metrics URLs                 ║${NC}"
 echo -e "${BLUE}║   For Grafana Cloud Configuration      ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════╝${NC}"
 echo ""
@@ -83,7 +83,7 @@ echo ""
 echo "2. Add Prometheus Data Sources:"
 echo ""
 echo "   For each service above, create a data source with:"
-echo "   - Name: AutoAds <service-name>"
+echo "   - Name: AdsAI <service-name>"
 echo "   - URL: <Metrics URL from above>"
 echo "   - HTTP Method: GET"
 echo "   - Access: Server (default)"
@@ -93,8 +93,8 @@ echo "   - monitoring/prometheus/dashboards/billing-overview.json"
 echo "   - monitoring/prometheus/dashboards/ad-performance.json"
 echo ""
 echo "4. Test metrics with Explore:"
-echo "   - Query: autoads_billing_tokens_consumed_total"
-echo "   - Query: autoads_offer_offers_created_total"
+echo "   - Query: adsai_billing_tokens_consumed_total"
+echo "   - Query: adsai_offer_offers_created_total"
 echo ""
 echo -e "${GREEN}Full guide: monitoring/grafana-cloud-setup.md${NC}"
 echo ""

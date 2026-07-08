@@ -3,7 +3,7 @@
 
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 
 echo "🚀 开始部署健康检查端点修复..."

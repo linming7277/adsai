@@ -1,5 +1,5 @@
 /**
- * @autoads/auth-utils
+ * @adsai/auth-utils
  *
  * Shared authentication utilities for Firebase Auth and JWT verification
  */

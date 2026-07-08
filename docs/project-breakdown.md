@@ -1,8 +1,8 @@
-# AutoAds GoFly 迁移项目任务分解
+# AdsAI GoFly 迁移项目任务分解
 
 ## 项目概述
 
-将 AutoAds 从 Next.js 单体应用迁移到 GoFly + Go 的后端架构，实现 4900% 性能提升。
+将 AdsAI 从 Next.js 单体应用迁移到 GoFly + Go 的后端架构，实现 4900% 性能提升。
 
 ## 一、准备阶段（Week 1-2）
 

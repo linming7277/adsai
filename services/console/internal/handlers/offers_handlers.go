@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/xxrenzhe/autoads/services/console/internal/clients"
+	"github.com/linming7277/adsai/services/console/internal/clients"
 )
 
 // ListOffersResponse represents the response for offers list (console version)

@@ -14,7 +14,7 @@ fi
 
 # Start Cloud SQL Proxy with TCP socket
 echo "🔧 Starting Cloud SQL Auth Proxy..."
-./cloud_sql_proxy gen-lang-client-0944935873:asia-northeast1:autoads \
+./cloud_sql_proxy your-gcp-project-id:asia-northeast1:adsai \
     --port 5433 \
     --credentials-file secrets/gcp_codex_dev.json &
 PROXY_PID=$!
@@ -32,7 +32,7 @@ echo "✅ Cloud SQL Proxy started on port 5433"
 
 # Test connection
 echo "🔍 Testing database connection..."
-if PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h localhost -p 5433 -U postgres -d autoads_db -c "SELECT version();"; then
+if PGPASSWORD='%24GL%28~x%5DT2Q%5BM' psql -h localhost -p 5433 -U postgres -d adsai_db -c "SELECT version();"; then
     echo "✅ Database connection successful"
 else
     echo "❌ Database connection failed"
@@ -55,11 +55,11 @@ fi
 
 # Check current version
 echo "📋 Current migration version:"
-migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5433/autoads_db" version
+migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5433/adsai_db" version
 
 # Execute migrations
 echo "⚡ Executing pending migrations..."
-if migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5433/autoads_db" up; then
+if migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5433/adsai_db" up; then
     echo "✅ Migration executed successfully"
 else
     echo "❌ Migration failed"
@@ -69,7 +69,7 @@ fi
 
 # Final status
 echo "📊 Final migration status:"
-migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5433/autoads_db" version
+migrate -path=migrations -database="postgresql://postgres:%24GL%28~x%5DT2Q%5BM@localhost:5433/adsai_db" version
 
 # Cleanup
 echo "🧹 Cleaning up..."

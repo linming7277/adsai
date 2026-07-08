@@ -1,7 +1,7 @@
 # Alert Policy: High Token Refund Rate
 # Triggers when token refund rate exceeds 10% for 15 minutes
 
-displayName: "AutoAds - High Token Refund Rate"
+displayName: "AdsAI - High Token Refund Rate"
 documentation:
   content: |
     ## High Token Refund Rate Alert
@@ -14,11 +14,11 @@ documentation:
     1. Query top users with refunds:
        ```
        # Check Cloud Monitoring for:
-       autoads:billing:top_users_tokens_refunded:topk
+       adsai:billing:top_users_tokens_refunded:topk
        ```
     2. Review refund reasons:
        ```
-       autoads_billing_tokens_refunded_total (group by reason)
+       adsai_billing_tokens_refunded_total (group by reason)
        ```
     3. Check for recent offer failures
     4. Investigate user complaints/tickets
@@ -39,7 +39,7 @@ conditions:
     conditionThreshold:
       filter: |
         resource.type = "cloud_run_revision"
-        AND metric.type = "prometheus.googleapis.com/autoads_billing_tokens_refunded_total/counter"
+        AND metric.type = "prometheus.googleapis.com/adsai_billing_tokens_refunded_total/counter"
       aggregations:
         - alignmentPeriod: "300s"
           perSeriesAligner: "ALIGN_RATE"

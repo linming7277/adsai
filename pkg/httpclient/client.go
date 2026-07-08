@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/xxrenzhe/autoads/pkg/idempotency"
+	"github.com/linming7277/adsai/pkg/idempotency"
 	"math"
 	"net/http"
 	"strings"
@@ -42,7 +42,7 @@ func (c *Client) GetJSON(ctx context.Context, url string, target interface{}) er
 	}
 
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "AutoAds-HTTP-Client/1.0")
+	req.Header.Set("User-Agent", "AdsAI-HTTP-Client/1.0")
 	// propagate idempotency key if available
 	if k, ok := idempotency.FromContext(ctx); ok && k != "" {
 		req.Header.Set("X-Idempotency-Key", k)
@@ -79,7 +79,7 @@ func (c *Client) GetJSONWithHeaders(ctx context.Context, url string, headers map
 		}
 		// defaults
 		req.Header.Set("Accept", "application/json")
-		ua := "AutoAds-HTTP-Client/1.0"
+		ua := "AdsAI-HTTP-Client/1.0"
 		if hUA, ok := headers["User-Agent"]; ok && hUA != "" {
 			ua = hUA
 		}

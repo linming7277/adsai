@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Smoke test for Siterank similarity scoring
 # Usage:
-#   HOST=autoads-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-siterank-similar.sh seed.com a.com b.com
+#   HOST=adsai-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-siterank-similar.sh seed.com a.com b.com
 
 HOST=${HOST:?HOST required}
 TOKEN=${TOKEN:?TOKEN (Firebase ID token) required}

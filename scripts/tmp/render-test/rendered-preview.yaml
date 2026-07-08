@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  title: autoads-gateway-v2
+  title: adsai-gateway-v2
   version: 2.0.0
 schemes:
   - https
@@ -11,9 +11,9 @@ securityDefinitions:
     type: oauth2
     flow: "implicit"
     authorizationUrl: ""
-    x-google-issuer: "https://securetoken.google.com/gen-lang-client-0944935873"
+    x-google-issuer: "https://securetoken.google.com/your-gcp-project-id"
     x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
-    x-google-audiences: "gen-lang-client-0944935873"
+    x-google-audiences: "your-gcp-project-id"
 paths:
   /readyz:
     get:

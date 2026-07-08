@@ -22,7 +22,7 @@ import {
   setTheme,
 } from '~/core/theming';
 
-const THEME_STORAGE_KEY = 'autoads-background-theme';
+const THEME_STORAGE_KEY = 'adsai-background-theme';
 
 export function useBackgroundTheme() {
   const [themeId, setThemeId] = useState<string>(DEFAULT_THEME_ID);

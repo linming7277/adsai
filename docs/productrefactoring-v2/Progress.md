@@ -3,7 +3,7 @@
 本页记录当前环境、服务、构建与下一步落地计划的最新状态，用于和 ImplementationPlan/TaskList 对齐。
 
 ## 环境与底座
-- GCP 项目/区域：gen-lang-client-0944935873 / asia-northeast1
+- GCP 项目/区域：your-gcp-project-id / asia-northeast1
 - Cloud SQL（PostgreSQL，私网）
   - Serverless VPC Access 连接器：cr-conn-default-ane1（10.8.0.0/28）
   - 防火墙：allow-serverless-vpc-to-sql（源 10.8.0.0/28 → tcp:5432）
@@ -13,34 +13,34 @@
   - DATABASE_URL（私网 DSN，经 URL 编码修正密码）
   - GOOGLE_ADS_*：developer token / OAuth client / MCC / test customer id
 - Cloud Build 日志
-  - 自管桶：gs://autoads-build-logs-asia-northeast1（构建统一使用 --gcs-log-dir）
+  - 自管桶：gs://adsai-build-logs-asia-northeast1（构建统一使用 --gcs-log-dir）
 - API Gateway
-  - 入口：autoads-gw-885pd7lz.an.gateway.dev（ACTIVE）
+  - 入口：adsai-gw-885pd7lz.an.gateway.dev（ACTIVE）
   - 健康：/api/health → 200（映射 adscenter /health）
   - 受保护路由：未带 JWT 访问 /api/v1/offers → 401（Jwt is missing）
 
 ## 最新校验（只读）
 - Secret Manager：存在 DATABASE_URL、GOOGLE_ADS_*、NEXTAUTH_SECRET、INTERNAL_JWT_SECRET、SIMILARWEB_BASE_URL 等键（仅校验名称）
 - Cloud Run：adscenter/identity/offer/siterank/workflow/billing/batchopen/console 服务均可见，均在 asia-northeast1
-- API Gateway：autoads-gw（ACTIVE），/api/health=200，受保护路由 /api/v1/offers=401
+- API Gateway：adsai-gw（ACTIVE），/api/health=200，受保护路由 /api/v1/offers=401
 - 新增：/api/health（透传 adscenter /health）、/api/health/console（透传 console /health）
 - 服务健康（直连 best-effort）：adscenter/siterank/batchopen /health=200；其他服务 /health 返回 404（路由未定义或是 /healthz）
 
 ### 本地环境准备（执行 MustKnowV2）
-- 已激活服务账号并设置项目：`codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com` / `gen-lang-client-0944935873`
+- 已激活服务账号并设置项目：`service-account@your-gcp-project-id.iam.gserviceaccount.com` / `your-gcp-project-id`
 - 已列出 Secret Manager 键名（未输出值），确认存在数据库与 Google Ads 相关密钥
 - 已生成 `.env.local`（不含敏感值展示）：
   - `GOOGLE_APPLICATION_CREDENTIALS=./secrets/gcp_codex_dev.json`
-  - `CLOUDSQL_CONNECTION_NAME=gen-lang-client-0944935873:asia-northeast1:autoads`
+  - `CLOUDSQL_CONNECTION_NAME=your-gcp-project-id:asia-northeast1:adsai`
   - `DATABASE_URL` 取自 Secret Manager，并将主机改写为 `cloudsql-proxy:5432` 以便本地容器经代理私网访问
-- 已构建后端镜像：`autoads-identity:dev`（本地构建通过）
+- 已构建后端镜像：`adsai-identity:dev`（本地构建通过）
 
 ## CI/CD 更新（2025-09-24）
 - 工作流拆分与标签策略
   - 后端：.github/workflows/deploy-backend.yml 拆为 meta / changes / build-images / tag-images / deploy-services；支持 Tag 全量部署；空矩阵保护（无变更时跳过）
   - 网关：.github/workflows/deploy-gateway.yml 拆为 discover-render / publish；Job Summary 输出默认域名
   - 前端：.github/workflows/deploy-frontend.yml 拆为 meta / build-image / tag-image / deploy-cloudrun / deploy-hosting / summary
-  - 镜像仓库改为 Artifact Registry：asia-northeast1-docker.pkg.dev/<PROJECT>/autoads-services/<service>:<tag>
+  - 镜像仓库改为 Artifact Registry：asia-northeast1-docker.pkg.dev/<PROJECT>/adsai-services/<service>:<tag>
 - 安全与手动触发
   - 三条工作流均支持 workflow_dispatch；Secrets 使用 GCP_SA_KEY、FIREBASE_SERVICE_ACCOUNT；仓库变量 GCP_PROJECT_ID/GCP_REGION/ARTIFACT_REPO
 
@@ -110,13 +110,13 @@
 
 ## Hosting 与发布（最新）
 - 多站点：
-  - 预发：`autoads-preview`（默认 URL: https://autoads-preview.web.app）
-  - 生产：`autoads-prod`（默认 URL: https://autoads-prod.web.app）
+  - 预发：`adsai-preview`（默认 URL: https://adsai-preview.web.app）
+  - 生产：`adsai-prod`（默认 URL: https://adsai-prod.web.app）
 - WebFrameworks：两个站点的 SSR 函数区域固定 `asia-northeast1`
-- 预发防收录：middleware 对 `urlchecker.dev` 域返回 `X‑Robots‑Tag: noindex, nofollow`
+- 预发防收录：middleware 对 `preview.example.com` 域返回 `X‑Robots‑Tag: noindex, nofollow`
 - 自定义域（需在控制台绑定）：
-  - 预发 → https://www.urlchecker.dev 绑定到 `autoads-preview`
-  - 生产 → https://www.autoads.dev 绑定到 `autoads-prod`
+  - 预发 → https://preview.example.com 绑定到 `adsai-preview`
+  - 生产 → https://www.example.com 绑定到 `adsai-prod`
 - 构建稳定性：对 sharp 相关依赖增加 overrides，规避 Cloud Build 安装期版本不一致；建议设置 Artifact Registry 清理策略：`firebase functions:artifacts:setpolicy`
 
 ## 服务与接口（上线/对齐）
@@ -141,13 +141,13 @@
   - 删除 `apps/frontend/src/lib/prisma.ts`、`apps/frontend/src/lib/types/prisma-types.ts`、`apps/frontend/prisma/`（已完成）
   - 对客户端特性的大型包使用 `next/dynamic({ ssr:false })`，持续瘦身 SSR 函数
 - 自定义域绑定与发布
-  - 控制台绑定 `www.urlchecker.dev` 与 `www.autoads.dev` 各自站点，生效后执行：
-    - 预发：`firebase deploy --only hosting:autoads-preview --project gen-lang-client-0944935873`
-    - 生产：`firebase deploy --only hosting:autoads-prod --project gen-lang-client-0944935873`
+  - 控制台绑定 `preview.example.com` 与 `www.example.com` 各自站点，生效后执行：
+    - 预发：`firebase deploy --only hosting:adsai-preview --project your-gcp-project-id`
+    - 生产：`firebase deploy --only hosting:adsai-prod --project your-gcp-project-id`
 - API Gateway 冒烟与前端联调（BFF 注入内部 JWT；网关验证 JWT/Firebase ID Token 均可）
 
 ## 下一步（MVP 路线）
-- 网关冒烟验证与统一入口发布：autoads-gw-885pd7lz.an.gateway.dev（受保护路由 JWT 校验）
+- 网关冒烟验证与统一入口发布：adsai-gw-885pd7lz.an.gateway.dev（受保护路由 JWT 校验）
 - Adscenter Pre-flight 扩展：联通 AccessibleCustomers/validate_only；完善诊断项
 - 恢复 Billing/Workflow 的事件投影（改由 CF 订阅），服务内仅保留 HTTP 面
 
@@ -161,7 +161,7 @@
 说明：当前代理环境网络受限时，可在本地拉仓库执行上述脚本完成 MustKnowV2 的只读校验，不会读取或输出 Secret 值。
 - 前端（Cloud Run + Hosting 重写路径）
   - 新建并发布 Cloud Run 服务：frontend（源：`hosting/` Next 最小应用，提供 `/api/health` 与 `/api/go/*` 反向代理）
-  - 环境：`NEXT_PUBLIC_DEPLOYMENT_ENV=production`、`NEXT_PUBLIC_FIREBASE_PROJECT_ID=gen-lang-client-0944935873`、`BACKEND_URL=https://autoads-gw-885pd7lz.an.gateway.dev`
+  - 环境：`NEXT_PUBLIC_DEPLOYMENT_ENV=production`、`NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-gcp-project-id`、`BACKEND_URL=https://adsai-gw-885pd7lz.an.gateway.dev`
   - 访问：`https://frontend-644672509127.asia-northeast1.run.app`（/api/health=200，/api/go/api/health=200）
   - Hosting：`firebase.json` 已配置将 `**` 重写到 Cloud Run `frontend`，待执行 `firebase deploy --only hosting` 生效（见“进行中”）
 

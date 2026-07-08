@@ -1,7 +1,7 @@
-# AutoAds 多用户 SaaS 系统重构 PRD
+# AdsAI 多用户 SaaS 系统重构 PRD
 
 ## 文档信息
-- **项目名称**: AutoAds 多用户 SaaS 系统
+- **项目名称**: AdsAI 多用户 SaaS 系统
 - **版本**: v33.0
 - **创建日期**: 2025-01-09
 - **最后更新**: 2025-09-12
@@ -62,7 +62,7 @@
 
 ## 1. 执行摘要
 
-AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ ChangeLink（链接管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、ChangeLink→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。
+AdsAI 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ ChangeLink（链接管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、ChangeLink→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。
 
 ## 2. 能力与限额单一真相源（SSOT）表
 

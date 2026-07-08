@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/cache
+module github.com/linming7277/adsai/pkg/cache
 
 go 1.25.1
 

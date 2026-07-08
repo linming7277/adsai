@@ -1,4 +1,4 @@
-# AutoAds 业务需求实施 - 完整子任务列表
+# AdsAI 业务需求实施 - 完整子任务列表
 
 **文档版本**: V1.20
 **创建时间**: 2025-10-15
@@ -758,9 +758,9 @@
   - `README.md` - 完整基础设施文档
 - ✅ **环境状态验证** (2025-10-16)
   - Secret Manager: 42个密钥已配置
-  - Redis: autoads-redis实例运行中 (10.25.251.131:6379)
+  - Redis: adsai-redis实例运行中 (10.25.251.131:6379)
   - Pub/Sub: siterank.evaluate主题已存在
-  - API Gateway: autoads-gw和autoads-gw-preview已部署
+  - API Gateway: adsai-gw和adsai-gw-preview已部署
   - Cloud Scheduler: 7个定时任务已配置
 - 📝 **配置脚本特性**
   - 幂等性设计，可重复执行
@@ -1125,4 +1125,4 @@ E2E测试 (Day 25)
 ---
 
 **文档维护**: 请在每周五更新任务状态
-**问题反馈**: GitHub Issues或Slack #project-autoads频道
+**问题反馈**: GitHub Issues或Slack #project-adsai频道

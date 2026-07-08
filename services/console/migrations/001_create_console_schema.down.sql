@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库回滚: Console Schema Initialization
+-- AdsAI 数据库回滚: Console Schema Initialization
 -- 回滚管理控制台域 Schema
 -- 迁移ID: 001
 -- 版本: v2.0

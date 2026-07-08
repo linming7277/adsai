@@ -33,7 +33,7 @@ class RealSupabaseTokenGenerator {
 
     const payload = Buffer.from(JSON.stringify({
       sub: 'test-user-service-12345',
-      email: 'test-service@urlchecker.dev',
+      email: 'test-service@preview.example.com',
       role: 'service_role',
       aud: 'authenticated',
       iss: `https://${this.config.projectId}.supabase.co/auth/v1`,
@@ -73,10 +73,10 @@ class RealSupabaseTokenGenerator {
 
     const payload = Buffer.from(JSON.stringify({
       sub: 'test-user-internal-12345',
-      email: 'test-internal@urlchecker.dev',
+      email: 'test-internal@preview.example.com',
       role: 'authenticated',
       aud: 'authenticated',
-      iss: 'autoads-internal',
+      iss: 'adsai-internal',
       exp: Math.floor(Date.now() / 1000) + 3600,
       iat: Math.floor(Date.now() / 1000),
       app_metadata: {
@@ -114,7 +114,7 @@ class RealSupabaseTokenGenerator {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: 'test@urlchecker.dev',
+          email: 'test@preview.example.com',
           password: 'TestPassword123!'
         })
       });

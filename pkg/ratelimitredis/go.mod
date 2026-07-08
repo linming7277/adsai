@@ -1,10 +1,10 @@
-module github.com/xxrenzhe/autoads/pkg/ratelimitredis
+module github.com/linming7277/adsai/pkg/ratelimitredis
 
 go 1.25.1
 
 require (
 	github.com/redis/go-redis/v9 v9.14.0
-	github.com/xxrenzhe/autoads/pkg/cache v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/cache v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -13,4 +13,4 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 )
 
-replace github.com/xxrenzhe/autoads/pkg/cache => ../cache
+replace github.com/linming7277/adsai/pkg/cache => ../cache

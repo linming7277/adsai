@@ -2,7 +2,7 @@
 
 ## 问题描述
 
-访问 `https://www.urlchecker.dev/dashboard` 时返回 307 Temporary Redirect，重定向到 `/auth?redirect=%2Fdashboard`。
+访问 `https://preview.example.com/dashboard` 时返回 307 Temporary Redirect，重定向到 `/auth?redirect=%2Fdashboard`。
 
 ## 根本原因
 
@@ -34,7 +34,7 @@
 ## 实际测试结果
 
 ```bash
-$ curl -I https://www.urlchecker.dev/dashboard
+$ curl -I https://preview.example.com/dashboard
 
 HTTP/2 307 
 location: /auth?redirect=%2Fdashboard
@@ -50,7 +50,7 @@ x-middleware-set-cookie: lang=en; Path=/; Expires=Sun, 18 Oct 2026 01:54:02 GMT;
 
 ### 未登录用户访问 Dashboard
 
-1. 用户访问 `https://www.urlchecker.dev/dashboard`
+1. 用户访问 `https://preview.example.com/dashboard`
 2. Middleware 检测到没有有效 session
 3. 返回 307 重定向到 `/auth?redirect=%2Fdashboard`
 4. 用户在 `/auth` 页面登录
@@ -58,7 +58,7 @@ x-middleware-set-cookie: lang=en; Path=/; Expires=Sun, 18 Oct 2026 01:54:02 GMT;
 
 ### 已登录用户访问 Dashboard
 
-1. 用户访问 `https://www.urlchecker.dev/dashboard`
+1. 用户访问 `https://preview.example.com/dashboard`
 2. Middleware 检测到有效的 Supabase session
 3. 返回 200 OK，显示 Dashboard 页面
 
@@ -135,7 +135,7 @@ const { data: { session } } = await supabase.auth.getSession();
 
 ### 方法1：通过浏览器登录
 
-1. 访问 `https://www.urlchecker.dev/auth`
+1. 访问 `https://preview.example.com/auth`
 2. 点击 "Sign in with Google" 完成登录
 3. 登录成功后，浏览器会存储 Supabase session cookie
 4. 再次访问 `/dashboard`，应该返回 200 OK
@@ -144,7 +144,7 @@ const { data: { session } } = await supabase.auth.getSession();
 
 ```bash
 # 需要先获取有效的 session token
-curl -I https://www.urlchecker.dev/dashboard \
+curl -I https://preview.example.com/dashboard \
   -H "Cookie: sb-jzzvizacfyipzdyiqfzb-auth-token=<valid-token>"
 ```
 
@@ -261,7 +261,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
 4. **测试 OAuth 流程**：
    ```bash
    # 访问登录页
-   open https://www.urlchecker.dev/auth
+   open https://preview.example.com/auth
    # 完成 Google 登录
    # 检查是否重定向回 /dashboard
    ```

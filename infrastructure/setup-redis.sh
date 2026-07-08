@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-004: 配置 Cloud Memorystore for Redis
-# AutoAds Redis 缓存配置脚本
+# AdsAI Redis 缓存配置脚本
 
 set -e
 
-echo "🔴 AutoAds Redis 配置"
+echo "🔴 AdsAI Redis 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP
@@ -32,7 +32,7 @@ echo "✅ Redis API 已启用"
 echo ""
 
 # 配置参数
-REDIS_INSTANCE="autoads-redis"
+REDIS_INSTANCE="adsai-redis"
 REGION="asia-northeast1"
 TIER="basic"
 MEMORY_SIZE_GB=1
@@ -139,13 +139,13 @@ echo "📋 Cloud Run 部署命令示例 (使用 VPC Connector):"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 cat <<EOF
 gcloud run deploy {service-name} \\
-  --image asia-northeast1-docker.pkg.dev/${PROJECT_ID}/autoads-services/{service}:latest \\
+  --image asia-northeast1-docker.pkg.dev/${PROJECT_ID}/adsai-services/{service}:latest \\
   --platform managed \\
   --region ${REGION} \\
   --vpc-connector ${VPC_CONNECTOR} \\
   --vpc-egress all-traffic \\
   --update-secrets REDIS_URL=redis-url:latest \\
-  --service-account codex-dev@${PROJECT_ID}.iam.gserviceaccount.com \\
+  --service-account service-account@${PROJECT_ID}.iam.gserviceaccount.com \\
   --no-allow-unauthenticated
 EOF
 

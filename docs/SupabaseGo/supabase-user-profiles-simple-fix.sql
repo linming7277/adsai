@@ -1,4 +1,4 @@
--- AutoAds Supabase user_profiles简化修正脚本
+-- AdsAI Supabase user_profiles简化修正脚本
 -- 核心功能：修正user_profiles视图，确保符合架构要求
 
 -- =====================================

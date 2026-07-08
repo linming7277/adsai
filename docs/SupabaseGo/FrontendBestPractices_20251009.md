@@ -1,4 +1,4 @@
-# AutoAds 前端设计行业最佳实践与优化建议
+# AdsAI 前端设计行业最佳实践与优化建议
 
 **文档日期**: 2025-10-09
 **参考对象**: Figma、Linear、Vercel、Stripe、Notion、Airtable 等顶级 SaaS 产品
@@ -35,8 +35,8 @@
 ## 明确的产品定位公式
 [目标用户] 使用 [产品名] 来 [核心价值]，从而 [最终结果]
 
-## AutoAds 优化建议：
-**跨境电商广告主** 使用 **AutoAds** 来 **自动化评估和投放落地页广告**，
+## AdsAI 优化建议：
+**跨境电商广告主** 使用 **AdsAI** 来 **自动化评估和投放落地页广告**，
 从而 **提升 ROAS 300%，节省 80% 人工成本**。
 ```
 
@@ -59,16 +59,16 @@
 // app/(site)/compare/page.tsx
 <CompareTable
   competitors={[
-    'AutoAds',
+    'AdsAI',
     '手动审核',
     'AdEspresso',
     'Supermetrics',
   ]}
   features={[
-    { name: 'Offer 评估', autoads: '✅ AI 自动评估', manual: '❌ 需人工', adespresso: '⚠️ 基础评分', supermetrics: '❌ 不支持' },
-    { name: '多渠道管理', autoads: '✅ 3+ 平台', manual: '❌ 分散管理', adespresso: '✅ 2 平台', supermetrics: '✅ 5+ 平台' },
-    { name: '自动化投放', autoads: '✅ 智能策略', manual: '❌ 不支持', adespresso: '⚠️ 基础自动化', supermetrics: '❌ 仅数据分析' },
-    { name: '价格', autoads: '$49/月起', manual: '人工成本高', adespresso: '$99/月起', supermetrics: '$199/月起' },
+    { name: 'Offer 评估', adsai: '✅ AI 自动评估', manual: '❌ 需人工', adespresso: '⚠️ 基础评分', supermetrics: '❌ 不支持' },
+    { name: '多渠道管理', adsai: '✅ 3+ 平台', manual: '❌ 分散管理', adespresso: '✅ 2 平台', supermetrics: '✅ 5+ 平台' },
+    { name: '自动化投放', adsai: '✅ 智能策略', manual: '❌ 不支持', adespresso: '⚠️ 基础自动化', supermetrics: '❌ 仅数据分析' },
+    { name: '价格', adsai: '$49/月起', manual: '人工成本高', adespresso: '$99/月起', supermetrics: '$199/月起' },
   ]}
 />
 ```
@@ -83,7 +83,7 @@
 用户增长飞轮:
 1. 免费试用 → 2. Aha Moment → 3. 付费转化 → 4. 推荐传播 → 循环
 
-AutoAds 优化方案:
+AdsAI 优化方案:
 1. 免费试用: 注册即送 100 Token（可评估 10 个 Offers）
 2. Aha Moment: 首次评估完成后，展示"节省了 XX 小时人工审核"
 3. 付费转化: Token 用完时，智能推荐套餐（基于历史使用量）
@@ -184,7 +184,7 @@ function FirstEvaluationCompleteModal() {
     </Heading>
     <div className="grid md:grid-cols-3 gap-8">
       <TestimonialCard
-        quote="AutoAds 让我们的广告团队效率提升了 10 倍，ROAS 从 1.5 提升到 4.2"
+        quote="AdsAI 让我们的广告团队效率提升了 10 倍，ROAS 从 1.5 提升到 4.2"
         author="王明，运营总监"
         company="某跨境电商（年 GMV $50M）"
         avatar="/avatars/user-1.jpg"
@@ -260,7 +260,7 @@ function FirstEvaluationCompleteModal() {
       <VideoPlayer
         src="https://www.youtube.com/embed/demo-video"
         poster="/assets/images/video-poster.jpg"
-        title="2 分钟了解 AutoAds"
+        title="2 分钟了解 AdsAI"
       />
       <div className="mt-6 text-center">
         <Button variant="outline" href="/docs/tutorial">
@@ -828,7 +828,7 @@ export async function middleware(request: NextRequest) {
   const region = getClosestRegion(geo?.country);
 
   // 3. 根据地区路由到最近的 Cloud Run 实例
-  const response = await fetch(`https://${region}.autoads.dev${url.pathname}`, {
+  const response = await fetch(`https://${region}.example.com${url.pathname}`, {
     headers: request.headers,
   });
 
@@ -906,7 +906,7 @@ const { data: offers } = await supabase
 // next.config.js
 module.exports = {
   images: {
-    domains: ['autoads.dev', 'supabase.co'],
+    domains: ['example.com', 'supabase.co'],
     formats: ['image/avif', 'image/webp'], // ✅ 自动转换为现代格式
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -1183,7 +1183,7 @@ Sentry.init({
 });
 
 // 2. 初始化 LogRocket（用户会话录制）
-LogRocket.init('autoads/production');
+LogRocket.init('adsai/production');
 
 // 3. 关联 Sentry 和 LogRocket
 LogRocket.getSessionURL((sessionURL) => {
@@ -1256,7 +1256,7 @@ const EMAIL_AUTOMATIONS = {
     delay: 0,
     template: 'welcome-email',
     content: {
-      subject: '欢迎来到 AutoAds！这里是您的快速开始指南',
+      subject: '欢迎来到 AdsAI！这里是您的快速开始指南',
       cta: '创建首个 Offer',
     },
   },
@@ -1441,7 +1441,7 @@ export default function DashboardPage() {
         我的落地页得分 {score}/100
       </h3>
       <p className="text-muted-foreground">
-        使用 AutoAds 智能评估，节省 30 分钟人工审核
+        使用 AdsAI 智能评估，节省 30 分钟人工审核
       </p>
       <div className="flex gap-2 justify-center">
         <Button
@@ -1467,7 +1467,7 @@ export default function DashboardPage() {
 
 // 2. Twitter 分享文案自动生成
 function shareToTwitter(score: number) {
-  const text = `我的落地页在 @AutoAds 上得分 ${score}/100！🎉\n\nAI 智能评估，30 秒生成报告，比人工审核快 10 倍！\n\n免费试用：https://autoads.dev?ref=twitter`;
+  const text = `我的落地页在 @AdsAI 上得分 ${score}/100！🎉\n\nAI 智能评估，30 秒生成报告，比人工审核快 10 倍！\n\n免费试用：https://example.com?ref=twitter`;
 
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
@@ -1475,7 +1475,7 @@ function shareToTwitter(score: number) {
 
 // 3. 推荐链接追踪
 function generateReferralLink(userId: string): string {
-  return `https://autoads.dev?ref=${userId}`;
+  return `https://example.com?ref=${userId}`;
 }
 
 // 4. 病毒系数追踪
@@ -1502,12 +1502,12 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     title: t('meta.title'),
     description: t('meta.description'),
     alternates: {
-      canonical: `https://autoads.dev/${params.locale}`,
+      canonical: `https://example.com/${params.locale}`,
       languages: {
-        'zh-CN': 'https://autoads.dev/zh-CN',
-        'en': 'https://autoads.dev/en',
-        'ja': 'https://autoads.dev/ja',
-        'ko': 'https://autoads.dev/ko',
+        'zh-CN': 'https://example.com/zh-CN',
+        'en': 'https://example.com/en',
+        'ja': 'https://example.com/ja',
+        'ko': 'https://example.com/ko',
       },
     },
     openGraph: {
@@ -1847,7 +1847,7 @@ export async function GET(request: Request) {
   return new Response(json, {
     headers: {
       'Content-Type': 'application/json',
-      'Content-Disposition': `attachment; filename="autoads-data-${userId}.json"`,
+      'Content-Disposition': `attachment; filename="adsai-data-${userId}.json"`,
     },
   });
 }
@@ -1913,7 +1913,7 @@ export async function DELETE(request: Request) {
     <DialogHeader>
       <DialogTitle>我们很想听听您的想法</DialogTitle>
       <DialogDescription>
-        帮助我们改进 AutoAds，您的反馈至关重要
+        帮助我们改进 AdsAI，您的反馈至关重要
       </DialogDescription>
     </DialogHeader>
 
@@ -2141,8 +2141,8 @@ jobs:
 
 ```typescript
 // sonar-project.properties
-sonar.projectKey=autoads_frontend
-sonar.organization=autoads
+sonar.projectKey=adsai_frontend
+sonar.organization=adsai
 sonar.sources=apps/frontend/src
 sonar.tests=apps/frontend/src
 sonar.test.inclusions=**/*.test.ts,**/*.test.tsx

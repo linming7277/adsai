@@ -1,6 +1,6 @@
 # Frontend Optimization Documentation
 
-本目录包含 AutoAds 前端优化的所有文档。
+本目录包含 AdsAI 前端优化的所有文档。
 
 ---
 
@@ -205,4 +205,4 @@
 ---
 
 **Last Updated**: 2025-10-11
-**Maintained By**: AutoAds Frontend Team
+**Maintained By**: AdsAI Frontend Team

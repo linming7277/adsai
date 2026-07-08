@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/pkg/logger
+module github.com/linming7277/adsai/pkg/pkg/logger
 
 go 1.25.1
 

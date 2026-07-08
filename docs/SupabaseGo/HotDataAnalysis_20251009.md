@@ -11,8 +11,8 @@
 1. 启用的 `pg_stat_statements`（参见 `docs/SupabaseGo/SlowQueryAnalysis_20251009.md`）持续收集查询。
 2. 使用 Cloud SQL Admin API 导出统计：
    ```bash
-   gcloud sql export csv autoads gs://autoads-query-insights-apne1/pg_stat_user_tables_20251009142943.csv \
-     --database=autoads_db \
+   gcloud sql export csv adsai gs://adsai-query-insights-apne1/pg_stat_user_tables_20251009142943.csv \
+     --database=adsai_db \
      --query="SELECT schemaname, relname, seq_scan, idx_scan, n_tup_ins, n_tup_upd, n_tup_del, n_live_tup
               FROM pg_stat_user_tables
               ORDER BY (seq_scan + idx_scan) DESC LIMIT 50"
@@ -110,5 +110,5 @@
 ---
 
 **文档归档**
-- CSV 原始数据：`gs://autoads-query-insights-apne1/pg_stat_user_tables_20251009142943.csv`
+- CSV 原始数据：`gs://adsai-query-insights-apne1/pg_stat_user_tables_20251009142943.csv`
 - 任务追踪：`.kiro/specs/architecture-improvement-phase1-3/tasks.md`（8.7 已标记完成）

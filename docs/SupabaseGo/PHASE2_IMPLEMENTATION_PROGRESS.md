@@ -1,7 +1,7 @@
 # 数据库管理优化 - Phase 2 实施进度报告
 
 **报告时间**: 2025-01-19
-**项目**: autoads数据库管理统一化Phase 2
+**项目**: adsai数据库管理统一化Phase 2
 **状态**: 核心架构实现完成，准备部署验证
 
 ## 🎯 Phase 2 实施总览
@@ -338,11 +338,11 @@ func generateOptimizationSuggestions(ctx, serviceName) ([]OptimizationSuggestion
 #### 1. 部署完整版db-admin服务
 ```bash
 # 构建完整版服务
-docker build -t autoads/db-admin:full -f services/db-admin/Dockerfile.full .
+docker build -t adsai/db-admin:full -f services/db-admin/Dockerfile.full .
 
 # 部署到生产环境
 gcloud run deploy db-admin-prod \
-    --image autoads/db-admin:full \
+    --image adsai/db-admin:full \
     --platform managed \
     --region us-central1 \
     --allow-unauthenticated \

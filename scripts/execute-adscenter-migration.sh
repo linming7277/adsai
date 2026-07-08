@@ -8,7 +8,7 @@ set -euo pipefail
 # 配置
 SERVICE="adscenter"
 MIGRATION_FILE="migrations/adscenter/001_initial_schema.yaml"
-DB_URL="${DATABASE_URL:-postgresql://postgres:password@localhost:5432/autoads_db}"
+DB_URL="${DATABASE_URL:-postgresql://postgres:password@localhost:5432/adsai_db}"
 
 echo "========================================="
 echo "adscenter服务迁移执行"
@@ -80,13 +80,13 @@ for i in "${!DDL_STATEMENTS[@]}"; do
     echo "$(echo "$DDL" | head -c 100)..."
 
     # 使用psql执行DDL
-    if echo "$DDL" | PGPASSWORD=password psql -h localhost -U postgres -d autoads_db -v ON_ERROR_STOP=1 > /dev/null 2>&1; then
+    if echo "$DDL" | PGPASSWORD=password psql -h localhost -U postgres -d adsai_db -v ON_ERROR_STOP=1 > /dev/null 2>&1; then
         echo "✅ 成功"
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     else
         echo "❌ 失败"
         echo "错误详情:"
-        echo "$DDL" | PGPASSWORD=password psql -h localhost -U postgres -d autoads_db 2>&1 || true
+        echo "$DDL" | PGPASSWORD=password psql -h localhost -U postgres -d adsai_db 2>&1 || true
         FAILED_COUNT=$((FAILED_COUNT + 1))
     fi
     echo ""
@@ -109,7 +109,7 @@ if [ $FAILED_COUNT -eq 0 ]; then
     # 验证表是否创建成功
     echo ""
     echo "📊 数据库表状态:"
-    PGPASSWORD=password psql -h localhost -U postgres -d autoads_db -c "
+    PGPASSWORD=password psql -h localhost -U postgres -d adsai_db -c "
         SELECT
             schemaname,
             tablename,

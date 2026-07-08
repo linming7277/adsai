@@ -1,4 +1,4 @@
-# AutoAds 重构执行任务清单（Executable Tasks）
+# AdsAI 重构执行任务清单（Executable Tasks）
 
 > 本清单基于 docs/ProductRefactoring.md（V‑Final）的最终决策，转化为可执行、可验收的任务集合，按“里程碑 → 子域/能力 → 任务项”组织。建议将每一条转为 GitHub Issue，并在里程碑与 Project 中跟踪。
 

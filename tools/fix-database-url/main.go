@@ -9,7 +9,7 @@ import (
 func main() {
 	if len(os.Args) < 4 {
 		fmt.Printf("Usage: %s <project_id> <region> <instance_name> <database_name>\n", os.Args[0])
-		fmt.Printf("Example: %s my-project us-central1 my-instance autoads_db\n", os.Args[0])
+		fmt.Printf("Example: %s my-project us-central1 my-instance adsai_db\n", os.Args[0])
 		os.Exit(1)
 	}
 

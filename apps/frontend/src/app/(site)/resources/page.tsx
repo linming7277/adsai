@@ -15,7 +15,7 @@ type ResourceSection = {
 };
 
 export const metadata = {
-  title: 'Resources - AutoAds',
+  title: 'Resources - AdsAI',
 };
 
 export default async function ResourcesPage() {
@@ -84,8 +84,8 @@ export default async function ResourcesPage() {
                 <Button href="/contact" variant="outline">
                   {t('resourcesPage.support.salesCta')}
                 </Button>
-                <Button href="mailto:support@autoads.dev" variant="secondary">
-                  support@autoads.dev
+                <Button href="mailto:support@adsai.dev" variant="secondary">
+                  support@adsai.dev
                 </Button>
               </div>
             </CardContent>

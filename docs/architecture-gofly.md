@@ -1,4 +1,4 @@
-# AutoAds GoFly 架构设计文档
+# AdsAI GoFly 架构设计文档
 
 ## 1. 总体架构设计
 
@@ -95,7 +95,7 @@ func main() {
     
     // CORS
     r.Use(cors.Handler(cors.Options{
-        AllowedOrigins:   []string{"https://autoads.dev", "http://localhost:3000"},
+        AllowedOrigins:   []string{"https://example.com", "http://localhost:3000"},
         AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
         AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
         ExposedHeaders:   []string{"Link"},
@@ -155,7 +155,7 @@ func main() {
         // 使用 Let's Encrypt 自动证书
         m := autocert.Manager{
             Prompt:     autocert.AcceptTOS,
-            HostPolicy: autocert.HostWhitelist("autoads.dev", "www.autoads.dev"),
+            HostPolicy: autocert.HostWhitelist("example.com", "www.example.com"),
             Cache:      autocert.DirCache("certs"),
         }
         
@@ -569,7 +569,7 @@ func (ctx *Context) SetupRoutes() http.Handler {
 ```
 gofly_admin_v3/
 ├── app/
-│   ├── autoads/                 # AutoAds 业务模块
+│   ├── adsai/                 # AdsAI 业务模块
 │   │   ├── batchgo/             # BatchGo 模块
 │   │   │   ├── controller/     # 控制器层
 │   │   │   ├── service/        # 服务层
@@ -1112,7 +1112,7 @@ func Load() *Config {
             Port:     getEnvInt("DB_PORT", 3306),
             User:     getEnv("DB_USER", "root"),
             Password: getEnv("DB_PASSWORD", ""),
-            Database: getEnv("DB_NAME", "autoads"),
+            Database: getEnv("DB_NAME", "adsai"),
         },
         Redis: RedisConfig{
             Host:     getEnv("REDIS_HOST", "localhost"),
@@ -1382,26 +1382,26 @@ services:
       - "443:8443"
     environment:
       - APP_ENV=production
-      - DATABASE_URL=mysql://user:pass@db:3306/autoads
+      - DATABASE_URL=mysql://user:pass@db:3306/adsai
       - REDIS_URL=redis://redis:6379
     depends_on:
       - db
       - redis
     networks:
-      - autoads-net
+      - adsai-net
     restart: unless-stopped
 
   db:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: autoads
+      MYSQL_DATABASE: adsai
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
       MYSQL_ROOT_PASSWORD: rootpass
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - autoads-net
+      - adsai-net
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password
 
@@ -1410,7 +1410,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - autoads-net
+      - adsai-net
     restart: unless-stopped
 
 volumes:
@@ -1418,7 +1418,7 @@ volumes:
   redis_data:
 
 networks:
-  autoads-net:
+  adsai-net:
     driver: bridge
 ```
 
@@ -1431,20 +1431,20 @@ networks:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: autoads-api
+  name: adsai-api
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: autoads-api
+      app: adsai-api
   template:
     metadata:
       labels:
-        app: autoads-api
+        app: adsai-api
     spec:
       containers:
-      - name: autoads-api
-        image: autoads/api:latest
+      - name: adsai-api
+        image: adsai/api:latest
         ports:
         - containerPort: 8080
         env:
@@ -1453,7 +1453,7 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: autoads-secret
+              name: adsai-secret
               key: database-url
         resources:
           requests:
@@ -1515,7 +1515,7 @@ spec:
 
 ## 10. 总结
 
-本架构设计文档详细描述了 AutoAds 从 Next.js 迁移到 GoFly 的完整方案。通过合理的模块划分、优化的数据库设计、完善的安全措施和性能优化，系统将获得：
+本架构设计文档详细描述了 AdsAI 从 Next.js 迁移到 GoFly 的完整方案。通过合理的模块划分、优化的数据库设计、完善的安全措施和性能优化，系统将获得：
 
 1. **性能提升**：Go 的并发特性带来 4900% 的性能提升
 2. **可扩展性**：微服务架构支持水平扩展

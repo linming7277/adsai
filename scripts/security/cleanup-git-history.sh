@@ -62,7 +62,7 @@ echo ""
 echo -e "${YELLOW}第2步: 创建备份${NC}"
 
 # 创建备份目录
-BACKUP_DIR="../autoads-backup-$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="../adsai-backup-$(date +%Y%m%d-%H%M%S)"
 echo "备份位置: $BACKUP_DIR"
 
 # 创建完整备份
@@ -71,14 +71,14 @@ echo "✅ 备份完成: $BACKUP_DIR"
 
 # 记录当前HEAD
 ORIGINAL_HEAD=$(git rev-parse HEAD)
-echo "$ORIGINAL_HEAD" > /tmp/autoads-original-head.txt
+echo "$ORIGINAL_HEAD" > /tmp/adsai-original-head.txt
 echo "✅ 记录当前HEAD: $ORIGINAL_HEAD"
 
 echo ""
 echo -e "${YELLOW}第3步: 准备替换规则${NC}"
 
 # 创建替换文件
-REPLACE_FILE="/tmp/autoads-replacements.txt"
+REPLACE_FILE="/tmp/adsai-replacements.txt"
 cat > "$REPLACE_FILE" << 'EOF'
 # 替换硬编码的管理员密码
 ***REDACTED***==>***REDACTED_ADMIN_PASSWORD***
@@ -131,7 +131,7 @@ if [ -n "$REMOTE_URL" ]; then
     echo "✅ 已重新添加远程仓库: $REMOTE_URL"
 else
     echo -e "${YELLOW}⚠️  无法自动获取远程仓库地址，请手动添加:${NC}"
-    echo "  git remote add origin git@github.com:xxrenzhe/autoads.git"
+    echo "  git remote add origin git@github.com:linming7277/adsai.git"
 fi
 
 echo ""
@@ -150,8 +150,8 @@ echo "   git push --force --all"
 echo "   git push --force --tags"
 echo ""
 echo "3. 通知团队成员重新克隆仓库:"
-echo "   rm -rf autoads"
-echo "   git clone git@github.com:xxrenzhe/autoads.git"
+echo "   rm -rf adsai"
+echo "   git clone git@github.com:linming7277/adsai.git"
 echo ""
 echo "4. 立即更换所有密码（最重要）:"
 echo "   • 更换管理员密码"

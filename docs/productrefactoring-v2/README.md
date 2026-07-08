@@ -1,4 +1,4 @@
-# AutoAds 文档索引（productrefactoring-v2）
+# AdsAI 文档索引（productrefactoring-v2）
 
 - ProductSpec.md（SSOT 总纲）
 - FunctionalSpecs/

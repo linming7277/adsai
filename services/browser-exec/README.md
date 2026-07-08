@@ -2,7 +2,7 @@
 
 ## 概述
 
-Browser-Exec 是 autoads 项目的浏览器自动化服务，负责执行网页抓取、截图、表单填充等浏览器自动化任务。本服务使用 Playwright 提供高性能、可靠的浏览器自动化能力。
+Browser-Exec 是 adsai 项目的浏览器自动化服务，负责执行网页抓取、截图、表单填充等浏览器自动化任务。本服务使用 Playwright 提供高性能、可靠的浏览器自动化能力。
 
 ### 核心功能
 
@@ -54,7 +54,7 @@ DATABASE_URL=postgresql://...
 REDIS_URL=redis://...
 
 # Pub/Sub
-PUBSUB_PROJECT_ID=gen-lang-client-0944935873
+PUBSUB_PROJECT_ID=your-gcp-project-id
 PUBSUB_TOPIC=browser-exec-tasks
 
 # 代理配置

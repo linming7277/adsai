@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/database/optimizations
+module github.com/linming7277/adsai/database/optimizations
 
 go 1.25.1
 

@@ -23,25 +23,25 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = configuration.site.siteUrl as string;
 
   return {
-    title: t('about.title', 'About AutoAds - AI-Powered Landing Page Evaluation Platform'),
-    description: t('about.description', 'Learn about AutoAds mission to revolutionize affiliate marketing with AI-powered landing page evaluation. Our team of experts is dedicated to helping marketers achieve 200%-350% ROI improvement.'),
-    keywords: t('about.keywords', 'AutoAds about, AI landing page evaluation, affiliate marketing team, landing page optimization, Brand Bidding experts, ROI optimization'),
-    authors: [{ name: 'AutoAds Team' }],
-    creator: 'AutoAds',
-    publisher: 'AutoAds',
+    title: t('about.title', 'About AdsAI - AI-Powered Landing Page Evaluation Platform'),
+    description: t('about.description', 'Learn about AdsAI mission to revolutionize affiliate marketing with AI-powered landing page evaluation. Our team of experts is dedicated to helping marketers achieve 200%-350% ROI improvement.'),
+    keywords: t('about.keywords', 'AdsAI about, AI landing page evaluation, affiliate marketing team, landing page optimization, Brand Bidding experts, ROI optimization'),
+    authors: [{ name: 'AdsAI Team' }],
+    creator: 'AdsAI',
+    publisher: 'AdsAI',
     openGraph: {
       type: 'website',
       locale: i18n.language,
       url: `${baseUrl}/about`,
-      title: t('about.title', 'About AutoAds - AI-Powered Landing Page Evaluation Platform'),
-      description: t('about.description', 'Learn about AutoAds mission to revolutionize affiliate marketing with AI-powered landing page evaluation. Our team of experts is dedicated to helping marketers achieve 200%-350% ROI improvement.'),
+      title: t('about.title', 'About AdsAI - AI-Powered Landing Page Evaluation Platform'),
+      description: t('about.description', 'Learn about AdsAI mission to revolutionize affiliate marketing with AI-powered landing page evaluation. Our team of experts is dedicated to helping marketers achieve 200%-350% ROI improvement.'),
       siteName: configuration.site.siteName,
       images: [
         {
           url: `${baseUrl}/og-image.jpg`,
           width: 1200,
           height: 630,
-          alt: t('about.ogImageAlt', 'About AutoAds - Our Mission and Values'),
+          alt: t('about.ogImageAlt', 'About AdsAI - Our Mission and Values'),
         },
       ],
     },
@@ -49,8 +49,8 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       site: configuration.site.twitterHandle,
       creator: configuration.site.twitterHandle,
-      title: t('about.title', 'About AutoAds - AI-Powered Landing Page Evaluation Platform'),
-      description: t('about.twitterDescription', 'Learn about AutoAds mission to revolutionize affiliate marketing with AI-powered landing page evaluation.'),
+      title: t('about.title', 'About AdsAI - AI-Powered Landing Page Evaluation Platform'),
+      description: t('about.twitterDescription', 'Learn about AdsAI mission to revolutionize affiliate marketing with AI-powered landing page evaluation.'),
       images: [`${baseUrl}/twitter-image.jpg`],
     },
     alternates: {
@@ -66,11 +66,11 @@ export default async function AboutPage() {
 
   const values = t('about.values', { returnObjects: true }) as ValueItem[];
 
-  const title = t('about.title', 'About AutoAds - AI-Powered Landing Page Evaluation Platform');
-  const description = t('about.description', 'Learn about AutoAds mission to revolutionize affiliate marketing with AI-powered landing page evaluation. Our team of experts is dedicated to helping marketers achieve 200%-350% ROI improvement.');
+  const title = t('about.title', 'About AdsAI - AI-Powered Landing Page Evaluation Platform');
+  const description = t('about.description', 'Learn about AdsAI mission to revolutionize affiliate marketing with AI-powered landing page evaluation. Our team of experts is dedicated to helping marketers achieve 200%-350% ROI improvement.');
 
   // const structuredData = buildOrganizationStructuredData({
-//   name: 'AutoAds',
+//   name: 'AdsAI',
 //   description,
 //   locale: i18n.language,
 // });

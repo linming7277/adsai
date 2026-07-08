@@ -20,7 +20,7 @@ export interface AuthMiddlewareConfig extends FirebaseAuthConfig {
  *
  * @example
  * ```typescript
- * import { createAuthMiddleware } from '@autoads/auth-utils'
+ * import { createAuthMiddleware } from '@adsai/auth-utils'
  *
  * const authMiddleware = createAuthMiddleware({
  *   projectId: process.env.FIREBASE_PROJECT_ID!,

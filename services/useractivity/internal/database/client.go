@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // UserActivityDatabase 用户活动数据库客户端（使用FinalAdapter）

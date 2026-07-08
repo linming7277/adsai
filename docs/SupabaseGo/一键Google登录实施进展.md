@@ -87,10 +87,10 @@ git commit -m "feat: implement one-click Google login with auto user setup"
 git push origin main
 
 # 3. 等待GitHub Actions完成部署
-# 查看: https://github.com/xxrenzhe/autoads/actions
+# 查看: https://github.com/linming7277/adsai/actions
 
 # 4. 验证preview环境
-curl -I https://www.urlchecker.dev
+curl -I https://preview.example.com
 ```
 
 ### ⏳ 6. 功能测试
@@ -98,7 +98,7 @@ curl -I https://www.urlchecker.dev
 **测试场景**:
 
 #### 场景1: 新用户注册
-1. 访问 https://www.urlchecker.dev/auth/sign-in
+1. 访问 https://preview.example.com/auth/sign-in
 2. 点击 "Google登录" 按钮
 3. 使用全新Google账号授权
 4. **预期**: 自动重定向到 `/dashboard/{org_uuid}`

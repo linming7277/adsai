@@ -27,7 +27,7 @@ Siterank服务已拆分为两个独立的Cloud Run服务：
 # 从项目根目录执行
 gcloud builds submit \
   --config=services/siterank/cloudbuild-api-preview.yaml \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ### 2. 构建和部署 Worker 服务
@@ -36,7 +36,7 @@ gcloud builds submit \
 # 从项目根目录执行
 gcloud builds submit \
   --config=services/siterank/cloudbuild-worker-preview.yaml \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ### 3. 验证部署
@@ -45,12 +45,12 @@ gcloud builds submit \
 # 检查 API 服务
 gcloud run services describe siterank-api-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 检查 Worker 服务
 gcloud run services describe siterank-worker-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 测试 API 健康检查
 curl https://siterank-api-preview-[hash].a.run.app/health
@@ -78,7 +78,7 @@ gcloud pubsub subscriptions create siterank-worker-preview-sub \
   --topic=evaluation-tasks \
   --ack-deadline=600 \
   --push-endpoint=https://siterank-worker-preview-[hash].a.run.app/pubsub/evaluation \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ## 监控指标

@@ -10,15 +10,15 @@ enum Themes {
 
 const configuration = {
   site: {
-    name: 'AutoAds - AI 多渠道广告平台',
+    name: 'AdsAI - AI 多渠道广告平台',
     description:
-      'AutoAds 提供面向成长型团队的跨渠道广告自动化、风控与投放协作能力。',
+      'AdsAI 提供面向成长型团队的跨渠道广告自动化、风控与投放协作能力。',
     themeColor: '#0a0a0a',
     themeColorDark: '#0a0a0a',
-    siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.autoads.dev',
-    siteName: 'AutoAds',
-    twitterHandle: '@AutoAds',
-    githubHandle: 'autoads-dev',
+    siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.example.com',
+    siteName: 'AdsAI',
+    twitterHandle: '@AdsAI',
+    githubHandle: 'adsai-dev',
     convertKitFormId: '',
     locale: process.env.NEXT_PUBLIC_DEFAULT_LOCALE ?? 'zh-CN',
   },

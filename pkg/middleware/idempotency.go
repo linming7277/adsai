@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/xxrenzhe/autoads/pkg/idempotency"
+	"github.com/linming7277/adsai/pkg/idempotency"
 	"net/http"
 )
 

@@ -1,12 +1,12 @@
 timeout: "3600s"
-serviceAccount: 'projects/gen-lang-client-0944935873/serviceAccounts/codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com'
+serviceAccount: 'projects/your-gcp-project-id/serviceAccounts/service-account@your-gcp-project-id.iam.gserviceaccount.com'
 options:
   logging: GCS_ONLY
   machineType: 'E2_HIGHCPU_8'
-logsBucket: gs://autoads-build-logs-asia-northeast1/logs
+logsBucket: gs://adsai-build-logs-asia-northeast1/logs
 substitutions:
   _IMAGE: "asia-northeast1-docker.pkg.dev/PROJECT/REPO/frontend:dev"
-  _SITE_URL: "https://www.urlchecker.dev"
+  _SITE_URL: "https://preview.example.com"
   _ENVIRONMENT: "preview"  # preview or prod
 availableSecrets:
   secretManager:

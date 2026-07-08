@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/redis/go-redis/v9"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/browserexec"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/services/siterank/internal/browserexec"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
 )
 
 const (

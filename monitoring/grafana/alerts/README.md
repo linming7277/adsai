@@ -30,11 +30,11 @@
 Rule name: High Token Refund Rate
 
 # Step 1: Set query and condition
-Data source: AutoAds Billing
+Data source: AdsAI Billing
 Query A (Refund Rate):
-  sum(rate(autoads_billing_tokens_refunded_total[5m]))
+  sum(rate(adsai_billing_tokens_refunded_total[5m]))
   /
-  sum(rate(autoads_billing_tokens_consumed_total[5m]))
+  sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 Condition: WHEN last() OF A IS ABOVE 0.10
 
@@ -43,7 +43,7 @@ Evaluate every: 1m
 For: 5m
 
 # Step 3: Add details
-Folder: AutoAds Alerts
+Folder: AdsAI Alerts
 Summary: Token 退款率过高 ({{ $value | humanizePercentage }})
 Description: |
   ⚠️ 过去 5 分钟 Token 退款率为 {{ $value | humanizePercentage }}，超过阈值 10%。
@@ -86,11 +86,11 @@ curl -X POST https://billing-preview-XXX.a.run.app/api/v1/refund \
 ```yaml
 Rule name: High Offer Failure Rate
 
-Data source: AutoAds Offer
+Data source: AdsAI Offer
 Query A (Failure Rate):
-  sum(rate(autoads_offer_offers_failed_total[5m]))
+  sum(rate(adsai_offer_offers_failed_total[5m]))
   /
-  sum(rate(autoads_offer_offers_created_total[5m]))
+  sum(rate(adsai_offer_offers_created_total[5m]))
 
 Condition: WHEN last() OF A IS ABOVE 0.10
 
@@ -106,7 +106,7 @@ Description: |
   2. siterank 服务可用性
   3. 网络连接问题
   4. 查看失败原因分布:
-     topk(5, sum(rate(autoads_offer_offers_failed_total[5m])) by (reason))
+     topk(5, sum(rate(adsai_offer_offers_failed_total[5m])) by (reason))
 
 Labels:
   severity: critical
@@ -125,11 +125,11 @@ Labels:
 ```yaml
 Rule name: High HTTP Error Rate
 
-Data source: AutoAds Billing
+Data source: AdsAI Billing
 Query A (Error Rate):
-  sum(rate(autoads_billing_http_errors_total[5m]))
+  sum(rate(adsai_billing_http_errors_total[5m]))
   /
-  sum(rate(autoads_billing_http_requests_total[5m]))
+  sum(rate(adsai_billing_http_requests_total[5m]))
 
 Condition: WHEN last() OF A IS ABOVE 0.05
 
@@ -152,7 +152,7 @@ Labels:
 ```
 
 **多服务版本** (为所有服务创建相同告警):
-- 重复上述配置,分别为 `AutoAds Offer` 和 `AutoAds Adscenter` 数据源创建
+- 重复上述配置,分别为 `AdsAI Offer` 和 `AdsAI Adscenter` 数据源创建
 
 ---
 
@@ -165,10 +165,10 @@ Labels:
 ```yaml
 Rule name: High P99 Latency - Billing
 
-Data source: AutoAds Billing
+Data source: AdsAI Billing
 Query A (P99):
   histogram_quantile(0.99,
-    sum(rate(autoads_billing_http_request_duration_seconds_bucket[5m])) by (le, method, path)
+    sum(rate(adsai_billing_http_request_duration_seconds_bucket[5m])) by (le, method, path)
   )
 
 Condition: WHEN last() OF A IS ABOVE 2.0
@@ -202,7 +202,7 @@ Labels:
 ```yaml
 Rule name: Circuit Breaker Open
 
-Data source: AutoAds Billing (或任何暴露断路器指标的服务)
+Data source: AdsAI Billing (或任何暴露断路器指标的服务)
 Query A (Open State):
   circuitbreaker_state{state="open"}
 
@@ -242,12 +242,12 @@ Labels:
 ```yaml
 Rule name: Token Consumption Spike
 
-Data source: AutoAds Billing
+Data source: AdsAI Billing
 Query A (Current Rate):
-  sum(rate(autoads_billing_tokens_consumed_total[5m]))
+  sum(rate(adsai_billing_tokens_consumed_total[5m]))
 
 Query B (Historical Rate):
-  sum(rate(autoads_billing_tokens_consumed_total[1h] offset 1h))
+  sum(rate(adsai_billing_tokens_consumed_total[1h] offset 1h))
 
 Condition: WHEN last() OF A IS ABOVE last() OF B * 1.5
 
@@ -281,11 +281,11 @@ Labels:
 ```yaml
 Rule name: Low Offer Success Rate
 
-Data source: AutoAds Offer
+Data source: AdsAI Offer
 Query A (Success Rate):
-  sum(rate(autoads_offer_offers_completed_total[5m]))
+  sum(rate(adsai_offer_offers_completed_total[5m]))
   /
-  sum(rate(autoads_offer_offers_created_total[5m]))
+  sum(rate(adsai_offer_offers_created_total[5m]))
 
 Condition: WHEN last() OF A IS BELOW 0.50
 
@@ -320,7 +320,7 @@ Grafana Cloud 免费版默认支持 Email 通知。
 2. 点击 **New contact point**
 3. 填写:
    ```yaml
-   Name: AutoAds Team Email
+   Name: AdsAI Team Email
    Type: Email
    Addresses: your-team@example.com
    ```
@@ -330,12 +330,12 @@ Grafana Cloud 免费版默认支持 Email 通知。
 **配置步骤**:
 1. 创建 Slack Incoming Webhook:
    - 访问: https://api.slack.com/messaging/webhooks
-   - 选择频道: `#autoads-alerts`
+   - 选择频道: `#adsai-alerts`
    - 复制 Webhook URL
 
 2. 在 Grafana Cloud 配置:
    ```yaml
-   Name: AutoAds Slack
+   Name: AdsAI Slack
    Type: Slack
    Webhook URL: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
 

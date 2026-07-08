@@ -508,7 +508,7 @@ export const RadioVariant = {
 - [i18next 官方文档](https://www.i18next.com/)
 - [React i18next 文档](https://react.i18next.com/)
 - [Tailwind CSS 文档](https://tailwindcss.com/)
-- [AutoAds 架构文档](./AUTOADS_ARCHITECTURE_OPTIMIZATION_IMPLEMENTATION.md)
+- [AdsAI 架构文档](./AUTOADS_ARCHITECTURE_OPTIMIZATION_IMPLEMENTATION.md)
 
 ---
 

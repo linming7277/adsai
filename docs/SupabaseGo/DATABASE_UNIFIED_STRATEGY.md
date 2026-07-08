@@ -2,7 +2,7 @@
 
 ## 概述
 
-本文档制定 AutoAds 项目的数据库管理统一策略，旨在解决当前数据库管理分散、架构不一致的问题，实现统一的数据库管理目标。
+本文档制定 AdsAI 项目的数据库管理统一策略，旨在解决当前数据库管理分散、架构不一致的问题，实现统一的数据库管理目标。
 
 ## 🔍 当前问题分析
 
@@ -109,7 +109,7 @@ dbctl restore <service> <file>  # 恢复备份
 version: "001"
 service: "useractivity"
 description: "Create user notifications table"
-author: "db-admin@autoads.dev"
+author: "db-admin@adsai.dev"
 created_at: "2024-01-15T10:00:00Z"
 
 up: |
@@ -429,7 +429,7 @@ alerts:
 ## 📞 联系和支持
 
 **负责团队**: 基础设施团队
-**技术支持**: db-admin@autoads.dev
+**技术支持**: db-admin@adsai.dev
 **紧急联系**: @db-admin-team
 **文档更新**: 每月定期更新
 

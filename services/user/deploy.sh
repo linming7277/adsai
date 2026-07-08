@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# AutoAds User Service Deployment Script
-# Follows AutoAds project standards for Cloud Run deployment
+# AdsAI User Service Deployment Script
+# Follows AdsAI project standards for Cloud Run deployment
 
 set -e
 
 # Configuration following project standards
-PROJECT_ID="gen-lang-client-0944935873"  # AutoAds project ID
+PROJECT_ID="your-gcp-project-id"  # AdsAI project ID
 SERVICE_NAME="user"
 REGION="asia-northeast1"  # Following project standard
-IMAGE_NAME="autoads-user-service"
+IMAGE_NAME="adsai-user-service"
 REGISTRY="asia-northeast1-docker.pkg.dev"
-SERVICE_ACCOUNT="codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com"
+SERVICE_ACCOUNT="service-account@your-gcp-project-id.iam.gserviceaccount.com"
 
 # Environment detection
 BRANCH=${1:-main}
@@ -104,14 +104,14 @@ build_with_cloudbuild() {
     log_info "Submitting to Cloud Build..."
     gcloud builds submit \
         --config=deployments/cloudbuild/build-service-docker.yaml \
-        --substitutions=_SERVICE="${SERVICE_NAME}",_IMAGE="${REGISTRY}/${PROJECT_ID}/autoads-services/${SERVICE_NAME}:${TAG}" \
+        --substitutions=_SERVICE="${SERVICE_NAME}",_IMAGE="${REGISTRY}/${PROJECT_ID}/adsai-services/${SERVICE_NAME}:${TAG}" \
         --project="${PROJECT_ID}" \
         "$TARBALL"
 
     # Clean up
     rm -f "$TARBALL"
 
-    log_info "Image successfully built: ${REGISTRY}/${PROJECT_ID}/autoads-services/${SERVICE_NAME}:${TAG}"
+    log_info "Image successfully built: ${REGISTRY}/${PROJECT_ID}/adsai-services/${SERVICE_NAME}:${TAG}"
 }
 
 # Deploy to Cloud Run
@@ -122,7 +122,7 @@ deploy_to_cloud_run() {
     ENV_VARS=(
         "GCP_PROJECT_ID=${PROJECT_ID}"
         "ENVIRONMENT=${ENV}"
-        "OTEL_EXPORTER_OTLP_ENDPOINT=https://otel-collector-${ENV}.autoads.dev"
+        "OTEL_EXPORTER_OTLP_ENDPOINT=https://otel-collector-${ENV}.example.com"
     )
 
     # Build environment variable arguments
@@ -146,7 +146,7 @@ deploy_to_cloud_run() {
 
     # Deploy to Cloud Run with project standard configuration
     gcloud run deploy $FULL_SERVICE_NAME \
-        --image ${REGISTRY}/${PROJECT_ID}/autoads-services/${SERVICE_NAME}:${TAG} \
+        --image ${REGISTRY}/${PROJECT_ID}/adsai-services/${SERVICE_NAME}:${TAG} \
         --region $REGION \
         --platform managed \
         --service-account $SERVICE_ACCOUNT \
@@ -214,7 +214,7 @@ update_gateway() {
 
     if [ -n "$SERVICE_URL" ]; then
         # Update routes.yaml
-        sed -i.bak "s|  user: .*|  user: $SERVICE_URL|g" /Users/jason/Documents/Kiro/autoads/services/gateway-middleware/config/routes.yaml
+        sed -i.bak "s|  user: .*|  user: $SERVICE_URL|g" /path/to/adsai/services/gateway-middleware/config/routes.yaml
 
         log_info "Gateway configuration updated successfully"
         log_warn "Remember to commit the changes to routes.yaml"
@@ -223,7 +223,7 @@ update_gateway() {
 
 # Main execution
 main() {
-    log_info "Starting AutoAds User Service deployment..."
+    log_info "Starting AdsAI User Service deployment..."
     log_info "Environment: $ENV"
     log_info "Service: $FULL_SERVICE_NAME"
     log_info "Tag: $TAG"

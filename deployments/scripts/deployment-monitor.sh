@@ -54,10 +54,10 @@ show_usage() {
 validate_environment() {
     case $ENVIRONMENT in
         preview)
-            BASE_URL="https://urlchecker.dev"
+            BASE_URL="https://preview.example.com"
             ;;
         production)
-            BASE_URL="https://autoads.dev"
+            BASE_URL="https://example.com"
             ;;
         *)
             log_error "无效的环境: $ENVIRONMENT"

@@ -2,7 +2,7 @@
 
 import { chromium } from 'playwright';
 
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 // Web Vitals阈值 (Google标准)
 const THRESHOLDS = {

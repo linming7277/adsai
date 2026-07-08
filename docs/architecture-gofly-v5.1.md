@@ -1,4 +1,4 @@
-# AutoAds GoFly 架构设计文档 V5.1
+# AdsAI GoFly 架构设计文档 V5.1
 
 基于 PRD V5.0 的完整架构设计，实现从 Next.js 到 GoFly 的平滑迁移。
 
@@ -1542,26 +1542,26 @@ services:
       - "8080:8080"
     environment:
       - APP_ENV=production
-      - DATABASE_URL=mysql://user:pass@db:3306/autoads
+      - DATABASE_URL=mysql://user:pass@db:3306/adsai
       - REDIS_URL=redis://redis:6379
     depends_on:
       - db
       - redis
     networks:
-      - autoads-net
+      - adsai-net
     restart: unless-stopped
 
   db:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: autoads
+      MYSQL_DATABASE: adsai
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
       MYSQL_ROOT_PASSWORD: rootpass
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - autoads-net
+      - adsai-net
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password
 
@@ -1570,7 +1570,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - autoads-net
+      - adsai-net
     restart: unless-stopped
 
 volumes:
@@ -1578,7 +1578,7 @@ volumes:
   redis_data:
 
 networks:
-  autoads-net:
+  adsai-net:
     driver: bridge
 ```
 

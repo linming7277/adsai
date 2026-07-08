@@ -1,6 +1,6 @@
 # Preview 环境真实测试指南
 
-> **测试环境**: https://www.urlchecker.dev
+> **测试环境**: https://preview.example.com
 > **测试账号**: yj2008ay611@gmail.com (管理员)
 > **最新部署**: preview-3557fa3e (2025-10-10 16:54)
 > **测试目标**: 验证重构 + RBAC 功能
@@ -30,7 +30,7 @@
 
 2. **访问预发环境**
    ```
-   https://www.urlchecker.dev
+   https://preview.example.com
    ```
 
 3. **点击 "Sign in with Google"**
@@ -120,15 +120,15 @@
 
 2. **或者直接访问**：
    ```
-   https://www.urlchecker.dev/settings/profile
+   https://preview.example.com/settings/profile
    ```
    - ✅ 检查项：个人资料设置页面正常加载
    - ✅ 检查 URL：没有组织 UUID
 
 3. **访问其他 Settings 页面**：
    ```
-   https://www.urlchecker.dev/settings/tokens
-   https://www.urlchecker.dev/settings/subscription
+   https://preview.example.com/settings/tokens
+   https://preview.example.com/settings/subscription
    ```
    - ✅ 检查项：所有页面正常加载
 
@@ -166,7 +166,7 @@
 
 3. **打开新标签页，直接访问**：
    ```
-   https://www.urlchecker.dev/dashboard/tasks
+   https://preview.example.com/dashboard/tasks
    ```
    - ✅ 检查项：直接加载成功（SSR 预渲染）
 
@@ -183,7 +183,7 @@
 
 2. **直接访问**：
    ```
-   https://www.urlchecker.dev/dashboard/offers
+   https://preview.example.com/dashboard/offers
    ```
    - ✅ 检查项：自动重定向到登录页
    - ✅ 检查项：登录后自动跳转回 `/dashboard/offers`
@@ -192,7 +192,7 @@
 
 1. **访问不存在的 Offer**：
    ```
-   https://www.urlchecker.dev/dashboard/offers/non-existent-id-12345
+   https://preview.example.com/dashboard/offers/non-existent-id-12345
    ```
    - ✅ 检查项：显示 404 页面或错误提示
 

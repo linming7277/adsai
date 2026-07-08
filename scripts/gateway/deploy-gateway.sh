@@ -4,8 +4,8 @@ set -euo pipefail
 # Deploy API Gateway using a rendered OpenAPI file.
 # Required env vars/args:
 #   PROJECT_ID  - GCP project id
-#   API_ID      - API identifier (e.g., autoads-api)
-#   GATEWAY_ID  - Gateway identifier (e.g., autoads-gw)
+#   API_ID      - API identifier (e.g., adsai-api)
+#   GATEWAY_ID  - Gateway identifier (e.g., adsai-gw)
 #   REGION      - Gateway region (e.g., asia-northeast1)
 #   OPENAPI     - Path to rendered OpenAPI (default: out/gateway.yaml)
 #   CONFIG_ID   - Config id (default: cfg-$(date +%Y%m%d-%H%M%S))

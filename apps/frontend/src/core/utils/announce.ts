@@ -5,7 +5,7 @@ export type LiveAnnounceDetail = {
   politeness?: 'polite' | 'assertive';
 };
 
-export const ANNOUNCE_EVENT = 'autoads:announce';
+export const ANNOUNCE_EVENT = 'adsai:announce';
 
 export function announce(message: string, politeness: 'polite' | 'assertive' = 'polite') {
   if (typeof window === 'undefined') {

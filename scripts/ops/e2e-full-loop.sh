@@ -3,7 +3,7 @@ set -euo pipefail
 
 # End-to-end full loop: Offer -> Siterank -> Diagnose/Plan/Validate/Submit -> Notifications snapshot
 # Usage:
-#   GATEWAY=https://www.urlchecker.dev AUTH="Bearer <id_token>" ./scripts/ops/e2e-full-loop.sh
+#   GATEWAY=https://preview.example.com AUTH="Bearer <id_token>" ./scripts/ops/e2e-full-loop.sh
 
 GATEWAY=${GATEWAY:-}
 AUTH=${AUTH:-}

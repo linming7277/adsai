@@ -53,7 +53,7 @@ export function UpgradePrompt({ variant = 'inline', feature = 'ai-evaluation', c
       title: t('upgrade.premiumFeatures.title', 'Unlock All Premium Features'),
       description: t(
         'upgrade.premiumFeatures.description',
-        'Access the full power of AutoAds with Professional or Elite plans.'
+        'Access the full power of AdsAI with Professional or Elite plans.'
       ),
       benefits: [
         t('upgrade.premiumFeatures.benefit1', 'AI-powered insights'),

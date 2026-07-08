@@ -428,4 +428,4 @@ console.log('测试完成，代理工作正常');
 ---
 
 **最后更新**: 2025-10-16
-**维护者**: AutoAds QA Team
+**维护者**: AdsAI QA Team

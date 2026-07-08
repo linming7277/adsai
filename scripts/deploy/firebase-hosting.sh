@@ -3,12 +3,12 @@ set -euo pipefail
 
 # Deploy Next.js (apps/frontend) to Firebase Hosting with SSR (Frameworks)
 # Requirements:
-#  - secrets/firebase-adminsdk.json: service account for firebase-adminsdk-fbsvc@gen-lang-client-0944935873.iam.gserviceaccount.com
-#  - API_GATEWAY_HOST env: e.g. autoads-gw-885pd7lz.an.gateway.dev
-#  - PROJECT_ID env (default: gen-lang-client-0944935873)
+#  - secrets/firebase-adminsdk.json: service account for firebase-adminsdk-fbsvc@your-gcp-project-id.iam.gserviceaccount.com
+#  - API_GATEWAY_HOST env: e.g. adsai-gw-885pd7lz.an.gateway.dev
+#  - PROJECT_ID env (default: your-gcp-project-id)
 
-PROJECT_ID=${PROJECT_ID:-gen-lang-client-0944935873}
-GATEWAY=${API_GATEWAY_HOST:?API_GATEWAY_HOST required, e.g. autoads-gw-xxxx.an.gateway.dev}
+PROJECT_ID=${PROJECT_ID:-your-gcp-project-id}
+GATEWAY=${API_GATEWAY_HOST:?API_GATEWAY_HOST required, e.g. adsai-gw-xxxx.an.gateway.dev}
 
 export GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS:-$(pwd)/secrets/firebase-adminsdk.json}
 if [[ ! -f "$GOOGLE_APPLICATION_CREDENTIALS" ]]; then

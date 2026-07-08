@@ -38,10 +38,10 @@ for service_dir in "$REPO_ROOT"/services/*/; do
   echo "Checking service: $service"
 
   # Find all pkg imports in Go files
-  used_pkgs=$(grep -rh 'github\.com/xxrenzhe/autoads/pkg/' "$service_dir" \
+  used_pkgs=$(grep -rh 'github\.com/linming7277/adsai/pkg/' "$service_dir" \
               --include="*.go" \
               2>/dev/null | \
-              sed -n 's/.*"github\.com\/xxrenzhe\/autoads\/\(pkg\/[^"]*\)".*/\1/p' | \
+              sed -n 's/.*"github\.com\/linming7277\/adsai\/\(pkg\/[^"]*\)".*/\1/p' | \
               sort -u || true)
 
   if [ -z "$used_pkgs" ]; then
@@ -51,9 +51,9 @@ for service_dir in "$REPO_ROOT"/services/*/; do
 
   # Check each used pkg for replace directive
   # Support both single-line and block replace formats:
-  #   replace github.com/xxrenzhe/autoads/pkg/xxx => ../../pkg/xxx
+  #   replace github.com/linming7277/adsai/pkg/xxx => ../../pkg/xxx
   #   replace (
-  #     github.com/xxrenzhe/autoads/pkg/xxx => ../../pkg/xxx
+  #     github.com/linming7277/adsai/pkg/xxx => ../../pkg/xxx
   #   )
   for pkg in $used_pkgs; do
     # Skip known missing packages (legacy code to be cleaned up)
@@ -62,10 +62,10 @@ for service_dir in "$REPO_ROOT"/services/*/; do
       continue
     fi
 
-    if ! grep -q "github.com/xxrenzhe/autoads/$pkg =>" "$go_mod"; then
+    if ! grep -q "github.com/linming7277/adsai/$pkg =>" "$go_mod"; then
       echo "  ❌ Missing replace for: $pkg"
       echo "     Add to $service/go.mod:"
-      echo "     replace github.com/xxrenzhe/autoads/$pkg => ../../$pkg"
+      echo "     replace github.com/linming7277/adsai/$pkg => ../../$pkg"
       ERRORS=$((ERRORS + 1))
     else
       echo "  ✅ $pkg"

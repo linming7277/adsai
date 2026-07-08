@@ -2,7 +2,7 @@
 
 ## 一、现有Playwright基础设施
 
-AutoAds项目已内置完整的Playwright浏览器自动化基础设施，核心是**browser-exec**微服务。
+AdsAI项目已内置完整的Playwright浏览器自动化基础设施，核心是**browser-exec**微服务。
 
 ### 1.1 Browser-Exec服务架构
 
@@ -202,10 +202,10 @@ npx playwright install chromium
 // tests/login.spec.js
 import { test, expect } from '@playwright/test'
 
-test.describe('AutoAds Frontend Login', () => {
+test.describe('AdsAI Frontend Login', () => {
   test('should login with Google OAuth', async ({ page }) => {
     // 1. 访问登录页
-    await page.goto('https://www.urlchecker.dev/auth/sign-in')
+    await page.goto('https://preview.example.com/auth/sign-in')
 
     // 2. 点击Google登录按钮
     await page.click('button:has-text("Sign in with Google")')
@@ -222,7 +222,7 @@ test.describe('AutoAds Frontend Login', () => {
 
   test('should redirect to sign-in for unauthenticated users', async ({ page }) => {
     // 直接访问Dashboard
-    await page.goto('https://www.urlchecker.dev/dashboard')
+    await page.goto('https://preview.example.com/dashboard')
 
     // 应该被重定向到登录页
     await expect(page).toHaveURL(/\/auth\/sign-in/)
@@ -244,7 +244,7 @@ test.describe('Offer Management', () => {
 
   test('should create new offer', async ({ page }) => {
     // 1. 进入Offers页面
-    await page.goto('https://www.urlchecker.dev/dashboard/offers')
+    await page.goto('https://preview.example.com/dashboard/offers')
 
     // 2. 点击创建按钮
     await page.click('[data-testid="create-offer-btn"]')
@@ -266,7 +266,7 @@ test.describe('Offer Management', () => {
   })
 
   test('should validate offer URL', async ({ page }) => {
-    await page.goto('https://www.urlchecker.dev/dashboard/offers')
+    await page.goto('https://preview.example.com/dashboard/offers')
     await page.click('[data-testid="create-offer-btn"]')
 
     // 提交无效URL
@@ -281,7 +281,7 @@ test.describe('Offer Management', () => {
 async function loginAsTestUser(page) {
   // 使用Supabase测试账号登录
   // 实现细节根据实际认证流程调整
-  await page.goto('https://www.urlchecker.dev/auth/sign-in')
+  await page.goto('https://preview.example.com/auth/sign-in')
   // ... OAuth流程
 }
 ```
@@ -355,7 +355,7 @@ export default defineConfig({
   reporter: 'html',            // HTML报告
 
   use: {
-    baseURL: 'https://www.urlchecker.dev',
+    baseURL: 'https://preview.example.com',
     trace: 'on-first-retry',   // 失败时记录trace
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -554,7 +554,7 @@ jobs:
       - name: Run Playwright tests
         working-directory: scripts/tests/playwright
         env:
-          BASE_URL: https://www.urlchecker.dev
+          BASE_URL: https://preview.example.com
           BROWSER_EXEC_URL: https://browser-exec-preview-xxx.run.app
         run: npx playwright test
 
@@ -761,4 +761,4 @@ BROWSER_EXEC_URL=http://localhost:8080 npm test
 ---
 
 **更新日期**: 2025-10-11
-**维护者**: AutoAds团队
+**维护者**: AdsAI团队

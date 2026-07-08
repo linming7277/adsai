@@ -12,7 +12,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}🔄 AutoAds Schema Naming Fix${NC}"
+echo -e "${GREEN}🔄 AdsAI Schema Naming Fix${NC}"
 echo "======================================"
 
 # 定义表名映射

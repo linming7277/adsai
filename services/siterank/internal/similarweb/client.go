@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xxrenzhe/autoads/services/siterank/internal/browserexec"
+	"github.com/linming7277/adsai/services/siterank/internal/browserexec"
 )
 
 // Client is a client for SimilarWeb API
@@ -201,7 +201,7 @@ func (c *Client) fetchDirectly(ctx context.Context, domain string, maxRetries in
 
 		// Set headers
 		req.Header.Set("Accept", "application/json")
-		req.Header.Set("User-Agent", "AutoAds-Siterank/1.0")
+		req.Header.Set("User-Agent", "AdsAI-Siterank/1.0")
 
 		// Execute request
 		resp, err := c.httpClient.Do(req)

@@ -193,7 +193,7 @@ gcloud run services update console \
 # 等待部署完成 (约2分钟)
 
 # 验证修复
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
   node scripts/tests/get-real-jwt.mjs
 ```
 
@@ -201,7 +201,7 @@ PREVIEW_BASE=https://www.urlchecker.dev \
 
 ```bash
 # 重新运行完整E2E测试
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
   node scripts/tests/run-all-tests.mjs
 ```
 
@@ -236,7 +236,7 @@ PREVIEW_BASE=https://www.urlchecker.dev \
 node scripts/tests/get-real-jwt.mjs
 
 # 2. 运行E2E测试
-PREVIEW_BASE=https://www.urlchecker.dev \
+PREVIEW_BASE=https://preview.example.com \
   node scripts/tests/run-all-tests.mjs
 
 # 3. 检查测试报告

@@ -1,7 +1,7 @@
 {
   "header": {
     "badge": "Design System",
-    "title": "AutoAds 前端组件手册",
+    "title": "AdsAI 前端组件手册",
     "description": "汇总设计令牌、排版体系、核心组件与图标资产，确保团队在交付过程中保持统一体验。"
   },
   "colors": {
@@ -48,7 +48,7 @@
       },
       "body": {
         "title": "正文",
-        "content": "AutoAds 为营销团队提供一站式自动化推广解决方案，整合站外流量、创意评估与投放监控，提升投放效率与 ROI。"
+        "content": "AdsAI 为营销团队提供一站式自动化推广解决方案，整合站外流量、创意评估与投放监控，提升投放效率与 ROI。"
       },
       "caption": {
         "title": "辅助说明",

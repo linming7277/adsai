@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库迁移: Schema Naming Standardization
+-- AdsAI 数据库迁移: Schema Naming Standardization
 -- 修正PascalCase表名为snake_case，统一架构规范
 -- 迁移ID: 001_schema_standardization
 -- 版本: v1.0

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Smoke test for Adscenter bulk action report endpoint
 # Usage:
-#   HOST=autoads-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-bulk-report.sh <operationId> [kind]
+#   HOST=adsai-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-bulk-report.sh <operationId> [kind]
 
 HOST=${HOST:?HOST required}
 TOKEN=${TOKEN:?TOKEN (Firebase ID token) required}

@@ -29,7 +29,7 @@
   "combiner": "OR",
   "enabled": true,
   "notificationChannels": [
-    "projects/gen-lang-client-0944935873/notificationChannels/11693781893064978969"
+    "projects/your-gcp-project-id/notificationChannels/11693781893064978969"
   ],
   "alertStrategy": {
     "autoClose": "1800s"

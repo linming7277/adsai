@@ -2,7 +2,7 @@
 
 ## 概述
 
-本文档描述了将AutoAds项目从VPC Connector连接方式迁移到Cloud SQL Proxy + Unix Domain Socket的最佳实践。这种迁移将简化架构、提高性能并降低网络延迟。
+本文档描述了将AdsAI项目从VPC Connector连接方式迁移到Cloud SQL Proxy + Unix Domain Socket的最佳实践。这种迁移将简化架构、提高性能并降低网络延迟。
 
 ## 迁移背景
 
@@ -24,7 +24,7 @@ Cloud Run → Cloud SQL Proxy (容器内挂载) → Unix Socket → Cloud SQL
 
 1. **DATABASE_URL已更新为Cloud SQL Proxy格式**：
    ```bash
-   postgresql://postgres:$GL(~x]T2Q[M@uX4@/autoads_db?host=/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads&sslmode=disable
+   postgresql://postgres:$GL(~x]T2Q[M@uX4@/adsai_db?host=/cloudsql/your-gcp-project-id:asia-northeast1:adsai&sslmode=disable
    ```
 
 2. **环境变量已配置**：
@@ -39,10 +39,10 @@ Cloud Run → Cloud SQL Proxy (容器内挂载) → Unix Socket → Cloud SQL
 ## 一、准备工作
 
 ### 1.1 环境信息
-- **GCP项目**: gen-lang-client-0944935873
-- **数据库实例**: autoads (asia-northeast1)
-- **数据库名称**: autoads_db
-- **服务账号**: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+- **GCP项目**: your-gcp-project-id
+- **数据库实例**: adsai (asia-northeast1)
+- **数据库名称**: adsai_db
+- **服务账号**: service-account@your-gcp-project-id.iam.gserviceaccount.com
 
 ### 1.2 权限验证
 确保服务账号具有以下权限：
@@ -55,7 +55,7 @@ Cloud Run → Cloud SQL Proxy (容器内挂载) → Unix Socket → Cloud SQL
 postgres://user:password@/dbname?host=/cloudsql/PROJECT:REGION:INSTANCE
 
 # 示例
-postgres://autoads_user:password@/autoads_db?host=/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads
+postgres://adsai_user:password@/adsai_db?host=/cloudsql/your-gcp-project-id:asia-northeast1:adsai
 ```
 
 ## 二、迁移步骤
@@ -67,8 +67,8 @@ postgres://autoads_user:password@/autoads_db?host=/cloudsql/gen-lang-client-0944
 ```yaml
 # deployments/{service}/preview-deploy.yaml 或 production-deploy.yaml
 cloudSqlInstances:
-  - instances: gen-lang-client-0944935873:asia-northeast1:autoads
-    socketPath: /cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads
+  - instances: your-gcp-project-id:asia-northeast1:adsai
+    socketPath: /cloudsql/your-gcp-project-id:asia-northeast1:adsai
 ```
 
 ### 2.2 环境变量更新
@@ -78,7 +78,7 @@ Secret Manager中的数据库连接字符串已更新为Cloud SQL Proxy格式：
 
 ```bash
 # 当前配置（已完成）
-DATABASE_URL=postgres://postgres:$GL(~x]T2Q[M@uX4@/autoads_db?host=/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads&sslmode=disable
+DATABASE_URL=postgres://postgres:$GL(~x]T2Q[M@uX4@/adsai_db?host=/cloudsql/your-gcp-project-id:asia-northeast1:adsai&sslmode=disable
 DB_CONNECTION_MODE=dbadmin  # 需要改为 cloudsql
 SUPABASE_DB_PASSWORD=*HF#9dFnzV5DBA.
 ```
@@ -209,8 +209,8 @@ import (
     "os/signal"
     "syscall"
 
-    "github.com/xxrenzhe/autoads/pkg/database"
-    "github.com/xxrenzhe/autoads/services/billing/internal/config"
+    "github.com/linming7277/adsai/pkg/database"
+    "github.com/linming7277/adsai/services/billing/internal/config"
 )
 
 func main() {
@@ -220,16 +220,16 @@ func main() {
     cfg := config.LoadConfig()
 
     // 等待Cloud SQL Socket就绪
-    socketPath := "/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/.s.PGSQL.5432"
+    socketPath := "/cloudsql/your-gcp-project-id:asia-northeast1:adsai/.s.PGSQL.5432"
     if err := database.WaitForCloudSQLSocket(ctx, socketPath); err != nil {
         log.Fatalf("Failed to wait for Cloud SQL socket: %v", err)
     }
 
     // 创建数据库连接
     pool, err := database.NewCloudSQLConnection(ctx, database.CloudSQLConfig{
-        Host:     "/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads",
-        DBName:   "autoads_db",
-        User:     "autoads_user",
+        Host:     "/cloudsql/your-gcp-project-id:asia-northeast1:adsai",
+        DBName:   "adsai_db",
+        User:     "adsai_user",
         Password: os.Getenv("CLOUDSQL_DB_PASSWORD"),
     })
     if err != nil {
@@ -368,8 +368,8 @@ func instrumentDB(pool *pgxpool.Pool) {
 # 回滚示例
 gcloud run services update {service-name} \
     --add-cloudsql-instances="" \
-    --set-env-vars DATABASE_URL="postgres://user:pass@10.0.0.5:5432/autoads_db" \
-    --vpc-connector projects/gen-lang-client-0944935873/locations/asia-northeast1/connectors/cr-conn-default-ane1 \
+    --set-env-vars DATABASE_URL="postgres://user:pass@10.0.0.5:5432/adsai_db" \
+    --vpc-connector projects/your-gcp-project-id/locations/asia-northeast1/connectors/cr-conn-default-ane1 \
     --region asia-northeast1
 ```
 

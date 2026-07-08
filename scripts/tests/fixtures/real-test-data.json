@@ -79,7 +79,7 @@
   "testUsers": [
     {
       "id": "37fd3629-a06a-47c8-b33a-31944afaa14c",
-      "email": "test-user@autoads.dev",
+      "email": "test-user@adsai.dev",
       "role": "user",
       "subscription": "Professional",
       "initialTokenBalance": 10000,
@@ -93,8 +93,8 @@
   ],
   "testEnvironments": {
     "production": {
-      "baseUrl": "https://www.urlchecker.dev",
-      "apiUrl": "https://www.urlchecker.dev/api",
+      "baseUrl": "https://preview.example.com",
+      "apiUrl": "https://preview.example.com/api",
       "services": {
         "bff": "https://bff-service-url",
         "siterank": "https://siterank-service-url",
@@ -103,8 +103,8 @@
       }
     },
     "preview": {
-      "baseUrl": "https://preview.urlchecker.dev",
-      "apiUrl": "https://preview.urlchecker.dev/api"
+      "baseUrl": "https://preview.preview.example.com",
+      "apiUrl": "https://preview.preview.example.com/api"
     }
   },
   "expectedBehaviors": {

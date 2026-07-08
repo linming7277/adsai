@@ -1,4 +1,4 @@
-# AutoAds 简化配置系统
+# AdsAI 简化配置系统
 
 ## 设计原则
 
@@ -27,7 +27,7 @@ package main
 import (
     "context"
     "log"
-    "github.com/xxrenzhe/autoads/pkg/config"
+    "github.com/linming7277/adsai/pkg/config"
 )
 
 func main() {
@@ -65,13 +65,13 @@ DATABASE_URL_SECRET_NAME=billing-db-url
 JWT_SECRET_NAME=billing-jwt-secret
 
 # GCP 配置 (必需)
-GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id
 GOOGLE_CLOUD_REGION=asia-northeast1
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 
 # JWT 配置 (必需)
-JWT_ISSUER=https://auth.autoads.dev
-JWT_AUDIENCE=https://api.autoads.dev
+JWT_ISSUER=https://auth.example.com
+JWT_AUDIENCE=https://api.example.com
 
 # 可选配置
 ENABLE_CORS=true

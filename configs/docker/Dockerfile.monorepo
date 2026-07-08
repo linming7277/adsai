@@ -1,4 +1,4 @@
-# AutoAds Monorepo Dockerfile
+# AdsAI Monorepo Dockerfile
 # 统一构建 Go 后端和 Next.js 前端
 
 # 构建阶段

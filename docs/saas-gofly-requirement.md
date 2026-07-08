@@ -1,4 +1,4 @@
-# AutoAds重构方案：基于GoFly的SaaS多用户系统
+# AdsAI重构方案：基于GoFly的SaaS多用户系统
 
 **项目版本**: v1.0  
 **文档状态**: 设计规划阶段  
@@ -53,7 +53,7 @@
 - **数据结构优先**：在GoFly User模型基础上添加必要字段
 - **消除特殊情况**：每个用户独立，无需复杂的租户隔离逻辑
 - **简洁性**：最简单的用户-服务关系
-- **实用主义**：满足AutoAds的实际需求
+- **实用主义**：满足AdsAI的实际需求
 
 #### 1.2.3 部署架构
 **决策：直接使用GoFly的单进程部署**
@@ -516,7 +516,7 @@ COPY . .
 RUN npm run build
 
 # 构建Go应用（嵌入Next.js）
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o autoads-server .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o adsai-server .
 
 # 运行阶段
 FROM alpine:latest
@@ -536,7 +536,7 @@ RUN addgroup -g 1000 appgroup && \
 WORKDIR /app
 
 # 从构建阶段复制二进制文件
-COPY --from=builder --chown=appuser:appgroup /app/autoads-server ./autoads-server
+COPY --from=builder --chown=appuser:appgroup /app/adsai-server ./adsai-server
 
 # 复制Next.js构建产物
 COPY --from=builder --chown=appuser:appgroup /app/.next/standalone ./
@@ -556,7 +556,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
 
 # 启动命令（单进程）
-CMD ["./autoads-server"]
+CMD ["./adsai-server"]
 ```
 
 ### 8.3 CI/CD流程
@@ -564,9 +564,9 @@ CMD ["./autoads-server"]
 基于现有部署流程，配置 GitHub Actions 自动构建镜像：
 
 **镜像标签规则**
-- `main` 分支 → `ghcr.io/xxrenzhe/autoads:preview-latest`
-- `production` 分支 → `ghcr.io/xxrenzhe/autoads:prod-latest`
-- `production` 分支打 tag → `ghcr.io/xxrenzhe/autoads:prod-[tag]`
+- `main` 分支 → `ghcr.io/linming7277/adsai:preview-latest`
+- `production` 分支 → `ghcr.io/linming7277/adsai:prod-latest`
+- `production` 分支打 tag → `ghcr.io/linming7277/adsai:prod-[tag]`
 
 ### 8.4 环境配置
 
@@ -574,7 +574,7 @@ CMD ["./autoads-server"]
 ```env
 # 基础配置
 NODE_ENV=production
-NEXT_PUBLIC_DOMAIN=urlchecker.dev
+NEXT_PUBLIC_DOMAIN=preview.example.com
 NEXT_PUBLIC_DEPLOYMENT_ENV=preview
 
 # 数据库
@@ -585,7 +585,7 @@ REDIS_URL=redis://default:9xdjb8nf@dbprovider.sg-members-1.clawcloudrun.com:3228
 
 # 认证
 AUTH_SECRET=85674018a64071a1f65a376d45a522dec78495cae7f5f1516febf8a4d51ff834
-AUTH_URL=https://www.urlchecker.dev
+AUTH_URL=https://preview.example.com
 AUTH_GOOGLE_ID=1007142410985-4945m48srrp056kp0q5n0e5he8omrdol.apps.googleusercontent.com
 AUTH_GOOGLE_SECRET=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
 
@@ -968,7 +968,7 @@ func GenerateInviteLink(userID string) string {
         DB.Save(&user)
     }
     
-    return fmt.Sprintf("https://autoads.dev/register?invite=%s", user.InviteCode)
+    return fmt.Sprintf("https://example.com/register?invite=%s", user.InviteCode)
 }
 
 // 生成随机邀请码

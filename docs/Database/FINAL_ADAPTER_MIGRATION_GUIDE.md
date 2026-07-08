@@ -6,9 +6,9 @@
 
 ### ✅ 最终架构状态
 
-根据DATABASE_ARCHITECTURE_CURRENT.md，AutoAds项目已经达到以下最终状态：
+根据DATABASE_ARCHITECTURE_CURRENT.md，AdsAI项目已经达到以下最终状态：
 
-1. **统一数据存储**: 所有业务数据集中在Cloud SQL autoads_db
+1. **统一数据存储**: 所有业务数据集中在Cloud SQL adsai_db
 2. **托管认证**: Supabase仅用于Google OAuth认证和JWT签发
 3. **微服务Schema自治**: 8个业务域，每个服务独立管理其schema
 4. **连接管理**: pgxpool连接池，统一管理所有数据库连接
@@ -16,7 +16,7 @@
 ### 🚀 迁移目标
 
 - **完全移除Supabase业务数据连接**: 不再连接Supabase数据库
-- **统一使用Cloud SQL**: 所有服务仅连接Cloud SQL autoads_db
+- **统一使用Cloud SQL**: 所有服务仅连接Cloud SQL adsai_db
 - **简化适配器架构**: 统一使用FinalAdapter，不再维护多个适配器实现
 - **优化性能**: 充分利用pgxpool连接池的优势
 
@@ -67,7 +67,7 @@ export USE_FINAL_DATABASE_ADAPTER=true
 # export SUPABASE_SERVICE_KEY=""     # 可选，清除历史配置
 
 # 标准Cloud SQL配置
-export DATABASE_URL="postgresql://USER:PASSWORD@/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/autoads_db"
+export DATABASE_URL="postgresql://USER:PASSWORD@/cloudsql/your-gcp-project-id:asia-northeast1:adsai/adsai_db"
 ```
 
 #### 1.2 更新部署配置
@@ -145,7 +145,7 @@ import (
     "context"
     "database/sql"
     "fmt"
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 // FinalAdapterService Billing服务的最终适配器服务
@@ -394,7 +394,7 @@ export USE_FINAL_DATABASE_ADAPTER=false
 - **recommendations服务**: ✅ main.go已更新使用GetFinalAdapterForService
 
 **🎉 所有核心服务迁移完成！**
-所有主要的AutoAds服务已成功迁移到FinalAdapter，实现了DATABASE_ARCHITECTURE_CURRENT.md的最终架构要求。
+所有主要的AdsAI服务已成功迁移到FinalAdapter，实现了DATABASE_ARCHITECTURE_CURRENT.md的最终架构要求。
 
 ### 🚀 下一步行动
 

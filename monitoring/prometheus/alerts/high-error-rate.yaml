@@ -1,19 +1,19 @@
 # Alert Policy: High HTTP Error Rate
 # Triggers when 5xx error rate exceeds 5% for 5 minutes
 
-displayName: "AutoAds - High HTTP Error Rate"
+displayName: "AdsAI - High HTTP Error Rate"
 documentation:
   content: |
     ## High HTTP Error Rate Alert
 
-    **Service:** AutoAds (Cloud Run)
+    **Service:** AdsAI (Cloud Run)
     **Threshold:** 5xx error rate > 5%
     **Duration:** 5 minutes
 
     ### Investigation Steps:
     1. Check service logs:
        ```
-       gcloud run logs read SERVICE_NAME --project=autoads-439917 --limit=100
+       gcloud run logs read SERVICE_NAME --project=adsai-439917 --limit=100
        ```
     2. View error details in Cloud Logging
     3. Check recent deployments

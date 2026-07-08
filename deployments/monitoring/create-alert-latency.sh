@@ -10,7 +10,7 @@ set -euo pipefail
 #   THRESHOLD_SEC (default: 10)  P95 latency threshold in seconds
 #   WINDOW (default: 300s)       Alignment and evaluation window
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 SERVICE="${SERVICE:-}"
 THRESHOLD_SEC="${THRESHOLD_SEC:-10}"
 WINDOW="${WINDOW:-300s}"

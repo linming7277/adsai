@@ -15,7 +15,7 @@
 
 ### 步骤1: 用户通过邀请链接注册
 ```
-用户访问: https://www.urlchecker.dev/auth?referralCode=ABC12345
+用户访问: https://preview.example.com/auth?referralCode=ABC12345
     ↓
 Google OAuth授权
     ↓
@@ -268,7 +268,7 @@ ON CONFLICT ("userId") DO UPDATE SET
 ### 场景1: 被邀请人注册
 **步骤**:
 1. 邀请人A生成邀请码: `ABC12345`
-2. 新用户B访问: `https://www.urlchecker.dev/auth?referralCode=ABC12345`
+2. 新用户B访问: `https://preview.example.com/auth?referralCode=ABC12345`
 3. B完成Google OAuth登录
 
 **预期结果**:

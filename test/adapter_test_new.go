@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // TestNewAdapterModes 测试新的适配器模式

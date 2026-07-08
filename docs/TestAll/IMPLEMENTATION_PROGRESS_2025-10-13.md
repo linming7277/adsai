@@ -1,4 +1,4 @@
-# AutoAds Frontend 优化实施进度报告
+# AdsAI Frontend 优化实施进度报告
 
 > 渐进式优化：布局标准化 + i18n完整性 + 性能提升
 

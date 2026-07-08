@@ -3,8 +3,8 @@ version: '3.8'
 services:
   # Main Application - 使用运行时配置
   app:
-    image: ghcr.io/xxrenzhe/url-batch-checker:latest
-    container_name: autoads-app
+    image: ghcr.io/linming7277/adsai:latest
+    container_name: adsai-app
     ports:
       - "3000:3000"
     env_file:
@@ -62,4 +62,4 @@ volumes:
 
 networks:
   default:
-    name: autoads-network
+    name: adsai-network

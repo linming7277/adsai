@@ -126,7 +126,7 @@ CREATE INDEX IF NOT EXISTS ix_event_store_occurred_at ON event_store(occurred_at
 -- Insert sample notification for testing
 INSERT INTO user_notifications (user_id, type, title, message, created_at)
 VALUES
-    ('test-user-123', 'TEST', 'Welcome to AutoAds', 'Your account has been successfully created!', NOW()),
+    ('test-user-123', 'TEST', 'Welcome to AdsAI', 'Your account has been successfully created!', NOW()),
     ('test-user-123', 'INFO', 'System Update', 'New features have been added to the platform.', NOW())
 ON CONFLICT DO NOTHING;
 

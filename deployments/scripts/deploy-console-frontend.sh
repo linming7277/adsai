@@ -4,7 +4,7 @@ set -euo pipefail
 # Usage: ./deployments/scripts/deploy-console-frontend.sh preview|prod
 STACK=${1:-preview}
 REGION=asia-northeast1
-PROJECT_ID=gen-lang-client-0944935873
+PROJECT_ID=your-gcp-project-id
 SERVICE="console-frontend-${STACK}"
 TAG="${STACK}-$(date +%Y%m%d%H%M%S)"
 

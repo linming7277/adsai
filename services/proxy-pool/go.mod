@@ -1,33 +1,33 @@
-module github.com/xxrenzhe/autoads/services/proxy-pool
+module github.com/linming7277/adsai/services/proxy-pool
 
 go 1.25.1
 
 require (
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/redis/go-redis/v9 v9.14.0
-	github.com/xxrenzhe/autoads/pkg/middleware v0.0.0-00010101000000-000000000000
-	github.com/xxrenzhe/autoads/pkg/telemetry v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/middleware v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/telemetry v0.0.0-00010101000000-000000000000
 )
 
-replace github.com/xxrenzhe/autoads/pkg/middleware => ../../pkg/middleware
+replace github.com/linming7277/adsai/pkg/middleware => ../../pkg/middleware
 
-replace github.com/xxrenzhe/autoads/pkg/telemetry => ../../pkg/telemetry
+replace github.com/linming7277/adsai/pkg/telemetry => ../../pkg/telemetry
 
-replace github.com/xxrenzhe/autoads/pkg/cache => ../../pkg/cache
+replace github.com/linming7277/adsai/pkg/cache => ../../pkg/cache
 
-replace github.com/xxrenzhe/autoads/pkg/http => ../../pkg/http
+replace github.com/linming7277/adsai/pkg/http => ../../pkg/http
 
-replace github.com/xxrenzhe/autoads/pkg/idempotency => ../../pkg/idempotency
+replace github.com/linming7277/adsai/pkg/idempotency => ../../pkg/idempotency
 
-replace github.com/xxrenzhe/autoads/pkg/errors => ../../pkg/errors
+replace github.com/linming7277/adsai/pkg/errors => ../../pkg/errors
 
-replace github.com/xxrenzhe/autoads/pkg/logger => ../../pkg/logger
+replace github.com/linming7277/adsai/pkg/logger => ../../pkg/logger
 
-replace github.com/xxrenzhe/autoads/pkg/auth => ../../pkg/auth
+replace github.com/linming7277/adsai/pkg/auth => ../../pkg/auth
 
-replace github.com/xxrenzhe/autoads/pkg/httpclient => ../../pkg/httpclient
+replace github.com/linming7277/adsai/pkg/httpclient => ../../pkg/httpclient
 
-replace github.com/xxrenzhe/autoads/pkg/supabaseauth => ../../pkg/supabaseauth
+replace github.com/linming7277/adsai/pkg/supabaseauth => ../../pkg/supabaseauth
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -54,14 +54,14 @@ require (
 	github.com/prometheus/common v0.66.1 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
-	github.com/xxrenzhe/autoads/pkg/cache v0.0.0-00010101000000-000000000000 // indirect
-	github.com/xxrenzhe/autoads/pkg/database v0.0.0-20251024001746-c36c54440544 // indirect
-	github.com/xxrenzhe/autoads/pkg/errors v0.0.1 // indirect
-	github.com/xxrenzhe/autoads/pkg/http v0.0.0-00010101000000-000000000000 // indirect
-	github.com/xxrenzhe/autoads/pkg/httpclient v0.0.0 // indirect
-	github.com/xxrenzhe/autoads/pkg/idempotency v0.0.0 // indirect
-	github.com/xxrenzhe/autoads/pkg/logger v0.0.1 // indirect
-	github.com/xxrenzhe/autoads/pkg/supabaseauth v0.0.1 // indirect
+	github.com/linming7277/adsai/pkg/cache v0.0.0-00010101000000-000000000000 // indirect
+	github.com/linming7277/adsai/pkg/database v0.0.0-20251024001746-c36c54440544 // indirect
+	github.com/linming7277/adsai/pkg/errors v0.0.1 // indirect
+	github.com/linming7277/adsai/pkg/http v0.0.0-00010101000000-000000000000 // indirect
+	github.com/linming7277/adsai/pkg/httpclient v0.0.0 // indirect
+	github.com/linming7277/adsai/pkg/idempotency v0.0.0 // indirect
+	github.com/linming7277/adsai/pkg/logger v0.0.1 // indirect
+	github.com/linming7277/adsai/pkg/supabaseauth v0.0.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.61.0 // indirect
 	go.opentelemetry.io/otel v1.37.0 // indirect

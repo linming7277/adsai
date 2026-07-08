@@ -3,7 +3,7 @@ package handlers
 import (
 	"testing"
 
-	"github.com/xxrenzhe/autoads/services/console/internal/clients"
+	"github.com/linming7277/adsai/services/console/internal/clients"
 )
 
 // TestListOffersResponse_Struct tests ListOffersResponse structure

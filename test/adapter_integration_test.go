@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/services/billing/internal/storage"
-	"github.com/xxrenzhe/autoads/services/user/internal/storage"
-	"github.com/xxrenzhe/autoads/services/useractivity/internal/storage"
-	"github.com/xxrenzhe/autoads/services/console/internal/storage"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/services/billing/internal/storage"
+	"github.com/linming7277/adsai/services/user/internal/storage"
+	"github.com/linming7277/adsai/services/useractivity/internal/storage"
+	"github.com/linming7277/adsai/services/console/internal/storage"
 )
 
 // TestAdapterIntegration 测试新适配器的集成

@@ -7,14 +7,14 @@
  * node scripts/tests/test-google-oauth.mjs
  *
  * 环境变量：
- * - PREVIEW_BASE: 测试环境 URL（默认: https://www.urlchecker.dev）
+ * - PREVIEW_BASE: 测试环境 URL（默认: https://preview.example.com）
  * - TEST_EMAIL: Google 测试账号邮箱（默认: manhwarecap99@gmail.com）
  * - HEADLESS: 是否无头模式（默认: false，显示浏览器窗口）
  */
 
 import { chromium } from 'playwright';
 
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const TEST_EMAIL = process.env.TEST_EMAIL || 'manhwarecap99@gmail.com';
 const HEADLESS = process.env.HEADLESS === 'true';
 

@@ -6,21 +6,21 @@ metadata:
     component: db-migrator
     environment: preview
   annotations:
-    run.googleapis.com/vpc-access-connector: projects/gen-lang-client-0944935873/locations/asia-northeast1/connectors/cr-conn-default-ane1
+    run.googleapis.com/vpc-access-connector: projects/your-gcp-project-id/locations/asia-northeast1/connectors/cr-conn-default-ane1
     run.googleapis.com/vpc-access-egress: all-traffic
 spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/vpc-access-connector: projects/gen-lang-client-0944935873/locations/asia-northeast1/connectors/cr-conn-default-ane1
+        run.googleapis.com/vpc-access-connector: projects/your-gcp-project-id/locations/asia-northeast1/connectors/cr-conn-default-ane1
         run.googleapis.com/vpc-access-egress: all-traffic
     spec:
       template:
         spec:
-          serviceAccountName: codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
+          serviceAccountName: service-account@your-gcp-project-id.iam.gserviceaccount.com
           containers:
           - name: db-migrator
-            image: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:preview-latest
+            image: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:preview-latest
             env:
             - name: DATABASE_URL
               valueFrom:

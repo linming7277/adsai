@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/services/recommendations
+module github.com/linming7277/adsai/services/recommendations
 
 go 1.25.1
 
@@ -8,14 +8,14 @@ require (
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/lib/pq v1.10.9
 	github.com/oapi-codegen/runtime v1.1.2
-	github.com/xxrenzhe/autoads/pkg/database v0.0.0-00010101000000-000000000000
-	github.com/xxrenzhe/autoads/pkg/errorreporting v0.0.0-00010101000000-000000000000
-	github.com/xxrenzhe/autoads/pkg/errors v0.0.1
-	github.com/xxrenzhe/autoads/pkg/events v0.0.0-00010101000000-000000000000
-	github.com/xxrenzhe/autoads/pkg/http v0.0.0-00010101000000-000000000000
-	github.com/xxrenzhe/autoads/pkg/middleware v0.0.1
-	github.com/xxrenzhe/autoads/pkg/serviceclient v0.0.0-00010101000000-000000000000
-	github.com/xxrenzhe/autoads/pkg/telemetry v0.0.0
+	github.com/linming7277/adsai/pkg/database v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/errorreporting v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/errors v0.0.1
+	github.com/linming7277/adsai/pkg/events v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/http v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/middleware v0.0.1
+	github.com/linming7277/adsai/pkg/serviceclient v0.0.0-00010101000000-000000000000
+	github.com/linming7277/adsai/pkg/telemetry v0.0.0
 	google.golang.org/api v0.251.0
 )
 
@@ -64,11 +64,11 @@ require (
 	github.com/redis/go-redis/v9 v9.14.0 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
 	github.com/sony/gobreaker v1.0.0 // indirect
-	github.com/xxrenzhe/autoads/pkg/cache v0.0.0 // indirect
-	github.com/xxrenzhe/autoads/pkg/httpclient v0.0.1 // indirect
-	github.com/xxrenzhe/autoads/pkg/idempotency v0.0.0 // indirect
-	github.com/xxrenzhe/autoads/pkg/logger v0.0.1 // indirect
-	github.com/xxrenzhe/autoads/pkg/supabaseauth v0.0.1 // indirect
+	github.com/linming7277/adsai/pkg/cache v0.0.0 // indirect
+	github.com/linming7277/adsai/pkg/httpclient v0.0.1 // indirect
+	github.com/linming7277/adsai/pkg/idempotency v0.0.0 // indirect
+	github.com/linming7277/adsai/pkg/logger v0.0.1 // indirect
+	github.com/linming7277/adsai/pkg/supabaseauth v0.0.1 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
@@ -100,32 +100,32 @@ require (
 	google.golang.org/protobuf v1.36.9 // indirect
 )
 
-replace github.com/xxrenzhe/autoads/pkg/telemetry => ../../pkg/telemetry
+replace github.com/linming7277/adsai/pkg/telemetry => ../../pkg/telemetry
 
-replace github.com/xxrenzhe/autoads/pkg/middleware => ../../pkg/middleware
+replace github.com/linming7277/adsai/pkg/middleware => ../../pkg/middleware
 
-replace github.com/xxrenzhe/autoads/pkg/errors => ../../pkg/errors
+replace github.com/linming7277/adsai/pkg/errors => ../../pkg/errors
 
-replace github.com/xxrenzhe/autoads/pkg/events => ../../pkg/events
+replace github.com/linming7277/adsai/pkg/events => ../../pkg/events
 
-replace github.com/xxrenzhe/autoads/pkg/idempotency => ../../pkg/idempotency
+replace github.com/linming7277/adsai/pkg/idempotency => ../../pkg/idempotency
 
-replace github.com/xxrenzhe/autoads/pkg/cache => ../../pkg/cache
+replace github.com/linming7277/adsai/pkg/cache => ../../pkg/cache
 
-replace github.com/xxrenzhe/autoads/pkg/http => ../../pkg/http
+replace github.com/linming7277/adsai/pkg/http => ../../pkg/http
 
-replace github.com/xxrenzhe/autoads/pkg/httpclient => ../../pkg/httpclient
+replace github.com/linming7277/adsai/pkg/httpclient => ../../pkg/httpclient
 
-replace github.com/xxrenzhe/autoads/pkg/auth => ../../pkg/auth
+replace github.com/linming7277/adsai/pkg/auth => ../../pkg/auth
 
-replace github.com/xxrenzhe/autoads/pkg/logger => ../../pkg/logger
+replace github.com/linming7277/adsai/pkg/logger => ../../pkg/logger
 
-replace github.com/xxrenzhe/autoads/pkg/errorreporting => ../../pkg/errorreporting
+replace github.com/linming7277/adsai/pkg/errorreporting => ../../pkg/errorreporting
 
-replace github.com/xxrenzhe/autoads/pkg/supabaseauth => ../../pkg/supabaseauth
+replace github.com/linming7277/adsai/pkg/supabaseauth => ../../pkg/supabaseauth
 
-replace github.com/xxrenzhe/autoads/services/recommendations/internal/oapi => ./internal/oapi
+replace github.com/linming7277/adsai/services/recommendations/internal/oapi => ./internal/oapi
 
-replace github.com/xxrenzhe/autoads/pkg/serviceclient => ../../pkg/serviceclient
+replace github.com/linming7277/adsai/pkg/serviceclient => ../../pkg/serviceclient
 
-replace github.com/xxrenzhe/autoads/pkg/database => ../../pkg/database
+replace github.com/linming7277/adsai/pkg/database => ../../pkg/database

@@ -1,4 +1,4 @@
-// github.com/xxrenzhe/autoads/services/siterank/internal/events/handler.go
+// github.com/linming7277/adsai/services/siterank/internal/events/handler.go
 package events
 
 import (
@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
 )
 
 // WorkflowStepStartedPayload defines the incoming event structure.

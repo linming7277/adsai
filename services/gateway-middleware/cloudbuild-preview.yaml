@@ -2,7 +2,7 @@
 substitutions:
   _SERVICE_NAME: gateway-middleware-preview
   _REGION: asia-northeast1
-  _IMAGE_REGISTRY: asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services
+  _IMAGE_REGISTRY: asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services
   _IMAGE_NAME: gateway-middleware
   _IMAGE_TAG: preview-manual
   _VPC_CONNECTOR: cr-conn-default-ane1

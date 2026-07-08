@@ -1,6 +1,6 @@
-# AutoAds Cache Package
+# AdsAI Cache Package
 
-This package provides a comprehensive caching solution for the AutoAds platform, featuring Redis integration, domain-specific caching, and advanced performance optimizations.
+This package provides a comprehensive caching solution for the AdsAI platform, featuring Redis integration, domain-specific caching, and advanced performance optimizations.
 
 ## Features
 
@@ -37,7 +37,7 @@ import (
     "log"
     "time"
 
-    "github.com/your-org/autoads/pkg/cache"
+    "github.com/your-org/adsai/pkg/cache"
 )
 
 func main() {
@@ -478,4 +478,4 @@ if domainCache, ok := cache.(*cache.UserDomainCache); ok {
 
 ## License
 
-This package is part of the AutoAds platform and follows the project's licensing terms.
+This package is part of the AdsAI platform and follows the project's licensing terms.

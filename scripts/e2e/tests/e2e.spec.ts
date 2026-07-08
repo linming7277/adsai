@@ -1,6 +1,6 @@
 import { test, expect, request } from '@playwright/test';
 
-const gw = process.env.GATEWAY || 'https://www.urlchecker.dev';
+const gw = process.env.GATEWAY || 'https://preview.example.com';
 const AUTH = process.env.AUTH || '';
 
 test('Offer -> Siterank -> Adscenter diagnose/plan/validate', async ({}) => {

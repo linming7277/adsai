@@ -5,7 +5,7 @@
 
 ## 背景
 
-预发环境 https://www.urlchecker.dev 仍在使用Firebase认证,与项目架构设计不符。需要切换到Supabase认证。
+预发环境 https://preview.example.com 仍在使用Firebase认证,与项目架构设计不符。需要切换到Supabase认证。
 
 ## 问题诊断
 
@@ -28,13 +28,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_KEY
 ```
 
-**授权状态**: ✅ 已授权 `codex-dev` 服务账号访问
+**授权状态**: ✅ 已授权 `service-account` 服务账号访问
 
 **验证**:
 ```bash
 $ gcloud secrets versions access latest \
   --secret=NEXT_PUBLIC_SUPABASE_URL \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 https://jzzvizacfyipzdyiqfzb.supabase.co
 ```
@@ -160,10 +160,10 @@ gh run watch
 # 1. 检查Cloud Run服务
 gcloud run services describe frontend-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 2. 访问预发环境
-open https://www.urlchecker.dev/auth/sign-in
+open https://preview.example.com/auth/sign-in
 
 # 3. 检查浏览器控制台
 # 应该看到Supabase相关日志,而非Firebase
@@ -173,7 +173,7 @@ open https://www.urlchecker.dev/auth/sign-in
 ```
 
 **功能验证**:
-- [ ] 访问 https://www.urlchecker.dev/auth/sign-in
+- [ ] 访问 https://preview.example.com/auth/sign-in
 - [ ] 页面正常加载,无Firebase错误
 - [ ] 点击"Google登录"按钮
 - [ ] 重定向到Google OAuth页面
@@ -237,14 +237,14 @@ git push origin main
 PREVIOUS_REVISION=$(gcloud run revisions list \
   --service=frontend-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format='value(name)' \
   --limit=2 | tail -n1)
 
 gcloud run services update-traffic frontend-preview \
   --to-revisions=$PREVIOUS_REVISION=100 \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ---
@@ -258,7 +258,7 @@ gcloud run services update-traffic frontend-preview \
 # 请求成功率
 gcloud monitoring time-series list \
   --filter='metric.type="run.googleapis.com/request_count"' \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 错误率
 gcloud logging read \
@@ -266,7 +266,7 @@ gcloud logging read \
    resource.labels.service_name=frontend-preview AND \
    severity>=ERROR" \
   --limit=50 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 **用户认证**:

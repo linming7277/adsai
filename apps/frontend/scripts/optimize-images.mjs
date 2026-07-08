@@ -252,7 +252,7 @@ function generateReport(results) {
  * 主函数
  */
 async function main() {
-  console.log('🚀 AutoAds 图片优化工具\n');
+  console.log('🚀 AdsAI 图片优化工具\n');
   console.log('目标: 压缩图片以提升LCP性能\n');
 
   try {

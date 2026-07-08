@@ -111,7 +111,7 @@ export async function generateMetadata(): Promise<Metadata> {
   await getLanguageCookie();
 
   return {
-    title: '应用错误 - AutoAds',
+    title: '应用错误 - AdsAI',
   };
 }
 

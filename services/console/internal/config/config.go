@@ -8,7 +8,7 @@ import (
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-	"github.com/xxrenzhe/autoads/pkg/dburl"
+	"github.com/linming7277/adsai/pkg/dburl"
 )
 
 // Config holds the application configuration for console service.

@@ -110,9 +110,6 @@ export default async function RootLayout({
         {/* Google Fonts预连接 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* 网站验证 */}
-        <meta name="verify-yeahpromos" content="be12acf4195e" />
       </head>
 
       <Fonts />

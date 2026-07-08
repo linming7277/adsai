@@ -1,6 +1,6 @@
 # Secrets Inventory — Secret Manager 键清单与服务映射
 
-适用：GCP 项目 `gen-lang-client-0944935873`，区域 `asia-northeast1`。
+适用：GCP 项目 `your-gcp-project-id`，区域 `asia-northeast1`。
 
 说明：本清单仅列出 Secret 名称与用途，不包含任何敏感值。所有 Cloud Run 服务通过 `--set-secrets` 方式注入，或使用 `*_SECRET_NAME` 传递 Secret 引用路径（推荐）。
 
@@ -27,6 +27,6 @@
 详见：`docs/productrefactoring-v2/CloudRunEnv.md` 中的 `gcloud run services update` 示例（包含 `--set-secrets` 与通用 env 注入）。
 
 ## 校验
-- 列表 Secret（名称）：`gcloud secrets list --project gen-lang-client-0944935873`
+- 列表 Secret（名称）：`gcloud secrets list --project your-gcp-project-id`
 - 验证绑定：`gcloud run services describe <svc> --region asia-northeast1` 并检查 env/secret 挂载。
 

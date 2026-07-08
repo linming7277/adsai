@@ -6,7 +6,7 @@ set -euo pipefail
 # 依赖：已部署 Pub/Sub 分发函数（参见 create-pubsub-dispatcher.sh）。
 #
 # 用法：
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=preview \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=preview \
 #   MAX=5 SCHEDULE="*/5 * * * *" ./deployments/scripts/create-autoclick-tick-scheduler.sh
 
 PROJECT_ID=${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-}}

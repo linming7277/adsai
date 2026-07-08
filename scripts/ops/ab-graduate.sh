@@ -3,7 +3,7 @@ set -euo pipefail
 
 # A/B 毕业最小脚本：标记完成并可选指定 winner，若开启 ADS_ABTEST_GRADUATE_MUTATE=true 则暂停 loser AdGroup
 # 用法：
-#   GATEWAY=https://www.urlchecker.dev AUTH="Bearer <id_token>" AB_ID=ab_202... WINNER=A bash scripts/ops/ab-graduate.sh
+#   GATEWAY=https://preview.example.com AUTH="Bearer <id_token>" AB_ID=ab_202... WINNER=A bash scripts/ops/ab-graduate.sh
 
 for b in curl jq; do command -v "$b" >/dev/null 2>&1 || { echo "[error] 需要安装 $b" >&2; exit 1; }; done
 

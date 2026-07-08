@@ -1,7 +1,7 @@
 import { User } from '@supabase/supabase-js';
 
 /**
- * AutoAds 认证工具函数
+ * AdsAI 认证工具函数
  *
  * 遵循设计原则：
  * 1. 基于Supabase Auth (Google OAuth only)
@@ -162,7 +162,7 @@ export function parseAuthError(error: any): { type: AuthErrorType; message: stri
  * 认证状态日志工具
  */
 export class AuthLogger {
-  private static context = 'AutoAds-Auth';
+  private static context = 'AdsAI-Auth';
 
   static log(message: string, data?: any) {
     console.log(`✅ [${this.context}] ${message}`, data || '');

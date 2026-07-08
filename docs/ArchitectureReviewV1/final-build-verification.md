@@ -163,10 +163,10 @@ gcloud run services list --region=asia-northeast1 --filter="metadata.name:previe
 bash scripts/monitor-final-build.sh
 
 # 或手动检查
-gh run list --repo xxrenzhe/autoads --limit 5
+gh run list --repo linming7277/adsai --limit 5
 
 # 查看特定workflow
-gh run view <RUN_ID> --repo xxrenzhe/autoads --log
+gh run view <RUN_ID> --repo linming7277/adsai --log
 ```
 
 ### Cloud Run服务检查
@@ -174,13 +174,13 @@ gh run view <RUN_ID> --repo xxrenzhe/autoads --log
 # 检查所有preview服务
 gcloud run services list \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --filter="metadata.name:preview"
 
 # 检查特定服务
 gcloud run services describe <SERVICE>-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 ---

@@ -5,7 +5,7 @@
 ```
 用户浏览器
     ↓
-Cloudflare CDN (www.urlchecker.dev)
+Cloudflare CDN (preview.example.com)
     ↓ (代理所有请求)
 Cloud Run (Next.js SSR + API)
     ↓
@@ -43,20 +43,20 @@ Firebase Services (Firestore, Auth, Storage)
 
 ```bash
 # 1. 设置项目和区域
-export PROJECT_ID="autoads-test-445804"
+export PROJECT_ID="adsai-test-445804"
 export REGION="asia-east1"
 export SERVICE_NAME="frontend"
 
 # 2. 为 Cloud Run 服务添加自定义域名映射
 gcloud run domain-mappings create \
   --service=${SERVICE_NAME} \
-  --domain=www.urlchecker.dev \
+  --domain=preview.example.com \
   --region=${REGION} \
   --project=${PROJECT_ID}
 
 # 3. 获取 Cloud Run 服务的 DNS 记录信息
 gcloud run domain-mappings describe \
-  --domain=www.urlchecker.dev \
+  --domain=preview.example.com \
   --region=${REGION} \
   --project=${PROJECT_ID}
 ```
@@ -64,7 +64,7 @@ gcloud run domain-mappings describe \
 输出示例：
 ```
 resourceRecords:
-- name: www.urlchecker.dev
+- name: preview.example.com
   rrdata: ghs.googlehosted.com
   type: CNAME
 ```
@@ -73,7 +73,7 @@ resourceRecords:
 
 ### 步骤 2：配置 Cloudflare DNS
 
-登录 Cloudflare Dashboard → 选择域名 `urlchecker.dev`
+登录 Cloudflare Dashboard → 选择域名 `preview.example.com`
 
 #### 2.1 删除旧的 DNS 记录（如果存在）
 
@@ -95,10 +95,10 @@ resourceRecords:
 
 ```bash
 # 等待 DNS 传播（通常 1-5 分钟）
-dig www.urlchecker.dev CNAME
+dig preview.example.com CNAME
 
 # 应看到：
-# www.urlchecker.dev. 300 IN CNAME ghs.googlehosted.com.
+# preview.example.com. 300 IN CNAME ghs.googlehosted.com.
 ```
 
 ### 步骤 3：配置 Cloudflare SSL/TLS
@@ -115,19 +115,19 @@ dig www.urlchecker.dev CNAME
 进入 Cloudflare Dashboard → Rules → Page Rules
 
 **规则 1：API 路由不缓存**
-- URL 模式：`www.urlchecker.dev/api/*`
+- URL 模式：`preview.example.com/api/*`
 - 设置：
   - Cache Level: Bypass
   - Disable Performance
 
 **规则 2：静态资源缓存**
-- URL 模式：`www.urlchecker.dev/_next/static/*`
+- URL 模式：`preview.example.com/_next/static/*`
 - 设置：
   - Cache Level: Cache Everything
   - Edge Cache TTL: 1 month
 
 **规则 3：Next.js 数据请求不缓存**
-- URL 模式：`www.urlchecker.dev/_next/data/*`
+- URL 模式：`preview.example.com/_next/data/*`
 - 设置：
   - Cache Level: Bypass
 
@@ -151,7 +151,7 @@ dig www.urlchecker.dev CNAME
   with:
     repoToken: ${{ secrets.GITHUB_TOKEN }}
     firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AUTOADS_TEST }}
-    projectId: autoads-test-445804
+    projectId: adsai-test-445804
     channelId: preview
 ```
 
@@ -167,7 +167,7 @@ dig www.urlchecker.dev CNAME
       --region asia-east1 \
       --platform managed \
       --allow-unauthenticated \
-      --set-env-vars="NEXT_PUBLIC_SITE_URL=https://www.urlchecker.dev,NEXT_PUBLIC_EMULATOR=false" \
+      --set-env-vars="NEXT_PUBLIC_SITE_URL=https://preview.example.com,NEXT_PUBLIC_EMULATOR=false" \
       --max-instances=10 \
       --min-instances=0
 ```
@@ -183,7 +183,7 @@ dig www.urlchecker.dev CNAME
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        body: '✅ Preview deployed to https://www.urlchecker.dev'
+        body: '✅ Preview deployed to https://preview.example.com'
       })
 ```
 
@@ -194,7 +194,7 @@ dig www.urlchecker.dev CNAME
 应用与步骤 5 相同的修改：
 1. 移除 Firebase Hosting 部署步骤
 2. 保留 Cloud Run 部署步骤
-3. 更新输出链接为 `https://www.urlchecker.dev`
+3. 更新输出链接为 `https://preview.example.com`
 
 ### 步骤 7：验证部署
 
@@ -223,7 +223,7 @@ gcloud run services describe frontend \
 
 ```bash
 # 验证 Cloudflare 代理生效
-curl -I https://www.urlchecker.dev
+curl -I https://preview.example.com
 
 # 应看到响应头：
 # server: cloudflare
@@ -235,13 +235,13 @@ curl -I https://www.urlchecker.dev
 #### 8.1 运行自动化测试
 
 ```bash
-PREVIEW_BASE=https://www.urlchecker.dev node scripts/tests/test-login.mjs
+PREVIEW_BASE=https://preview.example.com node scripts/tests/test-login.mjs
 ```
 
 #### 8.2 手动测试
 
 ```bash
-open "https://www.urlchecker.dev/en/auth/sign-in"
+open "https://preview.example.com/en/auth/sign-in"
 ```
 
 测试流程：
@@ -382,7 +382,7 @@ sudo dscacheutil -flushcache
 sudo killall -HUP mDNSResponder
 
 # 使用 Cloudflare DNS 测试
-dig @1.1.1.1 www.urlchecker.dev
+dig @1.1.1.1 preview.example.com
 ```
 
 ### 问题 2：Cloudflare 502 Bad Gateway
@@ -404,7 +404,7 @@ gcloud run services logs read frontend --region=asia-east1 --limit=100
 
 ```bash
 # 检查 Set-Cookie 响应头
-curl -I -v https://www.urlchecker.dev/api/session/sign-in \
+curl -I -v https://preview.example.com/api/session/sign-in \
   -H "Content-Type: application/json" \
   -d '{"idToken":"test"}'
 ```
@@ -420,8 +420,8 @@ curl -I -v https://www.urlchecker.dev/api/session/sign-in \
 检查 Firebase Console → Authentication → Settings → Authorized domains
 
 确保包含：
-- `www.urlchecker.dev`
-- `urlchecker.dev`（根域名）
+- `preview.example.com`
+- `preview.example.com`（根域名）
 
 ## 性能优化建议
 

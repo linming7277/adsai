@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/supabaseauth
+module github.com/linming7277/adsai/pkg/supabaseauth
 
 go 1.25.1
 

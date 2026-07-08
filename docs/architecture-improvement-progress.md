@@ -1,6 +1,6 @@
 # 架构改进实施进度报告
 
-**项目**: AutoAds 架构改进 (阶段 1-3)
+**项目**: AdsAI 架构改进 (阶段 1-3)
 **执行周期**: Week 1-16 (2025-10-08 开始)
 **当前状态**: 阶段 2 已完成 ✅
 
@@ -180,9 +180,9 @@
 ### 监控和可观测性
 
 **HTTP 性能指标** (9/9 服务):
-- ✅ `autoads_<service>_http_request_duration_seconds` (Histogram)
-- ✅ `autoads_<service>_http_requests_total` (Counter)
-- ✅ `autoads_<service>_http_errors_total` (Counter)
+- ✅ `adsai_<service>_http_request_duration_seconds` (Histogram)
+- ✅ `adsai_<service>_http_requests_total` (Counter)
+- ✅ `adsai_<service>_http_errors_total` (Counter)
 
 **业务指标** (3/3 核心服务):
 

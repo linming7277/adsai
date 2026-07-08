@@ -8,7 +8,7 @@
 import { chromium } from 'playwright';
 import { performance } from 'perf_hooks';
 
-const PREVIEW_BASE = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const PREVIEW_BASE = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const CONCURRENT_USERS = parseInt(process.env.CONCURRENT_USERS) || 10;
 const TEST_DURATION = parseInt(process.env.TEST_DURATION) || 60; // seconds
 

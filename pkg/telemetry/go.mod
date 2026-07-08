@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/telemetry
+module github.com/linming7277/adsai/pkg/telemetry
 
 go 1.25.1
 

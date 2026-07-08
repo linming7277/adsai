@@ -1,7 +1,7 @@
-# AutoAds 多用户 SaaS 系统重构 PRD
+# AdsAI 多用户 SaaS 系统重构 PRD
 
 ## 文档信息
-- **项目名称**: AutoAds 多用户 SaaS 系统
+- **项目名称**: AdsAI 多用户 SaaS 系统
 - **版本**: v32.0
 - **创建日期**: 2025-01-09
 - **最后更新**: 2025-09-12
@@ -9,7 +9,7 @@
 
 ## 执行摘要
 
-AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ ChangeLink（链接管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、ChangeLink→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。
+AdsAI 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ ChangeLink（链接管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、ChangeLink→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。
 
 ## 1. 项目概述
 
@@ -19,7 +19,7 @@ AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 S
 基于代码库深度分析（2025-09-10）
 
 #### 当前项目状态
-AutoAds 是一个基于 Next.js 的自动化营销平台，三大核心功能实现状态：
+AdsAI 是一个基于 Next.js 的自动化营销平台，三大核心功能实现状态：
 - **✅ BatchOpen（批量访问）**: 完整实现三种执行模式（Basic/Silent/Automated）
 - **✅ SiteRank（网站排名）**: 完整实现，已集成真实SimilarWeb API，支持批量查询和缓存
 - **❌ ChangeLink（链接管理）**: 仅有UI界面，无后端API实现
@@ -73,7 +73,7 @@ AutoAds 是一个基于 Next.js 的自动化营销平台，三大核心功能实
 5. **业务连续性**: 保持所有现有功能的完整性和前端布局
 
 #### 背景上下文
-随着 AutoAds 用户规模增长和业务复杂度提升，现有架构面临以下挑战：
+随着 AdsAI 用户规模增长和业务复杂度提升，现有架构面临以下挑战：
 1. **扩展性瓶颈**: Node.js单进程架构难以支持高并发
 2. **多用户需求**: 需要支持多个用户独立使用系统
 3. **管理复杂度**: 缺乏统一的后台管理系统
@@ -925,7 +925,7 @@ func (m *APIKeyManager) GetKey(service string) (string, error) {
 ```yaml
 # Prometheus配置示例
 scrape_configs:
-  - job_name: 'autoads_services'
+  - job_name: 'adsai_services'
     static_configs:
       - targets: ['api-gateway:8080']
       - targets: ['batchgo:8081']
@@ -942,7 +942,7 @@ scrape_configs:
 **告警规则配置**:
 ```yaml
 groups:
-- name: autoads_alerts
+- name: adsai_alerts
   rules:
   - alert: HighErrorRate
     expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
@@ -1628,7 +1628,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          docker build -f Dockerfile.frontend -t ghcr.io/xxrenzhe/autoads-frontend:${{ github.sha }} .
+          docker build -f Dockerfile.frontend -t ghcr.io/linming7277/adsai-frontend:${{ github.sha }} .
       
   # GoFly 主应用构建
   build-gofly:
@@ -1646,15 +1646,15 @@ jobs:
           # 集成业务模块
           cp -r ../business_modules/* ./
           CGO_ENABLED=0 GOOS=linux go build -o main .
-          docker build -f Dockerfile.gofly -t ghcr.io/xxrenzhe/autoads-gofly:${{ github.sha }} .
+          docker build -f Dockerfile.gofly -t ghcr.io/linming7277/adsai-gofly:${{ github.sha }} .
 ```
 
 **2. 部署流程**
 
 **步骤 1：镜像推送规则**
-- Preview 环境：`ghcr.io/xxrenzhe/autoads-*-service:preview-latest`
-- Production 环境：`ghcr.io/xxrenzhe/autoads-*-service:prod-latest`
-- 版本标签：`ghcr.io/xxrenzhe/autoads-*-service:prod-v1.0.0`
+- Preview 环境：`ghcr.io/linming7277/adsai-*-service:preview-latest`
+- Production 环境：`ghcr.io/linming7277/adsai-*-service:prod-latest`
+- 版本标签：`ghcr.io/linming7277/adsai-*-service:prod-v1.0.0`
 
 **步骤 2：ClawCloud 部署配置**
 ```yaml
@@ -1663,7 +1663,7 @@ version: '3.8'
 services:
   # GoFly 主应用
   gofly-app:
-    image: ghcr.io/xxrenzhe/autoads-gofly:prod-latest
+    image: ghcr.io/linming7277/adsai-gofly:prod-latest
     ports:
       - "8200:8200"
     environment:
@@ -1681,12 +1681,12 @@ services:
   
   # 前端
   frontend:
-    image: ghcr.io/xxrenzhe/autoads-frontend:prod-latest
+    image: ghcr.io/linming7277/adsai-frontend:prod-latest
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=https://api.autoads.dev
-      - NEXT_PUBLIC_WS_URL=wss://api.autoads.dev/ws
+      - NEXT_PUBLIC_API_URL=https://api.example.com
+      - NEXT_PUBLIC_WS_URL=wss://api.example.com/ws
     depends_on:
       - gofly-app
 ```
@@ -1934,9 +1934,9 @@ services:
 
 ## 5. 用户故事和验收标准
 
-### 5.1 Epic: AutoAds 多用户系统重构
+### 5.1 Epic: AdsAI 多用户系统重构
 
-**Epic 目标**: 将 AutoAds 重构为支持多用户的简化 SaaS 平台，集成 GoFly 管理系统，使用 Go 语言提升性能。
+**Epic 目标**: 将 AdsAI 重构为支持多用户的简化 SaaS 平台，集成 GoFly 管理系统，使用 Go 语言提升性能。
 
 **业务价值**: 
 - 支持多用户独立使用，扩大用户规模
@@ -1949,7 +1949,7 @@ services:
 #### Story 5.2.1: 用户注册和登录
 **As a** 新用户,
 **I want to** 通过邮箱注册或 Google OAuth 快速登录,
-**so that** 我可以开始使用 AutoAds 的各项功能。
+**so that** 我可以开始使用 AdsAI 的各项功能。
 
 **验收标准**:
 - [ ] 支持邮箱注册和邮箱验证
@@ -2924,7 +2924,7 @@ func AuthMiddleware(permissions ...string) gin.HandlerFunc {
 │  │  • Google OAuth集成          │    │  • 系统配置                    │  │
 │  │  • 支付订阅                  │    │  • 监控面板                    │  │
 │  │                             │    │  • 权限控制                    │  │
-│  │  访问: https://autoads.dev   │    │  访问: https://autoads.dev/admin│  │
+│  │  访问: https://example.com   │    │  访问: https://example.com/admin│  │
 │  └─────────────────────────────┘    └─────────────────────────────────┘  │
 │           │                                    │                        │
 │           └────────────────────────────────────┼────────────────────────┘
@@ -3004,8 +3004,8 @@ func AuthMiddleware(permissions ...string) gin.HandlerFunc {
   • 普通用户：支持邮箱注册和Google OAuth登录（网站页面）
   • 管理员：仅支持账号密码登录（GoFly Admin后台），无注册功能
 - **完全独立的访问入口**：
-  • 普通用户：https://autoads.dev（网站页面）
-  • 管理员：https://autoads.dev/admin（GoFly Admin后台登录页面）
+  • 普通用户：https://example.com（网站页面）
+  • 管理员：https://example.com/admin（GoFly Admin后台登录页面）
 - **安全隔离**：管理功能与用户功能完全独立
 
 **认证集成实现**
@@ -4253,7 +4253,7 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: autoads
+      MYSQL_DATABASE: adsai
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
@@ -4309,12 +4309,12 @@ jobs:
           
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/xxrenzhe/autoads-gofly:${{ github.sha }} .
+          docker build -t ghcr.io/linming7277/adsai-gofly:${{ github.sha }} .
           
       - name: Push Docker image
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker push ghcr.io/xxrenzhe/autoads-gofly:${{ github.sha }}
+          docker push ghcr.io/linming7277/adsai-gofly:${{ github.sha }}
   
   deploy:
     needs: build
@@ -5222,7 +5222,7 @@ GoFly后端 → WebSocket → 前端组件
 
 ### 8.2 参考资料
 - GoFly Admin V3 文档
-- AutoAds 现有系统架构文档
+- AdsAI 现有系统架构文档
 - 模块化架构设计模式
 - 多用户 SaaS 架构最佳实践
 

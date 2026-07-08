@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-002: 配置 Vertex AI 服务账号
-# AutoAds Vertex AI 配置脚本
+# AdsAI Vertex AI 配置脚本
 
 set -e
 
-echo "🤖 AutoAds Vertex AI 配置"
+echo "🤖 AdsAI Vertex AI 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP

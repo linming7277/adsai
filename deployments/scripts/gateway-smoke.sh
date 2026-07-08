@@ -4,7 +4,7 @@ set -euo pipefail
 PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-}}"
 REGION="${REGION:-asia-northeast1}"
 if [[ -z "$PROJECT_ID" ]]; then echo "PROJECT_ID required" >&2; exit 1; fi
-HOST=$(gcloud api-gateway gateways describe autoads-gw --location "$REGION" --format='value(defaultHostname)' --project "$PROJECT_ID")
+HOST=$(gcloud api-gateway gateways describe adsai-gw --location "$REGION" --format='value(defaultHostname)' --project "$PROJECT_ID")
 if [[ -z "$HOST" ]]; then echo "gateway not found" >&2; exit 1; fi
 echo "[gw] host=$HOST"
 

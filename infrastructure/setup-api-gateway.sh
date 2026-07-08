@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-006: 配置 API Gateway
-# AutoAds API Gateway 配置脚本
+# AdsAI API Gateway 配置脚本
 
 set -e
 
-echo "🌐 AutoAds API Gateway 配置"
+echo "🌐 AdsAI API Gateway 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP
@@ -34,8 +34,8 @@ echo ""
 
 # 配置参数
 REGION="asia-northeast1"
-GATEWAY_ID_PREVIEW="autoads-gw-preview"
-GATEWAY_ID_PROD="autoads-gw"
+GATEWAY_ID_PREVIEW="adsai-gw-preview"
+GATEWAY_ID_PROD="adsai-gw"
 
 # 检查现有网关
 echo "🔍 检查现有 API Gateway..."
@@ -110,16 +110,16 @@ echo ""
 echo "📝 下一步操作:"
 echo ""
 echo "1️⃣  创建 API 配置 (Preview):"
-echo "  gcloud api-gateway api-configs create autoads-config-preview-\$(date +%Y%m%d-%H%M%S) \\"
-echo "    --api=autoads-api-preview \\"
+echo "  gcloud api-gateway api-configs create adsai-config-preview-\$(date +%Y%m%d-%H%M%S) \\"
+echo "    --api=adsai-api-preview \\"
 echo "    --openapi-spec=out/gateway.preview.yaml \\"
 echo "    --project=$PROJECT_ID \\"
-echo "    --backend-auth-service-account=codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
+echo "    --backend-auth-service-account=service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 echo ""
 echo "2️⃣  更新网关 (Preview):"
 echo "  gcloud api-gateway gateways update $GATEWAY_ID_PREVIEW \\"
-echo "    --api=autoads-api-preview \\"
-echo "    --api-config=autoads-config-preview-YYYYMMDD-HHMMSS \\"
+echo "    --api=adsai-api-preview \\"
+echo "    --api-config=adsai-config-preview-YYYYMMDD-HHMMSS \\"
 echo "    --location=$REGION \\"
 echo "    --project=$PROJECT_ID"
 echo ""
@@ -132,7 +132,7 @@ echo "🔍 查看所有网关:"
 echo "  gcloud api-gateway gateways list --project=$PROJECT_ID"
 echo ""
 echo "🔍 查看 API 配置列表:"
-echo "  gcloud api-gateway api-configs list --api=autoads-api-preview --project=$PROJECT_ID"
+echo "  gcloud api-gateway api-configs list --api=adsai-api-preview --project=$PROJECT_ID"
 echo ""
 echo "📖 API Gateway 文档:"
 echo "  https://cloud.google.com/api-gateway/docs"

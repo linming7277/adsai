@@ -9,7 +9,7 @@ import {
 } from '~/lib/billing';
 
 function buildReferralLink(code: string) {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.autoads.dev';
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.example.com';
   return `${base}/auth?ref=${code}`;
 }
 

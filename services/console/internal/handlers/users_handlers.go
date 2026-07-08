@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/xxrenzhe/autoads/pkg/errors"
+	"github.com/linming7277/adsai/pkg/errors"
 )
 
 // ========================================

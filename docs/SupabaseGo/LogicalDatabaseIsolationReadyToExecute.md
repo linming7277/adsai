@@ -90,7 +90,7 @@ gcloud run jobs execute logical-db-migrator \
      --args="migrate offer_db" \
      --wait
    ```
-   将`autoads_db.offer_db` schema迁移到`offer_db`数据库
+   将`adsai_db.offer_db` schema迁移到`offer_db`数据库
 
 3. **验证迁移结果**
    ```bash
@@ -125,9 +125,9 @@ gcloud logging read \
 ### 3.1 迁移前（当前）
 
 ```
-Cloud SQL实例: autoads (db-custom-2-8192, 250GB)
+Cloud SQL实例: adsai (db-custom-2-8192, 250GB)
   ├─ postgres (默认数据库)
-  └─ autoads_db (所有服务共享)
+  └─ adsai_db (所有服务共享)
       ├─ Schema: offer_db (Offer, OfferStatusHistory, OfferPreferences, OfferKpiDeadLetter)
       ├─ Schema: billing_db (7张表：TokenTransaction, UserToken等)
       ├─ Schema: siterank_db (4张表：SiterankAnalysis, domain_cache等)
@@ -137,12 +137,12 @@ Cloud SQL实例: autoads (db-custom-2-8192, 250GB)
 ```
 
 **连接配置**:
-- 所有服务: `DATABASE_URL=postgresql://postgres:PWD@10.6.0.2:5432/autoads_db`
+- 所有服务: `DATABASE_URL=postgresql://postgres:PWD@10.6.0.2:5432/adsai_db`
 
 ### 3.2 迁移后（目标）
 
 ```
-Cloud SQL实例: autoads (不变)
+Cloud SQL实例: adsai (不变)
   ├─ offer_db (独立数据库，CONNECTION_LIMIT=50)
   │   └─ Schema: offer_db (或public)
   ├─ billing_db (独立数据库，CONNECTION_LIMIT=100)
@@ -153,7 +153,7 @@ Cloud SQL实例: autoads (不变)
   │   └─ Schema: adscenter_db
   ├─ shared_db (独立数据库，CONNECTION_LIMIT=20)
   │   └─ Schema: shared_db
-  └─ autoads_db (保留，用于回滚)
+  └─ adsai_db (保留，用于回滚)
 ```
 
 **连接配置**（新）:
@@ -196,7 +196,7 @@ Cloud SQL实例: autoads (不变)
 
 | 风险 | 概率 | 影响 | 缓解措施 |
 |------|------|------|---------|
-| **迁移数据丢失** | 低 | 高 | pg_dump+验证；autoads_db保留作为源 |
+| **迁移数据丢失** | 低 | 高 | pg_dump+验证；adsai_db保留作为源 |
 | **连接池耗尽** | 中 | 中 | 预设CONNECTION_LIMIT；监控连接数 |
 | **服务启动失败** | 低 | 高 | 逐个服务滚动更新；立即回滚机制 |
 | **SQL兼容性问题** | 低 | 中 | Schema名称保留；search_path配置 |
@@ -204,7 +204,7 @@ Cloud SQL实例: autoads (不变)
 ### 5.2 快速回滚（< 5分钟）
 
 ```bash
-# 恢复所有服务到autoads_db
+# 恢复所有服务到adsai_db
 for service in offer-preview billing-preview siterank-preview adscenter-preview; do
   gcloud run services update $service \
     --region=asia-northeast1 \
@@ -222,9 +222,9 @@ done
 -- 从新数据库导出增量数据
 pg_dump -d offer_db --data-only --inserts > /tmp/offer_incremental.sql
 
--- 导入回autoads_db
-psql -d autoads_db -c "SET search_path TO offer_db,public;"
-psql -d autoads_db -f /tmp/offer_incremental.sql
+-- 导入回adsai_db
+psql -d adsai_db -c "SET search_path TO offer_db,public;"
+psql -d adsai_db -f /tmp/offer_incremental.sql
 ```
 
 ---
@@ -262,7 +262,7 @@ psql -d autoads_db -f /tmp/offer_incremental.sql
 
 - [ ] ⏳ 预发环境稳定运行3天
 - [ ] ⏳ 无性能问题或连接池耗尽
-- [ ] ⏳ 备份生产环境autoads_db
+- [ ] ⏳ 备份生产环境adsai_db
 - [ ] ⏳ 确认回滚脚本已就绪
 - [ ] ⏳ 确定维护窗口（建议：周六凌晨2:00-3:00）
 
@@ -311,7 +311,7 @@ GROUP BY datname;
 - ✅ 所有准备工作已完成
 - ✅ Schema隔离已验证稳定
 - ✅ 完整的迁移和回滚方案
-- ✅ 低风险（保留autoads_db作为回滚路径）
+- ✅ 低风险（保留adsai_db作为回滚路径）
 
 **行动**:
 ```bash

@@ -2,7 +2,7 @@
 
 **版本**: 2.0
 **更新日期**: 2025-10-15
-**适用范围**: AutoAds全栈开发
+**适用范围**: AdsAI全栈开发
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 概述
 
-AutoAds采用**单一真实来源（Single Source of Truth）**的API设计理念：
+AdsAI采用**单一真实来源（Single Source of Truth）**的API设计理念：
 
 - ✅ **唯一规范**: `specs/openapi/*.yaml` 是API定义的唯一权威来源
 - ✅ **自动生成**: 所有代码、类型、配置均从OpenAPI规范自动生成
@@ -129,7 +129,7 @@ paths:
 ## 目录结构
 
 ```
-autoads/
+adsai/
 ├── specs/
 │   └── openapi/                    # 📋 单一真实来源
 │       ├── billing.yaml
@@ -279,11 +279,11 @@ export function useMyResource() {
 
 ```bash
 # 测试Gateway健康检查
-curl https://autoads-gw-preview-885pd7lz.an.gateway.dev/readyz
+curl https://adsai-gw-preview-885pd7lz.an.gateway.dev/readyz
 
 # 测试具体端点
 curl -H "Authorization: Bearer $TOKEN" \
-  https://autoads-gw-preview-885pd7lz.an.gateway.dev/api/v1/myservice/resource
+  https://adsai-gw-preview-885pd7lz.an.gateway.dev/api/v1/myservice/resource
 ```
 
 ---
@@ -330,8 +330,8 @@ cat deployments/api-gateway/gateway.rendered.yaml
 ./scripts/deploy/render-gateway.sh
 
 # 3. 验证Gateway部署
-gcloud api-gateway gateways describe autoads-gw-preview \
-  --project=gen-lang-client-0944935873 \
+gcloud api-gateway gateways describe adsai-gw-preview \
+  --project=your-gcp-project-id \
   --location=asia-northeast1
 
 # 4. 重新部署
@@ -431,4 +431,4 @@ brew install yamllint
 ---
 
 **最后更新**: 2025-10-15
-**维护者**: AutoAds Dev Team
+**维护者**: AdsAI Dev Team

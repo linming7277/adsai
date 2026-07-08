@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	base "github.com/xxrenzhe/autoads/pkg/httpclient"
-	"github.com/xxrenzhe/autoads/pkg/idempotency"
+	base "github.com/linming7277/adsai/pkg/httpclient"
+	"github.com/linming7277/adsai/pkg/idempotency"
 )
 
 // Error is a unified error shape for outbound HTTP calls.
@@ -132,7 +132,7 @@ func headersOrDefault(h map[string]string) map[string]string {
 		h["Content-Type"] = "application/json"
 	}
 	if _, ok := h["User-Agent"]; !ok {
-		h["User-Agent"] = "AutoAds-HTTP/1.0"
+		h["User-Agent"] = "AdsAI-HTTP/1.0"
 	}
 	return h
 }

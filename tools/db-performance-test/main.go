@@ -12,7 +12,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // PerformanceTestConfig 性能测试配置
@@ -48,7 +48,7 @@ type LatencyRecord struct {
 }
 
 func main() {
-	fmt.Println("🚀 AutoAds 数据库性能测试工具")
+	fmt.Println("🚀 AdsAI 数据库性能测试工具")
 	fmt.Println("================================")
 
 	// 解析命令行参数

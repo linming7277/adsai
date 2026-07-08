@@ -1,4 +1,4 @@
-# AutoAds 全栈数据库优化完整方案
+# AdsAI 全栈数据库优化完整方案
 
 **文档版本**: v1.1
 **创建日期**: 2025-10-20
@@ -1316,7 +1316,7 @@ volumes:
 development:
   name: "development"
   database_type: "hybrid"
-  connection_string: "host=localhost;port=5432;user=root;password=dev_password;dbname=autoads_db"
+  connection_string: "host=localhost;port=5432;user=root;password=dev_password;dbname=adsai_db"
   supabase_url: "https://your-project.supabase.co"
   supabase_key: "your-supabase-service-key"
   max_connections: 50
@@ -1326,7 +1326,7 @@ development:
 staging:
   name: "staging"
   database_type: "hybrid"
-  connection_string: "host=staging-db.rds.amazonaws.com;port=5432;user=staging_user;password=staging_password;dbname=autoads_db"
+  connection_string: "host=staging-db.rds.amazonaws.com;port=5432;user=staging_user;password=staging_password;dbname=adsai_db"
   supabase_url: "https://staging-project.supabase.co"
   supabase_key: "staging-supabase-service-key"
   max_connections: 100
@@ -1336,7 +1336,7 @@ staging:
 production:
   name: "production"
   database_type: "hybrid"
-  connection_string: "host=prod-db.rds.amazonaws.com;port=5432;user=prod_user;password=${PROD_DB_PASSWORD};dbname=autoads_db"
+  connection_string: "host=prod-db.rds.amazonaws.com;port=5432;user=prod_user;password=${PROD_DB_PASSWORD};dbname=adsai_db"
   supabase_url: "https://your-project.supabase.co"
   supabase_key: "prod-supabase-service-key"
   max_connections: 200
@@ -1492,8 +1492,8 @@ build-tools:
 	CGO_ENABLED=0 go test ./tools/enhanced-adapter/...
 
 .PHONY: install
-	cp ./tools/migrator/migrator /usr/local/bin/autoads-migrator
-	cp ./tools/schema-manager/schema-manager /usr/local/bin/autoads-schema-manager
+	cp ./tools/migrator/migrator /usr/local/bin/adsai-migrator
+	cp ./tools/schema-manager/schema-manager /usr/local/bin/adsai-schema-manager
 ```
 
 ---
@@ -1872,4 +1872,4 @@ func NewDatabaseMetrics() *DatabaseMetrics {
 - 成本降低 40-60%
 - 运维复杂度降低 50%
 
-这个方案为AutoAds项目提供了一个完整的、可扩展的数据库管理解决方案，既解决了当前的技术约束，又为未来的发展奠定了坚实基础。
+这个方案为AdsAI项目提供了一个完整的、可扩展的数据库管理解决方案，既解决了当前的技术约束，又为未来的发展奠定了坚实基础。

@@ -16,7 +16,7 @@ Siterank服务使用 **Vertex AI Gemini API** 进行AI评估,而非Gemini Develo
 ### 1. 启用API
 
 ```bash
-gcloud services enable aiplatform.googleapis.com --project=gen-lang-client-0944935873
+gcloud services enable aiplatform.googleapis.com --project=your-gcp-project-id
 ```
 
 ### 2. 服务账号权限
@@ -25,8 +25,8 @@ Cloud Run服务账号需要以下权限:
 - `roles/aiplatform.user` - 调用Vertex AI API
 
 ```bash
-gcloud projects add-iam-policy-binding gen-lang-client-0944935873 \
-  --member="serviceAccount:codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding your-gcp-project-id \
+  --member="serviceAccount:service-account@your-gcp-project-id.iam.gserviceaccount.com" \
   --role="roles/aiplatform.user"
 ```
 
@@ -69,8 +69,8 @@ client, err := genai.NewClient(ctx, projectID, "asia-northeast1")
 ### 本地测试
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads/services/siterank/scripts
-export GCP_PROJECT_ID="gen-lang-client-0944935873"
+cd /path/to/adsai/services/siterank/scripts
+export GCP_PROJECT_ID="your-gcp-project-id"
 go run test_gemini_eval_real.go
 ```
 
@@ -106,9 +106,9 @@ gcloud logging read "resource.type=aiplatform.googleapis.com/Endpoint" \
 
 检查服务账号权限:
 ```bash
-gcloud projects get-iam-policy gen-lang-client-0944935873 \
+gcloud projects get-iam-policy your-gcp-project-id \
   --flatten="bindings[].members" \
-  --filter="bindings.members:serviceAccount:codex-dev@*"
+  --filter="bindings.members:serviceAccount:service-account@*"
 ```
 
 ### 错误: "Model not found"

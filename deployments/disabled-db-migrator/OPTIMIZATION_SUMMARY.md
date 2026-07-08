@@ -8,7 +8,7 @@
 
 ## 🎯 优化目标
 
-根据AutoAds项目构建最佳实践，优化数据库迁移器的Docker构建配置，提升构建效率、减少镜像大小，并确保与项目架构的兼容性。
+根据AdsAI项目构建最佳实践，优化数据库迁移器的Docker构建配置，提升构建效率、减少镜像大小，并确保与项目架构的兼容性。
 
 ---
 
@@ -144,7 +144,7 @@ gcloud builds submit --config deployments/db-migrator/cloudbuild.yaml .
 # 指定特定版本
 gcloud builds submit \
   --config deployments/db-migrator/cloudbuild.yaml \
-  --substitutions _IMAGE=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/db-migrator/db-migrator:v2.0.0 \
+  --substitutions _IMAGE=asia-northeast1-docker.pkg.dev/your-gcp-project-id/db-migrator/db-migrator:v2.0.0 \
   .
 ```
 
@@ -218,13 +218,13 @@ docker run --rm -e DATABASE_URL="your_connection_string" db-migrator-test --help
 
 ## 📖 相关文档
 
-- [AutoAds Monorepo构建最佳实践](../../docs/monorepo-build-best-practices.md)
+- [AdsAI Monorepo构建最佳实践](../../docs/monorepo-build-best-practices.md)
 - [数据库架构文档](../../docs/Database/DATABASE_ARCHITECTURE_CURRENT.md)
 - [golang-migrate官方文档](https://github.com/golang-migrate/migrate)
 - [Cloud Build最佳实践](https://cloud.google.com/build/docs/best-practices)
 
 ---
 
-**维护团队**: AutoAds DevOps Team
+**维护团队**: AdsAI DevOps Team
 **最后更新**: 2025-10-22
 **审核状态**: ✅ 已审核

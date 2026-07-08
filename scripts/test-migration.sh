@@ -8,7 +8,7 @@ set -e
 echo "🔍 数据库迁移测试开始..."
 
 # 获取环境变量
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 
 # 从Secret Manager获取数据库连接信息
@@ -24,8 +24,8 @@ mkdir -p $TEST_DIR
 
 # 复制迁移文件
 echo "📁 准备迁移文件..."
-cp -r /Users/jason/Documents/Kiro/autoads/services/billing/migrations $TEST_DIR/
-cp /Users/jason/Documents/Kiro/autoads/infrastructure/database/Dockerfile.migrator $TEST_DIR/
+cp -r /path/to/adsai/services/billing/migrations $TEST_DIR/
+cp /path/to/adsai/infrastructure/database/Dockerfile.migrator $TEST_DIR/
 
 # 创建测试用的迁移配置
 cat > $TEST_DIR/migrate-config.yaml << EOF

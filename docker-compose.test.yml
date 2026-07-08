@@ -3,9 +3,9 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: autoads-test-db
+    container_name: adsai-test-db
     environment:
-      POSTGRES_DB: autoads_test
+      POSTGRES_DB: adsai_test
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
     ports:
@@ -14,7 +14,7 @@ services:
       - ./scripts/init-test-db.sql:/docker-entrypoint-initdb.d/init.sql
       - test-db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U test -d autoads_test"]
+      test: ["CMD-SHELL", "pg_isready -U test -d adsai_test"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: autoads-test-redis
+    container_name: adsai-test-redis
     ports:
       - "6380:6379"  # 使用 6380 避免与本地 Redis 冲突
     healthcheck:

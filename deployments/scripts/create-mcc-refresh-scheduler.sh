@@ -19,16 +19,16 @@ set -euo pipefail
 #   SCHEDULE                    Cron schedule (default: "0 * * * *" hourly)
 #   TIME_ZONE                   Time zone (default: Asia/Tokyo)
 #   JOB_NAME                    Scheduler job name (default: adscenter-mcc-refresh)
-#   SA_EMAIL                    Service Account for OIDC (default: codex-dev@<project>.iam.gserviceaccount.com)
+#   SA_EMAIL                    Service Account for OIDC (default: service-account@<project>.iam.gserviceaccount.com)
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 REGION="${REGION:-asia-northeast1}"
 SERVICE_NAME="${SERVICE_NAME:-adscenter}"
 SCHEDULE="${SCHEDULE:-0 * * * *}"
 TIME_ZONE="${TIME_ZONE:-Asia/Tokyo}"
 JOB_NAME="${JOB_NAME:-adscenter-mcc-refresh}"
 TOTAL_SHARDS="${TOTAL_SHARDS:-0}"
-SA_EMAIL_DEFAULT="codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
+SA_EMAIL_DEFAULT="service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 SA_EMAIL="${SA_EMAIL:-$SA_EMAIL_DEFAULT}"
 
 gcloud config set project "$PROJECT_ID" >/dev/null

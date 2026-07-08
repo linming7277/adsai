@@ -242,7 +242,7 @@ const price = t('pricing.plans.starter.price'); // 自动根据语言显示 ¥29
 1. 检查本文档的验证清单
 2. 运行自动化检查脚本
 3. 提交 Issue 到 GitHub
-4. 联系开发团队：support@autoads.dev
+4. 联系开发团队：support@adsai.dev
 
 ---
 

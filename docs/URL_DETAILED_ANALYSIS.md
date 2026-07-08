@@ -72,7 +72,7 @@
 **实现流程**:
 ```
 1. 邀请链接生成: /settings?tab=referral → ReferralTab组件
-2. 分享链接: https://autoads.dev/auth?ref=CODE123
+2. 分享链接: https://example.com/auth?ref=CODE123
 3. 新用户注册: /auth/callback?referralCode=CODE123
 4. API追踪: POST /api/v1/referral/track
 5. 奖励发放: 双方获得14天试用资格

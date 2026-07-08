@@ -1,7 +1,7 @@
 # ==============================================================================
-# AutoAds Database Migrator - Optimized Cloud Build Configuration
+# AdsAI Database Migrator - Optimized Cloud Build Configuration
 # ==============================================================================
-# Follows AutoAds monorepo build best practices
+# Follows AdsAI monorepo build best practices
 
 steps:
   # Step 1: 构建数据库迁移器镜像
@@ -50,4 +50,4 @@ images:
 
 # 替换变量
 substitutions:
-  _IMAGE: 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:latest'
+  _IMAGE: 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:latest'

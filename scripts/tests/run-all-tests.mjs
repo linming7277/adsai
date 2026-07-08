@@ -6,10 +6,10 @@
  * 运行所有E2E测试并生成完整报告
  *
  * 使用方法：
- * PREVIEW_BASE=https://www.urlchecker.dev node scripts/tests/run-all-tests.mjs
+ * PREVIEW_BASE=https://preview.example.com node scripts/tests/run-all-tests.mjs
  *
  * 环境变量：
- * - PREVIEW_BASE: 测试环境URL（默认: https://www.urlchecker.dev）
+ * - PREVIEW_BASE: 测试环境URL（默认: https://preview.example.com）
  * - HEADLESS: 是否无头模式（默认: true）
  * - PARALLEL: 是否并行运行（默认: false，顺序执行更稳定）
  */
@@ -22,7 +22,7 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const HEADLESS = process.env.HEADLESS !== 'false';
 const PARALLEL = process.env.PARALLEL === 'true';
 

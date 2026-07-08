@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // DualDatabaseAdapter 支持主从数据库的适配器

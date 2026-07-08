@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 
 echo "============================================"
 echo "创建 Pub/Sub 监控告警"
@@ -43,7 +43,7 @@ echo ""
 echo "创建告警: Pub/Sub Message Backlog > 100..."
 cat > /tmp/pubsub-backlog-alert.json <<EOF
 {
-  "displayName": "[AutoAds] Pub/Sub Message Backlog > 100",
+  "displayName": "[AdsAI] Pub/Sub Message Backlog > 100",
   "combiner": "OR",
   "conditions": [
     {
@@ -75,7 +75,7 @@ echo ""
 echo "创建告警: Pub/Sub Message Age > 60s..."
 cat > /tmp/pubsub-age-alert.json <<EOF
 {
-  "displayName": "[AutoAds] Pub/Sub Message Age > 60s",
+  "displayName": "[AdsAI] Pub/Sub Message Age > 60s",
   "combiner": "OR",
   "conditions": [
     {
@@ -111,8 +111,8 @@ echo "✅ Pub/Sub 告警创建完成（2/2 个告警）"
 echo "============================================"
 echo ""
 echo "已创建的告警:"
-echo "  1. [AutoAds] Pub/Sub Message Backlog > 100"
-echo "  2. [AutoAds] Pub/Sub Message Age > 60s"
+echo "  1. [AdsAI] Pub/Sub Message Backlog > 100"
+echo "  2. [AdsAI] Pub/Sub Message Age > 60s"
 echo ""
 echo "查看已创建的告警:"
 echo "  gcloud alpha monitoring policies list --project=$PROJECT_ID"

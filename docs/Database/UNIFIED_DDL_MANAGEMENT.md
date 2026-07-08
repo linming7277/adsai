@@ -55,7 +55,7 @@
 version: "001"
 service: "useractivity"
 description: "Initial user activity schema"
-author: "developer@autoads.dev"
+author: "developer@adsai.dev"
 created_at: "2024-01-01T00:00:00Z"
 dependencies: []
 risk_level: "low"
@@ -427,4 +427,4 @@ type DDLMetrics struct {
 - **审计追踪**: 完整的DDL变更审计日志
 - **备份保护**: 自动备份和回滚机制
 
-这个统一的DDL管理系统将彻底解决当前DDL模式混乱的问题，为AutoAds项目提供标准化、安全、高效的数据库变更管理能力。
+这个统一的DDL管理系统将彻底解决当前DDL模式混乱的问题，为AdsAI项目提供标准化、安全、高效的数据库变更管理能力。

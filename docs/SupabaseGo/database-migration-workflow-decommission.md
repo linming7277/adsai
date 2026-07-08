@@ -75,7 +75,7 @@ mv .github/workflows/database-migration-cloudrun.yml \
 ./scripts/db/setup-local-db-access.sh
 
 # 2. 直接执行迁移
-psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/autoads_db?sslmode=require" \
+psql "postgresql://postgres:PASSWORD@35.243.74.175:5432/adsai_db?sslmode=require" \
     -f services/user/migrations/000001_create_user_domain_schema.up.sql
 ```
 

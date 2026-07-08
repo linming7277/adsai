@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # INFRA-007: 配置 Cloud Build（前端构建）
-# AutoAds Cloud Build 配置脚本
+# AdsAI Cloud Build 配置脚本
 
 set -e
 
-echo "🔨 AutoAds Cloud Build 配置"
+echo "🔨 AdsAI Cloud Build 配置"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 检查是否已登录 GCP
@@ -33,8 +33,8 @@ echo ""
 
 # 配置参数
 REGION="asia-northeast1"
-SERVICE_ACCOUNT="codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
-ARTIFACT_REGISTRY="autoads-services"
+SERVICE_ACCOUNT="service-account@${PROJECT_ID}.iam.gserviceaccount.com"
+ARTIFACT_REGISTRY="adsai-services"
 
 # 检查 Artifact Registry
 echo "🔍 检查 Artifact Registry..."
@@ -47,7 +47,7 @@ else
   gcloud artifacts repositories create $ARTIFACT_REGISTRY \
     --repository-format=docker \
     --location=$REGION \
-    --description="AutoAds 服务镜像仓库" \
+    --description="AdsAI 服务镜像仓库" \
     --project=$PROJECT_ID
   echo "✅ Artifact Registry 已创建"
 fi
@@ -99,7 +99,7 @@ done
 echo ""
 
 # 创建 Cloud Build 日志存储桶
-LOGS_BUCKET="autoads-build-logs-${REGION}"
+LOGS_BUCKET="adsai-build-logs-${REGION}"
 echo "🔍 检查 Cloud Build 日志存储桶..."
 if gsutil ls -b "gs://${LOGS_BUCKET}" &>/dev/null; then
   echo "✅ 日志存储桶已存在: gs://${LOGS_BUCKET}"
@@ -117,7 +117,7 @@ echo ""
 echo "示例 - 构建 Frontend (Preview):"
 echo "  gcloud builds submit \\"
 echo "    --config=deployments/cloudbuild/build-frontend-docker.yaml \\"
-echo "    --substitutions=_IMAGE=\"${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY}/frontend:preview-test\",_SITE_URL=\"https://www.urlchecker.dev\" \\"
+echo "    --substitutions=_IMAGE=\"${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY}/frontend:preview-test\",_SITE_URL=\"https://preview.example.com\" \\"
 echo "    --project=$PROJECT_ID"
 echo ""
 

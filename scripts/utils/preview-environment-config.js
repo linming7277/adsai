@@ -1,11 +1,11 @@
 /**
  * Preview Environment Testing Configuration
- * Direct testing of www.urlchecker.dev without local setup
+ * Direct testing of preview.example.com without local setup
  */
 
 // Preview Environment Configuration
 const PREVIEW_CONFIG = {
-  baseUrl: 'https://www.urlchecker.dev',
+  baseUrl: 'https://preview.example.com',
   apiBaseUrl: 'https://gateway-middleware-preview-yt54xvsg5q-an.a.run.app',
   environment: 'preview',
   branch: 'main',
@@ -14,15 +14,15 @@ const PREVIEW_CONFIG = {
   // Test accounts for preview environment
   testAccounts: {
     regular: {
-      email: 'test@urlchecker.dev',
+      email: 'test@preview.example.com',
       password: process.env.TEST_PASSWORD || 'TestPassword123!'
     },
     admin: {
-      email: 'admin@urlchecker.dev',
+      email: 'admin@preview.example.com',
       password: process.env.ADMIN_PASSWORD || 'AdminPassword123!'
     },
     trial: {
-      email: 'trial@urlchecker.dev',
+      email: 'trial@preview.example.com',
       password: process.env.TRIAL_PASSWORD || 'TrialPassword123!'
     }
   },
@@ -46,15 +46,15 @@ const PREVIEW_CONFIG = {
 
   // Service endpoints for testing
   services: {
-    frontend: 'https://www.urlchecker.dev',
-    api: 'http://api.urlchecker.dev',
-    billing: 'http://api.urlchecker.dev/billing',
-    offer: 'http://api.urlchecker.dev/offer',
-    siterank: 'http://api.urlchecker.dev/siterank',
-    useractivity: 'http://api.urlchecker.dev/useractivity',
-    console: 'http://api.urlchecker.dev/console',
-    gateway: 'http://api.urlchecker.dev',
-    adscenter: 'http://api.urlchecker.dev/adscenter'
+    frontend: 'https://preview.example.com',
+    api: 'http://api.preview.example.com',
+    billing: 'http://api.preview.example.com/billing',
+    offer: 'http://api.preview.example.com/offer',
+    siterank: 'http://api.preview.example.com/siterank',
+    useractivity: 'http://api.preview.example.com/useractivity',
+    console: 'http://api.preview.example.com/console',
+    gateway: 'http://api.preview.example.com',
+    adscenter: 'http://api.preview.example.com/adscenter'
   },
 
   // Critical paths that must work in preview

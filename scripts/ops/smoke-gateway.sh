@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Lightweight smoke checks for API Gateway and services.
 
-GATEWAY_HOST="${GATEWAY_HOST:-autoads-gw-885pd7lz.an.gateway.dev}"
+GATEWAY_HOST="${GATEWAY_HOST:-adsai-gw-885pd7lz.an.gateway.dev}"
 TIMEOUT="${TIMEOUT:-10}"
 
 curl_s() {

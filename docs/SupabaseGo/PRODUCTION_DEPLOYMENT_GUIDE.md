@@ -28,7 +28,7 @@
 # 检查数据库连接
 export DB_HOST="your-production-db-host"
 export DB_PORT="5432"
-export DB_NAME="autoads_db"
+export DB_NAME="adsai_db"
 export DB_USER="postgres"
 export DB_PASSWORD="your-secure-password"
 
@@ -56,7 +56,7 @@ curl -s "https://db-admin-preview-yt54xvsg5q-an.a.run.app/api/v1/health" | jq .
 #### 2.1 自动备份检查
 ```bash
 # 检查最近的备份
-BACKUP_DIR="/tmp/autoads_backup_$(date +%Y%m%d)"
+BACKUP_DIR="/tmp/adsai_backup_$(date +%Y%m%d)"
 mkdir -p "$BACKUP_DIR"
 
 # 创建结构备份
@@ -182,7 +182,7 @@ chmod +x scripts/safe-adscenter-migration.sh
 # 设置环境变量
 export DB_HOST="your-production-db-host"
 export DB_PORT="5432"
-export DB_NAME="autoads_db"
+export DB_NAME="adsai_db"
 export DB_USER="postgres"
 export DB_PASSWORD="your-secure-password"
 
@@ -337,7 +337,7 @@ cat > /tmp/performance_monitor.sh << 'EOF'
 
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-5432}"
-DB_NAME="${DB_NAME:-autoads_db}"
+DB_NAME="${DB_NAME:-adsai_db}"
 DB_USER="${DB_USER:-postgres}"
 DB_PASSWORD="${DB_PASSWORD:-password}"
 

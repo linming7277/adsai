@@ -1,4 +1,4 @@
-# AutoAds 标准化API规范
+# AdsAI 标准化API规范
 
 **文档版本**: v1.0
 **创建日期**: 2025-10-19
@@ -1054,7 +1054,7 @@ Link: </api/v2/users>; rel="successor-version"
 ### 完整的API调用流程
 ```typescript
 // 前端TypeScript示例
-class AutoAdsAPIClient {
+class AdsAIAPIClient {
   private baseURL: string;
   private authToken: string;
 
@@ -1102,7 +1102,7 @@ class AutoAdsAPIClient {
 }
 
 // 使用示例
-const apiClient = new AutoAdsAPIClient('https://api.autoads.com', 'jwt-token');
+const apiClient = new AdsAIAPIClient('https://api.example.com', 'jwt-token');
 
 try {
   const offer = await apiClient.createOffer({

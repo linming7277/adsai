@@ -7,8 +7,8 @@ set -euo pipefail
 # 配置
 DATABASE_URL="${DATABASE_URL:-}"
 BACKUP_DIR="${BACKUP_DIR:-/backup}"
-BACKUP_NAME="${BACKUP_NAME:-autoads_db_$(date +%Y%m%d_%H%M%S)}"
-CLOUDSQL_SOCKET="/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/.s.PGSQL.5432"
+BACKUP_NAME="${BACKUP_NAME:-adsai_db_$(date +%Y%m%d_%H%M%S)}"
+CLOUDSQL_SOCKET="/cloudsql/your-gcp-project-id:asia-northeast1:adsai/.s.PGSQL.5432"
 
 # 颜色输出
 RED='\033[0;31m'
@@ -95,7 +95,7 @@ get_database_stats() {
     log_info "获取数据库统计信息..."
     
     # 数据库大小
-    local db_size=$(psql "$DATABASE_URL" -t -c "SELECT pg_size_pretty(pg_database_size('autoads_db'));")
+    local db_size=$(psql "$DATABASE_URL" -t -c "SELECT pg_size_pretty(pg_database_size('adsai_db'));")
     log_info "数据库大小: $db_size"
     
     # Schema数量
@@ -130,9 +130,9 @@ create_backup() {
     # --no-owner: 不包含所有者信息
     # --no-acl: 不包含访问权限
     if pg_dump \
-        -h /cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads \
+        -h /cloudsql/your-gcp-project-id:asia-northeast1:adsai \
         -U postgres \
-        -d autoads_db \
+        -d adsai_db \
         -F c \
         -v \
         --no-owner \
@@ -160,8 +160,8 @@ create_backup() {
   "backup_file": "$backup_file",
   "backup_size": "$backup_size",
   "created_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "database": "autoads_db",
-  "instance": "gen-lang-client-0944935873:asia-northeast1:autoads"
+  "database": "adsai_db",
+  "instance": "your-gcp-project-id:asia-northeast1:adsai"
 }
 EOF
     
@@ -198,8 +198,8 @@ generate_report() {
 
 **备份名称**: $BACKUP_NAME
 **创建时间**: $(date '+%Y-%m-%d %H:%M:%S')
-**数据库**: autoads_db
-**实例**: gen-lang-client-0944935873:asia-northeast1:autoads
+**数据库**: adsai_db
+**实例**: your-gcp-project-id:asia-northeast1:adsai
 
 ## 备份文件
 
@@ -218,9 +218,9 @@ $(cat "$BACKUP_DIR/${BACKUP_NAME}_stats.txt")
 
 \`\`\`bash
 pg_restore \\
-  -h /cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads \\
+  -h /cloudsql/your-gcp-project-id:asia-northeast1:adsai \\
   -U postgres \\
-  -d autoads_db \\
+  -d adsai_db \\
   --clean \\
   --if-exists \\
   -v \\

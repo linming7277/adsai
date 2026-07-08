@@ -3,7 +3,7 @@
 
 ## 概述
 
-本文档描述了autoads项目中断路器模式的标准化实现和最佳实践。断路器模式用于提高系统的容错性，防止级联故障。
+本文档描述了adsai项目中断路器模式的标准化实现和最佳实践。断路器模式用于提高系统的容错性，防止级联故障。
 
 ## 架构设计
 
@@ -24,7 +24,7 @@
 ### 方式1: 使用serviceclient (推荐)
 
 ```go
-import "github.com/xxrenzhe/autoads/pkg/serviceclient"
+import "github.com/linming7277/adsai/pkg/serviceclient"
 
 // 创建registry (内置断路器)
 registry := serviceclient.NewRegistry()
@@ -41,12 +41,12 @@ err := registry.CallJSON(ctx, "service-name", serviceclient.Request{
 ### 方式2: 使用BreakerClient
 
 ```go
-import "github.com/xxrenzhe/autoads/pkg/circuitbreaker"
-import httpx "github.com/xxrenzhe/autoads/pkg/http"
+import "github.com/linming7277/adsai/pkg/circuitbreaker"
+import httpx "github.com/linming7277/adsai/pkg/http"
 
 // 创建带断路器的HTTP客户端
 breakerCfg := circuitbreaker.DefaultConfig("my-service")
-breaker := circuitbreaker.NewMetricsBreaker(breakerCfg, "autoads", "my-service")
+breaker := circuitbreaker.NewMetricsBreaker(breakerCfg, "adsai", "my-service")
 httpClient := httpx.New(10 * time.Second)
 
 // 使用断路器执行请求
@@ -100,14 +100,14 @@ MaxRetries: 1,
 
 ```promql
 # 断路器状态 (0=Closed, 1=Half-Open, 2=Open)
-autoads_{service}_circuit_breaker_state{breaker="target-service"}
+adsai_{service}_circuit_breaker_state{breaker="target-service"}
 
 # 请求总数
-autoads_{service}_circuit_breaker_requests_total{result="success|failure"}
+adsai_{service}_circuit_breaker_requests_total{result="success|failure"}
 
 # 成功/失败计数
-autoads_{service}_circuit_breaker_successes_total
-autoads_{service}_circuit_breaker_failures_total{type="consecutive"}
+adsai_{service}_circuit_breaker_successes_total
+adsai_{service}_circuit_breaker_failures_total{type="consecutive"}
 ```
 
 ### 告警规则 (monitoring/prometheus/alerts/circuit-breaker-alerts.yaml)
@@ -244,17 +244,17 @@ func TestCircuitBreakerBehavior(t *testing.T) {
 
 ```bash
 # 查看所有断路器状态
-curl -s "http://prometheus:9090/api/v1/query?query=autoads_.*_circuit_breaker_state"
+curl -s "http://prometheus:9090/api/v1/query?query=adsai_.*_circuit_breaker_state"
 
 # 查看特定服务的断路器
-curl -s "http://prometheus:9090/api/v1/query?query=autoads_offer_circuit_breaker_state"
+curl -s "http://prometheus:9090/api/v1/query?query=adsai_offer_circuit_breaker_state"
 ```
 
 ### 2. 检查失败率
 
 ```bash
 # 查看失败率
-curl -s "http://prometheus:9090/api/v1/query?query=rate(autoads_.*_circuit_breaker_requests_total{result=\"failure\"}[5m]) / rate(autoads_.*_circuit_breaker_requests_total[5m])"
+curl -s "http://prometheus:9090/api/v1/query?query=rate(adsai_.*_circuit_breaker_requests_total{result=\"failure\"}[5m]) / rate(adsai_.*_circuit_breaker_requests_total[5m])"
 ```
 
 ### 3. 查看告警
@@ -273,7 +273,7 @@ curl -s "http://alertmanager:9093/api/v1/alerts"
 
 ## 总结
 
-autoads项目的断路器实现已经相当完善：
+adsai项目的断路器实现已经相当完善：
 - ✅ 核心框架已实现 (pkg/circuitbreaker)
 - ✅ 主要服务已集成 (7个Go服务)
 - ✅ 监控告警已配置 (5个告警规则)

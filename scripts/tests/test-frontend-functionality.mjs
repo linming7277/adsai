@@ -10,7 +10,7 @@ import fs from 'fs/promises';
 
 class FrontendFunctionalityTester {
   constructor() {
-    this.baseUrl = 'https://www.urlchecker.dev';
+    this.baseUrl = 'https://preview.example.com';
     this.browser = null;
     this.context = null;
     this.results = {
@@ -448,7 +448,7 @@ class FrontendFunctionalityTester {
 async function main() {
   console.log('🎯 Frontend Functionality Testing');
   console.log('=================================');
-  console.log(`Frontend: https://www.urlchecker.dev`);
+  console.log(`Frontend: https://preview.example.com`);
   console.log('Note: Testing frontend functionality without Demo Data API');
   console.log('---');
 

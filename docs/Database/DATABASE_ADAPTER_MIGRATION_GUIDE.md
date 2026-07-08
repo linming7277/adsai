@@ -189,7 +189,7 @@ package storage
 
 import (
     "database/sql"
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 type PGXAdapter struct {

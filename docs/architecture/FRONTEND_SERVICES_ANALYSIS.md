@@ -10,14 +10,14 @@
 | **源文件数** | ~389 | ~4583 |
 | **认证** | Firebase Auth + 自定义 Session | Firebase Auth (jose JWT) |
 | **部署** | Docker → Cloud Run + Firebase Hosting | Docker → Cloud Run + Firebase Hosting |
-| **Firebase 站点** | autoads-preview / autoads-prod | autoads-console-preview / autoads-console-prod |
+| **Firebase 站点** | adsai-preview / adsai-prod | adsai-console-preview / adsai-console-prod |
 
 ## 🎯 核心差异
 
 ### 1. **目标用户**
 
 #### apps/frontend (用户前台)
-- **最终用户**：AutoAds 平台的付费客户
+- **最终用户**：AdsAI 平台的付费客户
 - **功能**：
   - Google Ads 账号管理
   - 批量链接访问 (batchopen)
@@ -27,7 +27,7 @@
   - 用户个人资料
 
 #### apps/console (管理后台)
-- **内部运维/管理员**：AutoAds 平台运营团队
+- **内部运维/管理员**：AdsAI 平台运营团队
 - **功能**：
   - 用户和套餐管理 (`/users`)
   - Token 与计费管理 (`/billing`)
@@ -144,7 +144,7 @@ const stats = await fetch('/api/go/api/v1/console/stats')
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    AutoAds Platform                         │
+│                    AdsAI Platform                         │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  ┌──────────────────────┐      ┌──────────────────────┐   │

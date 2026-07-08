@@ -1,4 +1,4 @@
-// Package cache provides Redis client integration for AutoAds
+// Package cache provides Redis client integration for AdsAI
 package cache
 
 import (

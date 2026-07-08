@@ -161,7 +161,7 @@ async function waitForUserCreation(client, userId, maxWaitMs = 3000) {
 #### 测试1: 新用户注册(主流程)
 ```bash
 # 1. 访问登录页
-open https://www.urlchecker.dev/auth/sign-in
+open https://preview.example.com/auth/sign-in
 
 # 2. 点击"Google登录"并授权
 
@@ -291,7 +291,7 @@ gh run list --limit 5
 gh run watch
 
 # 5. 验证preview环境
-curl -I https://www.urlchecker.dev
+curl -I https://preview.example.com
 ```
 
 ---

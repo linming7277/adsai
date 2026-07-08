@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库迁移: Notification Management
+-- AdsAI 数据库迁移: Notification Management
 -- 创建通知管理表 (集成console服务功能)
 -- 迁移ID: 004
 -- 版本: v2.0

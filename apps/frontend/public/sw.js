@@ -1,8 +1,8 @@
-// Service Worker for AutoAds PWA
-const CACHE_NAME = 'autoads-v1.0.0';
-const STATIC_CACHE = 'autoads-static-v1.0.0';
-const IMAGE_CACHE = 'autoads-images-v1.0.0';
-const API_CACHE = 'autoads-api-v1.0.0';
+// Service Worker for AdsAI PWA
+const CACHE_NAME = 'adsai-v1.0.0';
+const STATIC_CACHE = 'adsai-static-v1.0.0';
+const IMAGE_CACHE = 'adsai-images-v1.0.0';
+const API_CACHE = 'adsai-api-v1.0.0';
 
 // 需要缓存的静态资源
 const STATIC_ASSETS = [
@@ -289,7 +289,7 @@ async function handleNavigationRequest(request) {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Offline - AutoAds</title>
+          <title>Offline - AdsAI</title>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
@@ -354,7 +354,7 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push message received:', event);
 
   const options = {
-    body: event.data ? event.data.text() : 'New notification from AutoAds',
+    body: event.data ? event.data.text() : 'New notification from AdsAI',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/badge-72x72.png',
     vibrate: [100, 50, 100],
@@ -377,7 +377,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('AutoAds', options)
+    self.registration.showNotification('AdsAI', options)
   );
 });
 

@@ -1,14 +1,14 @@
 # 最小环境变量清单（首次启动必须）
 
-以下变量为 AutoAds 单镜像首次启动的最小集；未提供的项将导致无法连接基础设施或鉴权失败。
+以下变量为 AdsAI 单镜像首次启动的最小集；未提供的项将导致无法连接基础设施或鉴权失败。
 
 ## 必须（基础设施/站点）
 - `DATABASE_URL`：MySQL 连接串，例如：
-  - `mysql://user:pass@host:3306/autoads?parseTime=true&loc=Local`
+  - `mysql://user:pass@host:3306/adsai?parseTime=true&loc=Local`
 - `REDIS_URL`：Redis 连接串，例如：
   - `redis://default:pass@host:6379/0`
 - `AUTH_SECRET`：NextAuth/签名密钥（32+ 随机字节）。
-- `NEXT_PUBLIC_DOMAIN`：运行域名（preview: `urlchecker.dev`；prod: `autoads.dev`）。
+- `NEXT_PUBLIC_DOMAIN`：运行域名（preview: `preview.example.com`；prod: `example.com`）。
 - `NEXT_PUBLIC_DEPLOYMENT_ENV`：`preview` 或 `production`。
 
 ## 必须（生产强制，预发/本地可临时关闭强制）

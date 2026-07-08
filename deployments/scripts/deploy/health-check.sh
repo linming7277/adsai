@@ -16,10 +16,10 @@ case $ENVIRONMENT in
         URL="http://localhost:3000"
         ;;
     "preview")
-        URL="https://urlchecker.dev"
+        URL="https://preview.example.com"
         ;;
     "production")
-        URL="https://autoads.dev"
+        URL="https://example.com"
         ;;
     *)
         echo "❌ 无效的环境: $ENVIRONMENT"

@@ -125,7 +125,7 @@ echo "4. 更新adscenter服务使用适配器"
 echo ""
 echo "执行命令 (当数据库可用时):"
 for i in "${!DDL_STATEMENTS[@]}"; do
-    echo "psql -d autoads_db -c \"${DDL_STATEMENTS[$i]}\""
+    echo "psql -d adsai_db -c \"${DDL_STATEMENTS[$i]}\""
 done
 
 echo ""

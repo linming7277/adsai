@@ -11,9 +11,9 @@ import path from 'path';
 
 // 配置
 const TEST_CONFIG = {
-  baseUrl: 'https://www.urlchecker.dev',
+  baseUrl: 'https://preview.example.com',
   testAccount: {
-    email: process.env.TEST_EMAIL || 'test@urlchecker.dev',
+    email: process.env.TEST_EMAIL || 'test@preview.example.com',
     password: process.env.TEST_PASSWORD || 'TestPassword123!'
   },
   tokenFile: path.join(process.env.HOME || '/tmp', '.demo-test-token.json'),
@@ -277,7 +277,7 @@ class TestAuthenticator {
     console.log('🔐 Attempting direct API authentication...');
 
     // 使用fetch直接调用Supabase API
-    const response = await fetch('https://api.urlchecker.dev/api/v1/auth/test-login', {
+    const response = await fetch('https://api.preview.example.com/api/v1/auth/test-login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

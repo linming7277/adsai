@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/services/functions/dispatcher
+module github.com/linming7277/adsai/services/functions/dispatcher
 
 go 1.25
 

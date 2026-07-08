@@ -9,8 +9,8 @@ import { chromium } from 'playwright';
 
 class BasicConnectivityTester {
   constructor() {
-    this.baseUrl = 'https://www.urlchecker.dev';
-    this.apiBaseUrl = 'http://api.urlchecker.dev';
+    this.baseUrl = 'https://preview.example.com';
+    this.apiBaseUrl = 'http://api.preview.example.com';
     this.browser = null;
     this.context = null;
     this.results = {
@@ -268,8 +268,8 @@ class BasicConnectivityTester {
 async function main() {
   console.log('🌐 Basic Connectivity Testing');
   console.log('=================================');
-  console.log(`Frontend: https://www.urlchecker.dev`);
-  console.log(`API: http://api.urlchecker.dev`);
+  console.log(`Frontend: https://preview.example.com`);
+  console.log(`API: http://api.preview.example.com`);
   console.log('---');
 
   const tester = new BasicConnectivityTester();

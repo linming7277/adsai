@@ -353,11 +353,11 @@ gcloud run deploy console \
 ### **4. 验证部署**
 ```bash
 # 健康检查
-curl https://console.autoads.dev/healthz
+curl https://console.example.com/healthz
 
 # 测试 Dashboard API
 curl -H "Authorization: Bearer $JWT_TOKEN" \
-  https://console.autoads.dev/api/v1/console/dashboard/stats
+  https://console.example.com/api/v1/console/dashboard/stats
 ```
 
 ---

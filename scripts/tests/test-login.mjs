@@ -4,8 +4,8 @@
 
 import puppeteer from 'puppeteer'
 
-// 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-const base = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev'
+// 测试环境: preview.example.com (预发) | www.example.com (生产)
+const base = process.env.PREVIEW_BASE || 'https://preview.example.com'
 
 function log(...a){ console.log('[test-google-login]', ...a) }
 
@@ -13,7 +13,7 @@ async function testLogin() {
   log('启动浏览器测试...')
 
   // 使用独立的测试 profile（可以保存 Google 登录状态）
-  const testProfileDir = `${process.env.HOME}/.chrome-test-autoads-profile`
+  const testProfileDir = `${process.env.HOME}/.chrome-test-adsai-profile`
 
   const browser = await puppeteer.launch({
     headless: false,
@@ -270,7 +270,7 @@ async function testLogin() {
     log('   请验证以下内容：')
     log('   - ✓ 是否成功登录？')
     log('   - ✓ 是否卡在加载状态？')
-    log('   - ✓ Cookie domain 是否为 .urlchecker.dev？')
+    log('   - ✓ Cookie domain 是否为 .preview.example.com？')
     log('   - ✓ Session cookie 是否存在？')
     log('   - ✓ Network 标签中 API 请求是否正常到达 Cloud Run？')
 
@@ -278,7 +278,7 @@ async function testLogin() {
 
     log('8. 浏览器将保持打开 60 秒供您检查...')
     log('   请在开发者工具中查看：')
-    log('   - Application > Cookies > 检查 domain 是否为 .urlchecker.dev')
+    log('   - Application > Cookies > 检查 domain 是否为 .preview.example.com')
     log('   - Network > 检查是否有 /api/session/sign-in 请求')
     await new Promise(resolve => setTimeout(resolve, 60000))
 

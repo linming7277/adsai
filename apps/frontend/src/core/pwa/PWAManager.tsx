@@ -424,7 +424,7 @@ export function usePWAManager() {
       const notification = new Notification(title, {
         icon: '/icons/icon-192x192.png',
         badge: '/icons/badge-72x72.png',
-        tag: 'autoads-notification',
+        tag: 'adsai-notification',
         requireInteraction: false,
         ...options,
       });
@@ -595,7 +595,7 @@ export function PWAInstallPrompt({ className = '', onInstall, onDismiss }: PWAIn
             </svg>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">安装 AutoAds 应用</h3>
+            <h3 className="font-semibold text-gray-900">安装 AdsAI 应用</h3>
             <p className="text-sm text-gray-600">获得更好的使用体验，支持离线访问</p>
           </div>
         </div>

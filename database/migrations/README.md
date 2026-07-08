@@ -21,7 +21,7 @@ scoop install migrate
 
 ```bash
 # 设置数据库连接
-export DATABASE_URL="postgresql://user:pass@localhost:5432/autoads_db?sslmode=disable"
+export DATABASE_URL="postgresql://user:pass@localhost:5432/adsai_db?sslmode=disable"
 
 # 执行所有 up 迁移
 migrate -path database/migrations -database "${DATABASE_URL}" up
@@ -51,10 +51,10 @@ docker run --rm \
 
 # Cloud Run Job 部署
 gcloud run jobs create db-migrator \
-  --image asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:latest \
+  --image asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:latest \
   --region asia-northeast1 \
-  --set-env-vars DATABASE_URL_SECRET_NAME=projects/gen-lang-client-0944935873/secrets/DATABASE_URL/versions/latest \
-  --set-cloudsql-instances gen-lang-client-0944935873:asia-northeast1:autoads \
+  --set-env-vars DATABASE_URL_SECRET_NAME=projects/your-gcp-project-id/secrets/DATABASE_URL/versions/latest \
+  --set-cloudsql-instances your-gcp-project-id:asia-northeast1:adsai \
   --vpc-connector cr-conn-default-ane1
 
 # 执行迁移
@@ -91,7 +91,7 @@ touch database/migrations/000002_add_user_preferences.down.sql
 
 ```bash
 # 存储数据库 URL 到 Secret Manager
-echo -n "postgresql://user:pass@/autoads_db?host=/cloudsql/PROJECT:REGION:INSTANCE" | \
+echo -n "postgresql://user:pass@/adsai_db?host=/cloudsql/PROJECT:REGION:INSTANCE" | \
   gcloud secrets create DATABASE_URL --data-file=-
 
 # Cloud Run Job 自动从 secret 读取

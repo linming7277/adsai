@@ -13,7 +13,7 @@ type TermsSection = {
 };
 
 export const metadata = {
-  title: 'Terms of Service - AutoAds',
+  title: 'Terms of Service - AdsAI',
 };
 
 export default async function TermsPage() {

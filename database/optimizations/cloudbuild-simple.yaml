@@ -4,7 +4,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/index-migrator:latest'
+      - 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/index-migrator:latest'
       - '-f'
       - 'Dockerfile.index-migrator'
       - '.'
@@ -14,7 +14,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/index-migrator:latest'
+      - 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/index-migrator:latest'
 
   # 部署Cloud Run Job
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -27,22 +27,22 @@ steps:
         # 尝试创建Job，如果已存在则更新
         if gcloud run jobs describe apply-performance-indexes \
              --region=asia-northeast1 \
-             --project=gen-lang-client-0944935873 2>/dev/null; then
+             --project=your-gcp-project-id 2>/dev/null; then
           echo "Job已存在，更新镜像..."
           gcloud run jobs update apply-performance-indexes \
-            --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/index-migrator:latest \
+            --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/index-migrator:latest \
             --region=asia-northeast1 \
-            --project=gen-lang-client-0944935873
+            --project=your-gcp-project-id
         else
           echo "创建新Job..."
           gcloud run jobs create apply-performance-indexes \
-            --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/index-migrator:latest \
+            --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/index-migrator:latest \
             --region=asia-northeast1 \
-            --project=gen-lang-client-0944935873 \
+            --project=your-gcp-project-id \
             --set-secrets=DATABASE_URL=DATABASE_URL:latest \
             --vpc-connector=cr-conn-default-ane1 \
             --vpc-egress=private-ranges-only \
-            --service-account=codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com \
+            --service-account=service-account@your-gcp-project-id.iam.gserviceaccount.com \
             --max-retries=0 \
             --task-timeout=10m
         fi
@@ -56,11 +56,11 @@ steps:
       - 'execute'
       - 'apply-performance-indexes'
       - '--region=asia-northeast1'
-      - '--project=gen-lang-client-0944935873'
+      - '--project=your-gcp-project-id'
       - '--wait'
 
 images:
-  - 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/index-migrator:latest'
+  - 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/index-migrator:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY

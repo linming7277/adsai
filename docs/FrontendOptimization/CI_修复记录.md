@@ -17,7 +17,7 @@
 ### 错误详情
 
 ```
-Step #0 - "Smoke Tests": # github.com/xxrenzhe/autoads/services/billing/internal/handlers
+Step #0 - "Smoke Tests": # github.com/linming7277/adsai/services/billing/internal/handlers
 Step #0 - "Smoke Tests": internal/handlers/http.go:108:13: not enough arguments in call to apierrors.Unauthorized
 Step #0 - "Smoke Tests":     have ()
 Step #0 - "Smoke Tests":     want (string)
@@ -27,8 +27,8 @@ Step #0 - "Smoke Tests": internal/handlers/tokens.go:80:13: not enough arguments
 Step #0 - "Smoke Tests": internal/handlers/tokens.go:121:13: not enough arguments in call to apierrors.Unauthorized
 Step #0 - "Smoke Tests": internal/handlers/tokens.go:177:13: not enough arguments in call to apierrors.Unauthorized
 Step #0 - "Smoke Tests": internal/handlers/tokens.go:224:13: not enough arguments in call to apierrors.Unauthorized
-Step #0 - "Smoke Tests": internal/handlers/token_reservation.go:4:10: "github.com/xxrenzhe/autoads/pkg/apierrors" imported and not used
-Step #0 - "Smoke Tests": FAIL    github.com/xxrenzhe/autoads/services/billing/internal/handlers [build failed]
+Step #0 - "Smoke Tests": internal/handlers/token_reservation.go:4:10: "github.com/linming7277/adsai/pkg/apierrors" imported and not used
+Step #0 - "Smoke Tests": FAIL    github.com/linming7277/adsai/services/billing/internal/handlers [build failed]
 ```
 
 ---
@@ -90,7 +90,7 @@ apiErr := apierrors.Unauthorized("Unauthorized"); apiErr.WriteJSON(w, r)
 
 **修复前**:
 ```go
-import (	"github.com/xxrenzhe/autoads/pkg/apierrors"
+import (	"github.com/linming7277/adsai/pkg/apierrors"
 
 	"context"
 	"encoding/json"
@@ -121,7 +121,7 @@ import (
 
 ```bash
 # 修复 Unauthorized 调用
-cd /Users/jason/Documents/Kiro/autoads/services/billing/internal/handlers
+cd /path/to/adsai/services/billing/internal/handlers
 sed -i '' 's/apierrors\.Unauthorized()/apierrors.Unauthorized("Unauthorized")/g' http.go tokens.go
 
 # 修复未使用的导入（手动编辑）
@@ -135,7 +135,7 @@ sed -i '' 's/apierrors\.Unauthorized()/apierrors.Unauthorized("Unauthorized")/g'
 ### 本地编译测试
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads/services/billing
+cd /path/to/adsai/services/billing
 go build -o /tmp/billing-test .
 ```
 
@@ -163,23 +163,23 @@ go build -o /tmp/billing-test .
 ### 单元测试状态
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads/services/billing
+cd /path/to/adsai/services/billing
 go test ./...
 ```
 
 **结果**:
 ```
-?       github.com/xxrenzhe/autoads/services/billing    [no test files]
-?       github.com/xxrenzhe/autoads/services/billing/cmd/server    [no test files]
-?       github.com/xxrenzhe/autoads/services/billing/internal/config    [no test files]
-ok      github.com/xxrenzhe/autoads/services/billing/internal/domain    0.006s
-ok      github.com/xxrenzhe/autoads/services/billing/internal/events    0.010s
-ok      github.com/xxrenzhe/autoads/services/billing/internal/handlers    [通过]
-?       github.com/xxrenzhe/autoads/services/billing/internal/oapi    [no test files]
-?       github.com/xxrenzhe/autoads/services/billing/internal/pkg/database    [no test files]
-?       github.com/xxrenzhe/autoads/services/billing/internal/pkg/secrets    [no test files]
-ok      github.com/xxrenzhe/autoads/services/billing/internal/tokens    0.014s
-?       github.com/xxrenzhe/autoads/services/billing/testutil    [no test files]
+?       github.com/linming7277/adsai/services/billing    [no test files]
+?       github.com/linming7277/adsai/services/billing/cmd/server    [no test files]
+?       github.com/linming7277/adsai/services/billing/internal/config    [no test files]
+ok      github.com/linming7277/adsai/services/billing/internal/domain    0.006s
+ok      github.com/linming7277/adsai/services/billing/internal/events    0.010s
+ok      github.com/linming7277/adsai/services/billing/internal/handlers    [通过]
+?       github.com/linming7277/adsai/services/billing/internal/oapi    [no test files]
+?       github.com/linming7277/adsai/services/billing/internal/pkg/database    [no test files]
+?       github.com/linming7277/adsai/services/billing/internal/pkg/secrets    [no test files]
+ok      github.com/linming7277/adsai/services/billing/internal/tokens    0.014s
+?       github.com/linming7277/adsai/services/billing/testutil    [no test files]
 ```
 
 ### 手动测试建议
@@ -296,12 +296,12 @@ grep -n "pkg/apierrors" services/billing/internal/handlers/token_reservation.go
 ### 错误详情
 
 ```
-Step #0 - "Smoke Tests": # github.com/xxrenzhe/autoads/services/adscenter
-Step #0 - "Smoke Tests": internal/api/abtest.go:15:2: module github.com/xxrenzhe/autoads/pkg/apierrors provides package github.com/xxrenzhe/autoads/pkg/apierrors and is replaced but not required; to add it:
-Step #0 - "Smoke Tests":     go get github.com/xxrenzhe/autoads/pkg/apierrors
-Step #0 - "Smoke Tests": # github.com/xxrenzhe/autoads/services/adscenter
-Step #0 - "Smoke Tests": internal/api/misc.go:23:2: module github.com/xxrenzhe/autoads/pkg/pagination provides package github.com/xxrenzhe/autoads/pkg/pagination and is replaced but not required; to add it:
-Step #0 - "Smoke Tests":     go get github.com/xxrenzhe/autoads/pkg/pagination
+Step #0 - "Smoke Tests": # github.com/linming7277/adsai/services/adscenter
+Step #0 - "Smoke Tests": internal/api/abtest.go:15:2: module github.com/linming7277/adsai/pkg/apierrors provides package github.com/linming7277/adsai/pkg/apierrors and is replaced but not required; to add it:
+Step #0 - "Smoke Tests":     go get github.com/linming7277/adsai/pkg/apierrors
+Step #0 - "Smoke Tests": # github.com/linming7277/adsai/services/adscenter
+Step #0 - "Smoke Tests": internal/api/misc.go:23:2: module github.com/linming7277/adsai/pkg/pagination provides package github.com/linming7277/adsai/pkg/pagination and is replaced but not required; to add it:
+Step #0 - "Smoke Tests":     go get github.com/linming7277/adsai/pkg/pagination
 ```
 
 ### 根本原因
@@ -322,14 +322,14 @@ Go 模块系统要求：
 
 **修复命令**:
 ```bash
-cd /Users/jason/Documents/Kiro/autoads/services/adscenter
-go get github.com/xxrenzhe/autoads/pkg/apierrors
-go get github.com/xxrenzhe/autoads/pkg/pagination
+cd /path/to/adsai/services/adscenter
+go get github.com/linming7277/adsai/pkg/apierrors
+go get github.com/linming7277/adsai/pkg/pagination
 ```
 
 **修复前** (`go.mod` 部分内容):
 ```go
-module github.com/xxrenzhe/autoads/services/adscenter
+module github.com/linming7277/adsai/services/adscenter
 
 go 1.25.0
 
@@ -339,47 +339,47 @@ require (
 )
 
 replace (
-    github.com/xxrenzhe/autoads/pkg/apierrors => ../../pkg/apierrors
-    github.com/xxrenzhe/autoads/pkg/pagination => ../../pkg/pagination
+    github.com/linming7277/adsai/pkg/apierrors => ../../pkg/apierrors
+    github.com/linming7277/adsai/pkg/pagination => ../../pkg/pagination
 )
 ```
 
 **修复后**:
 ```go
-module github.com/xxrenzhe/autoads/services/adscenter
+module github.com/linming7277/adsai/services/adscenter
 
 go 1.25.0
 
 require (
     // ... 其他依赖 ...
-    github.com/xxrenzhe/autoads/pkg/apierrors v0.0.0-20251012115218-bdfed97caabc  // ✅ 已添加
-    github.com/xxrenzhe/autoads/pkg/pagination v0.0.0-20251012121500-b97370473a0e  // ✅ 已添加
+    github.com/linming7277/adsai/pkg/apierrors v0.0.0-20251012115218-bdfed97caabc  // ✅ 已添加
+    github.com/linming7277/adsai/pkg/pagination v0.0.0-20251012121500-b97370473a0e  // ✅ 已添加
 )
 
 replace (
-    github.com/xxrenzhe/autoads/pkg/apierrors => ../../pkg/apierrors
-    github.com/xxrenzhe/autoads/pkg/pagination => ../../pkg/pagination
+    github.com/linming7277/adsai/pkg/apierrors => ../../pkg/apierrors
+    github.com/linming7277/adsai/pkg/pagination => ../../pkg/pagination
 )
 ```
 
 ### 验证
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads/services/adscenter
+cd /path/to/adsai/services/adscenter
 go test ./...
 ```
 
 **结果**: ✅ 所有测试通过
 
 ```
-?       github.com/xxrenzhe/autoads/services/adscenter  [no test files]
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/api     0.686s
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/clients (cached)
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/config  (cached)
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/domain  (cached)
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/executor        (cached)
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/preflight       (cached)
-ok      github.com/xxrenzhe/autoads/services/adscenter/internal/ratelimit       (cached)
+?       github.com/linming7277/adsai/services/adscenter  [no test files]
+ok      github.com/linming7277/adsai/services/adscenter/internal/api     0.686s
+ok      github.com/linming7277/adsai/services/adscenter/internal/clients (cached)
+ok      github.com/linming7277/adsai/services/adscenter/internal/config  (cached)
+ok      github.com/linming7277/adsai/services/adscenter/internal/domain  (cached)
+ok      github.com/linming7277/adsai/services/adscenter/internal/executor        (cached)
+ok      github.com/linming7277/adsai/services/adscenter/internal/preflight       (cached)
+ok      github.com/linming7277/adsai/services/adscenter/internal/ratelimit       (cached)
 ```
 
 ### 受影响的文件
@@ -449,7 +449,7 @@ ok      github.com/xxrenzhe/autoads/services/adscenter/internal/ratelimit       
    ```bash
    # ✅ 正确流程
    cd services/adscenter
-   go get github.com/xxrenzhe/autoads/pkg/newpackage
+   go get github.com/linming7277/adsai/pkg/newpackage
    # 自动添加到 require 块
    
    # ❌ 错误流程

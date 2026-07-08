@@ -5,10 +5,10 @@
 #
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
 SERVICE_NAME="siterank-preview"
-REPO="autoads-services"
+REPO="adsai-services"
 IMAGE_NAME="siterank"
 IMAGE_TAG="preview-$(date +%Y%m%d-%H%M%S)"
 IMAGE_FULL="$REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE_NAME:$IMAGE_TAG"
@@ -22,7 +22,7 @@ echo ""
 
 # 准备构建上下文 - 只包含必需文件
 echo "📦 步骤1: 准备构建上下文..."
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 # 创建临时目录
 BUILD_DIR="/tmp/siterank-build-$(date +%s)"
@@ -54,7 +54,7 @@ echo ""
 # 构建镜像
 echo "🔨 步骤2: 构建Docker镜像..."
 gcloud builds submit $BUILD_DIR \
-  --config=/Users/jason/Documents/Kiro/autoads/services/siterank/cloudbuild-optimized.yaml \
+  --config=/path/to/adsai/services/siterank/cloudbuild-optimized.yaml \
   --substitutions="_IMAGE=$IMAGE_FULL" \
   --project=$PROJECT_ID \
   --region=$REGION
@@ -75,7 +75,7 @@ gcloud run deploy $SERVICE_NAME \
   --concurrency=80 \
   --max-instances=10 \
   --min-instances=0 \
-  --service-account=codex-dev@$PROJECT_ID.iam.gserviceaccount.com \
+  --service-account=service-account@$PROJECT_ID.iam.gserviceaccount.com \
   --set-env-vars="GCP_PROJECT_ID=$PROJECT_ID" \
   --project=$PROJECT_ID \
   --quiet

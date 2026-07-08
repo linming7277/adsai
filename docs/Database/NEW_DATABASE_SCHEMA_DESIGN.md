@@ -1,4 +1,4 @@
-# AutoAds 新数据库Schema架构设计
+# AdsAI 新数据库Schema架构设计
 
 **文档版本**: v1.0
 **创建日期**: 2025-10-19
@@ -35,7 +35,7 @@
 
 ## 🏗️ 新Schema架构设计
 
-### 主数据库: Cloud SQL autoads_db
+### 主数据库: Cloud SQL adsai_db
 
 #### 1. User Domain (用户域)
 ```sql

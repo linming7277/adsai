@@ -1,8 +1,8 @@
-# AutoAds 生产环境变量配置文档
+# AdsAI 生产环境变量配置文档
 
 ## 概述
 
-本文档详细列出了 AutoAds 系统在生产环境中需要配置的所有环境变量。遵循最小化配置原则，所有可选参数都有合理的默认值。
+本文档详细列出了 AdsAI 系统在生产环境中需要配置的所有环境变量。遵循最小化配置原则，所有可选参数都有合理的默认值。
 
 ## 基础应用配置
 
@@ -16,18 +16,18 @@ HOSTNAME=0.0.0.0
 
 # 部署环境标识
 NEXT_PUBLIC_DEPLOYMENT_ENV=production
-NEXT_PUBLIC_DOMAIN=autoads.dev
+NEXT_PUBLIC_DOMAIN=example.com
 
 # 应用密钥（生成一个强密钥）
 NEXTAUTH_SECRET=your-nextauth-secret-here
-NEXTAUTH_URL=https://www.autoads.dev
+NEXTAUTH_URL=https://www.example.com
 ```
 
 ### 可选配置
 
 ```bash
 # 应用标题和描述
-NEXT_PUBLIC_APP_NAME=AutoAds
+NEXT_PUBLIC_APP_NAME=AdsAI
 NEXT_PUBLIC_APP_DESCRIPTION=自动化营销平台
 
 # API版本
@@ -46,7 +46,7 @@ NEXT_PUBLIC_DEBUG=false
 DATABASE_URL=mysql://username:password@hostname:port/database_name?sslmode=require
 
 # 示例：
-# DATABASE_URL=mysql://autoads_prod:secure_password@db-prod.autoads.internal:3306/autoads_production?sslmode=require
+# DATABASE_URL=mysql://adsai_prod:secure_password@db-prod.adsai.internal:3306/adsai_production?sslmode=require
 
 > 说明：容器启动时会自动执行数据库迁移（Go 迁移 + Prisma 迁移）。
 > - 请确保在运行环境（Kubernetes Secret/ConfigMap、Docker 环境变量等）设置了 `DATABASE_URL`。
@@ -77,7 +77,7 @@ PRISMA_ENGINE_TIMEOUT=5000
 REDIS_URL=redis://username:password@hostname:port/db
 
 # 示例：
-# REDIS_URL=redis://autoads_prod:secure_password@redis-prod.autoads.internal:6379/0
+# REDIS_URL=redis://adsai_prod:secure_password@redis-prod.adsai.internal:6379/0
 ```
 
 ### 可选配置
@@ -90,7 +90,7 @@ REDIS_POOL_TIMEOUT=5000
 
 # 缓存配置
 REDIS_CACHE_TTL=3600
-REDIS_PREFIX=autoads:prod
+REDIS_PREFIX=adsai:prod
 ```
 
 ## 认证授权配置
@@ -100,7 +100,7 @@ REDIS_PREFIX=autoads:prod
 ```bash
 # NextAuth.js 配置
 AUTH_SECRET=your-auth-secret-here
-AUTH_URL=https://www.autoads.dev
+AUTH_URL=https://www.example.com
 
 # Google OAuth 配置
 AUTH_GOOGLE_ID=your-google-client-id
@@ -120,7 +120,7 @@ MAX_SESSIONS=5
 SESSION_TIMEOUT=3600
 
 # 管理员账户（首次部署时设置）
-ADMIN_EMAIL=admin@autoads.dev
+ADMIN_EMAIL=admin@adsai.dev
 ADMIN_PASSWORD=secure-admin-password
 ```
 
@@ -165,7 +165,7 @@ EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-email-password
-EMAIL_FROM=noreply@autoads.dev
+EMAIL_FROM=noreply@adsai.dev
 
 # 可选配置
 EMAIL_SECURE=true
@@ -178,7 +178,7 @@ EMAIL_TLS=true
 # 日志配置
 LOG_LEVEL=info
 LOG_FORMAT=json
-LOG_FILE=/var/log/autoads/app.log
+LOG_FILE=/var/log/adsai/app.log
 LOG_MAX_SIZE=100m
 LOG_MAX_FILES=10
 
@@ -272,7 +272,7 @@ environment:
 ```bash
 # Next 用于签发内部 JWT 的 RSA 私钥（PEM 格式，多行需转义）
 INTERNAL_JWT_PRIVATE_KEY=-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----
-INTERNAL_JWT_ISS=autoads-next
+INTERNAL_JWT_ISS=adsai-next
 INTERNAL_JWT_AUD=internal-go
 INTERNAL_JWT_TTL_SECONDS=120
 
@@ -291,7 +291,7 @@ SECURITY_HSTS_MAX_AGE=31536000
 SECURITY_HSTS_INCLUDE_SUBDOMAINS=true
 
 # CORS 配置
-CORS_ORIGIN=https://www.autoads.dev
+CORS_ORIGIN=https://www.example.com
 CORS_CREDENTIALS=true
 
 # 速率限制
@@ -368,9 +368,9 @@ TASK_CLEANUP_INTERVAL=86400
 # 基础配置
 NODE_ENV=production
 NEXT_PUBLIC_DEPLOYMENT_ENV=production
-NEXT_PUBLIC_DOMAIN=autoads.dev
+NEXT_PUBLIC_DOMAIN=example.com
 NEXTAUTH_SECRET=your-very-secure-secret-here
-NEXTAUTH_URL=https://www.autoads.dev
+NEXTAUTH_URL=https://www.example.com
 
 # 数据库
 DATABASE_URL=mysql://user:pass@host:3306/dbname?sslmode=require
@@ -430,5 +430,5 @@ JWT_SECRET=your-jwt-secret-here
 ## 联系方式
 
 如遇配置问题，请联系技术支持：
-- 邮箱：support@autoads.dev
+- 邮箱：support@adsai.dev
 - 紧急联系：系统管理员

@@ -15,8 +15,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/xxrenzhe/autoads/pkg/errors"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/errors"
+	"github.com/linming7277/adsai/pkg/middleware"
 )
 
 // ReferralHandler handles referral related requests
@@ -253,7 +253,7 @@ func (h *ReferralHandler) getReferralInfo(ctx context.Context, userID string) (*
 	}
 
 	// Generate referral link
-	baseURL := "https://autoads.com" // TODO: Get from config
+	baseURL := "https://example.com" // TODO: Get from config
 	referralLink := fmt.Sprintf("%s/signup?ref=%s", baseURL, referralCode)
 
 	return &ReferralInfo{

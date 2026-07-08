@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	pcache "github.com/xxrenzhe/autoads/pkg/cache"
-	httpx "github.com/xxrenzhe/autoads/pkg/http"
+	pcache "github.com/linming7277/adsai/pkg/cache"
+	httpx "github.com/linming7277/adsai/pkg/http"
 )
 
 type APIKeyOptions struct {

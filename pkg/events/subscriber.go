@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/xxrenzhe/autoads/pkg/idempotency"
+	"github.com/linming7277/adsai/pkg/idempotency"
 )
 
 // HandlerFunc processes a single event envelope.

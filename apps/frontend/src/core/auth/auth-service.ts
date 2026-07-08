@@ -3,7 +3,7 @@ import getSupabaseBrowserClient from '../supabase/browser-client';
 import { AuthLogger, authStorage, parseAuthError, isTokenExpiringSoon } from './auth-utils';
 
 /**
- * AutoAds 简化认证服务
+ * AdsAI 简化认证服务
  *
  * 核心特性：
  * 1. 基于Supabase Auth (Google OAuth only)
@@ -11,7 +11,7 @@ import { AuthLogger, authStorage, parseAuthError, isTokenExpiringSoon } from './
  * 3. 最小化API调用，避免过度工程化
  * 4. 完整错误处理和日志记录
  */
-export class AutoAdsAuthService {
+export class AdsAIAuthService {
   private supabase = getSupabaseBrowserClient();
 
   /**
@@ -242,10 +242,10 @@ export class AutoAdsAuthService {
   /**
    * 静默创建初始化服务实例
    */
-  static getInstance(): AutoAdsAuthService {
-    return new AutoAdsAuthService();
+  static getInstance(): AdsAIAuthService {
+    return new AdsAIAuthService();
   }
 }
 
 // 导出单例实例
-export const authService = AutoAdsAuthService.getInstance();
+export const authService = AdsAIAuthService.getInstance();

@@ -1,5 +1,5 @@
 -- ========================================
--- AutoAds 数据库迁移: UserActivity Schema Initialization
+-- AdsAI 数据库迁移: UserActivity Schema Initialization
 -- 创建用户活动域 (UserActivity Domain) Schema
 -- 项目初始化状态 - 直接创建最终架构
 -- 迁移ID: 001

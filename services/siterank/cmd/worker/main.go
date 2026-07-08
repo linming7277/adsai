@@ -10,11 +10,11 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/xxrenzhe/autoads/pkg/dbadmin"
-	"github.com/xxrenzhe/autoads/pkg/dburl"
-	"github.com/xxrenzhe/autoads/pkg/logger"
-	"github.com/xxrenzhe/autoads/pkg/telemetry"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/events"
+	"github.com/linming7277/adsai/pkg/dbadmin"
+	"github.com/linming7277/adsai/pkg/dburl"
+	"github.com/linming7277/adsai/pkg/logger"
+	"github.com/linming7277/adsai/pkg/telemetry"
+	"github.com/linming7277/adsai/services/siterank/internal/events"
 )
 
 var (
@@ -82,7 +82,7 @@ func main() {
 
 	topicID := os.Getenv("PUBSUB_TOPIC_ID")
 	if topicID == "" {
-		topicID = "autoads-events" // default topic
+		topicID = "adsai-events" // default topic
 	}
 
 	subscriber, err := events.NewSubscriber(ctx, db, nil, nil, nil)

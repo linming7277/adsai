@@ -1,6 +1,6 @@
 # UX 最佳实践差距清单（2025-10-11）
 
-> 对照 Stripe、Linear、Vercel 的体验模式，梳理 AutoAds 现状与差距。
+> 对照 Stripe、Linear、Vercel 的体验模式，梳理 AdsAI 现状与差距。
 
 ## 1. 导航 & 快捷操作
 - **现状**：左侧导航/顶部导航已覆盖核心模块，但缺少统一的快捷键、命令面板与 Skip Link。

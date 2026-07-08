@@ -7,15 +7,15 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/xxrenzhe/autoads/pkg/auth"
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/services/console/internal/config"
-	"github.com/xxrenzhe/autoads/services/console/internal/handlers"
-	"github.com/xxrenzhe/autoads/services/console/internal/storage"
+	"github.com/linming7277/adsai/pkg/auth"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/services/console/internal/config"
+	"github.com/linming7277/adsai/services/console/internal/handlers"
+	"github.com/linming7277/adsai/services/console/internal/storage"
 
-	"github.com/xxrenzhe/autoads/pkg/cache"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/pkg/telemetry"
+	"github.com/linming7277/adsai/pkg/cache"
+	"github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/pkg/telemetry"
 )
 
 // P3-6: gzipMiddleware wraps an http.Handler to provide gzip compression

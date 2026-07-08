@@ -23,12 +23,12 @@ postgresql://USER:PASSWORD@/cloudsql:PROJECT:REGION/INSTANCE/DATABASE_NAME
 
 #### 步骤1：运��数据库URL修复工具
 ```bash
-cd /path/to/autoads
+cd /path/to/adsai
 go run tools/fix-database-url/main.go \
     your-gcp-project-id \
     us-central1 \
     your-cloudsql-instance \
-    autoads_db
+    adsai_db
 ```
 
 #### 步骤2：更新Secret Manager
@@ -36,7 +36,7 @@ go run tools/fix-database-url/main.go \
 
 ```bash
 # 示例输出（请使用你实际的参数）
-gcloud secrets versions add DATABASE_URL "postgresql://USER:PASSWORD@/cloudsql:your-gcp-project-id:us-central1/your-cloudsql-instance/autoads_db" --project="your-gcp-project-id"
+gcloud secrets versions add DATABASE_URL "postgresql://USER:PASSWORD@/cloudsql:your-gcp-project-id:us-central1/your-cloudsql-instance/adsai_db" --project="your-gcp-project-id"
 ```
 
 #### 步骤3：重新部署服务
@@ -55,7 +55,7 @@ gcloud run services update console --region=us-central1
 PROJECT_ID="your-gcp-project-id"
 REGION="us-central1"
 INSTANCE_NAME="your-cloudsql-instance"
-DATABASE_NAME="autoads_db"
+DATABASE_NAME="adsai_db"
 ```
 
 #### 步骤2：更新Secret Manager
@@ -115,12 +115,12 @@ chmod +x verify-cloud-sql-connection.sh
 
 **当前URL**（错误格式）：
 ```bash
-postgresql://postgres:password@localhost:5432/autoads_db
+postgresql://postgres:password@localhost:5432/adsai_db
 ```
 
 **修复后的URL**（正确格式）：
 ```bash
-postgresql://USER:PASSWORD@/cloudsql:my-project:us-central1:my-instance/autoads_db
+postgresql://USER:PASSWORD@/cloudsql:my-project:us-central1:my-instance/adsai_db
 ```
 
 ## 📋 最佳实践

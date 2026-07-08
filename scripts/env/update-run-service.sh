@@ -6,7 +6,7 @@ if [[ $# -lt 3 ]]; then
 Usage: scripts/env/update-run-service.sh <project-id> <region> <service-name> [--include-optional]
 
 Example:
-  scripts/env/update-run-service.sh gen-lang-client-0944935873 asia-northeast1 billing
+  scripts/env/update-run-service.sh your-gcp-project-id asia-northeast1 billing
 USAGE
   exit 1
 fi

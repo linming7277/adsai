@@ -7,9 +7,9 @@ set -euo pipefail
 
 PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-}}"
 REGION="${REGION:-asia-northeast1}"
-API_NAME="${API_NAME:-autoads-api}"
-CONFIG_NAME="${CONFIG_NAME:-autoads-v2}"
-GATEWAY_NAME="${GATEWAY_NAME:-autoads-gw}"
+API_NAME="${API_NAME:-adsai-api}"
+CONFIG_NAME="${CONFIG_NAME:-adsai-v2}"
+GATEWAY_NAME="${GATEWAY_NAME:-adsai-gw}"
 
 if [[ -z "$PROJECT_ID" ]]; then
   echo "ERROR: PROJECT_ID or GOOGLE_CLOUD_PROJECT required" >&2

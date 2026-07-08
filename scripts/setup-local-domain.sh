@@ -13,8 +13,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-DOMAIN="www.urlchecker.dev"
-API_DOMAIN="api.urlchecker.dev"
+DOMAIN="preview.example.com"
+API_DOMAIN="api.preview.example.com"
 LOCAL_IP="127.0.0.1"
 FRONTEND_PORT=3000
 API_PORT=8080

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/xxrenzhe/autoads/services/console/internal/clients"
+	"github.com/linming7277/adsai/services/console/internal/clients"
 )
 
 // ListAdsAccountsResponse represents the response for ads accounts list (console version)

@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/serviceclient
+module github.com/linming7277/adsai/pkg/serviceclient
 
 go 1.25.1
 

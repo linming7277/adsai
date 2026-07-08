@@ -24,7 +24,7 @@ Push Time: 2025-10-21
 
 **访问地址**:
 ```
-https://github.com/xxrenzhe/autoads/actions
+https://github.com/linming7277/adsai/actions
 ```
 
 **查看内容**:
@@ -90,7 +90,7 @@ gcloud logging read \
 
 **日志访问地址**:
 ```
-https://console.cloud.google.com/logs/query?project=gen-lang-client-0944935873
+https://console.cloud.google.com/logs/query?project=your-gcp-project-id
 ```
 
 **查询语句**:
@@ -105,7 +105,7 @@ timestamp>="2025-10-21T00:00:00Z"
 **查看迁移镜像**:
 ```bash
 gcloud artifacts docker images list \
-  asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator \
+  asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator \
   --format="table(package,version,createTime)" \
   --limit=10
 ```
@@ -142,7 +142,7 @@ gcloud artifacts docker images list \
 **检查命令**:
 ```bash
 # 在浏览器中打开
-open https://github.com/xxrenzhe/autoads/actions
+open https://github.com/linming7277/adsai/actions
 ```
 
 ### 步骤2: 检查Cloud Run Jobs状态
@@ -174,14 +174,14 @@ gcloud run jobs create db-verify-temp \
   --region=asia-northeast1 \
   --image=postgres:15-alpine \
   --set-secrets="DATABASE_URL=DATABASE_URL:latest" \
-  --set-cloudsql-instances=gen-lang-client-0944935873:asia-northeast1:autoads \
+  --set-cloudsql-instances=your-gcp-project-id:asia-northeast1:adsai \
   --max-retries=0 \
   --task-timeout=5m \
   --command=/bin/sh \
   --args=-c \
   --args='
     for i in $(seq 1 30); do
-      if [ -S "/cloudsql/gen-lang-client-0944935873:asia-northeast1:autoads/.s.PGSQL.5432" ]; then
+      if [ -S "/cloudsql/your-gcp-project-id:asia-northeast1:adsai/.s.PGSQL.5432" ]; then
         break
       fi
       sleep 1
@@ -270,9 +270,9 @@ version | dirty
 # 修复dirty状态
 gcloud run jobs create db-fix-dirty-temp \
   --region=asia-northeast1 \
-  --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator:latest \
+  --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator:latest \
   --set-secrets="DATABASE_URL=DATABASE_URL:latest" \
-  --set-cloudsql-instances=gen-lang-client-0944935873:asia-northeast1:autoads \
+  --set-cloudsql-instances=your-gcp-project-id:asia-northeast1:adsai \
   --command=/bin/sh \
   --args=-c \
   --args='migrate -path /migrations/billing -database "$DATABASE_URL" force 0' \
@@ -311,10 +311,10 @@ gcloud run jobs create db-fix-dirty-temp \
 
 ## 🔗 相关链接
 
-- GitHub Actions: https://github.com/xxrenzhe/autoads/actions
-- Cloud Run Jobs: https://console.cloud.google.com/run/jobs?project=gen-lang-client-0944935873
-- Cloud Logging: https://console.cloud.google.com/logs?project=gen-lang-client-0944935873
-- Artifact Registry: https://console.cloud.google.com/artifacts?project=gen-lang-client-0944935873
+- GitHub Actions: https://github.com/linming7277/adsai/actions
+- Cloud Run Jobs: https://console.cloud.google.com/run/jobs?project=your-gcp-project-id
+- Cloud Logging: https://console.cloud.google.com/logs?project=your-gcp-project-id
+- Artifact Registry: https://console.cloud.google.com/artifacts?project=your-gcp-project-id
 
 ---
 

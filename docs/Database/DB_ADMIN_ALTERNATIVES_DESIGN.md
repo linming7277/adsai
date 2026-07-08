@@ -208,13 +208,13 @@ func (sm *SchemaManager) GetDomainSchemas(domain string) []*DomainSchema {
 #### **2.1 使用Terraform管理数据库资源**
 ```hcl
 # terraform/database/supabase/main.tf
-resource "supabase_database" "autoads" {
-  name = "autoads_db"
+resource "supabase_database" "adsai" {
+  name = "adsai_db"
   project_id = var.supabase_project_id
 }
 
 resource "supabase_table" "user_profiles" {
-  database_id = supabase_database.autoads.id
+  database_id = supabase_database.adsai.id
   name = "user_profiles"
   schema = "public"
 
@@ -246,7 +246,7 @@ resource "supabase_table" "user_profiles" {
 }
 
 resource "supabase_index" "user_profiles_email" {
-  database_id = supabase_database.autoads.id
+  database_id = supabase_database.adsai.id
   table_id = supabase_table.user_profiles.id
   columns = ["email"]
   unique = true
@@ -270,7 +270,7 @@ import (
     "fmt"
     "time"
 
-    "github.com/xxrenzhe/autoads/pkg/database"
+    "github.com/linming7277/adsai/pkg/database"
 )
 
 type Migrator struct {
@@ -443,7 +443,7 @@ func (mt *MigrationTracker) RecordMigration(ctx context.Context, migration *Migr
 #### **2.3 Flyway集成**
 ```yaml
 # flyway.conf
-flyway.url=jdbc:postgresql://localhost:5432/autoads_db
+flyway.url=jdbc:postgresql://localhost:5432/adsai_db
 flyway.user=${DB_USER}
 flyway.password=${DB_PASSWORD}
 flyway.locations=classpath:db/migration
@@ -586,8 +586,8 @@ import (
     "log"
     "os"
 
-    "github.com/xxrenzhe/autoads/pkg/database"
-    "github.com/xxrenzhe/autoads/pkg/migrator"
+    "github.com/linming7277/adsai/pkg/database"
+    "github.com/linming7277/adsai/pkg/migrator"
 )
 
 func main() {

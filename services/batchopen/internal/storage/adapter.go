@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // Adapter 数据库适配器，支持从直接数据库连接逐步迁移到db-admin

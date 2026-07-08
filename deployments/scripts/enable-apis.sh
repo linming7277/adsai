@@ -8,7 +8,7 @@ set -euo pipefail
 #   PROJECT_ID (default: GOOGLE_CLOUD_PROJECT)
 #   REGION (default: asia-northeast1)
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 REGION="${REGION:-asia-northeast1}"
 
 gcloud config set project "$PROJECT_ID" >/dev/null

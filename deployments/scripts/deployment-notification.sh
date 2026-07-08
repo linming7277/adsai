@@ -59,10 +59,10 @@ show_usage() {
 get_environment_info() {
     case $ENVIRONMENT in
         preview)
-            echo "urlchecker.dev"
+            echo "preview.example.com"
             ;;
         production)
-            echo "autoads.dev"
+            echo "example.com"
             ;;
         *)
             echo "unknown"

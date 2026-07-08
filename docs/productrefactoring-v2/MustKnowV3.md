@@ -9,22 +9,22 @@
 8.发布相关的配置请放置在deployments目录下
 9.secrets目录和其下的所有文件都不能上传Github，也不能打包进入镜像
 10.执行过程中生成的文档请放置在.kiro/specs/addictive-ads-management-system/目录下
-11.请自行完成各种GCP和Firebase操作，使用服务账号codex-dev完成构建和部署，若缺少权限，请说明并申请
+11.请自行完成各种GCP和Firebase操作，使用服务账号service-account完成构建和部署，若缺少权限，请说明并申请
 12.在确保实现业务需求的情况下，功能实现遵循KISS原则，优先实现核心业务逻辑，确保前后端用户体验顺畅
 13.涉及到产品设计和功能实现的任务时，优先根据KANO模型进行评估，并给出理由，得到确认后再决定是否执行落地
 14.聚焦功能实现，不要在细枝末节上反复优化
 15.使用真实的API接口，不要动不动就搞一堆stub
 
 重要信息：
-1.GCP服务账号：codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com
-2.Firebase服务账号：firebase-adminsdk-fbsvc@gen-lang-client-0944935873.iam.gserviceaccount.com
-3.Firebase项目ID：gen-lang-client-0944935873，Firestore数据库：firestoredb
-4.GCP Project ID：gen-lang-client-0944935873
-5.Cloud SQL for PostgreSQL数据库：数据库实例autoads，数据库autoads_db，通过VPC Connector（cr-conn-default-ane1）进行内网访问数据库
+1.GCP服务账号：service-account@your-gcp-project-id.iam.gserviceaccount.com
+2.Firebase服务账号：firebase-adminsdk-fbsvc@your-gcp-project-id.iam.gserviceaccount.com
+3.Firebase项目ID：your-gcp-project-id，Firestore数据库：firestoredb
+4.GCP Project ID：your-gcp-project-id
+5.Cloud SQL for PostgreSQL数据库：数据库实例adsai，数据库adsai_db，通过VPC Connector（cr-conn-default-ane1）进行内网访问数据库
 6.Firebase Hosting 和 Cloud Run 都部署在 asia-northeast1 地区
 7.域名
-- 预发环境：https://www.urlchecker.dev、https://console.urlchecker.dev
-- 生产环境：https://www.autoads.dev、https://console.autoads.dev
+- 预发环境：https://preview.example.com、https://console.preview.example.com
+- 生产环境：https://www.example.com、https://console.example.com
 8.代码分支和部署流程
 部署流程主要分两步，第一步：推送代码到Github；第二步，触发Github Actions，通过Cloud Build生成不同环境的镜像并部署到Cloud Run
 - 代码推送到main分支，触发preview环境Cloud Build镜像构建和Cloud Run部署：标注 docker image tag 为 preview-latest 和 preview-[commitid]
@@ -39,12 +39,12 @@
 - 配置与缓存: Firestore
 - 事件总线: Google Cloud Pub/Sub
 - 数据库：Google Cloud SQL for PostgreSQL
-- API网关：Google Cloud API Gateway （预发环境：autoads-api-preview，生产环境：autoads-api）
+- API网关：Google Cloud API Gateway （预发环境：adsai-api-preview，生产环境：adsai-api）
 - 异步工作单元：Google Cloud Functions
-- 镜像仓库：Google Cloud Artifact Registry （代码库：autoads-services）
+- 镜像仓库：Google Cloud Artifact Registry （代码库：adsai-services）
 - AI能力接入：Firebase AI Logic
 - 敏感信息管理：Google Cloud Secret Manager
 - 监控&日志：Google Cloud Monitoring & Logging
 - 定时任务调度：Google Cloud Scheduler
 - 数据仓库/分析：BigQuery
-- Redis缓存：Google Cloud Memorystore for Redis （实例ID：autoads-redis）
+- Redis缓存：Google Cloud Memorystore for Redis （实例ID：adsai-redis）

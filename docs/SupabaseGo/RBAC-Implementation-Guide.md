@@ -131,7 +131,7 @@ async function AdminLayout({ children }: React.PropsWithChildren) {
 ### 方法1: 通过Supabase Dashboard (推荐)
 
 1. **用户首次登录**
-   - 访问 https://www.urlchecker.dev (preview) 或 https://www.autoads.dev (生产)
+   - 访问 https://preview.example.com (preview) 或 https://www.example.com (生产)
    - 点击 "Sign in with Google"
    - 使用Google账号完成授权
    - 此时用户自动注册为**普通用户**

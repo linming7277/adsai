@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Authenticated smoke for API Gateway endpoints.
 # Usage:
-#   HOST=autoads-gw-xxxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/gateway-smoke-auth.sh
+#   HOST=adsai-gw-xxxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/gateway-smoke-auth.sh
 
 HOST=${HOST:?HOST required}
 TOKEN=${TOKEN:?TOKEN (Firebase ID token) required}

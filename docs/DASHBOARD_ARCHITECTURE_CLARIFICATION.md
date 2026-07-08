@@ -33,7 +33,7 @@
 ## 当前问题分析
 
 ### 问题
-用户访问 `https://www.urlchecker.dev/dashboard` 时出现 "Failed to fetch dashboard stats"
+用户访问 `https://preview.example.com/dashboard` 时出现 "Failed to fetch dashboard stats"
 
 ### 根本原因
 用户Dashboard调用的端点 `/api/v1/console/dashboard/stats` 之前没有实现。
@@ -214,7 +214,7 @@ SELECT SUM(balance) FROM "UserToken"
 ```bash
 # 以普通用户身份登录
 curl -H "Authorization: Bearer $USER_TOKEN" \
-  https://www.urlchecker.dev/api/v1/console/dashboard/stats
+  https://preview.example.com/api/v1/console/dashboard/stats
 
 # 应该返回该用户的数据
 ```
@@ -223,7 +223,7 @@ curl -H "Authorization: Bearer $USER_TOKEN" \
 ```bash
 # 以管理员身份登录
 curl -H "Authorization: Bearer $ADMIN_TOKEN" \
-  https://www.urlchecker.dev/api/v1/console/stats
+  https://preview.example.com/api/v1/console/stats
 
 # 应该返回全局统计数据
 ```

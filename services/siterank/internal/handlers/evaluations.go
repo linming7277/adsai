@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/evaluation"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/events"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/metrics"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
+	"github.com/linming7277/adsai/services/siterank/internal/evaluation"
+	"github.com/linming7277/adsai/services/siterank/internal/events"
+	"github.com/linming7277/adsai/services/siterank/internal/metrics"
 )
 
 // EvaluationHandler handles offer evaluation requests

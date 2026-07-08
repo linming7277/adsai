@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Smoke test for Adscenter keyword expansion (rule-based, no Ads API)
 # Usage:
-#   HOST=autoads-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-keywords-expand.sh yitahome.com "home furniture"
+#   HOST=adsai-gw-xxxx.an.gateway.dev TOKEN=$ID_TOKEN ./deployments/scripts/smoke-keywords-expand.sh yitahome.com "home furniture"
 
 HOST=${HOST:?HOST required}
 TOKEN=${TOKEN:?TOKEN (Firebase ID token) required}

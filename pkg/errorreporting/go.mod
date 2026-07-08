@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/errorreporting
+module github.com/linming7277/adsai/pkg/errorreporting
 
 go 1.25.1
 

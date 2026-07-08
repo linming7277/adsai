@@ -7,7 +7,7 @@
   - 私网数据库链路：Serverless VPC Access 连接器 + 防火墙放通（完成）
   - Pub/Sub：主题 `domain-events-prod` 与订阅（identity/offer/workflow/billing）完成
   - Secret Manager：`DATABASE_URL`（私网 DSN）与 `GOOGLE_ADS_*`（完成）
-  - Cloud Build：日志切换至 `gs://autoads-build-logs-asia-northeast1`（完成）
+  - Cloud Build：日志切换至 `gs://adsai-build-logs-asia-northeast1`（完成）
 - 服务与接口
   - Identity/Adscenter/Offer/Siterank/Workflow/Billing/Batchopen：已上线（均绑定 VPC 连接器与私网 DB；Workflow/Billing 最小实现）
   - Console：占位上线（/console/*）
@@ -78,7 +78,7 @@
 ## F. CI/CD 与质量
 - F1 后端增量部署（变更检测→ Cloud Build/Run）+ 冒烟（完成）
   - 拆分：meta / changes / build-images / tag-images / deploy-services；空矩阵保护；Tag 构建强制全量
-  - Artifact Registry：asia‑northeast1‑docker.pkg.dev/<PROJECT>/autoads-services/<service>:<tag>
+  - Artifact Registry：asia‑northeast1‑docker.pkg.dev/<PROJECT>/adsai-services/<service>:<tag>
 - F2 前端（Cloud Run + Hosting）发布（完成）
   - 拆分：meta / build-image / tag-image / deploy-cloudrun / deploy-hosting / summary
   - Hosting：public + rewrites → run:frontend（不走 Web Frameworks 函数化构建）

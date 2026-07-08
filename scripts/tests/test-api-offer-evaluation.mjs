@@ -14,7 +14,7 @@
 import fetch from 'node-fetch';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const API_URL = `${BASE_URL}/api`;
 
 // 测试数据
@@ -34,7 +34,7 @@ async function createTestSession() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      email: 'test-user@autoads.dev',
+      email: 'test-user@adsai.dev',
       role: 'user'
     })
   });

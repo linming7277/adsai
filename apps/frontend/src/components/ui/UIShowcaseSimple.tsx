@@ -17,7 +17,7 @@ export default function UIShowcase() {
   return (
     <PageLayout
       title="UI Showcase"
-      description="AutoAds应用组件库展示"
+      description="AdsAI应用组件库展示"
       breadcrumbs={breadcrumbs}
     >
       <div className="space-y-8">

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
 )
 
 // Re-export common error variables for backwards compatibility.

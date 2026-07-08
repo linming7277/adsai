@@ -40,10 +40,10 @@
 ```bash
 # 1. GCP认证
 gcloud auth list
-gcloud config get-value project  # 应为: gen-lang-client-0944935873
+gcloud config get-value project  # 应为: your-gcp-project-id
 
 # 2. 权限验证
-gcloud projects get-iam-policy gen-lang-client-0944935873 \
+gcloud projects get-iam-policy your-gcp-project-id \
   --flatten="bindings[].members" \
   --filter="bindings.members:user:$(gcloud config get-value account)" \
   --format="table(bindings.role)"
@@ -60,7 +60,7 @@ command -v jq || echo "⚠️ 需要安装jq"
 command -v gh || echo "⚠️ 需要安装gh (GitHub CLI)"
 
 # 4. 获取Firebase Token（用于E2E测试）
-echo "访问 https://www.urlchecker.dev"
+echo "访问 https://preview.example.com"
 echo "登录后在开发者工具中获取 idToken"
 read -p "请输入Firebase Token: " FIREBASE_TOKEN
 export FIREBASE_TOKEN
@@ -69,7 +69,7 @@ export FIREBASE_TOKEN
 ### 代码状态检查
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 # 1. 确认所有代码已提交
 git status
@@ -95,7 +95,7 @@ cd services/siterank
 # 使用Cloud Build运行测试（避免本地权限问题）
 gcloud builds submit \
   --config=test.cloudbuild.yaml \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   .
 
 # 预期输出:
@@ -120,7 +120,7 @@ gcloud builds submit \
 **目的**: 在staging环境验证Schema变更
 
 ```bash
-cd /Users/jason/Documents/Kiro/autoads
+cd /path/to/adsai
 
 # 执行交互式迁移脚本
 bash scripts/deploy-db-migration.sh
@@ -132,7 +132,7 @@ bash scripts/deploy-db-migration.sh
 # 4. 验证新字段
 
 # 手动连接到数据库验证
-gcloud sql connect autoads --user=postgres --database=autoads_db
+gcloud sql connect adsai --user=postgres --database=adsai_db
 
 # 在psql中执行验证
 \i schemas/sql/020_ai_evaluation_v2_fields.sql
@@ -170,7 +170,7 @@ WHERE tablename = 'offer_evaluations'
 **回滚步骤**:
 ```bash
 # 如果迁移失败，执行回滚
-gcloud sql connect autoads --user=postgres --database=autoads_db
+gcloud sql connect adsai --user=postgres --database=adsai_db
 \i schemas/sql/020_ai_evaluation_v2_fields_rollback.sql
 
 # 验证字段已删除
@@ -224,7 +224,7 @@ bash deploy-preview.sh
 # 获取服务URL
 SERVICE_URL=$(gcloud run services describe siterank-preview \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --format='value(status.url)')
 
 # 1. 健康检查
@@ -290,7 +290,7 @@ firebase deploy --only hosting:preview
 # 预期输出:
 # ✔ Deploy complete!
 # Project Console: https://console.firebase.google.com/project/...
-# Hosting URL: https://www.urlchecker.dev
+# Hosting URL: https://preview.example.com
 
 # 3. 验证类型定义
 npm run type-check
@@ -301,7 +301,7 @@ npm run type-check
 **验证点**:
 - ✅ TypeScript编译无错误
 - ✅ Firebase部署成功
-- ✅ 前端可访问 (https://www.urlchecker.dev)
+- ✅ 前端可访问 (https://preview.example.com)
 - ✅ 浏览器控制台无错误
 
 **回滚步骤**:
@@ -409,8 +409,8 @@ bash test-ai-evaluation-e2e.sh
 
 **手动测试步骤** (如果脚本失败):
 ```bash
-# 1. 登录urlchecker.dev
-open "https://www.urlchecker.dev/en/auth/sign-in"
+# 1. 登录preview.example.com
+open "https://preview.example.com/en/auth/sign-in"
 
 # 2. 创建新Offer
 # URL: https://nike.com
@@ -469,7 +469,7 @@ echo "检查Grafana中的实际成本是否接近预期"
 
 # 4. 检查告警规则（如果已配置）
 gcloud alpha monitoring policies list \
-  --project=gen-lang-client-0944935873 \
+  --project=your-gcp-project-id \
   --filter='displayName:siterank'
 
 # 应包含:
@@ -526,7 +526,7 @@ gcloud alpha monitoring policies list \
 
 ```bash
 # 数据库回滚
-gcloud sql connect autoads --user=postgres --database=autoads_db
+gcloud sql connect adsai --user=postgres --database=adsai_db
 \i schemas/sql/020_ai_evaluation_v2_fields_rollback.sql
 
 # 后端服务回滚
@@ -589,7 +589,7 @@ curl -s ${SERVICE_URL}/metrics | grep siterank_gemini
 **排查步骤**:
 ```bash
 # 1. 验证数据库Schema
-gcloud sql connect autoads --user=postgres --database=autoads_db
+gcloud sql connect adsai --user=postgres --database=adsai_db
 SELECT column_name FROM information_schema.columns
 WHERE table_name = 'offer_evaluations'
   AND column_name = 'ai_product_type';

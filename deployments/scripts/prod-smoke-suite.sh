@@ -3,13 +3,13 @@ set -euo pipefail
 
 # Production smoke suite: Gateway health + key endpoints
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 STACK=prod \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 STACK=prod \
 #   ./deployments/scripts/prod-smoke-suite.sh
 
 PROJECT_ID=${PROJECT_ID:?}
 REGION=${REGION:-asia-northeast1}
 STACK=${STACK:-prod}
-GATEWAY_ID=$([[ "$STACK" == "prod" ]] && echo autoads-gw || echo autoads-gw-preview)
+GATEWAY_ID=$([[ "$STACK" == "prod" ]] && echo adsai-gw || echo adsai-gw-preview)
 
 HOST=$(gcloud api-gateway gateways describe "$GATEWAY_ID" --location "$REGION" --project "$PROJECT_ID" --format='value(defaultHostname)')
 if [[ -z "$HOST" ]]; then echo "[error] gateway host not found" >&2; exit 1; fi

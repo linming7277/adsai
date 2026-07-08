@@ -26,4 +26,4 @@ images:
 
 # 替换变量
 substitutions:
-  _IMAGE: 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-migrator-fixed:latest'
+  _IMAGE: 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-migrator-fixed:latest'

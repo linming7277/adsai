@@ -3,13 +3,13 @@ set -euo pipefail
 
 # Bootstrap SLO alert policies for core Cloud Run services using existing helper scripts.
 # Usage:
-#   PROJECT_ID=gen-lang-client-... REGION=asia-northeast1 ./deployments/monitoring/bootstrap-slo-alerts.sh
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 ./deployments/monitoring/bootstrap-slo-alerts.sh
 # Env (optional defaults applied below):
 #   LAT_SITERANK=2   LAT_BATCHOPEN=2  LAT_ADSCENTER=1.5  LAT_BILLING=1
 #   ERR_THRESHOLD=0.02   # 2%
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
-PROJECT_ID=${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}
+PROJECT_ID=${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}
 LAT_SITERANK=${LAT_SITERANK:-2}
 LAT_BATCHOPEN=${LAT_BATCHOPEN:-2}
 LAT_ADSCENTER=${LAT_ADSCENTER:-1.5}

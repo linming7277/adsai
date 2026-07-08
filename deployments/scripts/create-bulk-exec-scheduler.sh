@@ -20,16 +20,16 @@ set -euo pipefail
 #   TIME_ZONE       Time zone (default: Asia/Tokyo)
 #   JOB_NAME        Scheduler job name (default: adscenter-bulk-exec)
 #   MAX_PER_TICK    Shards to process per tick (default: 3, max 50)
-#   SA_EMAIL        Service Account for OIDC (default: codex-dev@<project>.iam.gserviceaccount.com)
+#   SA_EMAIL        Service Account for OIDC (default: service-account@<project>.iam.gserviceaccount.com)
 
-PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-gen-lang-client-0944935873}}"
+PROJECT_ID="${PROJECT_ID:-${GOOGLE_CLOUD_PROJECT:-your-gcp-project-id}}"
 REGION="${REGION:-asia-northeast1}"
 SERVICE_NAME="${SERVICE_NAME:-adscenter}"
 SCHEDULE="${SCHEDULE:-* * * * *}"
 TIME_ZONE="${TIME_ZONE:-Asia/Tokyo}"
 JOB_NAME="${JOB_NAME:-adscenter-bulk-exec}"
 MAX_PER_TICK="${MAX_PER_TICK:-3}"
-SA_EMAIL_DEFAULT="codex-dev@${PROJECT_ID}.iam.gserviceaccount.com"
+SA_EMAIL_DEFAULT="service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 SA_EMAIL="${SA_EMAIL:-$SA_EMAIL_DEFAULT}"
 
 gcloud config set project "$PROJECT_ID" >/dev/null

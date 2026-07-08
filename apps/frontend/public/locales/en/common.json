@@ -179,7 +179,7 @@
     "terms": "Terms of Service",
     "securityDetails": "Security Details",
     "securityNotice": "Security Notice",
-    "description": "AutoAds helps growth teams continuously improve ad campaign efficiency and conversion performance through AI evaluation, automated collaboration, and cross-channel data insights.",
+    "description": "AdsAI helps growth teams continuously improve ad campaign efficiency and conversion performance through AI evaluation, automated collaboration, and cross-channel data insights.",
     "allRightsReserved": "All rights reserved"
   },
   "tokens": {
@@ -584,7 +584,7 @@
     },
     "gettingStarted": {
       "title": "Create Your First Offer",
-      "description": "After importing or entering landing pages, AutoAds will automatically identify brands and channels, providing AI evaluation and optimization recommendations.",
+      "description": "After importing or entering landing pages, AdsAI will automatically identify brands and channels, providing AI evaluation and optimization recommendations.",
       "connectAdsAccount": "Connect Ad Account",
       "quickEvaluationTitle": "Quick Evaluation",
       "quickEvaluationDescription": "Trigger AI evaluation after selecting a landing page, generating structured diagnostics and priority recommendations within 10 minutes.",

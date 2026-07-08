@@ -3,9 +3,10 @@
 
 set -e
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 REGION="asia-northeast1"
-REPO_NAME="xxrenzhe/autoads"
+REPO_OWNER="${REPO_OWNER:-linming7277}"
+REPO_NAME="${REPO_NAME:-adsai}"
 
 echo "🔧 设置 Frontend Cloud Build 触发器..."
 
@@ -16,7 +17,7 @@ gcloud builds triggers create github \
   --region=$REGION \
   --name="frontend-preview" \
   --repo-name=$REPO_NAME \
-  --repo-owner="xxrenzhe" \
+  --repo-owner="$REPO_OWNER" \
   --branch-pattern="^main$" \
   --build-config="deployments/cloudbuild/frontend-preview.yaml" \
   --description="Deploy frontend to Firebase Hosting (Preview)" \
@@ -30,7 +31,7 @@ gcloud builds triggers create github \
   --region=$REGION \
   --name="frontend-production" \
   --repo-name=$REPO_NAME \
-  --repo-owner="xxrenzhe" \
+  --repo-owner="$REPO_OWNER" \
   --branch-pattern="^production$" \
   --build-config="deployments/cloudbuild/frontend-production.yaml" \
   --description="Deploy frontend to Firebase Hosting (Production)" \
@@ -44,7 +45,7 @@ gcloud builds triggers create github \
   --region=$REGION \
   --name="frontend-production-tag" \
   --repo-name=$REPO_NAME \
-  --repo-owner="xxrenzhe" \
+  --repo-owner="$REPO_OWNER" \
   --tag-pattern="^v[0-9]+\\.[0-9]+\\.[0-9]+$" \
   --build-config="deployments/cloudbuild/frontend-production.yaml" \
   --description="Deploy frontend to Firebase Hosting (Production Tag)" \
@@ -53,9 +54,9 @@ gcloud builds triggers create github \
 echo "✅ Frontend 触发器设置完成！"
 echo ""
 echo "📋 触发规则:"
-echo "  - main 分支推送 → Preview 环境 (www.urlchecker.dev)"
-echo "  - production 分支推送 → Production 环境 (www.autoads.dev)"
-echo "  - Tag 推送 (v*.*.*)  → Production 环境 (www.autoads.dev)"
+echo "  - main 分支推送 → Preview 环境 (preview.example.com)"
+echo "  - production 分支推送 → Production 环境 (www.example.com)"
+echo "  - Tag 推送 (v*.*.*)  → Production 环境 (www.example.com)"
 echo ""
 echo "🔍 查看触发器:"
 echo "  gcloud builds triggers list --project=$PROJECT_ID --region=$REGION"

@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/aievaluator"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/brandextract"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/browserexec"
-	"github.com/xxrenzhe/autoads/services/siterank/internal/similarweb"
+	"github.com/linming7277/adsai/services/siterank/internal/aievaluator"
+	"github.com/linming7277/adsai/services/siterank/internal/brandextract"
+	"github.com/linming7277/adsai/services/siterank/internal/browserexec"
+	"github.com/linming7277/adsai/services/siterank/internal/similarweb"
 )
 
 // Publisher interface for event publishing

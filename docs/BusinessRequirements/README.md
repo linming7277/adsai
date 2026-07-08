@@ -1,4 +1,4 @@
-# AutoAds 业务需求文档目录
+# AdsAI 业务需求文档目录
 
 **最后更新**: 2025-10-15
 
@@ -195,9 +195,9 @@ MASTER_TASK_LIST.md (主任务列表)
 ### 问题反馈
 
 - **GitHub Issues**: 技术问题、Bug反馈
-- **Slack #project-autoads**: 日常沟通、快速问题
-- **项目经理邮箱**: pm@autoads.com
-- **技术Lead邮箱**: tech-lead@autoads.com
+- **Slack #project-adsai**: 日常沟通、快速问题
+- **项目经理邮箱**: pm@adsai.com
+- **技术Lead邮箱**: tech-lead@adsai.com
 
 ### 会议安排
 

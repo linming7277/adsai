@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Preview Environment Test Runner
-# This script runs E2E tests against www.urlchecker.dev
+# This script runs E2E tests against preview.example.com
 
 set -e
 
@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-PREVIEW_BASE="https://www.urlchecker.dev"
+PREVIEW_BASE="https://preview.example.com"
 TEST_RESULTS_DIR="$PROJECT_ROOT/test-results"
 
 # Ensure test results directory exists

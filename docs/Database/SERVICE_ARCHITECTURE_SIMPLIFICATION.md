@@ -1,4 +1,4 @@
-# AutoAds ��务架构简化方案
+# AdsAI ��务架构简化方案
 
 **评估日期**: 2025-10-19
 **评估范围**: functions-dispatcher, projector, auth-service
@@ -356,7 +356,7 @@ Day 2:
 
 ---
 
-**结论**: 通过移除functions-dispatcher和简化projector，我们可以显著简化系统架构，降低维护成本，同时保持所有核心功能。auth-service作为核心安全组件必须保留并适当增强。这次简化将为AutoAds项目带来更清晰的架构和更高的开发效率。
+**结论**: 通过移除functions-dispatcher和简化projector，我们可以显著简化系统架构，降低维护成本，同时保持所有核心功能。auth-service作为核心安全组件必须保留并适当增强。这次简化将为AdsAI项目带来更清晰的架构和更高的开发效率。
 
 *文档版本: v1.0*
 *最后更新: 2025-10-19*

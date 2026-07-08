@@ -19,7 +19,7 @@ function formatDateTime(input: string | number | Date) {
 }
 
 function buildReferralLink(code: string) {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.autoads.dev';
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.example.com';
   return `${base}/auth?ref=${code}`;
 }
 
@@ -72,7 +72,7 @@ export function ReferralTab({
   return (
     <SectionCard
       title="邀请奖励"
-      description="邀请新用户开通 AutoAds，可额外获得 Token 或套餐天数奖励。"
+      description="邀请新用户开通 AdsAI，可额外获得 Token 或套餐天数奖励。"
     >
       <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-800">
         <p className="font-semibold">专属邀请码：{summary.referralCode}</p>

@@ -1,4 +1,4 @@
-# AutoAds Frontend 全面审查计划
+# AdsAI Frontend 全面审查计划
 
 **审查目标**:
 1. 发现潜在问题

@@ -1,4 +1,4 @@
-# AutoAds 架构优化方案代码实施评估报告
+# AdsAI 架构优化方案代码实施评估报告
 
 **评估日期**: 2025-10-17
 **评估方法**: 代码库扫描 + 实际文件分析
@@ -258,7 +258,7 @@ router.Use(chimiddleware.Compress(5))
 
 ```go
 // services/offer/internal/clients/breaker_client.go
-import "github.com/xxrenzhe/autoads/pkg/circuitbreaker"
+import "github.com/linming7277/adsai/pkg/circuitbreaker"
 
 type BreakerClient struct {
     breaker *circuitbreaker.Breaker

@@ -4,9 +4,9 @@
 
 set -euo pipefail
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-CLOUDSQL_INSTANCE="${PROJECT_ID}:${REGION}:autoads"
+CLOUDSQL_INSTANCE="${PROJECT_ID}:${REGION}:adsai"
 
 # 需要数据库连接的服务列表
 SERVICES_WITH_DB=(

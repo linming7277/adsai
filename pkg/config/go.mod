@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/pkg/pkg/config
+module github.com/linming7277/adsai/pkg/pkg/config
 
 go 1.25.1
 

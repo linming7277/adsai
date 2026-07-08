@@ -2,7 +2,7 @@
 """Generate --update-secrets parameter for Cloud Run services.
 
 Example:
-  python scripts/env/build_update_command.py --project gen-lang-client-0944935873 \
+  python scripts/env/build_update_command.py --project your-gcp-project-id \
       --region asia-northeast1 --service billing --env preview
 """
 

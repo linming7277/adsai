@@ -13,7 +13,7 @@ while [ $ELAPSED -lt $MAX_WAIT ]; do
     echo "⏱️  已等待: ${ELAPSED}秒 / ${MAX_WAIT}秒"
     
     # 检查最新的workflow状态
-    STATUS=$(gh run list --repo xxrenzhe/autoads --limit 1 --json status,conclusion --jq '.[0]')
+    STATUS=$(gh run list --repo linming7277/adsai --limit 1 --json status,conclusion --jq '.[0]')
     
     if [ -z "$STATUS" ]; then
         echo "❌ 无法获取workflow状态"
@@ -35,7 +35,7 @@ while [ $ELAPSED -lt $MAX_WAIT ]; do
             echo "🔍 检查Cloud Run服务状态..."
             gcloud run services describe siterank-preview \
                 --region=asia-northeast1 \
-                --project=gen-lang-client-0944935873 \
+                --project=your-gcp-project-id \
                 --format="table(status.url,status.latestReadyRevisionName,status.conditions[0].status)"
             
             echo ""
@@ -46,7 +46,7 @@ while [ $ELAPSED -lt $MAX_WAIT ]; do
             echo "Conclusion: $WORKFLOW_CONCLUSION"
             echo ""
             echo "查看详细日志:"
-            echo "https://github.com/xxrenzhe/autoads/actions"
+            echo "https://github.com/linming7277/adsai/actions"
             exit 1
         fi
     fi
@@ -57,5 +57,5 @@ while [ $ELAPSED -lt $MAX_WAIT ]; do
 done
 
 echo "⏰ 超时：部署时间超过${MAX_WAIT}秒"
-echo "请手动检查: https://github.com/xxrenzhe/autoads/actions"
+echo "请手动检查: https://github.com/linming7277/adsai/actions"
 exit 1

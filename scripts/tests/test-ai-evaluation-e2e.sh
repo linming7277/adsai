@@ -5,7 +5,7 @@
 set -e
 
 # 配置
-API_GATEWAY_URL="https://autoads-api-preview-yt54xvsg5q-an.a.run.app"
+API_GATEWAY_URL="https://adsai-api-preview-yt54xvsg5q-an.a.run.app"
 FIREBASE_TOKEN="${FIREBASE_TOKEN:-}"  # 从环境变量获取
 
 # 测试域名
@@ -23,7 +23,7 @@ if [ -z "${FIREBASE_TOKEN}" ]; then
   echo "❌ 缺少FIREBASE_TOKEN环境变量"
   echo ""
   echo "获取Token方法:"
-  echo "1. 访问 https://www.urlchecker.dev"
+  echo "1. 访问 https://preview.example.com"
   echo "2. 登录后打开浏览器开发者工具"
   echo "3. Application → Local Storage → idToken"
   echo "4. 复制token并执行:"

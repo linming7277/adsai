@@ -16,8 +16,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/xxrenzhe/autoads/pkg/middleware"
-	"github.com/xxrenzhe/autoads/services/console/internal/clients"
+	"github.com/linming7277/adsai/pkg/middleware"
+	"github.com/linming7277/adsai/services/console/internal/clients"
 
 	_ "github.com/lib/pq"
 )

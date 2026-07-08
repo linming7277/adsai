@@ -1,7 +1,7 @@
-# AutoAds 多用户 SaaS 系统重构 PRD V3.0
+# AdsAI 多用户 SaaS 系统重构 PRD V3.0
 
 ## 文档信息
-- **项目名称**: AutoAds 多用户 SaaS 系统
+- **项目名称**: AdsAI 多用户 SaaS 系统
 - **版本**: v35.0
 - **创建日期**: 2025-01-09
 - **最后更新**: 2025-09-13
@@ -13,7 +13,7 @@
 
 ## 执行摘要
 
-AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ ChangeLink（链接管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、ChangeLink→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。
+AdsAI 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 SaaS 系统。当前系统已实现完整的用户认证、权限管理和三大核心功能，包括：✅ BatchOpen（批量访问，已实现三种模式）、✅ SiteRank（网站排名，已集成真实SimilarWeb API）、❌ ChangeLink（链接管理，仅有UI原型）。重构目标是将现有功能（BatchOpen→BatchGo、SiteRank→SiteRankGo、ChangeLink→AdsCenterGo）迁移至 Go 语言 + GoFly 架构，实现4900%性能提升和专业的后台管理系统。
 
 ## 1. 项目概述
 
@@ -23,7 +23,7 @@ AutoAds 正在从 Next.js 单体应用重构为基于 GoFly 框架的多用户 S
 基于代码库深度分析（2025-09-10）
 
 #### 当前项目状态
-AutoAds 是一个基于 Next.js 的自动化营销平台，三大核心功能实现状态：
+AdsAI 是一个基于 Next.js 的自动化营销平台，三大核心功能实现状态：
 - **✅ BatchOpen（批量访问）**: 完整实现三种执行模式（Basic/Silent/Automated）
 - **✅ SiteRank（网站排名）**: 完整实现，已集成真实SimilarWeb API，支持批量查询和缓存
 - **❌ ChangeLink（链接管理）**: 仅有UI界面，无后端API实现
@@ -77,7 +77,7 @@ AutoAds 是一个基于 Next.js 的自动化营销平台，三大核心功能实
 5. **业务连续性**: 保持所有现有功能的完整性和前端布局
 
 #### 背景上下文
-随着 AutoAds 用户规模增长和业务复杂度提升，现有架构面临以下挑战：
+随着 AdsAI 用户规模增长和业务复杂度提升，现有架构面临以下挑战：
 1. **扩展性瓶颈**: Node.js单进程架构难以支持高并发
 2. **多用户需求**: 需要支持多个用户独立使用系统
 3. **管理复杂度**: 缺乏统一的后台管理系统
@@ -542,13 +542,13 @@ GoFly Admin V3 是一个基于 Gin 框架的企业级后台管理系统，核心
 **2.1 深度集成架构设计**
 
 ```go
-// 完整的 GoFly + AutoAds 架构
+// 完整的 GoFly + AdsAI 架构
 app/
 ├── admin/                    // GoFly 管理后台（完整使用）
 │   ├── system/              // 系统管理模块
 │   │   ├── account.go       // 用户管理（扩展支持 OAuth）
 │   │   ├── role.go          // 角色权限（扩展套餐权限）
-│   │   ├── rule.go          // 菜单管理（集成 AutoAds 菜单）
+│   │   ├── rule.go          // 菜单管理（集成 AdsAI 菜单）
 │   │   ├── log.go           // 操作日志（扩展业务日志）
 │   │   └── config.go        // 系统配置（集成业务配置）
 │   ├── datacenter/          // 数据中心模块
@@ -560,13 +560,13 @@ app/
 │   └── createcode/          // 代码生成器
 │       └── product.go       // 扩展业务代码生成
 │
-├── business/                // GoFly 业务后台（改造为 AutoAds API）
+├── business/                // GoFly 业务后台（改造为 AdsAI API）
 │   ├── user/               // 用户业务模块
 │   │   ├── account.go      // 扩展 OAuth 认证
 │   │   └── setting.go      // 用户设置
 │   └── dashboard/          // 仪表板（改造为业务统计）
 │
-└── autoads/                 // AutoAds 核心业务模块（新增）
+└── adsai/                 // AdsAI 核心业务模块（新增）
     ├── common/             // 通用功能
     │   ├── middleware.go   // 业务中间件
     │   └── scheduler.go    // 任务调度器
@@ -592,7 +592,7 @@ app/
   - 继承 GoFly 的认证和权限
   - 支持多租户数据隔离
 
-- **AutoAds**: 核心业务逻辑层
+- **AdsAI**: 核心业务逻辑层
   - 三大核心功能的具体实现
   - 第三方服务集成
   - 异步任务处理
@@ -654,8 +654,8 @@ func (api *Account) GoogleLogin(c *gf.GinCtx) {
 **3.2 利用 GoFly 代码生成器**
 
 ```go
-// 为 AutoAds 业务表生成管理界面
-func GenerateAutoAdsCRUD() {
+// 为 AdsAI 业务表生成管理界面
+func GenerateAdsAICRUD() {
     // 1. 定义业务表结构
     tables := []string{
         "batchgo_tasks",
@@ -682,8 +682,8 @@ func GenerateAutoAdsCRUD() {
 **3.3 集成动态配置系统**
 
 ```yaml
-# 扩展 config.yaml，添加 AutoAds 业务配置
-autoads:
+# 扩展 config.yaml，添加 AdsAI 业务配置
+adsai:
   # BatchGo 配置
   batchgo:
     max_concurrent: 50        # 最大并发数
@@ -841,7 +841,7 @@ func init() {
 │   ├── system/         // 系统管理（用户、角色、权限等）
 │   ├── datacenter/     // 数据中心（配置管理）
 │   └── ...             // 其他管理模块
-├── autoads/            // AutoAds 业务模块（新增）
+├── adsai/            // AdsAI 业务模块（新增）
 │   ├── common/         // 通用功能
 │   ├── user/           // 用户业务模块
 │   ├── batchgo/        // BatchGo 功能
@@ -854,18 +854,18 @@ func init() {
 **2.2 模块职责划分**
 
 - **GoFly Admin**: 负责系统管理、用户管理、权限控制等通用功能
-- **AutoAds**: 负责具体的业务逻辑（三大核心功能）
+- **AdsAI**: 负责具体的业务逻辑（三大核心功能）
 - **数据共享**: 通过统一的数据库模型实现数据互通
 
 **3. 具体集成实现**
 
 **3.1 路由系统集成**
 ```go
-// 修改 app/controller.go，同时引入 admin 和 autoads 模块
+// 修改 app/controller.go，同时引入 admin 和 adsai 模块
 import (
     "gofly/app/admin"        // GoFly 管理后台
-    _ "gofly/app/autoads"    // 引入 AutoAds 模块
-    "gofly/app/autoads/common"  // AutoAds 路由中间件
+    _ "gofly/app/adsai"    // 引入 AdsAI 模块
+    "gofly/app/adsai/common"  // AdsAI 路由中间件
 )
 
 // 路由处理器 - 支持多模块
@@ -877,16 +877,16 @@ func RouterHandler(c *gf.GinCtx) {
         // GoFly 管理后台路由
         admin.RouterHandler(c, "admin")
     } else if strings.HasPrefix(path, "/api/v1/") {
-        // AutoAds API 路由
-        autoads.RouterHandler(c, "autoads")
+        // AdsAI API 路由
+        adsai.RouterHandler(c, "adsai")
     }
 }
 ```
 
 **3.2 认证系统集成**
 ```go
-// 扩展 JWT Claims，支持 AutoAds 用户信息
-type AutoAdsUserClaims struct {
+// 扩展 JWT Claims，支持 AdsAI 用户信息
+type AdsAIUserClaims struct {
     UserID       string `json:"user_id"`        // 用户ID
     Email        string `json:"email"`         // 邮箱
     Role         string `json:"role"`          // USER/ADMIN
@@ -938,7 +938,7 @@ type Permission struct {
 
 // 权限检查中间件
 func CheckPermission(c *gf.GinCtx, module, action string) bool {
-    user := c.MustGet("user").(*AutoAdsUser)
+    user := c.MustGet("user").(*AdsAIUser)
     plan := user.Plan
     
     // 检查套餐权限
@@ -958,7 +958,7 @@ database:
     hostport: 3306
     username: root
     password: root
-    dbname: autoads_v3  # 使用 AutoAds 数据库
+    dbname: adsai_v3  # 使用 AdsAI 数据库
     prefix: 
     type: "mysql"
     # ... 其他配置
@@ -969,7 +969,7 @@ database:
 redis:
   default:
     address: 127.0.0.1:6379
-    db: 0        # AutoAds 使用 DB 0
+    db: 0        # AdsAI 使用 DB 0
   cache:
     address: 127.0.0.1:6379
     db: 1        # 缓存使用 DB 1
@@ -980,8 +980,8 @@ redis:
 ```yaml
 app:
   port: 8200                    # 服务端口
-  apisecret: autoads@2025       # API 密钥
-  tokensecret: autoads-jwt-2025 # JWT 密钥
+  apisecret: adsai@2025       # API 密钥
+  tokensecret: adsai-jwt-2025 # JWT 密钥
   allowurl: http://localhost:3000  # 前端域名
   tokenouttime: 120            # Token 过期时间（分钟）
   limiterMax: 1000             # 限流阈值
@@ -1027,27 +1027,27 @@ GoFly 提供了代码生成工具，可以：
 3. 一键生成前后端代码
 4. 手动调整业务逻辑
 
-**7. 利用 GoFly 管理后台管理 AutoAds 业务**
+**7. 利用 GoFly 管理后台管理 AdsAI 业务**
 
-**7.1 在 GoFly 管理后台集成 AutoAds 功能**
+**7.1 在 GoFly 管理后台集成 AdsAI 功能**
 
-通过扩展 GoFly 的菜单和权限系统，将 AutoAds 的业务管理集成到管理后台：
+通过扩展 GoFly 的菜单和权限系统，将 AdsAI 的业务管理集成到管理后台：
 
 ```go
-// 在 app/admin/system/ 下创建 autoads_menu.go
+// 在 app/admin/system/ 下创建 adsai_menu.go
 package system
 
-type AutoAdsMenu struct{}
+type AdsAIMenu struct{}
 
-// 初始化 AutoAds 菜单
-func (m *AutoAdsMenu) InitMenus() {
+// 初始化 AdsAI 菜单
+func (m *AdsAIMenu) InitMenus() {
     menus := []map[string]interface{}{
         {
-            "title":      "AutoAds 管理",
+            "title":      "AdsAI 管理",
             "icon":       "dashboard",
-            "path":       "/autoads",
+            "path":       "/adsai",
             "component":  "Layout",
-            "redirect":   "/autoads/dashboard",
+            "redirect":   "/adsai/dashboard",
             "sort":       100,
             "status":     0,
             "type":       0, // 菜单类型：0目录，1菜单，2按钮
@@ -1055,8 +1055,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "仪表板",
                     "icon":      "monitor",
-                    "path":      "/autoads/dashboard",
-                    "component": "autoads/dashboard/index",
+                    "path":      "/adsai/dashboard",
+                    "component": "adsai/dashboard/index",
                     "sort":      101,
                     "status":    0,
                     "type":      1,
@@ -1064,8 +1064,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "用户管理",
                     "icon":      "user",
-                    "path":      "/autoads/users",
-                    "component": "autoads/users/index",
+                    "path":      "/adsai/users",
+                    "component": "adsai/users/index",
                     "sort":      102,
                     "status":    0,
                     "type":      1,
@@ -1073,8 +1073,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "套餐管理",
                     "icon":      "credit-card",
-                    "path":      "/autoads/plans",
-                    "component": "autoads/plans/index",
+                    "path":      "/adsai/plans",
+                    "component": "adsai/plans/index",
                     "sort":      103,
                     "status":    0,
                     "type":      1,
@@ -1082,8 +1082,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "BatchGo 任务",
                     "icon":      "rocket",
-                    "path":      "/autoads/batchgo",
-                    "component": "autoads/batchgo/index",
+                    "path":      "/adsai/batchgo",
+                    "component": "adsai/batchgo/index",
                     "sort":      104,
                     "status":    0,
                     "type":      1,
@@ -1091,8 +1091,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "SiteRankGo 查询",
                     "icon":      "bar-chart",
-                    "path":      "/autoads/siterankgo",
-                    "component": "autoads/siterankgo/index",
+                    "path":      "/adsai/siterankgo",
+                    "component": "adsai/siterankgo/index",
                     "sort":      105,
                     "status":    0,
                     "type":      1,
@@ -1100,8 +1100,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "AdsCenterGo 账户",
                     "icon":      "link",
-                    "path":      "/autoads/adscentergo",
-                    "component": "autoads/adscentergo/index",
+                    "path":      "/adsai/adscentergo",
+                    "component": "adsai/adscentergo/index",
                     "sort":      106,
                     "status":    0,
                     "type":      1,
@@ -1109,8 +1109,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "Token 管理",
                     "icon":      "dollar",
-                    "path":      "/autoads/tokens",
-                    "component": "autoads/tokens/index",
+                    "path":      "/adsai/tokens",
+                    "component": "adsai/tokens/index",
                     "sort":      107,
                     "status":    0,
                     "type":      1,
@@ -1118,8 +1118,8 @@ func (m *AutoAdsMenu) InitMenus() {
                 {
                     "title":     "系统监控",
                     "icon":      "alert",
-                    "path":      "/autoads/monitoring",
-                    "component": "autoads/monitoring/index",
+                    "path":      "/adsai/monitoring",
+                    "component": "adsai/monitoring/index",
                     "sort":      108,
                     "status":    0,
                     "type":      1,
@@ -1142,8 +1142,8 @@ func (m *AutoAdsMenu) InitMenus() {
 **7.2 权限规则集成**
 
 ```go
-// 创建 AutoAds 权限规则
-func (m *AutoAdsMenu) InitPermissions() {
+// 创建 AdsAI 权限规则
+func (m *AdsAIMenu) InitPermissions() {
     permissions := []map[string]interface{}{
         // BatchGo 权限
         {"name": "batchgo.task.create", "title": "创建任务", "module": "batchgo"},
@@ -1178,14 +1178,14 @@ func (m *AutoAdsMenu) InitPermissions() {
 
 **7.3 Vue 组件开发**
 
-GoFly 管理后台使用 Vue.js，需要为 AutoAds 开发对应的管理组件：
+GoFly 管理后台使用 Vue.js，需要为 AdsAI 开发对应的管理组件：
 
 ```bash
-# 在 resource/webadmin/src/views/ 下创建 AutoAds 组件
+# 在 resource/webadmin/src/views/ 下创建 AdsAI 组件
 views/
-└── autoads/
+└── adsai/
     ├── dashboard/
-    │   └── index.vue          # AutoAds 仪表板
+    │   └── index.vue          # AdsAI 仪表板
     ├── users/
     │   ├── index.vue          # 用户管理
     │   └── edit.vue           # 用户编辑
@@ -1210,8 +1210,8 @@ views/
 **7.4 API 对接**
 
 ```javascript
-// 在 resource/webadmin/src/api/ 下创建 AutoAds API
-// autoads.js
+// 在 resource/webadmin/src/api/ 下创建 AdsAI API
+// adsai.js
 import request from '@/utils/request'
 
 // BatchGo 相关 API
@@ -1241,13 +1241,13 @@ export function createBatchgoTask(data) {
 # 前端构建后部署到 GoFly 静态资源目录
 resource/
 ├── webadmin/          # 管理后台前端
-└── webbusiness/       # 业务前端（AutoAds 前端）
+└── webbusiness/       # 业务前端（AdsAI 前端）
 ```
 
 **7.2 进程管理**
 ```bash
 # 使用 systemd 管理 GoFly 服务
-# 配置文件：/etc/systemd/system/autoads.service
+# 配置文件：/etc/systemd/system/adsai.service
 ```
 
 **8. 开发工作流**
@@ -1276,11 +1276,11 @@ go run main.go
    - 安装 Redis 7.0+
 
 2. **数据库初始化**
-   - 创建 autoads_v3 数据库
+   - 创建 adsai_v3 数据库
    - 执行 DDL 创建表结构
 
 3. **代码迁移**
-   - 创建 AutoAds 业务模块
+   - 创建 AdsAI 业务模块
    - 迁移业务逻辑到 Go
 
 4. **前端适配**
@@ -1295,8 +1295,8 @@ go run main.go
 **10. 注意事项**
 
 1. **充分利用 GoFly 管理后台**：不要重复造轮子，GoFly 已经提供了完整的企业级管理功能
-2. **扩展而非替换**：通过扩展菜单、权限和组件来集成 AutoAds 功能
-3. **保持数据一致性**：AutoAds 业务数据与 GoFly 系统数据通过外键关联
+2. **扩展而非替换**：通过扩展菜单、权限和组件来集成 AdsAI 功能
+3. **保持数据一致性**：AdsAI 业务数据与 GoFly 系统数据通过外键关联
 4. **权限统一管理**：使用 GoFly 的 RBAC 系统管理所有权限
 5. **前端组件复用**：复用 GoFly 的 UI 组件库，保持界面风格统一
 6. **开发效率优先**：优先使用 GoFly 的代码生成工具，快速生成 CRUD 功能
@@ -1314,7 +1314,7 @@ main.go
 ├── app/                    // 应用层
 │   ├── admin/            // 管理端模块
 │   ├── business/         // 业务端模块
-│   ├── autoads/          // AutoAds 业务模块
+│   ├── adsai/          // AdsAI 业务模块
 │   └── common/           // 公共模块
 ├── utils/                 // 工具层
 │   ├── gf/              // 框架核心
@@ -1331,7 +1331,7 @@ main.go
 
 ```go
 // 模块化设计 - 每个模块都是独立的包
-package autoads
+package adsai
 
 import (
     "gofly/app/common"       // 公共模块
@@ -1385,16 +1385,16 @@ type Config struct {
     Database DatabaseConfig `yaml:"database"`
     Redis    RedisConfig    `yaml:"redis"`
     App      AppConfig      `yaml:"app"`
-    AutoAds  AutoAdsConfig  `yaml:"autoads"`  // AutoAds 专用配置
+    AdsAI  AdsAIConfig  `yaml:"adsai"`  // AdsAI 专用配置
 }
 
 // 热更新配置
 func WatchConfig() {
     gf.WatchConfig("resource/config.yaml", func(config *Config) {
         // 配置变更时的处理逻辑
-        updateBatchGoConfig(config.AutoAds.BatchGo)
-        updateSiteRankGoConfig(config.AutoAds.SiteRankGo)
-        updateAdsCenterGoConfig(config.AutoAds.AdsCenterGo)
+        updateBatchGoConfig(config.AdsAI.BatchGo)
+        updateSiteRankGoConfig(config.AdsAI.SiteRankGo)
+        updateAdsCenterGoConfig(config.AdsAI.AdsCenterGo)
     })
 }
 ```

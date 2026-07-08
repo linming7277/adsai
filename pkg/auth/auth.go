@@ -13,7 +13,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
 )
 
 var ErrUnauthenticated = errors.New("unauthenticated")

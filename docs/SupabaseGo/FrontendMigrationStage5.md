@@ -1,4 +1,4 @@
-# AutoAds 前端迁移阶段5 - Admin 模块迁移
+# AdsAI 前端迁移阶段5 - Admin 模块迁移
 
 ## 本阶段目标
 - 将后台管理（Dashboard、用户管理、配置项等）从 Firebase Admin / Firestore 迁移到 Supabase + Go 微服务。

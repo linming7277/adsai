@@ -1,7 +1,7 @@
 /**
  * 前端架构合规性验证脚本
  *
- * 检查前端代码是否符合AutoAds架构要求：
+ * 检查前端代码是否符合AdsAI架构要求：
  * 1. 无直接Supabase数据库访问
  * 2. 认证回调使用API而非直接查询
  * 3. 用户数据通过API Gateway访问
@@ -239,7 +239,7 @@ function generateRecommendations(report: ComplianceReport): string[] {
   }
 
   if (report.compliance < 100) {
-    recommendations.push('运行代码审查，确保符合AutoAds架构要求');
+    recommendations.push('运行代码审查，确保符合AdsAI架构要求');
   }
 
   return recommendations;

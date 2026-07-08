@@ -4,7 +4,7 @@ server:
   grpc_port: 50051
 
 database:
-  url: "postgresql://user:password@localhost:5432/autoads?sslmode=disable"
+  url: "postgresql://user:password@localhost:5432/adsai?sslmode=disable"
 
 similarweb:
   api_url: "https://data.similarweb.com/api/v1/data"

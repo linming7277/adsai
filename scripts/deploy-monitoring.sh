@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy Monitoring Configuration for AutoAds
+# Deploy Monitoring Configuration for AdsAI
 # This script helps set up Grafana + Prometheus metrics monitoring
 
 set -euo pipefail
@@ -12,11 +12,11 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_ID="${GCP_PROJECT:-autoads-439917}"
+PROJECT_ID="${GCP_PROJECT:-adsai-439917}"
 REGION="${GCP_REGION:-asia-northeast1}"
 
 echo -e "${BLUE}╔════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║   AutoAds Monitoring Setup             ║${NC}"
+echo -e "${BLUE}║   AdsAI Monitoring Setup             ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════╝${NC}"
 echo ""
 echo "Project ID: $PROJECT_ID"
@@ -75,8 +75,8 @@ for service in "${SERVICES[@]}"; do
             print_success "$service /metrics endpoint is accessible"
 
             # Count metrics
-            METRIC_COUNT=$(curl -s "$URL/metrics" | grep -c "^autoads_" || echo "0")
-            print_info "  Found $METRIC_COUNT autoads_* metrics"
+            METRIC_COUNT=$(curl -s "$URL/metrics" | grep -c "^adsai_" || echo "0")
+            print_info "  Found $METRIC_COUNT adsai_* metrics"
         else
             print_error "$service /metrics endpoint returned error"
         fi
@@ -96,7 +96,7 @@ SERVICE_URL=$(gcloud run services describe adscenter-preview \
 if [ -n "$SERVICE_URL" ]; then
     echo ""
     echo "Sample metrics from adscenter-preview:"
-    curl -s "$SERVICE_URL/metrics" | grep "^autoads_" | head -10
+    curl -s "$SERVICE_URL/metrics" | grep "^adsai_" | head -10
     echo "..."
     echo ""
 else
@@ -175,10 +175,10 @@ echo ""
 echo -e "${BLUE}📊 Quick Start Guide:${NC}"
 echo ""
 echo "1. View metrics directly:"
-echo "   curl $SERVICE_URL/metrics | grep autoads_"
+echo "   curl $SERVICE_URL/metrics | grep adsai_"
 echo ""
 echo "2. Test a specific metric:"
-echo "   curl $SERVICE_URL/metrics | grep autoads_billing_tokens_consumed_total"
+echo "   curl $SERVICE_URL/metrics | grep adsai_billing_tokens_consumed_total"
 echo ""
 echo "3. Set up Grafana (choose one):"
 echo "   - Local: brew install grafana && brew services start grafana"

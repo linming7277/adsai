@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Bootstrap Google Cloud resources required by AutoAds.
+# Bootstrap Google Cloud resources required by AdsAI.
 # - Creates Artifact Registry repo if missing
 # - Creates Pub/Sub topic if missing
 # - Ensures Secret Manager secret exists (optionally add version from FALLBACK_DATABASE_URL)
 
 PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-${PROJECT_ID:-}}"
 REGION="${REGION:-asia-northeast1}"
-REPO="${REPO:-autoads-services}"
+REPO="${REPO:-adsai-services}"
 PUBSUB_TOPIC_ID="${PUBSUB_TOPIC_ID:-domain-events}"
 DATABASE_URL_SECRET_NAME="${DATABASE_URL_SECRET_NAME:-}"
 FALLBACK_DATABASE_URL="${FALLBACK_DATABASE_URL:-}"
@@ -26,7 +26,7 @@ if ! gcloud artifacts repositories describe "${REPO}" --location="${REGION}" >/d
   gcloud artifacts repositories create "${REPO}" \
     --repository-format=docker \
     --location="${REGION}" \
-    --description="AutoAds services Docker repository"
+    --description="AdsAI services Docker repository"
 else
   echo "[bootstrap] Artifact Registry repo exists"
 fi

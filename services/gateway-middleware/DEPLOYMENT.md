@@ -2,7 +2,7 @@
 
 ## 概述
 
-Gateway Middleware是AutoAds的统一认证、授权和Token管理网关，部署在所有业务服务之前。
+Gateway Middleware是AdsAI的统一认证、授权和Token管理网关，部署在所有业务服务之前。
 
 **架构位置**:
 ```
@@ -18,11 +18,11 @@ Frontend → GCP API Gateway → Gateway Middleware → 业务服务 (offer, bil
 **VPC Connector** (必需):
 ```bash
 # Preview环境
-gcloud compute networks vpc-access connectors describe autoads-preview-vpc-connector \
+gcloud compute networks vpc-access connectors describe adsai-preview-vpc-connector \
   --region=asia-northeast1
 
 # Production环境
-gcloud compute networks vpc-access connectors describe autoads-prod-vpc-connector \
+gcloud compute networks vpc-access connectors describe adsai-prod-vpc-connector \
   --region=asia-northeast1
 ```
 
@@ -33,10 +33,10 @@ gcloud compute networks vpc-access connectors describe autoads-prod-vpc-connecto
 **Service Account Key** (必需):
 ```bash
 # Preview
-gcloud secrets describe autoads-preview-service-key
+gcloud secrets describe adsai-preview-service-key
 
 # Production
-gcloud secrets describe autoads-prod-service-key
+gcloud secrets describe adsai-prod-service-key
 ```
 
 ### 2. 依赖服务
@@ -55,13 +55,13 @@ Gateway Middleware依赖以下服务：
 #### 1. 手动触发部署
 
 ```bash
-cd /path/to/autoads
+cd /path/to/adsai
 
 # 方式1: 使用gcloud submit
 gcloud builds submit \
   --config=services/gateway-middleware/cloudbuild-preview.yaml \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 
 # 方式2: 通过Git推送触发（如果配置了Cloud Build触发器）
 git push origin main
@@ -119,7 +119,7 @@ ENV=preview"
 gcloud builds submit \
   --config=services/gateway-middleware/cloudbuild.yaml \
   --region=asia-northeast1 \
-  --project=gen-lang-client-0944935873
+  --project=your-gcp-project-id
 ```
 
 #### 2. 生产环境配置
@@ -374,7 +374,7 @@ redis-cli -h 10.0.0.3 INFO memory
 redis-cli -h 10.0.0.3 INFO stats | grep evicted
 
 # 如果内存不足，升级Redis实例
-gcloud redis instances update autoads-preview-redis \
+gcloud redis instances update adsai-preview-redis \
   --region=asia-northeast1 \
   --size=5
 ```
@@ -418,13 +418,13 @@ gcloud run services logs read gateway-middleware-preview \
 ```bash
 # 查看最近的镜像
 gcloud artifacts docker images list \
-  asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/gateway-middleware \
+  asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/gateway-middleware \
   --limit=5
 
 # 回滚到指定镜像
 gcloud run services update gateway-middleware-preview \
   --region=asia-northeast1 \
-  --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/gateway-middleware:preview-abc123
+  --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/gateway-middleware:preview-abc123
 ```
 
 #### 方案B: 流量切回旧架构
@@ -517,7 +517,7 @@ gcloud run services update gateway-middleware-preview \
 # 方式2: Secret Manager（推荐）
 gcloud run services update gateway-middleware-preview \
   --region=asia-northeast1 \
-  --update-secrets=JWT_SECRET=autoads-jwt-secret:latest
+  --update-secrets=JWT_SECRET=adsai-jwt-secret:latest
 ```
 
 ### 访问控制

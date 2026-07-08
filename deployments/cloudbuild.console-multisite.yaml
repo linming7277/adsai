@@ -3,7 +3,7 @@ substitutions:
   _TAG: preview-local
   _SERVICE: console-preview
   _REGION: asia-northeast1
-  _HOSTING_SITE: autoads-console-preview
+  _HOSTING_SITE: adsai-console-preview
   _IMAGE: gcr.io/$PROJECT_ID/console:${_TAG}
 
 steps:

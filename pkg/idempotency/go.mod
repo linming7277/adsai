@@ -1,3 +1,3 @@
-module github.com/xxrenzhe/autoads/pkg/idempotency
+module github.com/linming7277/adsai/pkg/idempotency
 
 go 1.25

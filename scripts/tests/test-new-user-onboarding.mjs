@@ -8,7 +8,7 @@
 import { chromium } from 'playwright';
 import { randomUUID } from 'crypto';
 
-const PREVIEW_BASE_URL = 'https://www.urlchecker.dev';
+const PREVIEW_BASE_URL = 'https://preview.example.com';
 const API_GATEWAY = 'https://gateway-middleware-preview-yt54xvsg5q-an.a.run.app';
 
 class OnboardingSystemTester {
@@ -62,7 +62,7 @@ class OnboardingSystemTester {
       // This is a placeholder - actual testing requires manual Google login
       console.log('   ⚠️  Automated OAuth testing not implemented');
       console.log('   Please test manually by:');
-      console.log('   1. Visit https://www.urlchecker.dev/auth');
+      console.log('   1. Visit https://preview.example.com/auth');
       console.log('   2. Use a new Google account');
       console.log('   3. Complete OAuth flow');
 
@@ -297,7 +297,7 @@ class OnboardingSystemTester {
 // Main execution
 async function main() {
   console.log('🎯 New User Onboarding System E2E Test');
-  console.log('Environment: Preview (www.urlchecker.dev)');
+  console.log('Environment: Preview (preview.example.com)');
   console.log('Testing: Trial → Demo Offers + Notifications + Checkin + Referral\n');
 
   const tester = new OnboardingSystemTester();

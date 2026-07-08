@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	httpclient "github.com/xxrenzhe/autoads/pkg/http"
+	httpclient "github.com/linming7277/adsai/pkg/http"
 )
 
 // AdscenterClient is a client for the Adscenter service

@@ -1,9 +1,9 @@
-module github.com/xxrenzhe/autoads/pkg/middleware
+module github.com/linming7277/adsai/pkg/middleware
 
 go 1.25
 
 require (
-	github.com/xxrenzhe/autoads/pkg/supabaseauth v0.0.1
+	github.com/linming7277/adsai/pkg/supabaseauth v0.0.1
 )
 
-replace github.com/xxrenzhe/autoads/pkg/supabaseauth => ../supabaseauth
+replace github.com/linming7277/adsai/pkg/supabaseauth => ../supabaseauth

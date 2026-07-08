@@ -1,4 +1,4 @@
-module github.com/xxrenzhe/autoads/tools/dbctl
+module github.com/linming7277/adsai/tools/dbctl
 
 go 1.23.0
 

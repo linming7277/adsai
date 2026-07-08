@@ -8,7 +8,7 @@
     {
       "displayName": "Replication Lag > 10s",
       "conditionThreshold": {
-        "filter": "resource.type = \"cloudsql_database\" AND resource.labels.database_id = \"gen-lang-client-0944935873:autoads-read-replica\" AND metric.type = \"cloudsql.googleapis.com/database/replication/replica_lag\"",
+        "filter": "resource.type = \"cloudsql_database\" AND resource.labels.database_id = \"your-gcp-project-id:adsai-read-replica\" AND metric.type = \"cloudsql.googleapis.com/database/replication/replica_lag\"",
         "comparison": "COMPARISON_GT",
         "thresholdValue": 10,
         "duration": "120s",
@@ -24,7 +24,7 @@
   "combiner": "OR",
   "enabled": true,
   "notificationChannels": [
-    "projects/gen-lang-client-0944935873/notificationChannels/11693781893064978969"
+    "projects/your-gcp-project-id/notificationChannels/11693781893064978969"
   ],
   "alertStrategy": {
     "autoClose": "1800s"

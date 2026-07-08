@@ -69,7 +69,7 @@ User 表新增字段：
 
 **关键逻辑**：
 - 邀请码在用户注册时自动生成（唯一且永久不变）
-- 邀请链接格式：`https://autoads.com/auth/sign-up?ref=A1B2C3D4E5F6`
+- 邀请链接格式：`https://example.com/auth/sign-up?ref=A1B2C3D4E5F6`
 - 被邀请者的 30 天试用**不与**默认 14 天叠加（取最大值）
 - 邀请者的 30 天奖励**可以**多次累加（邀请 5 人 = 150 天）
 
@@ -212,7 +212,7 @@ User Info 页面包含 5 个 Tab：
 │  [邀请链接卡片]                                   │
 │  你的专属邀请链接                                 │
 │  ┌────────────────────────────────┬──────┐     │
-│  │ https://autoads.com/...ref=... │ 复制 │     │
+│  │ https://example.com/...ref=... │ 复制 │     │
 │  └────────────────────────────────┴──────┘     │
 │  [Twitter] [Facebook] [LinkedIn] [Email]        │
 ├─────────────────────────────────────────────────┤
@@ -391,7 +391,7 @@ User Info 页面包含 5 个 Tab：
 ## 十、文档位置
 
 完整实现代码已集成到：
-**`/Users/jason/Documents/Kiro/autoads/docs/SupabaseGo/FrontendDesignComplete_20251009.md`**
+**`/path/to/adsai/docs/SupabaseGo/FrontendDesignComplete_20251009.md`**
 
 **章节位置**：第 21 章 - 补充业务逻辑详细设计
 - 21.1 签到奖励机制完整设计

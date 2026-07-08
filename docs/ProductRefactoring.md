@@ -1,9 +1,9 @@
-# AutoAds SaaS平台重构与演进蓝图 (V-Final, 经MVP焦点讨论更新)
+# AdsAI SaaS平台重构与演进蓝图 (V-Final, 经MVP焦点讨论更新)
 
 > 重要说明：本文件为 v1 汇总稿，最新、规范化的 SSOT 文档请参见：`docs/productrefactoring-v2/README.md`（v2 文档体系涵盖产品总纲、模块 PRD、架构、实施计划、运维、ADR 与 API 契约）。
 
 ## 0. 文档说明
-本文档为本次AutoAds平台重构的**唯一事实来源 (Single Source of Truth, SSOT)**。它汇总了所有关于产品、架构、技术和实施路线图的最终决策。后续如有变更，请在本文件追加“变更记录”并同步相关实现。
+本文档为本次AdsAI平台重构的**唯一事实来源 (Single Source of Truth, SSOT)**。它汇总了所有关于产品、架构、技术和实施路线图的最终决策。后续如有变更，请在本文件追加“变更记录”并同步相关实现。
 
 ---
 
@@ -11,7 +11,7 @@
 
 本次对齐与确认的关键决策如下（与代码实现同步）：
 
-- 产品定位更新：AutoAds 是一个专为 Google Ads 品牌竞价（Brand Bidding）与联盟营销（Affiliate Marketing）高阶玩家打造的、集“规模放大”“效能优化”“合规审计”于一体的智能自动化 SaaS 平台。核心价值：增收、提效、避险。
+- 产品定位更新：AdsAI 是一个专为 Google Ads 品牌竞价（Brand Bidding）与联盟营销（Affiliate Marketing）高阶玩家打造的、集“规模放大”“效能优化”“合规审计”于一体的智能自动化 SaaS 平台。核心价值：增收、提效、避险。
 - Token 使用原则：Token 仅用于平台资源计费/配额与用量扣费；不作为广告优化与复盘指标，仅在计费中心展示。
 - MVP 范围确立：MVP 必须完整覆盖从“Offer 库与机会推荐”到“评估-仿真-放大-诊断”的全链路核心功能，解决 8 大核心痛点。
 - 统一 Dashboard：首页展示账户健康分、风险项数量、自动化任务执行次数，支持全局→账号→Offer 三级钻取与风险卡片直达处理。
@@ -23,7 +23,7 @@
 - 风险识别策略：内置“低曝光低点击”“高曝光低点击”“高曝光高点击（需人工核验转化有效性）”“落地页不可用”“数据缺失”等规则，并支持后台可配置阈值与动作（提示/建任务/触发工作流/自动处置/下线或删除）。
 - 套餐与计费：不提供免费版本，套餐分为 Pro / Max / Elite 三档。套餐“管控功能与限额”，Token “按使用量扣费”。
 - 默认模板：为“不同阶段的模板（评估/仿真/放大/工作流）”与“点击时间分布曲线”提供国家级默认选项，用户可零配置一键跑通完整工作流，也可拖拽自定义。
-- 多用户与隔离：AutoAds 是多用户高并发 SaaS（无租户概念），所有配置/模板/任务/日志/报表/授权均按 user_id 级隔离；后端做强鉴权与行级过滤，Firestore 使用最小可行 Security Rules；接口幂等与原子扣费保障高并发一致性。
+- 多用户与隔离：AdsAI 是多用户高并发 SaaS（无租户概念），所有配置/模板/任务/日志/报表/授权均按 user_id 级隔离；后端做强鉴权与行级过滤，Firestore 使用最小可行 Security Rules；接口幂等与原子扣费保障高并发一致性。
 - 后台管理台最终形态：Next.js 路由 `/console` + `middleware.ts` 在边缘层校验 Firebase ID Token 与角色（`role=ADMIN`），前端导航不暴露入口，仅支持直达 URL；后台与前台界面风格完全独立但共享组件体系与设计变量。
 - 云集成架构：不设置“集中式集成服务”。每个领域微服务自行集成 Google Cloud 与 Firebase 能力（Secret Manager、Cloud SQL、Pub/Sub、Firestore、Firebase Auth 等）。投影器/异步任务使用 Google Cloud Functions 订阅 Pub/Sub。生产接入层使用 Google Cloud API Gateway 做 JWT 校验与路由，本地使用 Nginx 反代。
 - 配置与密钥：所有敏感环境变量（如数据库连接串）统一存放于 Google Cloud Secret Manager，通过 `*_SECRET_NAME` 环境变量传入 Secret 路径（例如 `DATABASE_URL_SECRET_NAME=projects/<PROJECT_ID>/secrets/DATABASE_URL/versions/latest`）。
@@ -46,7 +46,7 @@
 ## 2. 产品定位、用户与MVP定义
 
 ### 2.1. 产品定位与价值主张 (V-Final)
-AutoAds是一个为联盟营销与品牌竞价高阶玩家打造的，集“机会发现、智能诊断与自动化增长”于一体的Google Ads盈利效率平台。
+AdsAI是一个为联盟营销与品牌竞价高阶玩家打造的，集“机会发现、智能诊断与自动化增长”于一体的Google Ads盈利效率平台。
 
 - 核心价值主张: 帮助用户“更快地验证新机会，更稳地放大盈利盘”。我们将“增收、提效、避险”三大价值浓缩于此，聚焦于从0到1和从1到10的增长过程。
   - 增收 (Scale): 通过“机会推荐引擎”和“批量操作”能力，帮助用户复制成功路径，突破规模化瓶颈。
@@ -460,8 +460,8 @@ Token 默认消耗（后台可改）：
     *   运行 `firebase login` 并登录您的Firebase账户。
     *   运行 `gcloud auth configure-docker asia-northeast1-docker.pkg.dev` 来配置Docker认证。
 3.  **设置项目**:
-    *   运行 `gcloud config set project gen-lang-client-0944935873`。
-    *   运行 `firebase use gen-lang-client-0944935873`。
+    *   运行 `gcloud config set project your-gcp-project-id`。
+    *   运行 `firebase use your-gcp-project-id`。
 
 ### 8.2. 后端微服务部署流程 (以 `identity` 服务为例)
 
@@ -474,9 +474,9 @@ Token 默认消耗（后台可改）：
 ```bash
 # [SERVICE_NAME] 可替换为: identity, billing, offer, 等...
 SERVICE_NAME="identity"
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-REPO="autoads-services"
+REPO="adsai-services"
 IMAGE_TAG="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/${SERVICE_NAME}:latest"
 
 gcloud builds submit "./services/${SERVICE_NAME}" --tag "${IMAGE_TAG}"
@@ -525,7 +525,7 @@ pnpm build
 
 ```bash
 # 确保您在正确的Firebase项目中
-firebase use gen-lang-client-0944935873
+firebase use your-gcp-project-id
 
 # 部署到Firebase Hosting
 # --only hosting 指定只部署Hosting服务
@@ -553,7 +553,7 @@ firebase deploy --only hosting
   - 步骤：pnpm 安装/构建 → Firebase Hosting 部署（`FirebaseExtended/action-hosting-deploy`）。
 
 CI 需要的 GitHub Secrets（简化）：
-- `GCP_PROJECT_ID`（如：gen-lang-client-0944935873）
+- `GCP_PROJECT_ID`（如：your-gcp-project-id）
 - `GCP_REGION`（默认：asia-northeast1）
 - `GCP_SA_KEY`（具备 Cloud Build / Artifact Registry / Cloud Run / API Gateway 权限的 SA JSON）
 - `FIREBASE_SERVICE_ACCOUNT`（Firebase Hosting 发布用 SA JSON）
@@ -627,7 +627,7 @@ CI 需要的 GitHub Secrets（简化）：
 - **元数据 (Metadata)**: 在Next.js中，为每个页面（特别是博客文章）动态生成唯一的、包含关键词的`<title>`和`<meta name="description">`标签。
 
 ### 11.3. 内容策略：Blog模块
-Blog 是吸引自然流量、建立行业权威、教育潜在用户的核心阵地。文章存储于 Firestore；内容从 Brand Bid 从业者痛点出发，提供可操作的实践，并自然引导到 AutoAds 解决方案。开发阶段允许客户端读取，生产建议结合 ISR/SSG 输出静态页面以增强 SEO 与首屏性能。
+Blog 是吸引自然流量、建立行业权威、教育潜在用户的核心阵地。文章存储于 Firestore；内容从 Brand Bid 从业者痛点出发，提供可操作的实践，并自然引导到 AdsAI 解决方案。开发阶段允许客户端读取，生产建议结合 ISR/SSG 输出静态页面以增强 SEO 与首屏性能。
 
 ---
 
@@ -699,7 +699,7 @@ Blog 是吸引自然流量、建立行业权威、教育潜在用户的核心阵
 ```yaml
 swagger: "2.0"
 info:
-  title: autoads-gateway
+  title: adsai-gateway
   version: 1.0.0
 schemes:
   - https
@@ -710,9 +710,9 @@ securityDefinitions:
     type: oauth2
     flow: "implicit"
     authorizationUrl: ""
-    x-google-issuer: "https://securetoken.google.com/gen-lang-client-0944935873"
+    x-google-issuer: "https://securetoken.google.com/your-gcp-project-id"
     x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
-    x-google-audiences: "gen-lang-client-0944935873"
+    x-google-audiences: "your-gcp-project-id"
 paths:
   /api/v1/offers:
     get:
@@ -742,9 +742,9 @@ paths:
 
 部署步骤（概览）：
 1. 打包规范到 `gateway.yaml`
-2. `gcloud api-gateway apis create autoads-api --project=gen-lang-client-0944935873`
-3. `gcloud api-gateway api-configs create autoads-v1 --api=autoads-api --openapi-spec=gateway.yaml --project=gen-lang-client-0944935873`
-4. `gcloud api-gateway gateways create autoads-gw --api=autoads-api --api-config=autoads-v1 --location=asia-northeast1 --project=gen-lang-client-0944935873`
+2. `gcloud api-gateway apis create adsai-api --project=your-gcp-project-id`
+3. `gcloud api-gateway api-configs create adsai-v1 --api=adsai-api --openapi-spec=gateway.yaml --project=your-gcp-project-id`
+4. `gcloud api-gateway gateways create adsai-gw --api=adsai-api --api-config=adsai-v1 --location=asia-northeast1 --project=your-gcp-project-id`
 
 说明：
 - API Gateway 负责 JWT 校验；自定义 `role=ADMIN` 需要在后端微服务中间件中基于 Firebase Token 的自定义 Claim 再次判定。

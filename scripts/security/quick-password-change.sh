@@ -54,12 +54,12 @@ echo -e "${YELLOW}第1步: 更新Supabase数据库中的管理员密码${NC}"
 psql "$SUPABASE_DB_URL" << EOF
 UPDATE auth.users
 SET encrypted_password = crypt('$NEW_PASSWORD', gen_salt('bf'))
-WHERE email = 'admin@autoads.dev';
+WHERE email = 'admin@adsai.dev';
 
 -- 验证更新
 SELECT id, email, created_at, updated_at
 FROM auth.users
-WHERE email = 'admin@autoads.dev';
+WHERE email = 'admin@adsai.dev';
 EOF
 
 if [ $? -eq 0 ]; then
@@ -121,7 +121,7 @@ echo -e "${GREEN}✅ 密码更换完成！${NC}"
 echo -e "${GREEN}================================${NC}"
 echo ""
 echo "新的管理员登录信息:"
-echo "  邮箱: admin@autoads.dev"
+echo "  邮箱: admin@adsai.dev"
 echo "  密码: $NEW_PASSWORD"
 echo ""
 echo -e "${YELLOW}请立即测试新密码:${NC}"

@@ -58,13 +58,13 @@ services/console/migrations/000001-000006_*.up.sql
 ./scripts/db/verify-schema-status.sh
 
 # 查看所有schema
-psql -h /cloudsql/autoads-440902:us-central1:autoads-db \
-     -U autoads_admin -d autoads_db \
+psql -h /cloudsql/adsai-440902:us-central1:adsai-db \
+     -U adsai_admin -d adsai_db \
      -c "\dn+"
 
 # 查看所有表
-psql -h /cloudsql/autoads-440902:us-central1:autoads-db \
-     -U autoads_admin -d autoads_db \
+psql -h /cloudsql/adsai-440902:us-central1:adsai-db \
+     -U adsai_admin -d adsai_db \
      -c "\dt billing.* offers.* siterank.* adscenter.* useractivity.* system.*"
 ```
 
@@ -74,8 +74,8 @@ psql -h /cloudsql/autoads-440902:us-central1:autoads-db \
 
 ```bash
 # 查看schema_migrations表
-psql -h /cloudsql/autoads-440902:us-central1:autoads-db \
-     -U autoads_admin -d autoads_db \
+psql -h /cloudsql/adsai-440902:us-central1:adsai-db \
+     -U adsai_admin -d adsai_db \
      -c "SELECT * FROM schema_migrations ORDER BY version;"
 ```
 
@@ -94,7 +94,7 @@ psql -h /cloudsql/autoads-440902:us-central1:autoads-db \
 ```bash
 # 使用migrate工具回滚（需要先安装migrate）
 migrate -path services/console/migrations \
-        -database "postgresql://autoads_admin:password@/cloudsql/instance/autoads_db" \
+        -database "postgresql://adsai_admin:password@/cloudsql/instance/adsai_db" \
         down
 ```
 

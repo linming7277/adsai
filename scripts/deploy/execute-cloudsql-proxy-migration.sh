@@ -4,9 +4,9 @@
 
 set -euo pipefail
 
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-CLOUDSQL_INSTANCE="${PROJECT_ID}:${REGION}:autoads"
+CLOUDSQL_INSTANCE="${PROJECT_ID}:${REGION}:adsai"
 
 # 颜色输出
 RED='\033[0;31m'
@@ -61,10 +61,10 @@ verify_environment() {
     
     # 验证Cloud SQL实例
     log_info "检查Cloud SQL实例状态..."
-    if gcloud sql instances describe autoads --project="$PROJECT_ID" &>/dev/null; then
-        log_success "Cloud SQL实例autoads运行正常"
+    if gcloud sql instances describe adsai --project="$PROJECT_ID" &>/dev/null; then
+        log_success "Cloud SQL实例adsai运行正常"
     else
-        log_error "Cloud SQL实例autoads不存在或无法访问"
+        log_error "Cloud SQL实例adsai不存在或无法访问"
         exit 1
     fi
     
@@ -96,7 +96,7 @@ execute_database_migration() {
     echo "    git push origin main"
     echo ""
     echo "  方式2: 手动触发GitHub Actions工作流"
-    echo "    访问: https://github.com/xxrenzhe/autoads/actions/workflows/database-migration.yml"
+    echo "    访问: https://github.com/linming7277/adsai/actions/workflows/database-migration.yml"
     echo "    点击 'Run workflow' 按钮"
     echo ""
     

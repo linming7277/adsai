@@ -5,7 +5,7 @@
 ### 最简单的验证方法
 
 1. **打开隐私模式浏览器**
-2. **访问**: https://www.urlchecker.dev/auth
+2. **访问**: https://preview.example.com/auth
 3. **使用全新的Google账号登录**
 4. **等待10秒**
 5. **检查以下页面**:

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/xxrenzhe/autoads/pkg/idempotency"
+	"github.com/linming7277/adsai/pkg/idempotency"
 )
 
 // Envelope is a minimal, versioned event envelope for cross-service publishing.

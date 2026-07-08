@@ -9,7 +9,7 @@ const LogoImageMini = ({ className }: LogoImageMiniProps) => {
   return (
     <Image
       src="/assets/images/favicon/logo.png"
-      alt="AutoAds"
+      alt="AdsAI"
       width={1954}
       height={116}
       sizes="96px"

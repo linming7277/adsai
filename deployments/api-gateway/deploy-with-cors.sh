@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# AutoAds API Gateway 部署脚本（带CORS配置）
+# AdsAI API Gateway 部署脚本（带CORS配置）
 # 用途: 部署更新后的API Gateway配置到GCP
 # 更新时间: 2025-10-03
 
@@ -9,10 +9,10 @@ set -e  # 遇到错误立即退出
 # ============================================================
 # 配置变量
 # ============================================================
-PROJECT_ID="gen-lang-client-0944935873"
+PROJECT_ID="your-gcp-project-id"
 REGION="asia-northeast1"
-GATEWAY_ID="autoads-gw-preview"
-API_ID="autoads-api-preview"
+GATEWAY_ID="adsai-gw-preview"
+API_ID="adsai-api-preview"
 CONFIG_FILE="gateway.yaml"
 
 # 时间戳（用于生成唯一的配置ID）
@@ -20,7 +20,7 @@ TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 CONFIG_ID="cfg-cors-${TIMESTAMP}"
 
 echo "=================================================="
-echo "AutoAds API Gateway CORS 配置部署"
+echo "AdsAI API Gateway CORS 配置部署"
 echo "=================================================="
 echo "项目: ${PROJECT_ID}"
 echo "网关: ${GATEWAY_ID}"
@@ -125,7 +125,7 @@ echo "测试CORS Preflight请求..."
 
 # 测试OPTIONS请求
 curl -i -X OPTIONS \
-  -H "Origin: https://www.urlchecker.dev" \
+  -H "Origin: https://preview.example.com" \
   -H "Access-Control-Request-Method: POST" \
   -H "Access-Control-Request-Headers: Authorization, Content-Type" \
   "https://${GATEWAY_URL}/api/v1/offers" \

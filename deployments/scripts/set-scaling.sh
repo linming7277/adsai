@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Configure Cloud Run service scaling parameters.
 # Usage:
-#   PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 SERVICE=browser-exec \
+#   PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 SERVICE=browser-exec \
 #   MIN=2 MAX=50 CONCURRENCY=80 CPU=1Gi MEM=1024Mi ./deployments/scripts/set-scaling.sh
 
 PROJECT_ID=${PROJECT_ID:?PROJECT_ID required}

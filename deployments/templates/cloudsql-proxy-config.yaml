@@ -4,7 +4,7 @@
 # Cloud SQL Proxy Annotations（添加到 template.metadata.annotations）
 annotations:
   # 🔥 Cloud SQL Proxy配置 - 关键！
-  run.googleapis.com/cloudsql-instances: "gen-lang-client-0944935873:asia-northeast1:autoads"
+  run.googleapis.com/cloudsql-instances: "your-gcp-project-id:asia-northeast1:adsai"
   run.googleapis.com/startup-cpu-boost: "true"
   # 移除VPC Connector相关配置
   # run.googleapis.com/vpc-access-connector: cr-conn-default-ane1  # ❌ 删除

@@ -18,7 +18,7 @@ function generateTestToken() {
   // JWT Payload - 测试用户信息
   const payload = {
     sub: 'test-user-12345',
-    email: 'test@urlchecker.dev',
+    email: 'test@preview.example.com',
     role: 'authenticated',
     app_metadata: {
       provider: 'email',

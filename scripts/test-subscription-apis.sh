@@ -5,7 +5,7 @@
 
 set -e
 
-GATEWAY_URL="https://autoads-gw-preview-885pd7lz.an.gateway.dev"
+GATEWAY_URL="https://adsai-gw-preview-885pd7lz.an.gateway.dev"
 BILLING_URL="https://billing-preview-yt54xvsg5q-an.a.run.app"
 
 echo "🧪 Testing Subscription Configuration API Endpoints"

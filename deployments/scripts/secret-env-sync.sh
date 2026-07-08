@@ -4,7 +4,7 @@ set -euo pipefail
 # Sync selected Secret Manager secrets into Cloud Run service env vars.
 # Each mapping is NAME=projects/<proj>/secrets/<name>/versions/<ver>
 # Usage:
-#  PROJECT_ID=gen-lang-client-0944935873 REGION=asia-northeast1 SERVICE=billing \
+#  PROJECT_ID=your-gcp-project-id REGION=asia-northeast1 SERVICE=billing \
 #  SECRETS="DATABASE_URL=projects/.../versions/latest,REFRESH_TOKEN_ENC_KEY_B64=projects/.../versions/1" \
 #  ./deployments/scripts/secret-env-sync.sh
 

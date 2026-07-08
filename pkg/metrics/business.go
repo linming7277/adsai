@@ -18,7 +18,7 @@ func GetGlobalBusinessMetrics() *Metrics {
 	globalBusinessOnce.Do(func() {
 		globalBusinessMetrics = New(Config{
 			ServiceName: "business",
-			Namespace:   "autoads",
+			Namespace:   "adsai",
 		})
 		// Setup all business metrics
 		globalBusinessMetrics.SetupBillingMetrics()
@@ -60,7 +60,7 @@ func (m *Metrics) SetupBillingMetrics() {
 		MetricTokensConsumed,
 		"Total number of tokens consumed",
 		[]string{"user_id", "operation"},
-		"autoads",
+		"adsai",
 		"billing",
 	)
 
@@ -69,7 +69,7 @@ func (m *Metrics) SetupBillingMetrics() {
 		MetricTokensReserved,
 		"Total number of tokens reserved",
 		[]string{"user_id"},
-		"autoads",
+		"adsai",
 		"billing",
 	)
 
@@ -78,7 +78,7 @@ func (m *Metrics) SetupBillingMetrics() {
 		MetricTokensCommitted,
 		"Total number of tokens committed",
 		[]string{"user_id", "operation"},
-		"autoads",
+		"adsai",
 		"billing",
 	)
 
@@ -87,7 +87,7 @@ func (m *Metrics) SetupBillingMetrics() {
 		MetricTokensRefunded,
 		"Total number of tokens refunded",
 		[]string{"user_id", "reason"},
-		"autoads",
+		"adsai",
 		"billing",
 	)
 
@@ -96,7 +96,7 @@ func (m *Metrics) SetupBillingMetrics() {
 		MetricActiveSubscribers,
 		"Number of active subscribers",
 		[]string{"plan"},
-		"autoads",
+		"adsai",
 		"billing",
 	)
 }
@@ -108,7 +108,7 @@ func (m *Metrics) SetupOfferMetrics() {
 		MetricOffersCreated,
 		"Total number of offers created",
 		[]string{"user_id", "type"},
-		"autoads",
+		"adsai",
 		"offer",
 	)
 
@@ -117,7 +117,7 @@ func (m *Metrics) SetupOfferMetrics() {
 		MetricOffersCompleted,
 		"Total number of offers completed",
 		[]string{"user_id", "type"},
-		"autoads",
+		"adsai",
 		"offer",
 	)
 
@@ -126,7 +126,7 @@ func (m *Metrics) SetupOfferMetrics() {
 		MetricOffersFailed,
 		"Total number of offers failed",
 		[]string{"user_id", "type", "reason"},
-		"autoads",
+		"adsai",
 		"offer",
 	)
 
@@ -135,7 +135,7 @@ func (m *Metrics) SetupOfferMetrics() {
 		MetricOfferConversion,
 		"Offer conversion rate (completed/created)",
 		[]string{"type"},
-		"autoads",
+		"adsai",
 		"offer",
 	)
 
@@ -144,7 +144,7 @@ func (m *Metrics) SetupOfferMetrics() {
 		MetricOfferValue,
 		"Total value of offers (in cents)",
 		[]string{"user_id", "type"},
-		"autoads",
+		"adsai",
 		"offer",
 	)
 }
@@ -156,7 +156,7 @@ func (m *Metrics) SetupAdMetrics() {
 		MetricAdsCreated,
 		"Total number of ads created",
 		[]string{"user_id", "campaign_id", "platform"},
-		"autoads",
+		"adsai",
 		"adscenter",
 	)
 
@@ -165,7 +165,7 @@ func (m *Metrics) SetupAdMetrics() {
 		MetricAdsActive,
 		"Number of currently active ads",
 		[]string{"user_id", "platform"},
-		"autoads",
+		"adsai",
 		"adscenter",
 	)
 
@@ -174,7 +174,7 @@ func (m *Metrics) SetupAdMetrics() {
 		MetricAdImpressions,
 		"Total number of ad impressions",
 		[]string{"user_id", "campaign_id", "platform"},
-		"autoads",
+		"adsai",
 		"adscenter",
 	)
 
@@ -183,7 +183,7 @@ func (m *Metrics) SetupAdMetrics() {
 		MetricAdClicks,
 		"Total number of ad clicks",
 		[]string{"user_id", "campaign_id", "platform"},
-		"autoads",
+		"adsai",
 		"adscenter",
 	)
 
@@ -192,7 +192,7 @@ func (m *Metrics) SetupAdMetrics() {
 		MetricAdConversions,
 		"Total number of ad conversions",
 		[]string{"user_id", "campaign_id", "platform"},
-		"autoads",
+		"adsai",
 		"adscenter",
 	)
 
@@ -201,7 +201,7 @@ func (m *Metrics) SetupAdMetrics() {
 		MetricAdSpend,
 		"Total ad spend (in cents)",
 		[]string{"user_id", "campaign_id", "platform"},
-		"autoads",
+		"adsai",
 		"adscenter",
 	)
 }

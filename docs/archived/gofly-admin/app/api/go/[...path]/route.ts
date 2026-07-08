@@ -1,7 +1,7 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const BACKEND_DEFAULT = 'https://autoads-gw-885pd7lz.an.gateway.dev'
+const BACKEND_DEFAULT = 'https://adsai-gw-885pd7lz.an.gateway.dev'
 let __backendCache: { base: string; ts: number } | undefined
 async function resolveBackendBase(req: Request): Promise<string> {
   if (process.env.BACKEND_URL && process.env.BACKEND_URL.trim() !== '') return process.env.BACKEND_URL.trim()

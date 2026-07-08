@@ -206,7 +206,7 @@ export default function AuthErrorHandler({
           <p className="text-sm text-gray-500">
             {t('auth.help.needAssistance', '需要帮助？')} {' '}
             <a
-              href="mailto:support@autoads.dev"
+              href="mailto:support@adsai.dev"
               className="text-blue-600 hover:text-blue-700 underline"
             >
               {t('auth.help.contactSupport', '联系客服')}

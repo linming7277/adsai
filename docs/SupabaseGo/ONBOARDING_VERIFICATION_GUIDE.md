@@ -3,7 +3,7 @@
 ## 📅 部署信息
 - **部署时间**: 2025-10-18 09:24:55 UTC
 - **服务版本**: billing-preview-00047-t5f
-- **环境**: Preview (www.urlchecker.dev)
+- **环境**: Preview (preview.example.com)
 - **状态**: ✅ 已成功部署
 
 ## 🎯 系统功能
@@ -23,8 +23,8 @@ Dell Laptop Campaign (Archived)   - Status: archived, ROAS: 3.2, Revenue: $150K
 ```
 
 ### 2. 欢迎通知
-- **标题**: Welcome to AutoAds!
-- **内容**: Thank you for joining AutoAds! You have received 1000 free tokens...
+- **标题**: Welcome to AdsAI!
+- **内容**: Thank you for joining AdsAI! You have received 1000 free tokens...
 
 ### 3. 签到系统初始化
 - total_checkins: 0
@@ -50,7 +50,7 @@ Dell Laptop Campaign (Archived)   - Status: archived, ROAS: 3.2, Revenue: $150K
    ```
 
 2. **注册新账号**
-   - 访问: https://www.urlchecker.dev/auth
+   - 访问: https://preview.example.com/auth
    - 点击"Continue with Google"
    - 使用一个全新的Google账号登录
    - 完成OAuth授权流程
@@ -141,7 +141,7 @@ LIMIT 5;
 
 1. **完整E2E测试** (需要Playwright)
    ```bash
-   cd /Users/jason/Documents/Kiro/autoads
+   cd /path/to/adsai
    node scripts/tests/test-new-user-onboarding.mjs
    ```
 
@@ -152,7 +152,7 @@ LIMIT 5;
 
 2. **数据库验证脚本**
    ```bash
-   cd /Users/jason/Documents/Kiro/autoads
+   cd /path/to/adsai
    ./scripts/verify-onboarding-data.sh
    ```
 

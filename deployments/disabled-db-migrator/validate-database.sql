@@ -269,14 +269,14 @@ END $$;
 -- 数据库大小
 SELECT 
     '数据库大小' as "指标",
-    pg_size_pretty(pg_database_size('autoads_db')) as "值";
+    pg_size_pretty(pg_database_size('adsai_db')) as "值";
 
 -- 连接数
 SELECT 
     '活动连接数' as "指标",
     COUNT(*)::TEXT as "值"
 FROM pg_stat_activity 
-WHERE datname = 'autoads_db';
+WHERE datname = 'adsai_db';
 
 -- 表总数
 SELECT 

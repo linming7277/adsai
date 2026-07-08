@@ -37,15 +37,15 @@ func (c *CloudSQLURLConverter) DetectAndFixCurrentURL() (string, string, string,
 			return "", "", "", fmt.Errorf("failed to get project config: %w", err)
 		}
 
-		suggestedFormat = fmt.Sprintf("postgresql://USER:PASSWORD@/cloudsql:%s:%s:autoads/autoads_db", projectID, region)
+		suggestedFormat = fmt.Sprintf("postgresql://USER:PASSWORD@/cloudsql:%s:%s:adsai/adsai_db", projectID, region)
 		fixInstructions = fmt.Sprintf(`🔧 Recommended fix:
   1. Update Secret Manager with new DATABASE_URL
   2. Use this format: %s`, suggestedFormat)
 	} else if strings.Contains(currentURL, "/cloudsql/") {
 		// 已经是Cloud SQL格式，检查组件完整性
 		projectID, region, _ := GetProjectConfig()
-		instanceName := "autoads"  // 默认实例名
-		databaseName := "autoads_db"  // 默认数据库名
+		instanceName := "adsai"  // 默认实例名
+		databaseName := "adsai_db"  // 默认数据库名
 
 		if !strings.Contains(currentURL, instanceName) {
 			suggestedFormat = fmt.Sprintf("postgresql://USER:PASSWORD@/cloudsql:%s:%s/%s/%s", projectID, region, instanceName, databaseName)
@@ -65,8 +65,8 @@ func (c *CloudSQLURLConverter) DetectAndFixCurrentURL() (string, string, string,
 	} else if strings.Contains(currentURL, "@localhost") {
 		// 本地开发格式
 		projectID, region, _ := GetProjectConfig()
-		instanceName := "autoads"  // 默认实例名
-		databaseName := "autoads_db"  // 默认数据库名
+		instanceName := "adsai"  // 默认实例名
+		databaseName := "adsai_db"  // 默认数据库名
 		suggestedFormat = fmt.Sprintf("postgresql://USER:PASSWORD@/cloudsql:%s:%s/%s/%s", projectID, region, instanceName, databaseName)
 		fixInstructions = fmt.Sprintf(`🔧 Recommended fix for staging:
   1. Update Secret Manager with Cloud SQL format for staging
@@ -74,8 +74,8 @@ func (c *CloudSQLURLConverter) DetectAndFixCurrentURL() (string, string, string,
 	} else {
 		// 未知格式
 		projectID, region, _ := GetProjectConfig()
-		instanceName := "autoads"  // 默认实例名
-		databaseName := "autoads_db"  // 默认数据库名
+		instanceName := "adsai"  // 默认实例名
+		databaseName := "adsai_db"  // 默认数据库名
 		suggestedFormat = fmt.Sprintf("postgresql://USER:PASSWORD@/cloudsql:%s:%s/%s/%s", projectID, region, instanceName, databaseName)
 		fixInstructions = fmt.Sprintf(`🔧 Recommended fix:
   1. Update Secret Manager with proper Cloud SQL format
@@ -140,7 +140,7 @@ func (c *CloudSQLURLConverter) CreateDatabaseURLEnvironmentScript(projectID, reg
 
 	return fmt.Sprintf(`#!/bin/bash
 # Cloud SQL Database URL Fix Script
-# Generated for AutoAds Cloud SQL migration
+# Generated for AdsAI Cloud SQL migration
 
 echo "🔧 Updating DATABASE_URL to Cloud SQL format..."
 
@@ -200,7 +200,7 @@ func GetProjectConfig() (projectID, region string, err error) {
 	// 从环境变量或配置中获取项目信息
 	projectID = os.Getenv("GCP_PROJECT")
 	if projectID == "" {
-		projectID = "gen-lang-client-0944935873" // 默认项目ID
+		projectID = "your-gcp-project-id" // 默认项目ID
 	}
 
 	region = os.Getenv("GCP_REGION")

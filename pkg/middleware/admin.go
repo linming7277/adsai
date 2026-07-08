@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-		"github.com/xxrenzhe/autoads/pkg/errors"
-	"github.com/xxrenzhe/autoads/pkg/supabaseauth"
+		"github.com/linming7277/adsai/pkg/errors"
+	"github.com/linming7277/adsai/pkg/supabaseauth"
 )
 
 // AdminOnly ensures the requester is an admin based on allowlists.

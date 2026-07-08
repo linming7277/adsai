@@ -11,7 +11,7 @@
       "prefix": "1分钟预判",
       "highlight": "Offer 投放回报"
     },
-    "description": "AutoAds 用 AI 智能分析落地页的12个关键维度，精准预估盈利潜力、给出预算建议，让你的每一笔广告投入都有数据支撑。",
+    "description": "AdsAI 用 AI 智能分析落地页的12个关键维度，精准预估盈利潜力、给出预算建议，让你的每一笔广告投入都有数据支撑。",
     "primaryCta": "免费试用14天",
     "secondaryCta": "查看功能演示",
     "sellingPoints": {
@@ -52,7 +52,7 @@
   },
   "features": {
     "heading": "4大核心能力，让投放决策更智能",
-    "subheading": "从 Offer 评估、账号管理到预算优化，AutoAds 为联盟营销人员提供全流程智能工具。",
+    "subheading": "从 Offer 评估、账号管理到预算优化，AdsAI 为联盟营销人员提供全流程智能工具。",
     "defaults": [
       {
         "title": "AI 智能落地页评估",
@@ -102,7 +102,7 @@
   },
   "howItWorks": {
     "heading": "3 步实现智能投放决策",
-    "subheading": "从 Offer 评估到投放执行，AutoAds 用 AI 加速决策，让你专注于高回报的策略优化。",
+    "subheading": "从 Offer 评估到投放执行，AdsAI 用 AI 加速决策，让你专注于高回报的策略优化。",
     "stepLabel": "步骤 {{index}}",
     "steps": [
       {
@@ -139,13 +139,13 @@
   },
   "benefits": {
     "heading": "解决联盟营销人员的3大核心痛点",
-    "subheading": "AutoAds 让你的投放决策更快、更准、更安心。",
+    "subheading": "AdsAI 让你的投放决策更快、更准、更安心。",
     "painPoints": {
       "defaults": [
         {
           "title": "Offer 评估太慢，错失先机",
           "description": "手动评估需2小时，等分析完好 Offer 已被抢。AI 1分钟完成12维度评估。",
-          "solution": "AutoAds 1分钟完成12维度AI评估",
+          "solution": "AdsAI 1分钟完成12维度AI评估",
           "metric": "效率提升120倍"
         },
         {
@@ -174,7 +174,7 @@
           ]
         },
         {
-          "title": "AutoAds AI 协同",
+          "title": "AdsAI AI 协同",
           "description": "统一账号资产、落地页评估与投放执行流程，全流程自动化协同。",
           "highlights": [
             "1 分钟完成账号接入与资产同步",
@@ -207,10 +207,10 @@
   },
   "pricing": {
     "heading": "选择适合你的增长计划",
-    "subheading": "从个人测试到专业运营，AutoAds 提供灵活的套餐选择。14天免费试用，无需信用卡，随时取消。",
+    "subheading": "从个人测试到专业运营，AdsAI 提供灵活的套餐选择。14天免费试用，无需信用卡，随时取消。",
     "hero": {
       "title": "选择适合你的增长计划",
-      "description": "从个人测试到专业运营，AutoAds 提供灵活的套餐选择。14天免费试用，无需信用卡，随时取消。",
+      "description": "从个人测试到专业运营，AdsAI 提供灵活的套餐选择。14天免费试用，无需信用卡，随时取消。",
       "ctaPrimary": "免费开始试用",
       "ctaSecondary": "查看完整对比"
     },
@@ -473,7 +473,7 @@
         },
         {
           "question": "数据安全吗？",
-          "answer": "您的数据安全是我们的首要任务。我们采用银行级加密存储，符合 GDPR 和 SOC2 标准。广告账号通过 OAuth 授权，AutoAds 不会存储您的账号密码。您可以随时撤销授权。"
+          "answer": "您的数据安全是我们的首要任务。我们采用银行级加密存储，符合 GDPR 和 SOC2 标准。广告账号通过 OAuth 授权，AdsAI 不会存储您的账号密码。您可以随时撤销授权。"
         }
       ]
     },
@@ -487,13 +487,13 @@
   "careers": {
     "hero": {
       "title": "加入我们",
-      "description": "AutoAds 由一支热爱增长与自动化的团队组成，欢迎对 AI 应用、增长策略与广告协同充满热情的伙伴加入。"
+      "description": "AdsAI 由一支热爱增长与自动化的团队组成，欢迎对 AI 应用、增长策略与广告协同充满热情的伙伴加入。"
     },
     "positions": [
       {
         "title": "前端工程师（Next.js）",
         "location": "上海 / 远程",
-        "description": "负责 AutoAds 前端架构与组件体系升级，推进营销站点与工作台体验优化，对 AI 协同体验有浓厚兴趣。"
+        "description": "负责 AdsAI 前端架构与组件体系升级，推进营销站点与工作台体验优化，对 AI 协同体验有浓厚兴趣。"
       },
       {
         "title": "增长策略顾问",
@@ -510,14 +510,14 @@
   },
   "caseStudies": {
     "heading": "客户案例与真实成果",
-    "subheading": "从增长团队到品牌电商，AutoAds 正在帮助不同规模的团队实现可持续增长。",
+    "subheading": "从增长团队到品牌电商，AdsAI 正在帮助不同规模的团队实现可持续增长。",
     "defaults": [
       {
         "name": "陈思雨",
         "role": "营销自动化负责人",
         "company": "智链云科技",
         "avatar": "",
-        "quote": "使用 AutoAds 之后，我们可以把更多精力放在策略与创意。AI 评估让落地页问题在 10 分钟内被定位，整体转化提升了 26%。",
+        "quote": "使用 AdsAI 之后，我们可以把更多精力放在策略与创意。AI 评估让落地页问题在 10 分钟内被定位，整体转化提升了 26%。",
         "improvement": "转化率提升 26%"
       },
       {
@@ -525,7 +525,7 @@
         "role": "Growth Lead",
         "company": "Nova Retail",
         "avatar": "",
-        "quote": "我们把 Google Ads、Meta 和 TikTok 的账户统一交给 AutoAds 管理，预算分配和投放监控实现了每日自动化。",
+        "quote": "我们把 Google Ads、Meta 和 TikTok 的账户统一交给 AdsAI 管理，预算分配和投放监控实现了每日自动化。",
         "improvement": "投放效率提升 3 倍"
       },
       {
@@ -541,7 +541,7 @@
   "caseStudiesPage": {
     "hero": {
       "title": "客户案例",
-      "description": "不同规模与行业的增长团队，正在通过 AutoAds 的 AI 能力与自动化协同快速获得验证成果。"
+      "description": "不同规模与行业的增长团队，正在通过 AdsAI 的 AI 能力与自动化协同快速获得验证成果。"
     },
     "items": [
       {
@@ -677,7 +677,7 @@
   "updates": {
     "hero": {
       "title": "产品动态",
-      "description": "了解 AutoAds 的最新功能、产品路线图和未来规划。"
+      "description": "了解 AdsAI 的最新功能、产品路线图和未来规划。"
     },
     "tabs": {
       "roadmap": "产品路线图",
@@ -736,7 +736,7 @@
         "version": "v1.0.0",
         "date": "2024-11-01",
         "highlights": [
-          "AutoAds 正式上线",
+          "AdsAI 正式上线",
           "AI Offer 评估核心功能发布",
           "支持 Google Ads、Meta、TikTok 账号管理"
         ]
@@ -746,7 +746,7 @@
   "featuresPage": {
     "hero": {
       "title": "功能亮点",
-      "description": "AutoAds 聚焦于落地页评估、投放协同与跨渠道经营洞察，帮助增长团队构建持续优化的自动化能力。"
+      "description": "AdsAI 聚焦于落地页评估、投放协同与跨渠道经营洞察，帮助增长团队构建持续优化的自动化能力。"
     },
     "blocks": [
       {
@@ -787,7 +787,7 @@
   },
   "blogPage": {
     "hero": {
-      "title": "AutoAds 博客",
+      "title": "AdsAI 博客",
       "description": "分享增长策略、产品更新与真实案例，帮助团队快速掌握 AI 驱动的投放方法论。"
     },
     "cta": {
@@ -827,13 +827,13 @@
   "privacyPage": {
     "hero": {
       "title": "隐私政策",
-      "description": "AutoAds 致力于保护客户数据的安全性与隐私性，以下条款适用于所有使用 AutoAds 产品的团队。"
+      "description": "AdsAI 致力于保护客户数据的安全性与隐私性，以下条款适用于所有使用 AdsAI 产品的团队。"
     },
     "sections": [
       {
         "title": "数据收集与使用",
         "content": [
-          "我们收集账号注册信息、广告账号授权数据与落地页评估数据，仅用于提供 AutoAds 服务。",
+          "我们收集账号注册信息、广告账号授权数据与落地页评估数据，仅用于提供 AdsAI 服务。",
           "不会将客户数据出售或用于未经授权的商业用途。"
         ]
       },
@@ -848,7 +848,7 @@
         "title": "客户数据权利",
         "content": [
           "客户可以随时导出或删除自身数据，提交请求后我们会在 72 小时内完成处理。",
-          "如需签署数据处理协议（DPA），请联系 privacy@autoads.dev。"
+          "如需签署数据处理协议（DPA），请联系 privacy@adsai.dev。"
         ]
       }
     ]
@@ -863,7 +863,7 @@
         "title": "快速上手",
         "description": "按照逐步指引完成平台初始化配置，包括团队邀请、套餐设置与 Token 配置。",
         "links": [
-          { "label": "AutoAds 入门指南", "href": "/docs/getting-started" },
+          { "label": "AdsAI 入门指南", "href": "/docs/getting-started" },
           { "label": "账号接入手册", "href": "/docs/playbooks/account-setup" }
         ]
       },
@@ -886,14 +886,14 @@
     ],
     "support": {
       "title": "需要更多个性化支持？",
-      "description": "联系 AutoAds 专家获取团队培训、数据迁移与私有化部署方案。",
+      "description": "联系 AdsAI 专家获取团队培训、数据迁移与私有化部署方案。",
       "salesCta": "联系销售团队"
     }
   },
   "support": {
     "hero": {
       "title": "支持中心",
-      "description": "获取快速帮助、文档资源与社区支持，让您的团队充分发挥 AutoAds 的价值。"
+      "description": "获取快速帮助、文档资源与社区支持，让您的团队充分发挥 AdsAI 的价值。"
     },
     "sections": [
       {
@@ -917,7 +917,7 @@
         "items": [
           { "label": "联系支持团队", "href": "/contact" },
           { "label": "提交工单", "href": "/contact" },
-          { "label": "加入社区", "href": "https://discord.gg/autoads" }
+          { "label": "加入社区", "href": "https://discord.gg/adsai" }
         ]
       }
     ],
@@ -931,7 +931,7 @@
   "privacyPage": {
     "hero": {
       "title": "隐私政策",
-      "description": "AutoAds 致力于保护您的隐私。本政策说明我们如何收集、使用和保护您的个人信息。最后更新时间：2025年10月"
+      "description": "AdsAI 致力于保护您的隐私。本政策说明我们如何收集、使用和保护您的个人信息。最后更新时间：2025年10月"
     },
     "sections": [
       {
@@ -1026,8 +1026,8 @@
       {
         "title": "10. 联系我们",
         "content": [
-          "隐私问题或请求：privacy@autoads.dev",
-          "数据保护官：dpo@autoads.dev",
+          "隐私问题或请求：privacy@adsai.dev",
+          "数据保护官：dpo@adsai.dev",
           "响应时间：我们将在30天内响应您的请求"
         ]
       }
@@ -1036,13 +1036,13 @@
   "terms": {
     "hero": {
       "title": "服务条款",
-      "description": "使用 AutoAds 服务前，请仔细阅读本服务条款。使用我们的服务即表示您同意这些条款。最后更新时间：2025年10月"
+      "description": "使用 AdsAI 服务前，请仔细阅读本服务条款。使用我们的服务即表示您同意这些条款。最后更新时间：2025年10月"
     },
     "sections": [
       {
         "title": "1. 服务说明",
         "clauses": [
-          "AutoAds 提供基于AI的落地页评估、广告账户管理和投放协同服务",
+          "AdsAI 提供基于AI的落地页评估、广告账户管理和投放协同服务",
           "服务包括但不限于：Offer评估、实时竞价分析、多平台账户接入、预算优化建议",
           "我们保留随时修改、暂停或终止部分或全部服务的权利",
           "服务内容和功能可能因您选择的套餐而异",
@@ -1087,11 +1087,11 @@
       {
         "title": "5. 知识产权",
         "clauses": [
-          "AutoAds 服务及其所有内容（代码、设计、算法、文档等）归我们所有",
+          "AdsAI 服务及其所有内容（代码、设计、算法、文档等）归我们所有",
           "您保留对上传数据的所有权，但授予我们使用该数据提供服务的许可",
           "您同意我们可以使用匿名、聚合的数据改进服务和进行研究",
           "未经书面许可，不得复制、修改、分发我们的任何内容",
-          "AutoAds 商标、标志和品牌元素为我们的财产，未经许可不得使用"
+          "AdsAI 商标、标志和品牌元素为我们的财产，未经许可不得使用"
         ]
       },
       {
@@ -1169,7 +1169,7 @@
       {
         "title": "13. 其他条款",
         "clauses": [
-          "本条款构成您与AutoAds之间的完整协议",
+          "本条款构成您与AdsAI之间的完整协议",
           "如本条款任何部分被认定为无效，其余部分仍然有效",
           "我们未行使任何权利不构成对该权利的放弃",
           "您不得在未经我们书面同意的情况下转让本条款下的权利",
@@ -1179,10 +1179,10 @@
       {
         "title": "14. 联系我们",
         "clauses": [
-          "法律与合规问题：legal@autoads.dev",
-          "账户与订阅问题：billing@autoads.dev",
-          "技术支持：support@autoads.dev",
-          "一般咨询：hello@autoads.dev",
+          "法律与合规问题：legal@adsai.dev",
+          "账户与订阅问题：billing@adsai.dev",
+          "技术支持：support@adsai.dev",
+          "一般咨询：hello@adsai.dev",
           "响应时间：工作日1-2个工作日"
         ]
       }
@@ -1191,12 +1191,12 @@
   "featuresPage": {
     "hero": {
       "title": "核心功能",
-      "description": "AutoAds 提供完整的落地页评估与广告投放协同解决方案，帮助您做出数据驱动的投放决策。"
+      "description": "AdsAI 提供完整的落地页评估与广告投放协同解决方案，帮助您做出数据驱动的投放决策。"
     },
     "blocks": [
       {
         "title": "AI 智能评估 - 12维度深度分析",
-        "description": "AutoAds 的AI引擎从12个关键维度分析落地页，包括内容质量、用户体验、技术性能、转化优化等，生成综合评分和详细建议。",
+        "description": "AdsAI 的AI引擎从12个关键维度分析落地页，包括内容质量、用户体验、技术性能、转化优化等，生成综合评分和详细建议。",
         "highlights": [
           "内容维度：标题吸引力、价值主张清晰度、社会证明可信度",
           "体验维度：页面加载速度、移动端适配、导航流畅度",
@@ -1271,12 +1271,12 @@
   "about": {
     "hero": {
       "title": "关于我们",
-      "subtitle": "AutoAds 致力于通过 AI 和自动化技术，帮助联盟营销人员和增长团队提升广告投放效率与 ROI。"
+      "subtitle": "AdsAI 致力于通过 AI 和自动化技术，帮助联盟营销人员和增长团队提升广告投放效率与 ROI。"
     },
     "mission": {
-      "paragraph1": "我们深知联盟营销的核心挑战：如何在海量 Offer 中快速识别高价值机会，如何高效测试落地页转化效果，如何在多个广告平台间协同预算分配。这些重复性高、耗时长的工作，正是 AutoAds 要解决的问题。",
+      "paragraph1": "我们深知联盟营销的核心挑战：如何在海量 Offer 中快速识别高价值机会，如何高效测试落地页转化效果，如何在多个广告平台间协同预算分配。这些重复性高、耗时长的工作，正是 AdsAI 要解决的问题。",
       "paragraph2": "通过 AI 驱动的 Offer 评估、全球代理 IP 测试、跨渠道投放协同等核心功能，我们帮助用户将投放决策从经验驱动转变为数据驱动，从手动操作转变为自动化流程，从而释放更多时间专注于战略和创意。",
-      "paragraph3": "AutoAds 团队由来自 Google、Meta 广告平台的工程师和资深联盟营销从业者组成。我们相信技术与行业经验的深度结合，才能打造真正解决实际问题的产品。"
+      "paragraph3": "AdsAI 团队由来自 Google、Meta 广告平台的工程师和资深联盟营销从业者组成。我们相信技术与行业经验的深度结合，才能打造真正解决实际问题的产品。"
     },
     "valuesTitle": "我们的核心价值观",
     "values": [

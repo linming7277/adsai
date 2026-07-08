@@ -1,7 +1,7 @@
 {
   "dashboard": {
-    "title": "AutoAds - Billing Overview",
-    "tags": ["autoads", "billing", "tokens"],
+    "title": "AdsAI - Billing Overview",
+    "tags": ["adsai", "billing", "tokens"],
     "timezone": "browser",
     "schemaVersion": 16,
     "version": 1,
@@ -17,7 +17,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/autoads_billing_tokens_consumed_total/counter' | group_by 1m, [value: aggregate(value.autoads_billing_tokens_consumed_total)] | every 1m"
+              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/adsai_billing_tokens_consumed_total/counter' | group_by 1m, [value: aggregate(value.adsai_billing_tokens_consumed_total)] | every 1m"
             }
           }
         ],
@@ -36,7 +36,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/autoads_billing_tokens_consumed_total/counter' | group_by 1m, [operation], [value: aggregate(value.autoads_billing_tokens_consumed_total)] | every 1m"
+              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/adsai_billing_tokens_consumed_total/counter' | group_by 1m, [operation], [value: aggregate(value.adsai_billing_tokens_consumed_total)] | every 1m"
             }
           }
         ]
@@ -51,7 +51,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | { metric 'prometheus.googleapis.com/autoads_billing_tokens_refunded_total/counter' ; metric 'prometheus.googleapis.com/autoads_billing_tokens_consumed_total/counter' } | ratio | group_by [], [value: aggregate(value)]"
+              "query": "fetch cloud_run_revision | { metric 'prometheus.googleapis.com/adsai_billing_tokens_refunded_total/counter' ; metric 'prometheus.googleapis.com/adsai_billing_tokens_consumed_total/counter' } | ratio | group_by [], [value: aggregate(value)]"
             }
           }
         ],
@@ -69,7 +69,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | { metric 'prometheus.googleapis.com/autoads_billing_tokens_committed_total/counter' ; metric 'prometheus.googleapis.com/autoads_billing_tokens_reserved_total/counter' } | ratio | group_by [], [value: aggregate(value)]"
+              "query": "fetch cloud_run_revision | { metric 'prometheus.googleapis.com/adsai_billing_tokens_committed_total/counter' ; metric 'prometheus.googleapis.com/adsai_billing_tokens_reserved_total/counter' } | ratio | group_by [], [value: aggregate(value)]"
             }
           }
         ],
@@ -87,7 +87,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/autoads_billing_active_subscribers/gauge' | group_by [], [value: aggregate(value.autoads_billing_active_subscribers)]"
+              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/adsai_billing_active_subscribers/gauge' | group_by [], [value: aggregate(value.adsai_billing_active_subscribers)]"
             }
           }
         ],
@@ -103,7 +103,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/autoads_billing_tokens_consumed_total/counter' | group_by 1m, [user_id], [value: aggregate(value.autoads_billing_tokens_consumed_total)] | every 1m | top 10"
+              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/adsai_billing_tokens_consumed_total/counter' | group_by 1m, [user_id], [value: aggregate(value.adsai_billing_tokens_consumed_total)] | every 1m | top 10"
             }
           }
         ]
@@ -118,7 +118,7 @@
             "refId": "A",
             "queryType": "metrics",
             "metricQuery": {
-              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/autoads_billing_tokens_consumed_total/counter' | group_by 1h, [value: aggregate(value.autoads_billing_tokens_consumed_total)] | every 1h"
+              "query": "fetch cloud_run_revision | metric 'prometheus.googleapis.com/adsai_billing_tokens_consumed_total/counter' | group_by 1h, [value: aggregate(value.adsai_billing_tokens_consumed_total)] | every 1h"
             }
           }
         ]

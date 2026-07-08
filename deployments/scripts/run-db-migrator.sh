@@ -5,7 +5,7 @@ set -euo pipefail
 # Requirements: gcloud auth; Secret Manager contains DATABASE_URL
 # Usage:
 #   PROJECT_ID=<id> REGION=asia-northeast1 STACK=prod \
-#   SA_EMAIL=codex-dev@<project>.iam.gserviceaccount.com \
+#   SA_EMAIL=service-account@<project>.iam.gserviceaccount.com \
 #   VPC_CONNECTOR=cr-conn-default-ane1 \
 #   ./deployments/scripts/run-db-migrator.sh
 
@@ -16,7 +16,7 @@ SA_EMAIL=${SA_EMAIL:-}
 VPC_CONNECTOR=${VPC_CONNECTOR:-}
 
 JOB_NAME="db-migrator-${STACK}"
-IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/autoads-services/db-migrator:${STACK}-latest"
+IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/adsai-services/db-migrator:${STACK}-latest"
 
 echo "[db-migrator] Ensuring job ${JOB_NAME} (image=${IMAGE})"
 if gcloud run jobs describe "$JOB_NAME" --project "$PROJECT_ID" --region "$REGION" >/dev/null 2>&1; then

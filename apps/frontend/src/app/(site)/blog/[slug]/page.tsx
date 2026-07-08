@@ -34,12 +34,12 @@ export async function generateMetadata({
     const { data } = matter(fileContent);
 
     return {
-      title: `${data.title} | AutoAds Blog`,
+      title: `${data.title} | AdsAI Blog`,
       description: data.description || '',
     };
   } catch {
     return {
-      title: 'Blog Post | AutoAds',
+      title: 'Blog Post | AdsAI',
     };
   }
 }

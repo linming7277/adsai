@@ -10,7 +10,7 @@
 import { chromium } from 'playwright';
 import { spawn } from 'child_process';
 
-const PREVIEW_BASE = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const PREVIEW_BASE = process.env.PREVIEW_BASE || 'https://preview.example.com';
 const CDP_PORT = 9222;
 
 async function startChromeWithDebugPort() {

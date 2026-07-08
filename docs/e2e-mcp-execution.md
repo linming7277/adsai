@@ -1,6 +1,6 @@
 # 预发域 UI/E2E 测试（chrome-devtools-mcp）
 
-本指南说明如何在本地使用 chrome-devtools-mcp 驱动真实 Chrome，执行 www.urlchecker.dev 的 UI/E2E 流程，覆盖 FeatureTest.md 中的 U1–U8 及前端触发链路。
+本指南说明如何在本地使用 chrome-devtools-mcp 驱动真实 Chrome，执行 preview.example.com 的 UI/E2E 流程，覆盖 FeatureTest.md 中的 U1–U8 及前端触发链路。
 
 ## 先决条件
 - Node.js ≥ 22.12
@@ -48,7 +48,7 @@ codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
 ## 场景建议（示例）
 
 - U1：
-  - 打开 https://www.urlchecker.dev 并截屏
+  - 打开 https://preview.example.com 并截屏
   - 导航 /about，校验标题与可见元素
   - 触发登录页，若使用 NextAuth，记录回调 URL 与请求参数
 

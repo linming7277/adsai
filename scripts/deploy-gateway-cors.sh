@@ -1,7 +1,7 @@
 #!/bin/bash
 # P0-2: 部署API Gateway CORS配置
 #
-# 目的: 更新autoads-gw的API配置,添加www.urlchecker.dev的CORS支持
+# 目的: 更新adsai-gw的API配置,添加preview.example.com的CORS支持
 #
 # 执行步骤:
 # 1. chmod +x scripts/deploy-gateway-cors.sh
@@ -9,14 +9,14 @@
 #
 # 预期结果:
 # - 创建新的API配置版本(包含CORS)
-# - 更新autoads-gw gateway使用新配置
+# - 更新adsai-gw gateway使用新配置
 # - 修复CORS错误,允许Console API调用
 
 set -euo pipefail
 
-PROJECT_ID="gen-lang-client-0944935873"
-API_ID="autoads-api"
-GATEWAY_ID="autoads-gw"
+PROJECT_ID="your-gcp-project-id"
+API_ID="adsai-api"
+GATEWAY_ID="adsai-gw"
 LOCATION="asia-northeast1"
 CONFIG_FILE="deployments/api-gateway/gateway.yaml"
 
@@ -36,10 +36,10 @@ echo ""
 
 # 验证CORS配置
 echo "验证CORS配置..."
-if grep -q "www.urlchecker.dev" "$CONFIG_FILE"; then
-  echo "✅ CORS配置包含 www.urlchecker.dev"
+if grep -q "preview.example.com" "$CONFIG_FILE"; then
+  echo "✅ CORS配置包含 preview.example.com"
 else
-  echo "❌ 警告: CORS配置中未找到 www.urlchecker.dev"
+  echo "❌ 警告: CORS配置中未找到 preview.example.com"
 fi
 
 if grep -q "x-google-management:" "$CONFIG_FILE"; then
@@ -51,7 +51,7 @@ fi
 echo ""
 
 # 生成配置ID (使用时间戳)
-CONFIG_ID="autoads-cors-$(date +%Y%m%d-%H%M%S)"
+CONFIG_ID="adsai-cors-$(date +%Y%m%d-%H%M%S)"
 echo "新配置ID: $CONFIG_ID"
 echo ""
 
@@ -137,14 +137,14 @@ echo "Gateway URL: https://$GATEWAY_URL"
 echo "配置ID: $CONFIG_ID"
 echo ""
 echo "验证步骤:"
-echo "1. 访问 https://www.urlchecker.dev/dashboard"
-echo "2. 使用 test-user@autoads.dev 登录"
+echo "1. 访问 https://preview.example.com/dashboard"
+echo "2. 使用 test-user@adsai.dev 登录"
 echo "3. 检查浏览器控制台是否还有CORS错误"
 echo "4. 确认Console API调用正常工作"
 echo ""
 echo "测试CORS:"
 echo "curl -I -X OPTIONS \\"
-echo "  -H 'Origin: https://www.urlchecker.dev' \\"
+echo "  -H 'Origin: https://preview.example.com' \\"
 echo "  -H 'Access-Control-Request-Method: GET' \\"
 echo "  https://$GATEWAY_URL/api/v1/console/navigation"
 echo ""

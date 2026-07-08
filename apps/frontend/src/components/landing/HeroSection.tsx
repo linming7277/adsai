@@ -139,7 +139,7 @@ export function HeroSection() {
               <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card/50 backdrop-blur-sm shadow-2xl">
                 <Image
                   src="/assets/images/dashboard.webp"
-                  alt="AutoAds Dashboard"
+                  alt="AdsAI Dashboard"
                   width={1280}
                   height={800}
                   priority

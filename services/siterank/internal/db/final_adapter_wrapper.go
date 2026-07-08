@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
+	"github.com/linming7277/adsai/pkg/database"
 )
 
 // FinalAdapterWrapper 包装FinalAdapter以提供sql.DB兼容接口

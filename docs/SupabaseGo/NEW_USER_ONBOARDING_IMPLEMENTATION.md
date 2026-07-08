@@ -5,7 +5,7 @@
 
 ## 🎯 问题描述
 
-**用户报告**: AutoAds平台新注册用户看到的全是空页面,缺少引导和示例数据,导致:
+**用户报告**: AdsAI平台新注册用户看到的全是空页面,缺少引导和示例数据,导致:
 - Dashboard统计信息加载失败
 - Token余额为0,无法体验评估功能
 - 签到、邀请等功能显示异常
@@ -139,8 +139,8 @@ INSERT INTO user_notifications (
     user_id, type, title, message, created_at
 ) VALUES (
     $1, 'welcome',
-    'Welcome to AutoAds!',
-    'Thank you for joining AutoAds! You have received 1000 free tokens...',
+    'Welcome to AdsAI!',
+    'Thank you for joining AdsAI! You have received 1000 free tokens...',
     NOW()
 )
 ```

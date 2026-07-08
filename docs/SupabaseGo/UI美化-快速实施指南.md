@@ -1,4 +1,4 @@
-# AutoAds UI美化 - 快速实施指南 (2天完成核心优化)
+# AdsAI UI美化 - 快速实施指南 (2天完成核心优化)
 
 > **目标**: 在2天内实现80%的视觉提升
 > **策略**: 专注高影响、低成本的改进
@@ -206,7 +206,7 @@ npm run dev
 // 修改前 (line 136-139)
 <Link href="/" className="flex items-center gap-2 text-foreground">
   <Logo className="h-8 w-auto" />
-  <span className="text-lg font-semibold">AutoAds</span>
+  <span className="text-lg font-semibold">AdsAI</span>
 </Link>
 ```
 
@@ -227,7 +227,7 @@ npm run dev
     'transition-all duration-200',
     'group-hover:from-primary group-hover:to-primary/70'
   )}>
-    AutoAds
+    AdsAI
   </span>
 </Link>
 ```
@@ -761,7 +761,7 @@ git commit -m "feat(ui): 实施UI美化 - Phase 1
 git push origin main
 
 # 3. 等待GitHub Actions自动部署
-# 4. 访问 https://www.urlchecker.dev 验证
+# 4. 访问 https://preview.example.com 验证
 ```
 
 ---

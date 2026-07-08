@@ -3,7 +3,7 @@
 # Simple Architecture Validation Script
 set -e
 
-echo "🚀 AutoAds Architecture Validation - Final Check"
+echo "🚀 AdsAI Architecture Validation - Final Check"
 echo "=============================================="
 
 # Check 1: FinalAdapter Usage in Database Services

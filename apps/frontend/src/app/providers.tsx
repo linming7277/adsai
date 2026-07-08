@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { ReactNode } from 'react';
 import { GlobalStateProvider } from '~/core/state/GlobalStateProvider';
 import { SEO } from '~/core/seo/SEOManager';
-import { useAutoAdsStructuredData } from '~/core/seo/StructuredData';
+import { useAdsAIStructuredData } from '~/core/seo/StructuredData';
 import { PerformanceManagerProvider } from '~/core/optimization/PerformanceManager';
 
 interface ProvidersProps {
@@ -15,7 +15,7 @@ interface ProvidersProps {
 
 // SEO组件包装器
 function SEOProvider({ children }: { children: ReactNode }) {
-  const { generateOrganizationData, generateSoftwareApplicationData } = useAutoAdsStructuredData();
+  const { generateOrganizationData, generateSoftwareApplicationData } = useAdsAIStructuredData();
 
   useEffect(() => {
     // 应用全局结构化数据

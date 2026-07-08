@@ -154,6 +154,6 @@ export function useUserEmailDomain() {
 
   return {
     domain: email.split('@')[1] ?? '',
-    isAdminDomain: email.endsWith('@autoads.ai') || email.endsWith('@admin.autoads.ai'),
+    isAdminDomain: email.endsWith('@adsai.ai') || email.endsWith('@admin.adsai.ai'),
   };
 }

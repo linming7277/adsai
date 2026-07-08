@@ -19,7 +19,7 @@ import { chromium } from 'playwright';
 import { setupAuthForTest, cleanupAuthForTest } from './helpers/auth.mjs';
 
 // 测试环境配置
-const BASE_URL = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const BASE_URL = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 // 后台管理功能配置
 const MANAGE_FEATURES = {
@@ -63,13 +63,13 @@ const MANAGE_FEATURES = {
 // 测试用户配置
 const TEST_USERS = {
   admin: {
-    email: 'test-admin@autoads.dev',
+    email: 'test-admin@adsai.dev',
     role: 'admin',
     subscription: 'elite',
     hasFullAccess: true
   },
   regular: {
-    email: 'test-user@autoads.dev',
+    email: 'test-user@adsai.dev',
     role: 'user',
     subscription: 'professional',
     hasFullAccess: false

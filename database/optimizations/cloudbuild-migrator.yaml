@@ -4,7 +4,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-index-migrator:latest'
+      - 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-index-migrator:latest'
       - '-f'
       - 'database/optimizations/Dockerfile'
       - 'database/optimizations'
@@ -13,7 +13,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-index-migrator:latest'
+      - 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-index-migrator:latest'
 
   # 创建/更新Cloud Run Job
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -22,21 +22,21 @@ steps:
       - '-c'
       - |
         gcloud run jobs create apply-performance-indexes \
-          --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-index-migrator:latest \
+          --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-index-migrator:latest \
           --region=asia-northeast1 \
           --set-secrets=DATABASE_URL=DATABASE_URL:latest \
           --vpc-connector=cr-conn-default-ane1 \
           --vpc-egress=private-ranges-only \
-          --service-account=codex-dev@gen-lang-client-0944935873.iam.gserviceaccount.com \
+          --service-account=service-account@your-gcp-project-id.iam.gserviceaccount.com \
           --max-retries=0 \
           --task-timeout=10m \
           || \
         gcloud run jobs update apply-performance-indexes \
-          --image=asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-index-migrator:latest \
+          --image=asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-index-migrator:latest \
           --region=asia-northeast1
 
 images:
-  - 'asia-northeast1-docker.pkg.dev/gen-lang-client-0944935873/autoads-services/db-index-migrator:latest'
+  - 'asia-northeast1-docker.pkg.dev/your-gcp-project-id/adsai-services/db-index-migrator:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY

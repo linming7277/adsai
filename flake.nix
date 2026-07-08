@@ -1,5 +1,5 @@
 {
-  description = "Development environment for AutoAds SaaS";
+  description = "Development environment for AdsAI SaaS";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";

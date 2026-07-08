@@ -16,7 +16,7 @@ Unified library for calling internal services with circuit breakers, retries, an
 ### Basic Usage
 
 ```go
-import "github.com/xxrenzhe/autoads/pkg/serviceclient"
+import "github.com/linming7277/adsai/pkg/serviceclient"
 
 // Create registry (initialized with common services)
 registry := serviceclient.NewRegistry()

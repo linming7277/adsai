@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xxrenzhe/autoads/pkg/database"
-	"github.com/xxrenzhe/autoads/services/user/internal/config"
-	"github.com/xxrenzhe/autoads/services/user/internal/models"
+	"github.com/linming7277/adsai/pkg/database"
+	"github.com/linming7277/adsai/services/user/internal/config"
+	"github.com/linming7277/adsai/services/user/internal/models"
 )
 
 // AdapterUserRepository 使用统一数据库适配器的用户仓储实现

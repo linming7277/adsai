@@ -1,12 +1,12 @@
 # Cloud Run 环境变量与 Secret 清单（单项目多环境 / STACK）
 
-适用：GCP 项目 `gen-lang-client-0944935873`，区域 `asia-northeast1`。基础设施公用，通过 `STACK` 实现逻辑隔离（事件与任务队列）。
+适用：GCP 项目 `your-gcp-project-id`，区域 `asia-northeast1`。基础设施公用，通过 `STACK` 实现逻辑隔离（事件与任务队列）。
 
 通用要求（所有服务）
 - ENV=production
 - STACK=<逻辑命名空间>（如 `prod`/`sandbox-a`/`partner-x`）
-- GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873
-- DATABASE_URL_SECRET_NAME=projects/gen-lang-client-0944935873/secrets/DATABASE_URL/versions/latest
+- GOOGLE_CLOUD_PROJECT=your-gcp-project-id
+- DATABASE_URL_SECRET_NAME=projects/your-gcp-project-id/secrets/DATABASE_URL/versions/latest
 - Pub/Sub（两种方式二选一）
   - 显式设置：
     - PUBSUB_TOPIC_ID=domain-events-<STACK>
@@ -61,19 +61,19 @@
 ```
 gcloud run services update adscenter \
   --region=asia-northeast1 \
-  --set-env-vars=ENV=production,STACK=prod,GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873 \
-  --set-secrets=GOOGLE_ADS_DEVELOPER_TOKEN=projects/gen-lang-client-0944935873/secrets/GOOGLE_ADS_DEVELOPER_TOKEN:latest,\
-GOOGLE_ADS_OAUTH_CLIENT_ID=projects/gen-lang-client-0944935873/secrets/GOOGLE_ADS_OAUTH_CLIENT_ID:latest,\
-GOOGLE_ADS_OAUTH_CLIENT_SECRET=projects/gen-lang-client-0944935873/secrets/GOOGLE_ADS_OAUTH_CLIENT_SECRET:latest,\
-GOOGLE_ADS_LOGIN_CUSTOMER_ID=projects/gen-lang-client-0944935873/secrets/GOOGLE_ADS_LOGIN_CUSTOMER_ID:latest,\
-GOOGLE_ADS_REFRESH_TOKEN=projects/gen-lang-client-0944935873/secrets/GOOGLE_ADS_REFRESH_TOKEN:latest
+  --set-env-vars=ENV=production,STACK=prod,GOOGLE_CLOUD_PROJECT=your-gcp-project-id \
+  --set-secrets=GOOGLE_ADS_DEVELOPER_TOKEN=projects/your-gcp-project-id/secrets/GOOGLE_ADS_DEVELOPER_TOKEN:latest,\
+GOOGLE_ADS_OAUTH_CLIENT_ID=projects/your-gcp-project-id/secrets/GOOGLE_ADS_OAUTH_CLIENT_ID:latest,\
+GOOGLE_ADS_OAUTH_CLIENT_SECRET=projects/your-gcp-project-id/secrets/GOOGLE_ADS_OAUTH_CLIENT_SECRET:latest,\
+GOOGLE_ADS_LOGIN_CUSTOMER_ID=projects/your-gcp-project-id/secrets/GOOGLE_ADS_LOGIN_CUSTOMER_ID:latest,\
+GOOGLE_ADS_REFRESH_TOKEN=projects/your-gcp-project-id/secrets/GOOGLE_ADS_REFRESH_TOKEN:latest
 ```
 
 数据库 URL（通用）：
 ```
 gcloud run services update identity \
   --region=asia-northeast1 \
-  --set-env-vars=ENV=production,STACK=prod,GOOGLE_CLOUD_PROJECT=gen-lang-client-0944935873 \
+  --set-env-vars=ENV=production,STACK=prod,GOOGLE_CLOUD_PROJECT=your-gcp-project-id \
   --set-env-vars=PUBSUB_TOPIC_ID=domain-events-prod,PUBSUB_SUBSCRIPTION_ID=identity-sub-prod \
-  --set-secrets=DATABASE_URL_SECRET_NAME=projects/gen-lang-client-0944935873/secrets/DATABASE_URL:latest
+  --set-secrets=DATABASE_URL_SECRET_NAME=projects/your-gcp-project-id/secrets/DATABASE_URL:latest
 ```

@@ -1,7 +1,7 @@
 {
   "header": {
     "badge": "Design System",
-    "title": "AutoAds Frontend Component Handbook",
+    "title": "AdsAI Frontend Component Handbook",
     "description": "A reference of design tokens, typography, foundational components, and icon assets to keep every delivery aligned."
   },
   "colors": {
@@ -48,7 +48,7 @@
       },
       "body": {
         "title": "Body",
-        "content": "AutoAds delivers an end-to-end growth workflow, unifying traffic intelligence, creative diagnostics, and performance monitoring to boost conversion ROI."
+        "content": "AdsAI delivers an end-to-end growth workflow, unifying traffic intelligence, creative diagnostics, and performance monitoring to boost conversion ROI."
       },
       "caption": {
         "title": "Caption",

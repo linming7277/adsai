@@ -7,7 +7,7 @@
 
 ### 1. 打开Supabase SQL编辑器
 1. 访问 https://supabase.com/dashboard
-2. 选择AutoAds项目
+2. 选择AdsAI项目
 3. 进入 SQL Editor → New query
 
 ### 2. 执行修复SQL脚本

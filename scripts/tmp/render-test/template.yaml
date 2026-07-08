@@ -43,9 +43,9 @@ app: #应用配置
   #JWT验证-token秘钥（为了安全部署是请修改）
   tokensecret: "${JWT_SECRET}"
   # 跨域域名-不添加请求时报403
-  # 由 CI/运行环境注入，预发(urlchecker.dev)与生产(autoads.dev)域名分别渲染
-  # 示例（预发）：https://urlchecker.dev,https://www.urlchecker.dev
-  # 示例（生产）：https://autoads.dev,https://www.autoads.dev
+  # 由 CI/运行环境注入，预发(preview.example.com)与生产(example.com)域名分别渲染
+  # 示例（预发）：https://preview.example.com,https://preview.example.com
+  # 示例（生产）：https://example.com,https://www.example.com
   allowurl:  ${ALLOW_ORIGINS}
   #api接口合法验证超时时间(秒) 
   apiouttime: 180

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[ENV] Validating environment variables for AutoAds (Next + Go)"
+echo "[ENV] Validating environment variables for AdsAI (Next + Go)"
 
 MISSING=()
 WARN=()

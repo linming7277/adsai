@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Minimal puppeteer-based UI checks for www.urlchecker.dev
+// Minimal puppeteer-based UI checks for preview.example.com
 // - Anonymous pages: /, /about
 // - Screenshot and basic assertions
 
 import puppeteer from 'puppeteer'
 
-// 测试环境: www.urlchecker.dev (预发) | www.autoads.dev (生产)
-const base = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev'
+// 测试环境: preview.example.com (预发) | www.example.com (生产)
+const base = process.env.PREVIEW_BASE || 'https://preview.example.com'
 
 function log(...a){ console.log('[e2e-ui]', ...a) }
 

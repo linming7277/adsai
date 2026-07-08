@@ -60,10 +60,10 @@ setup_environment() {
     log_info "配置环境变量..."
 
     # 项目配置
-    export PROJECT_ID="${PROJECT_ID:-gen-lang-client-0944935873}"
+    export PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
     export REGION="${REGION:-us-central1}"
-    export INSTANCE_NAME="${INSTANCE_NAME:-autoads-proxy}"
-    export DATABASE_NAME="${DATABASE_NAME:-autoads_db}"
+    export INSTANCE_NAME="${INSTANCE_NAME:-adsai-proxy}"
+    export DATABASE_NAME="${DATABASE_NAME:-adsai_db}"
     export SERVICE_ACCOUNT_NAME="${SERVICE_ACCOUNT_NAME:-cloudsql-proxy}"
     export SERVICE_ACCOUNT="${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 
@@ -227,7 +227,7 @@ services:
   # Cloud SQL Proxy服务
   cloudsql-proxy:
     image: gcr.io/cloudsql-docker/gce-proxy:1.28.0
-    container_name: autoads-cloudsql-proxy
+    container_name: adsai-cloudsql-proxy
     restart: unless-stopped
 
     command:
@@ -256,7 +256,7 @@ services:
       start_period: 40s
 
     networks:
-      - autoads-network
+      - adsai-network
 
   # 数据库迁移服务
   migrator:
@@ -264,7 +264,7 @@ services:
       context: ../..
       dockerfile: tools/migrator/Dockerfile
 
-    container_name: autoads-migrator
+    container_name: adsai-migrator
     restart: "no"
 
     environment:
@@ -286,7 +286,7 @@ services:
         condition: service_healthy
 
     networks:
-      - autoads-network
+      - adsai-network
 
     command: >
       sh -c "
@@ -305,7 +305,7 @@ services:
       context: ../..
       dockerfile: services/connection-pool/Dockerfile
 
-    container_name: autoads-connection-pool
+    container_name: adsai-connection-pool
     restart: unless-stopped
 
     environment:
@@ -330,7 +330,7 @@ services:
         condition: service_healthy
 
     networks:
-      - autoads-network
+      - adsai-network
 
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
@@ -340,7 +340,7 @@ services:
       start_period: 40s
 
 networks:
-  autoads-network:
+  adsai-network:
     driver: bridge
     ipam:
       config:

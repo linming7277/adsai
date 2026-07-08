@@ -44,7 +44,7 @@ export GOOGLE_ADS_CLIENT_SECRET="your-client-secret"
 export GOOGLE_ADS_LOGIN_CUSTOMER_ID=""  # 可选：MCC账户ID
 
 # 数据库和Redis配置
-export DATABASE_URL="mysql://user:password@localhost:3306/autoads_gofly"
+export DATABASE_URL="mysql://user:password@localhost:3306/adsai_gofly"
 export REDIS_URL="redis://localhost:6379"
 ```
 
@@ -54,7 +54,7 @@ export REDIS_URL="redis://localhost:6379"
 
 ```bash
 # 创建数据库表
-mysql -u root -p autoads_gofly < database/migrations/adscentergo.sql
+mysql -u root -p adsai_gofly < database/migrations/adscentergo.sql
 ```
 
 ## 4. API使用指南

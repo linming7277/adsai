@@ -1,4 +1,4 @@
-# AutoAds Supabase 数据库清理计划
+# AdsAI Supabase 数据库清理计划
 
 ## 🎯 目标
 将Supabase精简为纯认证数据库，移除所有业务数据表，仅保留：

@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import { setupAuthForTest } from './helpers/auth.mjs';
 
-const base = process.env.PREVIEW_BASE || 'https://www.urlchecker.dev';
+const base = process.env.PREVIEW_BASE || 'https://preview.example.com';
 
 async function main() {
   const browser = await puppeteer.launch({ headless: 'new' });

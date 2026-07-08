@@ -1,6 +1,6 @@
 # Console Service - 管理后台功能实施总结
 
-> **项目**: AutoAds Console Service v2.0
+> **项目**: AdsAI Console Service v2.0
 > **完成日期**: 2025-10-09
 > **实施范围**: P0 核心功能 + P1 增强功能
 
@@ -330,8 +330,8 @@ WHERE action IN (
 
 3. **验证部署**
    ```bash
-   curl https://console.autoads.dev/healthz
-   curl https://console.autoads.dev/api/v1/console/dashboard/stats
+   curl https://console.example.com/healthz
+   curl https://console.example.com/api/v1/console/dashboard/stats
    ```
 
 4. **生成 Recovery Code**（首次）
